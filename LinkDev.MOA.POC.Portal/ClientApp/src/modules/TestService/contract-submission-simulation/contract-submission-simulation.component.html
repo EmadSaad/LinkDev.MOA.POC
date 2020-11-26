@@ -1,0 +1,22 @@
+<app-stages [Stages]="stages" [ActiveLevelOneIndex]="ActiveLevelOne" [ActiveLevelTwoIndex]="ActiveLevelTwo" (LevelOneClick)="levelOneClick($event)" (LevelTwoClick)="levelTwoClick($event)"></app-stages>
+<div style="float: left; width: 75%">
+  <div *ngIf="ActiveLevelOne === 1">
+    <form #firstNameForm="ngForm" *ngIf="ActiveLevelTwo === 1">
+        <input type="text" name="name" [(ngModel)]="Model.FirstName" required/>
+        <div style="height: 1000px"></div>
+        <div id="testhash">Request Base Info</div>
+    </form>
+    <form #lastNameForm="ngForm" *ngIf="ActiveLevelTwo === 2">
+        <input type="text" name="name" [(ngModel)]="Model.LastName">
+    </form>
+    <button (click)="Previous()">Previous</button>
+    <button (click)="Next()">Next</button>
+  </div>
+  <div *ngIf="ActiveLevelOne === 2">
+      Pricing
+  </div>
+</div>
+
+
+ 
+ 

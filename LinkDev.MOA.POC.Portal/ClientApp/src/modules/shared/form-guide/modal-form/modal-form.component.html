@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title">My Form</h4>
+    <button type="button" class="close" aria-label="Close"
+     (click)="activeModal.dismiss('Cross click')"><span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="myForm" (ngSubmit)="submitForm()">
+    <div class="modal-boy">
+      <div class="container">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <custom-text-box [type]="'text'"></custom-text-box>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <password-textbox [strength]='true'></password-textbox>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success"
+        [disabled]="!myForm.valid">
+        Submit Form
+      </button>
+    </div>
+  </form>

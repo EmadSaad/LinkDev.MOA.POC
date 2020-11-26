@@ -1,0 +1,1200 @@
+<app-breadcrumb [CurrnetComponentName]="'buildinglicense'"></app-breadcrumb>
+
+<div class="form-wrapper mb-0">
+
+  <div class="row">
+    <div class="col-lg-3 mb-0">
+      <div class="h-100">
+        <app-side-stages 
+          [activeFirstLevel]="ActiveLevelOne" 
+          [activeSecondLevel]="ActiveLevelTwo"
+          [structure]="formStructure" 
+          (onChange)="onSelect($event)"> 
+        </app-side-stages>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h1 class="page-title">
+        {{'BuildingLicenseRequest.BuildingLicenseRequestName' | translate}}
+      </h1>
+
+      <!--Request-Header-->
+      <app-app-header 
+        [appHeader]="Application.ApplicationHeader" 
+        class="mt-2">
+      </app-app-header>
+
+      <!-- Start Stage 1 -->
+      <div [hidden]="ActiveLevelOne !== 1">
+
+        <!-- Start Section 1 | Request Main Info-->
+        <div [hidden]="ActiveLevelTwo !== 1">
+
+          <!--Validation-Message-->
+          <div class="alert alert-light" role="alert">
+            <i class="icon-info"></i>
+            {{'FORM_VALIDATION_MESSAGE' | translate}}
+          </div>
+
+          <app-request-submission-info 
+            [submissionAlertClass]="this.submissionAlertClass"
+            [submissionInfo]="this.submissionInfo">
+          </app-request-submission-info>
+
+          <form #stageOne="ngForm" novalidate autocomplete="off">
+
+            <div class="row">
+
+              <div class="col-lg-4 col-md-6">
+
+                <mutliselect 
+                  id="CRId"
+                  name="CRId"
+                  [label]="'BuildingLicenseRequest.CR'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['account_CRsByTypeInvestor']"
+                  [viewMode]="isAlwaysReadOnlyAfterSubmit"
+                  [multiple]="false"
+                  [config]="config"
+                  [(ngModel)]="Application.Request.CRId"
+                  [required]="true"
+                  [disabled]="false"
+                  [isRequiredLabel]="true"
+                  (change)="cRChanged()"
+                  #CRId="ngModel">
+                </mutliselect>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}" 
+                  [controlName]="CRId"
+                  [form]="stageOne" 
+                  [submit]="isSubmitDraft||isSubmit"> 
+                </app-validation-viewer>
+
+              </div>
+
+              <app-info-viewer 
+                [isLoading]="isCurrentCR" 
+                [modalFormTitleKey]="'BuildingLicenseRequest.CRInfo'" 
+                name="CRInfo"
+                *ngIf="Application.Request.CRId">
+
+                <div class="row">
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="CurrentCRType" 
+                      #CurrentCRType="ngModel"
+                      [(ngModel)]="CurrentCR.CRType" 
+                      [label]="'ContractSubmission.Type'" 
+                      autocomplete=""
+                      aria-label="Name" 
+                      [isReadOnly]="true"> 
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="CurrentCRNumber" 
+                      #CurrentCRNumber="ngModel"
+                      [(ngModel)]="CurrentCR.CRNumber" 
+                      [label]="'ContractSubmission.CRNumber'" 
+                      autocomplete=""
+                      aria-label="Name" 
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <label>
+                      {{'ContractSubmission.CRIssuanceDate' | translate}}
+                    </label>
+
+                    <ngbd-datepicker-popup 
+                      [(ngModel)]="CurrentCR.IssueDate" 
+                      name="IssueDate" 
+                      [readonly]="true">
+                    </ngbd-datepicker-popup>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <label>
+                      {{'ContractSubmission.CRExpiryDate' | translate}}
+                    </label>
+
+                    <ngbd-datepicker-popup 
+                      [(ngModel)]="CurrentCR.ExpiryDate" 
+                      name="ExpiryDate"
+                      [ngModelOptions]="{standalone: true}"
+                      [readonly]="true">
+                    </ngbd-datepicker-popup>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="CurrentCRName" 
+                      #CurrentCRName="ngModel"
+                      [(ngModel)]="CurrentCR.CRName" 
+                      [label]="'ContractSubmission.Name'" 
+                      autocomplete=""
+                      aria-label="Name" 
+                      [isReadOnly]="true"> 
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-8 col-md-6">
+
+                    <label>
+                      {{'ContractSubmission.Activity' | translate}}
+                    </label>
+
+                    <textarea 
+                      id="CurrentCRActivity" 
+                      name="CurrentCRActivity" 
+                      [readOnly]="true"
+                      #CurrentCRActivity="ngModel" 
+                      [(ngModel)]="CurrentCR.CRActivity" 
+                      disabled>
+                    </textarea>
+
+                  </div>
+
+                </div>
+
+                <app-grid 
+                  [canAdd]="false" 
+                  [canDelete]="false" 
+                  [canEdit]="false"
+                  [tableHeadTitle]="'ContractSubmission.Owners'" 
+                  [(data)]="CurrentCR.CROwners"
+                  [columns]="CROwnerGridcols"> 
+                </app-grid>
+
+              </app-info-viewer>
+
+            </div>
+
+            <div class="form-validation mb-4" *ngIf="!IsCRContractsBalanceValid">
+              {{crContractBalanceValidMsg}}
+            </div>
+            
+            <div class="row">
+
+              <div class="col-lg-4 col-md-6" >
+
+                <mutliselect 
+                  id="ContractNumber"
+                  name="ContractNumber"
+                  [label]="'BuildingLicenseRequest.ContractNumber'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_contract_LookupWithId']"
+                  [multiple]="false"
+                  [config]="config"
+                  [viewMode]="isContractNumberReadOnly"
+                  [(ngModel)]="Application.Request.ContractNumberId"
+                  [required]="true"
+                  [disabled]="false"
+                  [isRequiredLabel]="true"
+                  #ContractNumber="ngModel"
+                  (change)="contractChanged()">
+                </mutliselect>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="ContractNumber" 
+                  [form]="stageOne" 
+                  [submit]="isSubmitDraft||isSubmit">
+                </app-validation-viewer>
+
+              </div>
+
+              <app-info-viewer 
+                [isLoading]="isCurrentContract" 
+                [modalFormTitleKey]="'BuildingLicenseRequest.ContractInfo'"
+                name="ContactInfo" 
+                *ngIf="Application.Request.ContractNumberId&&CurrentContract">
+
+                <div class="row">
+
+                  <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.CR">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="CRContract" 
+                      #CRContract="ngModel"
+                      [(ngModel)]="CurrentContract.CR.Name" 
+                      [label]="'ContractSubmission.CRId'" 
+                      autocomplete=""
+                      aria-label="Name" 
+                      [isReadOnly]="true"> 
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Industrialcity">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractIndustrialCity" 
+                      #ContractIndustrialCity="ngModel"
+                      [(ngModel)]="CurrentContract.Industrialcity.Name" 
+                      [label]="'ContractSubmission.IndustrialCity'"
+                      autocomplete="" 
+                      aria-label="Name" 
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductMainfamily">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractProductMainFamily"
+                      #ContractProductMainFamily="ngModel" 
+                      [(ngModel)]="CurrentContract.ProductMainfamily.Name"
+                      [label]="'ContractSubmission.ProductMainFamily'" 
+                      autocomplete="" 
+                      aria-label="Name"
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductSubFamily">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractProductSubFamily"
+                      #ContractProductMainFamily="ngModel" 
+                      [(ngModel)]="CurrentContract.ProductSubFamily.Name"
+                      [label]="'ContractSubmission.ProductSubFamily'" 
+                      autocomplete="" 
+                      aria-label="Name"
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Product">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractProduct" 
+                      #ContractProduct="ngModel"
+                      [(ngModel)]="CurrentContract.Product.Name" 
+                      [label]="'ContractSubmission.Product'" 
+                      autocomplete=""
+                      aria-label="Name" 
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractConstructionAmountValue"
+                      #ContractConstructionAmountValue="ngModel"
+                      [(ngModel)]="CurrentContract.ConstructionContractStatus"
+                      [label]="'ContractSubmission.ConstructionAmountValue'" 
+                      autocomplete="" 
+                      aria-label="Name"
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                    
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractLegalStatus" 
+                      #ContractLegalStatus="ngModel"
+                      [(ngModel)]="CurrentContract.LegalStatus" 
+                      [label]="'BuildingLicenseRequest.LegalStatus'"
+                      autocomplete="" 
+                      aria-label="Name" 
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractPricingdate" 
+                      #ContractPricingdate="ngModel"
+                      [(ngModel)]="CurrentContract.Pricingdate" 
+                      [label]="'BuildingLicenseRequest.Pricingdate'"
+                      autocomplete="" 
+                      aria-label="Name" 
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <custom-text-box 
+                      [type]="'text'" 
+                      name="ContractFileNumber" 
+                      #ContractFileNumber="ngModel"
+                      [(ngModel)]="CurrentContract.FileNumber" 
+                      [label]="'BuildingLicenseRequest.FileNumber'"
+                      autocomplete="" 
+                      aria-label="Name" 
+                      [isReadOnly]="true">
+                    </custom-text-box>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <!-- <custom-text-box [type]="'text'" name="LandNumber" #ContractPricingdate="ngModel"
+                    [(ngModel)]="CurrentContract.LandNumber" [label]="'PlanApproval.LandNumber'"
+                    autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box> -->
+
+                    <label>
+                      {{'BuildingLicenseRequest.ContractStartingDate' | translate}}
+                    </label>
+
+                    <ngbd-datepicker-popup 
+                      [(ngModel)]="CurrentContract.ContractStartingDate" 
+                      [readonly]="true"
+                      name="ContractStartingDate">
+                    </ngbd-datepicker-popup>
+
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+
+                    <!-- {{CurrentContract.ContractStartingDate | json}} -->
+                    <label>
+                      {{'BuildingLicenseRequest.ContractExpiryDate' | translate}}
+                    </label>
+
+                    <ngbd-datepicker-popup 
+                      [(ngModel)]="CurrentContract.ContractExpiryDate" 
+                      [readonly]="true"
+                       name="ContractExpiryDate">
+                      </ngbd-datepicker-popup>
+
+                  </div>
+
+                </div>
+
+                <app-grid 
+                  *ngIf="contactDetailsfromContract && contactDetailsfromContract.length > 0" 
+                  [canAdd]="false"
+                  [canDelete]="false" 
+                  [canEdit]="false" 
+                  [modalFormTitle]="'ContractContactsDetails'"
+                  [tableHeadTitle]="'BuildingLicenseRequest.ContactDetails'" 
+                  [(data)]="contactDetailsfromContract"
+                  [columns]="gridcols" 
+                  [(model)]="gridModel" 
+                  [canAdd]="false" 
+                  [canEdit]="false" 
+                  [canDelete]="false">
+                </app-grid>
+
+              </app-info-viewer>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-lg-4 col-md-6" [ngClass]="{'required':!IsRequestValid}">
+
+                <mutliselect 
+                  id="LicenseType" 
+                  name="LicenseType" 
+                  [label]="'BuildingLicenseRequest.LicenseType'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_service_ServiceDefinitionDetails']"
+                  [viewMode]="isLicenseTypeReadOnly" 
+                  [multiple]="false" 
+                  [config]="config"
+                  [(ngModel)]="Application.Request.LicenseTypeId" 
+                  [required]="true" 
+                  [disabled]="false"
+                  [isRequiredLabel]="true" 
+                  #LicenseType="ngModel" 
+                  (change)="LicenseTypeChanged()">
+                </mutliselect>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="LicenseType" 
+                  [form]="stageOne" 
+                  [submit]="isSubmitDraft||isSubmit">
+                </app-validation-viewer>
+
+                <div class="form-validation mb-4" *ngIf="!IsRequestValid">
+                  {{requestValidMsg}}
+                </div>
+
+              </div>
+
+              <div class="col-lg-4 col-md-6" *ngIf="isShowOldLicenseNumber">
+
+                <mutliselect 
+                  id="OldLicenseNumber"
+                  name="OldLicenseNumber"
+                  [label]="'BuildingLicenseRequest.OldLicenseNumber'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_buildinglicense_LookupWithId']"
+                  [multiple]="false"
+                  [config]="config"
+                  [viewMode]="isAlwaysReadOnlyAfterSubmit"
+                  [(ngModel)]="Application.Request.OldLicenseNumberId"
+                  [required]="isShowOldLicenseNumber"
+                  [disabled]="false"
+                  [isRequiredLabel]="true"
+                  #OldLicenseNumber="ngModel"
+                  (change)="OldLicenseNumberChanged()">
+                </mutliselect>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="OldLicenseNumber" 
+                  [form]="stageOne" 
+                  [submit]="isShowOldLicenseNumber&&isSubmit">
+                </app-validation-viewer>
+
+              </div>
+
+              <div class="col-lg-4 col-md-6" [hidden]="!isShowAmendType">
+
+                <mutliselect 
+                  id="AmendType"
+                  name="AmendType"
+                  #AmendType="ngModel"
+                  [label]="'BuildingLicenseRequest.AmendType'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_buildinglicenserequest_ldv_amendtype_OptionSet']"
+                  [viewMode]="isAlwaysReadOnlyAfterSubmit"
+                  [multiple]="true"
+                  [config]="config"
+                  (change)="AmendTypeChanged()"
+                  [(ngModel)]="Application.Request.AmendType"
+                  [isRequiredLabel]="true"
+                  [required]="isShowAmendType"
+                  [isRequiredLabel]="false">
+                </mutliselect>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="AmendType" 
+                  [form]="stageOne" 
+                  [submit]="isSubmit">
+                </app-validation-viewer>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+              
+              <div class="col-lg-4 col-md-6">
+
+                <!-- <custom-text-box 
+                  [type]="'number'"
+                  [label]="'BuildingLicenseRequest.ConstructionBudget'"
+                  [(ngModel)]="Application.Request.ConstructionBudget"
+                  #ConstructionBudget="ngModel"
+                  name="ConstructionBudget"
+                  [required]="true" 
+                  [isRequiredLabel]="true"
+                  [isReadOnly]="isConstructionBudgetReadOnly||Application.IsReadOnly">
+                </custom-text-box> -->
+
+              <currency-input 
+                  [submit]="isSubmit" 
+                  type="number" 
+                  [label]="'BuildingLicenseRequest.ConstructionBudget'"
+                  [required]="true" 
+                  [numeric]="false" 
+                  name="ConstructionBudget"
+                  #ConstructionBudget="ngModel" 
+                  [(ngModel)]="Application.Request.ConstructionBudget"
+                  [disabled]="isConstructionBudgetReadOnly||Application.IsReadOnly" 
+                  [maxLength]="28"
+                  [ngClass]="{ 'is-invalid required  validation':  ConstructionBudget.errors && (ConstructionBudget.dirty || isSubmit)}">
+                </currency-input>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="ConstructionBudget" 
+                  [form]="stageOne" 
+                  [submit]="isSubmit"> 
+                </app-validation-viewer>
+
+                
+
+              </div>
+
+              <div class="col-lg-4 col-md-6">
+
+                <custom-text-box 
+                  [type]="'number'"
+                  [label]="'BuildingLicenseRequest.FloorsNumber'"
+                  [(ngModel)]="Application.Request.FloorsNumber"
+                  #FloorsNumber="ngModel" 
+                  name="FloorsNumber"
+                  [required]="true" 
+                  [isRequiredLabel]="true"
+                  [isReadOnly]="isFloorsNumberReadOnly ||Application.IsReadOnly">
+                </custom-text-box>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="FloorsNumber" 
+                  [form]="stageOne" 
+                  [submit]="isSubmit"> 
+                </app-validation-viewer>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-lg-4 col-md-6">
+
+                <app-textarea 
+                  [label]="'BuildingLicenseRequest.ScopeOfWork'" 
+                  [(ngModel)]="ScopeOfWorkValue"
+                  [disabled]="true" 
+                  #ScopeOfWork="ngModel" 
+                  name="ScopeOfWork" 
+                  [isRequiredLabel]="false">
+                </app-textarea>
+
+              </div>
+
+              <div class="col-lg-4 col-md-6">
+
+                <app-textarea 
+                  [label]="'BuildingLicenseRequest.AdditionalRemarks'"
+                  [(ngModel)]="Application.Request.AdditionalRemarks"
+                  [disabled]="this.Application.IsReadOnly"
+                  #AdditionalRemarks="ngModel"
+                  name="AdditionalRemarks"
+                  [isRequiredLabel]="false">
+                </app-textarea>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-lg-4 col-md-6" [hidden]="!isShowModonComment">
+
+                <app-textarea 
+                  [label]="'BuildingLicenseRequest.ModonComments'"
+                  [(ngModel)]="Application.Request.ModonComments" 
+                  [disabled]="true" 
+                  #ModonComments="ngModel"
+                  name="ModonComments"> 
+                </app-textarea>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-lg-4 col-md-6">
+
+                <mutliselect 
+                  id="Contacts" 
+                  name="Contacts" 
+                  [label]="'BuildingLicenseRequest.Contacts'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+                  [viewMode]="!EnableAddContacts" 
+                  [multiple]="true" 
+                  [config]="config"
+                  [(ngModel)]="Application.Request.Contacts" 
+                  [required]="false" 
+                  [disabled]="false"
+                  [isRequiredLabel]="false" 
+                  #Contacts="ngModel" 
+                  (change)="onContactChange($event)">
+                </mutliselect>
+
+              </div>
+
+            </div>
+
+            <!-- contact Details grid -->
+
+            <app-grid 
+              *ngIf="Application.Request.Contacts && Application.Request.Contacts.length>0 && lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+              [modalFormTitle]="'Biddings'" 
+              [tableHeadTitle]="'BuildingLicenseRequest.ContactDetails'"
+              [(data)]="contactsList" 
+              [columns]="gridcols" 
+              [(model)]="gridModel" 
+              [canAdd]="false" 
+              [canEdit]="false"
+              [canDelete]="false">
+            </app-grid>
+
+            <!-- {{contactsList | json}} -->
+            <!-- End contact Details grid -->
+
+            <div class="row">
+
+              <div class="col-lg-6 col-md-6">
+
+                <app-Uploaders-List 
+                  [uploaders]="Application.Documents" 
+                  [SectionName]="'BLRApprovedGeneralPlansIssued'"
+                  [IsLiveChanges]="true" 
+                  [IsReadOnly]="true"> 
+                </app-Uploaders-List>
+
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+
+                <app-Uploaders-List 
+                  [uploaders]="Application.Documents" 
+                  [SectionName]="'BLRApprovedGeneralSafetyIssued'"
+                  [IsLiveChanges]="true" 
+                  [IsReadOnly]="true"> 
+                </app-Uploaders-List>
+
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                <app-Uploaders-List 
+                  [uploaders]="Application.Documents" 
+                  [SectionName]="'BLRTimetable'"
+                  [IsLiveChanges]="true" 
+                  [IsReadOnly]="Application.IsSubmitted||(isRequestTypeAmend&&!AmendInTimeTableDocument)"> 
+                </app-Uploaders-List>
+
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+
+                <app-Uploaders-List 
+                  [uploaders]="Application.Documents" 
+                  [SectionName]="'BLRSafetyAndSiteProcedures'"
+                  [IsLiveChanges]="true" 
+                  [IsReadOnly]="Application.IsSubmitted"> 
+                </app-Uploaders-List>
+
+              </div>
+
+            </div>
+
+            <div class="row" *ngIf="this.BuildingLicenseRequestId == undefined">
+              <div class="col-lg-6">
+                <label class="check-box-container d-inline-block">       
+                   
+                  <input 
+                      type="checkbox" 
+                      [checked]="termsAndConditionsChecked" 
+                      (input)="termsAndConditionsChecked = !termsAndConditionsChecked"
+                      (change)="ValidateButtons()"
+                      required="true"
+                      name="termsAndConditions"
+                      [(ngModel)]="termsAndConditionsChecked"
+                      #termsAndConditions = "ngModel">
+
+                    <span class="checkmark"></span>
+
+                </label>
+
+                <p class="txt-wrapper d-inline-block">
+                  {{'ToVerify' | translate}} 
+                  <span class="item-link underline" (click)="openPopup()"> 
+                    {{'termsAndConditions' | translate}} 
+                  </span> 
+                  {{'termsandConditionsLabel' | translate}}
+                </p>
+
+                <app-validation-viewer 
+                  [requiredValidations]="{'required':'Validations.Required'}" 
+                  [controlName]="termsAndConditions"
+                  [form]="stageOne" 
+                  [submit]="isSubmit||isSubmitDraft">
+                </app-validation-viewer> 
+
+              </div>
+            </div>  
+
+                <!-- Terms and Conditions pop up -->
+              <ng-template #popup let-modal>
+                <div class="modal-content border-0"> 
+                    <!--MODAL-HEADER-->
+                    <div class="modal-header">
+                      <h4 class="modal-title flex-grow-1 text-center">{{'termsAndConditions' | translate}}</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <!--MODAL_BODY-->
+                    <div class="modal-body">
+                      <ol class="my-5">
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule1' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule2' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule3' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule4' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule5' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule6' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule7' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.buildingLicenses.rule8' | translate}}</li>
+                        </ol>
+                    </div>
+                </div>
+              </ng-template>
+            <div class="col form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+              
+              <button 
+                class="main-btn-secondary" 
+                [disabled]="disableDraft"
+                (click)="SaveAsDraft()">
+                {{'ServicesCommon.SaveAsDraft' | translate}}
+              </button>
+
+              <!--
+              <div class="tab-nav-wrapper">
+
+                <a *ngIf="true" aria-label="Prev" title="{{'PREVIOUS' | translate}}" class="prev" (click)="Previous()">
+                  {{'PREVIOUS' | translate}}
+                </a>
+
+                <a *ngIf="true" aria-label="Next" title="{{'NEXT' | translate}}" class="next" (click)="Next()">
+                  {{'NEXT' | translate}}
+                </a>
+
+              </div>
+              -->
+
+              <button 
+                class="main-btn" 
+                [disabled]="disableSubmit"
+                (click)="Submit()">
+                {{'ServicesCommon.Submit' | translate}}
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+        <!-- End Section 1 -->
+
+
+        <!-- Start Section 2 | Start Office Cycle-->
+        <div [hidden]="ActiveLevelTwo !== 2">
+
+          <app-request-submission-info 
+            [submissionAlertClass]="this.submissionAlertClass"
+            [submissionInfo]="this.submissionInfo">
+          </app-request-submission-info>
+
+          <div id="ChooseOfficeOrBiddingSection">
+
+            <h5 class="mt-5 stage-title">{{'BuildingLicenseRequest.StartOfficeCycle' | translate}}</h5>
+
+            <app-Bidding 
+              [RequestNumber]="Application.Request.Id"
+              [IsSpecific]="Application.Request.OfficeorBidding == BiddingOrOfficeEnum.Office"
+              [QualifyAccountId]="Application.Request.ConsultingOfficeId"
+              [CurrentUser]="currentUser"
+              [IsReadOnly]="isOfficeBiddingReadOnly"
+              [BiddingId]="Application.Request.ActiveConsultingOfficeBidding"
+              [ServiceType]="serviceType"
+              [IsSubmitted]="isSubmit"
+              [RequestType]="1"
+              [IndustrialCity]="Application.Request.IndustrialCityId"
+              (BiddingModel)="OnSubmitBidding($event)">
+            </app-Bidding>
+
+          </div>
+
+        </div>
+
+        <!-- End Section 2 -->
+
+      </div>
+
+      <!-- End Stage 1 -->
+
+
+      <!-- Stage 2 | Consulting Office PriceOfferSection -->
+
+      <div [hidden]="ActiveLevelOne !== 2">
+
+        <app-request-submission-info 
+          [submissionAlertClass]="this.submissionAlertClass"
+          [submissionInfo]="this.submissionInfo">
+        </app-request-submission-info>
+
+        <div id="ConsultingOfficePriceOfferSection">
+
+          <h5 class="stage-title">{{'PriceOffer.PriceOffer' | translate}}</h5>
+
+          <div class="col-lg-8 col-md-6" *ngIf="currentUser == 1 && Application.Request.ConsultingOffice">
+
+            <app-Uploaders-List 
+              [uploaders]="Application.Documents"
+              [SectionName]="'BLRConsultingOfficeGeneralAttachment'"
+              [IsLiveChanges]="true"
+              [IsReadOnly]="isOfficePriceOfferReadOnly">
+            </app-Uploaders-List>
+
+          </div>
+
+          <div class="row" *ngIf="currentUser == 1">
+
+            <div class="col-lg-4 col-md-6" [ngClass]="{'required':!IsRequestValid}">
+
+              <mutliselect 
+                *ngIf="Application.Request.OfficeorBidding != BiddingOrOfficeEnum.Office"
+                id="BiddingConsultingOffice"
+                name="BiddingConsultingOffice"
+                [label]="'BuildingLicenseRequest.ConsultingOffice'"
+                [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['account_CRsByTypeOffice']"
+                [viewMode]="isOfficePriceOfferReadOnly"
+                [multiple]="false"
+                [config]="config"
+                [(ngModel)]="OfficeBidderId"
+                [required]="true"
+                [disabled]="false"
+                [isRequiredLabel]="true"
+                #BiddingConsultingOffice="ngModel"
+                [specifySearchPlaceholder]="true"
+                [searchlabel]="'Bidding.SearchInOffices'">
+              </mutliselect>
+
+              <app-validation-viewer 
+                [requiredValidations]="{'required':'Validations.Required'}" 
+                [controlName]="CRId"
+                [form]="stageOne" 
+                [submit]="isSubmitDraft||isSubmit"> 
+              </app-validation-viewer>
+
+            </div>
+
+          </div>
+          <app-Price-Offer 
+            [hidden]="!(currentUser == 0 || (currentUser == 1 && Application.Request.ConsultingOfficeId))"
+            [currentUser]="currentUser"
+            [BidderId]="OfficeBidderId"
+            [IsSpecific]="Application.Request.OfficeorBidding == BiddingOrOfficeEnum.Office"
+            [SpacificConsultingOfficeId]="Application.Request.ConsultingOfficeId"
+            [IsReadOnly]="isOfficePriceOfferReadOnly"
+            [BiddingId]="Application.Request.ActiveConsultingOfficeBidding"
+            [RequestId]="BuildingLicenseRequestId"
+            [SpacificPriceOffer]="spacificConsultingOfficePriceOffer"
+            [ServiceType]="serviceType"
+            [RequestType]="1"
+            [IndustrialCity]="Application.Request.IndustrialCityId"
+            [CRType]="6"
+            (ChoosePriceOfferEmiter)="OnSubmitConsultingOfficePriceOffer($event)">
+          </app-Price-Offer>
+
+        </div>
+
+      </div>
+
+      <!-- End Stage 2 -->
+      <!-- Stage 3 | Start Contractor Cycle ChooseContractorOrBiddingSection -->
+
+      <div [hidden]="ActiveLevelOne !== 3">
+
+        <app-request-submission-info 
+          [submissionAlertClass]="this.submissionAlertClass"
+          [submissionInfo]="this.submissionInfo">
+        </app-request-submission-info>
+
+        <div id="ChooseContractorOrBiddingSection">
+          <h5 class="stage-title">{{'BuildingLicenseRequest.StartContractorCycle' | translate}}</h5>
+
+          <app-Bidding 
+            [RequestNumber]="Application.Request.Id"
+            [IsSpecific]="Application.Request.ContractororBidding == BiddingOrContractorEnum.Contractor"
+            [BiddingType]="2" 
+            [QualifyAccountId]="Application.Request.ContractorId" 
+            [CurrentUser]="currentUser"
+            [IsReadOnly]="isContractorBiddingReadOnly" 
+            [BiddingId]="Application.Request.ActiveContractorBidding"
+            [ServiceType]="serviceType" 
+            [RequestType]="1"
+            [IndustrialCity]="Application.Request.IndustrialCityId"
+            (BiddingModel)="OnSubmitContractorBidding($event)">
+            <!--(GetComponentData)="GetDataFromContractorComponent($event)">-->
+          </app-Bidding>
+
+        </div>
+
+      </div>
+
+      <!-- End Stage 3 -->
+      <!-- Start Stage 4 | Contractor Price Offer -->
+
+      <div id="ContractorPriceOfferSection" [hidden]="ActiveLevelOne !== 4">
+
+        <app-request-submission-info 
+          [submissionAlertClass]="this.submissionAlertClass"
+          [submissionInfo]="this.submissionInfo">
+        </app-request-submission-info>
+
+        <div class="col-lg-6 col-md-6" *ngIf="currentUser == 2&&this.Application.Request.Contractor">
+
+          <app-Uploaders-List 
+            [uploaders]="Application.Documents"
+            [SectionName]="'BLRContractorGeneralAttachment'"
+            [IsLiveChanges]="true"
+            [IsReadOnly]="isContractorPriceOfferReadOnly">
+          </app-Uploaders-List>
+
+        </div>
+
+        <div>
+
+          <h5 class="stage-title">{{'PriceOffer.PriceOffer' | translate}}</h5>
+
+          <div class="row" *ngIf="currentUser == 2">
+
+            <div class="col-lg-4 col-md-6" [ngClass]="{'required':!IsRequestValid}">
+
+              <mutliselect 
+              *ngIf="Application.Request.ContractororBidding != BiddingOrContractorEnum.Contractor"
+                id="BiddingContractor"
+                name="BiddingContractor"
+                [label]="'BuildingLicenseRequest.Contractor'"
+                [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['account_CRsByTypeContractor']"
+                [viewMode]="false"
+                [multiple]="false"
+                [config]="config"
+                [(ngModel)]="ContractorBidderId"
+                [required]="true"
+                [disabled]="false"
+                [isRequiredLabel]="true"
+                #BiddingContractor="ngModel"
+                [specifySearchPlaceholder]="true"
+                [searchlabel]="'Bidding.SearchInContractors'">
+              </mutliselect>
+
+              <app-validation-viewer 
+                [requiredValidations]="{'required':'Validations.Required'}" 
+                [controlName]="CRId"
+                [form]="stageOne" 
+                [submit]="isSubmitDraft||isSubmit"> 
+              </app-validation-viewer>
+
+            </div>
+
+          </div>
+
+          <div>
+          
+            <app-Price-Offer 
+              [hidden]="!(currentUser == 0 || (currentUser == 2 && Application.Request.ContractorId))"
+              [currentUser]="currentUser"
+              [BidderId]="ContractorBidderId"
+              [IsSpecific]="Application.Request.ContractororBidding == BiddingOrContractorEnum.Contractor"
+              [SpacificConsultingOfficeId]="Application.Request.ContractorId"
+              [IsReadOnly]="isContractorPriceOfferReadOnly"
+              [BiddingId]="Application.Request.ActiveContractorBidding"
+              [RequestId]="BuildingLicenseRequestId"
+              [SpacificPriceOffer]="spacificContractorPriceOffer"
+              [ServiceType]="serviceType"
+              [RequestType]="1"
+              [IndustrialCity]="Application.Request.IndustrialCityId"
+              [CRType]="7"
+              (ChoosePriceOfferEmiter)="OnSubmitContractorPriceOffer($event)">
+            </app-Price-Offer>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- End Stage 4 -->
+      <!-- Start Stage 5 | Building License Data-->
+
+      <div class="row" [hidden]="ActiveLevelOne !== 5">
+
+        <div class="col-lg-6 col-md-6" *ngIf="Application.Request.CRId && BuildingLicenseRequestId">
+
+          <custom-text-box 
+            [type]="'text'"
+            [label]="'BuildingLicenseRequest.CR'"
+            [(ngModel)]="Application.Request.CR.Name"
+            #RequestNumber="ngModel"
+            name="CRFinal"
+            [isRequiredLabel]="false"
+            [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf="Application.Request.ContractNumberId && BuildingLicenseRequestId">
+
+          <custom-text-box 
+            [type]="'text'"
+            [label]="'BuildingLicenseRequest.ContractNumber'"
+            [(ngModel)]="Application.Request.ContractNumber.Name"
+            #RequestNumber="ngModel"
+            name="ContractNumberFinal"
+            [isRequiredLabel]="false"
+            [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf="Application.Request.LicenseTypeId && BuildingLicenseRequestId">
+
+          <custom-text-box 
+            [type]="'text'"
+            [label]="'BuildingLicenseRequest.LicenseType'"
+            [(ngModel)]="Application.Request.LicenseType.Name"
+            #RequestNumber="ngModel"
+            name="LicenseTypeFinal"
+            [isRequiredLabel]="false"
+            [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf="Application.Request.ConsultingOffice != null && Application.Request.ConsultingOfficeId && BuildingLicenseRequestId">
+
+          <custom-text-box [type]="'text'"
+                           [label]="'BuildingLicenseRequest.ConsultingOffice'"
+                           [(ngModel)]="Application.Request.ConsultingOffice.Name"
+                           #RequestNumber="ngModel"
+                           name="ConsultingOfficeFinal"
+                           [isRequiredLabel]="false"
+                           [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf=" Application.Request.Contractor != null && Application.Request.ContractorId && BuildingLicenseRequestId">
+
+          <custom-text-box [type]="'text'"
+                           [label]="'BuildingLicenseRequest.Contractor'"
+                           [(ngModel)]="Application.Request.Contractor.Name"
+                           #RequestNumber="ngModel"
+                           name="ContractorFinal"
+                           [isRequiredLabel]="false"
+                           [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+
+          <custom-text-box [type]="'text'"
+                           [label]="'BuildingLicenseRequest.ConstructionBudget'"
+                           [(ngModel)]="Application.Request.ConstructionBudget"
+                           #RequestNumber="ngModel"
+                           name="ConstructionBudgetFinal"
+                           [isRequiredLabel]="false"
+                           [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+
+          <custom-text-box [type]="'text'"
+                           [label]="'BuildingLicenseRequest.FloorsNumber'"
+                           [(ngModel)]="Application.Request.FloorsNumber"
+                           #RequestNumber="ngModel"
+                           name="FloorsNumberFinal"
+                           [isRequiredLabel]="false"
+                           [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf="isShowLicenseInformation && Application.Request.OldLicenseNumberId">
+
+          <custom-text-box [type]="'text'"
+                           [label]="'BuildingLicenseRequest.LicenseNumber'"
+                           [(ngModel)]="Application.Request.LicenseNumber.Name"
+                           #RequestNumber="ngModel"
+                           name="LicenseNumber"
+                           [isRequiredLabel]="false"
+                           [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf="isShowLicenseInformation && Application.Request.LicenseDuration">
+
+          <custom-text-box [type]="'text'"
+                           [label]="'BuildingLicenseRequest.LicenseDuration'"
+                           [(ngModel)]="Application.Request.LicenseDuration.Name"
+                           #RequestNumber="ngModel"
+                           name="LicenseDuration"
+                           [isRequiredLabel]="false"
+                           [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-6 col-md-6" *ngIf="isShowLicenseInformation">
+
+          <label>{{'BuildingLicenseRequest.GregorianExpiryDate' | translate}}</label>
+
+          <ngbd-datepicker-popup [(ngModel)]="Application.Request.GregorianExpiryDate"
+                                 name="GregorianExpiryDate"
+                                 [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+
+      </div>
+
+      <!-- End Stage 5 -->
+      <!-- Start Stage 6 | Request Comments-->
+
+        <app-request-comments 
+          [regardingID]="Application.Request.Id" 
+          [hidden]="ActiveLevelOne !== 6">
+        </app-request-comments>
+
+     
+
+      <!-- End Stage 6 -->
+
+    </div>
+  </div>
+
+</div>
+

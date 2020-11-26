@@ -1,0 +1,73 @@
+html {
+  &[font-size='l'] {
+    .pagination .page-item .page-link {
+      &:hover /*, &:visited, &:focus*/ {
+        background-color: $black;
+      }
+
+      &[aria-label="Previous"] {
+        span {
+          &:after {
+            #{$left}: -10px;
+            #{$right}: auto;
+            font-size: 1.12rem;
+            top: calc(50% - 21px);
+          }
+        }
+      }
+    }
+  }
+
+
+  &[font-size='m'] {
+  }
+
+  &[font-size='s'] {
+    #homepage {
+      padding-bottom: 30px;
+    }
+  }
+}
+
+
+@media (min-width: 992px) {
+  html {
+    &[font-size='l'] {
+      .header-wrapper {
+        .upper-header {
+          .navbar-nav {
+            .dropdown {
+              &.show {
+                .dropdown-menu {
+                  left: -20px;
+                  top: 43px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &[font-size='m'] {
+      }
+
+      &[font-size='s'] {
+        .header-wrapper {
+          .upper-header {
+            .navbar-nav {
+              .dropdown {
+                &.show {
+                  .dropdown-menu {
+                    left: -18px !important;
+                    top: 43px !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+}

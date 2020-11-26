@@ -1,0 +1,78 @@
+<div class="mt-4">
+  <h5>{{'ContractSubmission.Interview' | translate}}</h5>
+  <div class="alert alert-light" role="alert">
+    {{'FORM_VALIDATION_MESSAGE' | translate}}
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="error">
+    {{error}}
+  </div>
+  <form #MainForm="ngForm" novalidate autocomplete="off">
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <mutliselect id="action" name="action" [label]="'ContractSubmission.Action'" [propertyToSelect]="'Value'"
+          [options]="actions" [viewMode]="false" [multiple]="false" [config]="config" [(ngModel)]="selectedAction"
+          [required]="true" [isRequiredLabel]="true" #action="ngModel"
+          [ngClass]="{ 'is-invalid required  validation':  action.errors && (action.dirty || submit) }">
+        </mutliselect>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="action"
+          [form]="MainForm" [submit]="selectPeriodSubmit">
+        </app-validation-viewer>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <label>{{'ContractSubmission.InterviewComment' | translate}}<span class="required"
+            *ngIf="selectedAction==='0'"> *</span></label>
+        <textarea id="InterviewComment" name="InterviewComment" [readOnly]="false" [required]="selectedAction==='0'"
+          #InterviewComment="ngModel" [(ngModel)]="postModel.Comment"></textarea>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="InterviewComment" [form]="MainForm" [submit]="selectPeriodSubmit">
+        </app-validation-viewer>
+      </div>
+    </div>
+    <form #SelectPeriod="ngForm" novalidate autocomplete="off" *ngIf="selectedAction==='1'">
+      <div class="row align-items-center">
+        <div class="col-lg-4 col-md-6">
+          <label>{{'ContractSubmission.From' | translate}}<span class="required"> *</span></label>
+          <ngbd-datepicker-popup [(ngModel)]="getModel.FromDate" name="From" #From="ngModel" [required]="true"
+            [ngClass]="{ 'is-invalid required  validation':  From.errors && (From.dirty || submit) }">
+          </ngbd-datepicker-popup>
+          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="From"
+            [form]="SelectPeriod" [submit]="selectPeriodSubmit">
+          </app-validation-viewer>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <label>{{'ContractSubmission.To' | translate}}<span class="required"> *</span></label>
+          <ngbd-datepicker-popup [(ngModel)]="getModel.ToDate" name="To" #To="ngModel" [required]="true"
+            [ngClass]="{ 'is-invalid required  validation':  To.errors && (To.dirty || submit) }">
+          </ngbd-datepicker-popup>
+          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="To"
+            [form]="SelectPeriod" [submit]="selectPeriodSubmit">
+          </app-validation-viewer>
+        </div>
+        <button (click)="getAvailableTime()"
+        class="main-btn">{{'ContractSubmission.GetAvailableTimes' | translate}}</button>
+      </div>
+      
+    </form>
+    <div class="row" *ngIf="selectedAction==='1'">
+      <div class="col-12 col-md-6">
+        <mutliselect id="selectedTimeCon" name="selectedTimeCon" [label]="'ContractSubmission.SelectTime'"
+          [propertyToSelect]="'Value'" [options]="options" [viewMode]="!isPeriodsLoaded" [multiple]="false"
+          [config]="config" [(ngModel)]="selectedTime" [required]="true" [isRequiredLabel]="true"
+          #selectedTimeCon="ngModel"
+          [ngClass]="{ 'is-invalid required  validation':  selectedTimeCon.errors && (selectedTimeCon.dirty || submit) }">
+        </mutliselect>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="selectedTimeCon" [form]="MainForm" [submit]="submit">
+        </app-validation-viewer>
+      </div>
+    </div>
+    <div
+      class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+      <button (click)="submitForm()" class="main-btn">{{'ContractSubmission.SubmitInterview' | translate}}</button>
+    </div>
+  </form>
+ 
+
+</div>

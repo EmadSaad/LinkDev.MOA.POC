@@ -1,0 +1,428 @@
+<app-breadcrumb [CurrnetComponentName]="'coordinationletter'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+ 
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="0"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  
+  <div class="col-lg-9">
+       <!--Page-Title-->
+   <h4 class="page-title">{{'CoordinationLetter.CoordinationLetter' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+ <!--Request Details-->
+   <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span
+        class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+
+   <h5 class="stage-title">{{'CoordinationLetter.RequestDetails' | translate}}</h5>
+      <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+      
+      <form #PermitsLetterForm="ngForm" novalidate autocomplete="off">
+       
+       
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="ContractNumberId" name="ContractNumberId" [label]="'CoordinationLetter.ContractNumber'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_contract_PermitRequestContracts']" [viewMode]="Application.IsReadOnly"
+              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ContractNumberId" [required]="true"
+              [isRequiredLabel]="!Application.IsReadOnly" #ContractNumberId="ngModel" (change) = "ContractChanged()"
+              [ngClass]="{ 'is-invalid required  validation':  ContractNumberId.errors && (ContractNumberId.dirty || submit) }">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+            [controlName]="ContractNumberId" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>
+         
+        <app-info-viewer 
+        [isLoading]="isCurrentContract" 
+        [modalFormTitleKey]="'BuildingLicenseRequest.ContractInfo'"
+        name="ContactInfo" 
+        *ngIf="Application.Request.ContractNumberId&&CurrentContract">
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.CR">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="CRContract" 
+              #CRContract="ngModel"
+              [(ngModel)]="CurrentContract.CR.Name" 
+              [label]="'ContractSubmission.CRId'" 
+              autocomplete=""
+              aria-label="Name" 
+              [isReadOnly]="true"> 
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Industrialcity">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractIndustrialCity" 
+              #ContractIndustrialCity="ngModel"
+              [(ngModel)]="CurrentContract.Industrialcity.Name" 
+              [label]="'ContractSubmission.IndustrialCity'"
+              autocomplete="" 
+              aria-label="Name" 
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductMainfamily">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractProductMainFamily"
+              #ContractProductMainFamily="ngModel" 
+              [(ngModel)]="CurrentContract.ProductMainfamily.Name"
+              [label]="'ContractSubmission.ProductMainFamily'" 
+              autocomplete="" 
+              aria-label="Name"
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductSubFamily">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractProductSubFamily"
+              #ContractProductMainFamily="ngModel" 
+              [(ngModel)]="CurrentContract.ProductSubFamily.Name"
+              [label]="'ContractSubmission.ProductSubFamily'" 
+              autocomplete="" 
+              aria-label="Name"
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Product">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractProduct" 
+              #ContractProduct="ngModel"
+              [(ngModel)]="CurrentContract.Product.Name" 
+              [label]="'ContractSubmission.Product'" 
+              autocomplete=""
+              aria-label="Name" 
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractConstructionAmountValue"
+              #ContractConstructionAmountValue="ngModel"
+              [(ngModel)]="CurrentContract.ConstructionContractStatus"
+              [label]="'ContractSubmission.ConstructionAmountValue'" 
+              autocomplete="" 
+              aria-label="Name"
+              [isReadOnly]="true">
+            </custom-text-box>
+
+            
+
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractLegalStatus" 
+              #ContractLegalStatus="ngModel"
+              [(ngModel)]="CurrentContract.LegalStatus" 
+              [label]="'BuildingLicenseRequest.LegalStatus'"
+              autocomplete="" 
+              aria-label="Name" 
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractPricingdate" 
+              #ContractPricingdate="ngModel"
+              [(ngModel)]="CurrentContract.Pricingdate" 
+              [label]="'BuildingLicenseRequest.Pricingdate'"
+              autocomplete="" 
+              aria-label="Name" 
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+
+            <custom-text-box 
+              [type]="'text'" 
+              name="ContractFileNumber" 
+              #ContractFileNumber="ngModel"
+              [(ngModel)]="CurrentContract.FileNumber" 
+              [label]="'BuildingLicenseRequest.FileNumber'"
+              autocomplete="" 
+              aria-label="Name" 
+              [isReadOnly]="true">
+            </custom-text-box>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+
+            <!-- <custom-text-box [type]="'text'" name="LandNumber" #ContractPricingdate="ngModel"
+            [(ngModel)]="CurrentContract.LandNumber" [label]="'PlanApproval.LandNumber'"
+            autocomplete="" aria-label="Name" [isReadOnly]="true">
+            </custom-text-box> -->
+
+            <label>
+              {{'BuildingLicenseRequest.ContractStartingDate' | translate}}
+            </label>
+
+            <ngbd-datepicker-popup 
+              [(ngModel)]="CurrentContract.ContractStartingDate" 
+              [readonly]="true"
+              name="ContractStartingDate">
+            </ngbd-datepicker-popup>
+
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+
+            <!-- {{CurrentContract.ContractStartingDate | json}} -->
+            <label>
+              {{'BuildingLicenseRequest.ContractExpiryDate' | translate}}
+            </label>
+
+            <ngbd-datepicker-popup 
+              [(ngModel)]="CurrentContract.ContractExpiryDate" 
+              [readonly]="true"
+               name="ContractExpiryDate">
+              </ngbd-datepicker-popup>
+
+          </div>
+
+        </div>
+
+        <app-grid 
+          *ngIf="contactDetailsfromContract && contactDetailsfromContract.length > 0" 
+          [canAdd]="false"
+          [canDelete]="false" 
+          [canEdit]="false" 
+          [modalFormTitle]="'ContractContactsDetails'"
+          [tableHeadTitle]="'BuildingLicenseRequest.ContactDetails'" 
+          [(data)]="contactDetailsfromContract"
+          [columns]="gridcols" 
+          [(model)]="gridModel" 
+          [canAdd]="false" 
+          [canEdit]="false" 
+          [canDelete]="false">
+        </app-grid>
+
+      </app-info-viewer>
+        </div>  
+        
+        <div class="form-validation mb-4" *ngIf="!IsRequestValid">{{requestValidMsg}}</div> 
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+              <custom-text-box [type]="'text'" name="CRId" #CRId="ngModel"
+              [(ngModel)]="this.CRNameText" [label]="'CoordinationLetter.CR'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly"  [isReadOnly]="true">
+            </custom-text-box>
+            </div>
+            
+          <app-info-viewer 
+          [isLoading]="isCurrentCR" 
+          [modalFormTitleKey]="'BuildingLicenseRequest.CRInfo'" 
+          name="CRInfo"
+          *ngIf="Application.Request.CRId">
+
+          <div class="row">
+
+            <div class="col-lg-4 col-md-6">
+
+              <custom-text-box 
+                [type]="'text'" 
+                name="CurrentCRType" 
+                #CurrentCRType="ngModel"
+                [(ngModel)]="CurrentCR.CRType" 
+                [label]="'ContractSubmission.Type'" 
+                autocomplete=""
+                aria-label="Name" 
+                [isReadOnly]="true"> 
+              </custom-text-box>
+
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+
+              <custom-text-box 
+                [type]="'text'" 
+                name="CurrentCRNumber" 
+                #CurrentCRNumber="ngModel"
+                [(ngModel)]="CurrentCR.CRNumber" 
+                [label]="'ContractSubmission.CRNumber'" 
+                autocomplete=""
+                aria-label="Name" 
+                [isReadOnly]="true">
+              </custom-text-box>
+
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+
+              <label>
+                {{'ContractSubmission.CRIssuanceDate' | translate}}
+              </label>
+
+              <ngbd-datepicker-popup 
+                [(ngModel)]="CurrentCR.IssueDate" 
+                name="IssueDate" 
+                [readonly]="true">
+              </ngbd-datepicker-popup>
+
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+
+              <label>
+                {{'ContractSubmission.CRExpiryDate' | translate}}
+              </label>
+
+              <ngbd-datepicker-popup 
+                [(ngModel)]="CurrentCR.ExpiryDate" 
+                name="ExpiryDate"
+                [ngModelOptions]="{standalone: true}"
+                [readonly]="true">
+              </ngbd-datepicker-popup>
+
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+
+              <custom-text-box 
+                [type]="'text'" 
+                name="CurrentCRName" 
+                #CurrentCRName="ngModel"
+                [(ngModel)]="CurrentCR.CRName" 
+                [label]="'ContractSubmission.Name'" 
+                autocomplete=""
+                aria-label="Name" 
+                [isReadOnly]="true"> 
+              </custom-text-box>
+
+            </div>
+
+            <div class="col-lg-8 col-md-6">
+
+              <label>
+                {{'ContractSubmission.Activity' | translate}}
+              </label>
+
+              <textarea 
+                id="CurrentCRActivity" 
+                name="CurrentCRActivity" 
+                [readOnly]="true"
+                #CurrentCRActivity="ngModel" 
+                [(ngModel)]="CurrentCR.CRActivity" 
+                disabled>
+              </textarea>
+
+            </div>
+
+          </div>
+
+          <app-grid 
+            [canAdd]="false" 
+            [canDelete]="false" 
+            [canEdit]="false"
+            [tableHeadTitle]="'ContractSubmission.Owners'" 
+            [(data)]="CurrentCR.CROwners"
+            [columns]="CROwnerGridcols"> 
+          </app-grid>
+
+          </app-info-viewer>
+        </div> 
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="DestinationId" name="DestinationId" [label]="'CoordinationLetter.CorrespondenceDestination'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_correspondencedestination_RequestDestination']" [viewMode]="Application.IsReadOnly"
+              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.DestinationId" [required]="true"  
+              [isRequiredLabel]="!Application.IsReadOnly" #DestinationId="ngModel" (change) = "DestinationChanged()"
+              [ngClass]="{ 'is-invalid required  validation':  DestinationId.errors && (DestinationId.dirty || submit) }">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+            [controlName]="DestinationId" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>
+        </div> 
+        
+        <div class="row" *ngIf = "Application.Request.DestinationId == '5c124377-b9d1-ea11-aa52-000d3a46f0d9'">
+            <div class="col-xl-4 col-lg-6">
+              <custom-text-box [type]="'text'" name="SpecifyDestination"
+              #SpecifyDestination="ngModel" 
+              [(ngModel)]="Application.Request.SpecifyDestination"
+              [label]="'CoordinationLetter.SpecifyDestination'" autocomplete="" aria-label="Name"
+              [isReadOnly]="Application.IsReadOnly" [required]="!Application.IsReadOnly || Application.Request.DestinationId == '5c124377-b9d1-ea11-aa52-000d3a46f0d9'"
+               [isRequiredLabel]="!Application.IsReadOnly && Application.Request.DestinationId == '5c124377-b9d1-ea11-aa52-000d3a46f0d9' " 
+               [ngClass]="{ 'is-invalid required  validation':  SpecifyDestination.errors && (SpecifyDestination.dirty || submit) }" >
+              </custom-text-box>
+              <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="SpecifyDestination" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+            </div>   
+        </div>
+
+        
+       
+        <div class="row">
+            <div class="col-xl-8">
+              <label>{{'CoordinationLetter.Regarding' | translate}}<span class="required" *ngIf="!Application.IsReadOnly">*</span></label>
+              <textarea [required]="true" id="Regarding" name="Regarding"   
+                #Regarding="ngModel"  [(ngModel)]="Application.Request.Regarding"  
+                [readOnly]="Application.IsReadOnly"  
+                [ngClass]="{ 'is-invalid required  validation':  Regarding.errors && (Regarding.dirty || submit) }" >
+              </textarea>
+               
+                <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                [controlName]="Regarding" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer> -->
+                <div class="form-validation" *ngIf="(!this.Application.Request.Regarding || this.Application.Request.Regarding.trim().length ==0 ) && submit" > برجاء إدخال حقل بخصوص  </div>
+            </div>
+            
+        </div>
+        
+      
+        <div class="row">
+          <div class="col-12 form-footer d-flex justify-content-between" *ngIf="!Application.IsReadOnly">
+            <button class="main-btn-secondary"
+              [disabled]="!Application.Request.ContractNumberId || !IsRequestValid || Application.IsReadOnly"
+              (click)="SaveAsDraft()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+
+              <button class="main-btn"
+              [disabled]="!Application.Request.ContractNumberId || !IsRequestValid || Application.IsReadOnly" 
+              (click)="submitRequest()">{{'ServicesCommon.Submit' | translate}}</button>
+          </div>
+        </div>
+       </form>
+   </div>
+   <app-request-comments [regardingID]="Application.Request.Id"
+   [hidden]="ActiveLevelOne !== 2 ">
+ </app-request-comments> 
+  </div>  
+ 
+</div>

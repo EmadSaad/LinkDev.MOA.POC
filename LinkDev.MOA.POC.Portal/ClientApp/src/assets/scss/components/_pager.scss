@@ -1,0 +1,97 @@
+.pagination {
+  justify-content: center;
+  margin-bottom: 60px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  .page-item {
+    margin: 0 5px;
+    &.disabled {
+      opacity: 0.3;
+    }
+    &:focus {
+      outline: none;
+      text-decoration: none;
+
+      .page-link {
+        text-decoration: none;
+      }
+    }
+    &.active {
+      .page-link {
+        background-color: $fuchsia;
+        border-color: $fuchsia;
+        border-radius: 50%;
+        color: $white !important;
+      }
+    }
+    .page-link {
+      border-radius: 10px;
+      font-size: 1.375rem;
+      border: none;
+      line-height: 1;
+      padding: 0.46rem 0.6rem 0.1rem;
+      &:hover {
+        -webkit-transition: all 0.4s ease-in; /* Safari */
+        transition: all 0.4s ease-in;
+        &[aria-label="Previous"],
+        &[aria-label="Next"] {
+          span {
+            &:after {
+              color: $white;
+            }
+          }
+        }
+      }
+      &[aria-label="Next"] {
+        span {
+          &:after {
+            content: $icon-arrow-left;
+            font-family: "icomoon";
+          }
+        }
+      }
+      &[aria-label="Previous"] {
+        span {
+          &:after {
+            content: $icon-arrow-right;
+            font-family: "icomoon";
+          }
+        }
+      }
+      &[aria-label="Previous"],
+      &[aria-label="Next"] {
+        span {
+          color: transparent;
+          position: relative;
+          &:after {
+            visibility: visible;
+            position: absolute;
+            #{$left}: -10px;
+            #{$right}: auto;
+            font-family: "icomoon";
+            // content: "\e90a";
+            font-size: 1.12rem;
+            top: calc(50% - 18px);
+            color: #000;
+            border: 1px solid rgba(53, 49, 63, 0.4);
+            padding: 0.36rem 0.59rem;
+            border-radius: 50%;
+          }
+        }
+      }
+      &:hover {
+        background: $brand-color;
+        border-radius: 50%;
+        color: $white !important;
+        -webkit-transition: all 0.4s ease-in; /* Safari */
+        transition: all 0.4s ease-in;
+      }
+
+      &:hover,
+      &:focus,
+      &:active {
+        text-decoration: none;
+      }
+    }
+  }
+}

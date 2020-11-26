@@ -1,0 +1,406 @@
+<app-breadcrumb [CurrnetComponentName]="'OfficeCertificateDetails'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="activeLevelOne" [activeSecondLevel]="activeLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{"QualificationCertificate.GeneratedCertificate" | translate}}</h4>
+    <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+      [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+    <form #form="ngForm" novalidate autocomplete="off">
+      <div *ngIf="activeLevelOne === 1 && GeneratedCertificate">
+        
+        <!-- <h5 class="mt-4 stage-title">{{'QualificationCertificate.GeneratedCertificate' | translate}}</h5> -->
+
+        <div class="row">
+         
+            <!-- {{ GeneratedCertificate.CertificateRegarding}}
+            {{ GeneratedCertificate.CertificateRegardingString}}
+            {{lookupService.lookupEntities['ldv_qualificationcertificate_ldv_certificateregarding_OptionSet'][ GeneratedCertificate.CertificateRegarding - 1].Text | json}} -->
+            <div class="col-lg-4 col-md-6" *ngIf="GeneratedCertificate.CertifiedAccount">
+                <custom-text-box [type]="'text'" [label]="'QualificationCertificate.CertifiedAccount'"
+                   [(ngModel)]=" GeneratedCertificate.CertifiedAccount.Name"
+                   #CertifiedAccount="ngModel"  name="CertifiedAccount" 
+                   [isReadOnly]="true">
+                </custom-text-box>
+              </div>
+              <app-info-viewer [isLoading]="isCurrentCR" [modalFormTitleKey]="'ContractSubmission.Info'" name="CRInfo"
+                  *ngIf="GeneratedCertificate.CertifiedAccountId">
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+                        [(ngModel)]="CurrentCR.CRType" [label]="'ContractSubmission.Type'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+                        [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <label>{{'ContractSubmission.CRIssuanceDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" name="IssueDate" [readonly]="true">
+                      </ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- {{CurrentCR.IssueDate | json}} -->
+                      <label>{{'ContractSubmission.CRExpiryDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentCR.ExpiryDate" name="ExpiryDate" [readonly]="true">
+                      </ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+                        [(ngModel)]="CurrentCR.CRName" [label]="'ContractSubmission.Name'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-8">
+                      <label>{{'ContractSubmission.Activity' | translate}}</label>
+                      <textarea id="CurrentCRActivity" name="CurrentCRActivity" [readOnly]="true"
+                        #CurrentCRActivity="ngModel" [(ngModel)]="CurrentCR.CRActivity"></textarea>
+                    </div>
+                  </div>
+                  <app-grid [canAdd]="false" [canDelete]="false" [canEdit]="false"
+                    [tableHeadTitle]="'ContractSubmission.Owners'" [(data)]="CurrentCR.CROwners"
+                    [columns]="CROwnerGridcols">
+                  </app-grid>
+                </app-info-viewer>
+
+
+              </div>
+        <div class="row">
+
+                <div class="col-lg-4 col-md-6">
+                  <custom-text-box [type]="'text'" [label]="'QualificationCertificate.CertificateNumber'"
+                     [(ngModel)]=" GeneratedCertificate.CertificateNumber"
+                    #CertificateNumber="ngModel"  name="CertificateNumber" 
+                     [isReadOnly]="true">
+                  </custom-text-box>
+                </div>
+      
+      
+                <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" [label]="'QualificationCertificate.CertificateRegarding'"
+                     [(ngModel)]="lookupService.lookupEntities['ldv_qualificationcertificate_ldv_certificateregarding_OptionSet'][GeneratedCertificate.CertificateRegarding - 1].Text"
+                      #CertificateRegarding="ngModel"  name="CertificateRegarding" 
+                     [isReadOnly]="true">
+                    </custom-text-box>
+      
+      
+                  </div>
+
+                  <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" [label]="'ContractorQualification.CertificateStatus'"
+                     [(ngModel)]="lookupService.lookupEntities['ldv_qualificationcertificate_ldv_certificationstatus_OptionSet'][GeneratedCertificate.CertificationStatus - 1].Text"
+                      #CertificateStatus="ngModel"  name="CertificateStatus" 
+                     [isReadOnly]="true">
+                    </custom-text-box>
+      
+      
+                  </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xl-4 col-lg-6" *ngIf="GeneratedCertificate.Sector">
+                <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.Sector'"
+                 [(ngModel)]=" GeneratedCertificate.Sector.Name"
+                 #SectorC="ngModel"  name="SectorC" 
+                 [isReadOnly]="true">
+              </custom-text-box>
+            </div>
+
+            <div class="col-xl-4 col-lg-6" *ngIf="GeneratedCertificate.City">
+                <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.City'"
+                 [(ngModel)]="GeneratedCertificate.City.Name"
+                 #CityC="ngModel"  name="CityC" 
+                 [isReadOnly]="true">
+              </custom-text-box>
+            </div>
+
+          </div>
+
+
+
+
+        <div class="row" *ngIf="GeneratedCertificate.CertificateRegarding == 1 ">
+
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableGeneralPlan'"
+               [(ngModel)]="GeneratedCertificate.AvailableGeneralPlan"
+              #AvailableGeneralPlan="ngModel"  name="AvailableGeneralPlan"
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableGeneralBuildingLicenseProjects'"
+               [(ngModel)]="GeneratedCertificate.AvailableGeneralBuildingLicenseProjects"
+              #AvailableGeneralBuildingLicenseProjects="ngModel"  name="AvailableGeneralBuildingLicenseProjects" 
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="GeneratedCertificate.CertificateRegarding == 3 ">
+
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableSafetyPlan'"
+               [(ngModel)]="GeneratedCertificate.AvailableSafetyPlan"
+              #AvailableSafetyPlan="ngModel"  name="AvailableSafetyPlan"  [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableSafetyBuildingLicenseProjects'"
+               [(ngModel)]="GeneratedCertificate.AvailableSafetyBuildingLicenseProjects"
+              #AvailableSafetyBuildingLicenseProjects="ngModel"  name="AvailableSafetyBuildingLicenseProjects"
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+
+        </div>
+
+        <div class="row"  >
+
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.YearofConstruction'"
+               [(ngModel)]="GeneratedCertificate.YearofConstruction"
+              #YearofConstructionC="ngModel"  name="YearofConstructionC"  [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.SubscriptionNumber'"
+               [(ngModel)]="GeneratedCertificate.SubscriptionNumber"
+              #SubscriptionNumberC="ngModel"  name="SubscriptionNumberC"
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+
+          
+
+        </div>
+
+        <div class="row"  >
+
+            <div class="col-4" *ngIf="GeneratedCertificate.IssueDate">
+                <div class="form-row">
+                  
+                  <label>
+                    {{'QualificationCertificate.IssueDate' | translate}}
+                  </label>
+                  <ngbd-datepicker-popup [(ngModel)]="GeneratedCertificate.IssueDate"
+                    [readonly]="true" name="IssueDateC" [isRequiredLabel]="true">
+                  </ngbd-datepicker-popup>
+                  <!-- {{LicenseExpiryDate | json}} -->
+                </div>
+              </div>
+
+
+            <div class="col-4" *ngIf="GeneratedCertificate.ExpiryDate">
+                <div class="form-row">
+                  
+                  <label>
+                    {{'QualificationCertificate.ExpiryDate' | translate}}
+                  </label>
+                  <ngbd-datepicker-popup [(ngModel)]="GeneratedCertificate.ExpiryDate"
+                    [readonly]="true" name="ExpiryDateC" [isRequiredLabel]="true">
+                  </ngbd-datepicker-popup>
+                  <!-- {{LicenseExpiryDate | json}} -->
+                </div>
+              </div>
+
+
+              <div class="col-4" *ngIf="GeneratedCertificate.ChangeCategoryAbilityDate && GeneratedCertificate.CertificateRegarding == 1">
+                  <div class="form-row">
+                    
+                    <label>
+                      {{'QualificationCertificate.ChangeCategoryAbilityDate' | translate}}
+                    </label>
+                    <ngbd-datepicker-popup [(ngModel)]="GeneratedCertificate.ChangeCategoryAbilityDate"
+                      [readonly]="true" name="ChangeCategoryAbilityDateC" >
+                    </ngbd-datepicker-popup>
+                    <!-- {{LicenseExpiryDate | json}} -->
+                  </div>
+                </div>
+
+        </div>
+
+
+        <div class="row" >
+            <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.UsedDevicesDescription'"
+                   [(ngModel)]="GeneratedCertificate.UsedDevicesDescription"
+                   #UsedDevicesDescriptionC="ngModel"  name="UsedDevicesDescriptionC"
+                   [isReadOnly]="true">
+                </custom-text-box>
+              </div>
+
+              <div class="col-lg-4 col-md-6" *ngIf="GeneratedCertificate.RatingCategory">
+                  <custom-text-box [type]="'text'" [label]="'QualificationCertificate.RatingCategory'"
+                     [(ngModel)]="GeneratedCertificate.RatingCategory.Name"
+                     #RatingCategory="ngModel"  name="RatingCategory"
+                     [isReadOnly]="true">
+                  </custom-text-box>
+                </div>
+
+                <div class="col-lg-4 col-md-6" *ngIf="GeneratedCertificate.EvaluationResult">
+                    <custom-text-box [type]="'text'" [label]="'QualificationCertificate.EvaluationResult'"
+                       [(ngModel)]="GeneratedCertificate.EvaluationResult"
+                       #EvaluationResult="ngModel"  name="EvaluationResult"
+                       [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+              <div class="form-row">
+                
+                <custom-text-box [type]="'text'" name="OfficeNameinEnglishc" #OfficeNameinEnglishc="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeNameinEnglish'"
+                  [isReadOnly]="true" [(ngModel)]="GeneratedCertificate.OfficeNameinEnglish"
+                  >
+                </custom-text-box>
+                
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-row">
+                
+                <custom-text-box [type]="'text'" name="OfficeOwnerNameC" #OfficeOwnerNameC="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeOwnerName'" [isReadOnly]="true"
+                  [(ngModel)]="GeneratedCertificate.OfficeOwnerName" >
+                </custom-text-box>
+
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-row">
+                
+                <custom-text-box [type]="'text'" name="OfficeOwnerNameinEnglishC" #OfficeOwnerNameinEnglishC="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeOwnerNameinEnglish'"
+                  [isReadOnly]="true"
+                  [(ngModel)]="GeneratedCertificate.OfficeOwnerNameinEnglish" >
+                </custom-text-box>
+
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+              <div class="col-4">
+                <div class="form-row">
+                  
+                  <custom-text-box [type]="'text'" name="ResponsibleNameC" #ResponsibleNameC="ngModel"
+                    [label]="'ConsultingOfficeQualification.ResponsibleName'" [isReadOnly]="true"
+                    [(ngModel)]="GeneratedCertificate.ResponsibleName" >
+                  </custom-text-box>
+                 
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-row">
+                  <!--TOOL-->
+                  <custom-text-box [type]="'number'" name="LicenseNumberC" #LicenseNumberC="ngModel"
+                    [label]="'ConsultingOfficeQualification.LicenseNumber'" [isReadOnly]="true"
+                    [(ngModel)]="GeneratedCertificate.LicenseNumber">
+                  </custom-text-box>
+  
+                </div>
+              </div>
+              <div class="col-4" *ngIf="GeneratedCertificate.LicenseExpiryDate">
+                <div class="form-row" >
+                  
+                  <label>
+                    {{'ConsultingOfficeQualification.LicenseExpiryDate' | translate}}
+                  </label>
+                  <ngbd-datepicker-popup [(ngModel)]="GeneratedCertificate.LicenseExpiryDate"
+                    [readonly]="true" name="LicenseExpiryDateC" >
+                  </ngbd-datepicker-popup>
+                  <!-- {{LicenseExpiryDate | json}} -->
+                </div>
+              </div>
+
+
+
+            </div>
+
+
+
+
+            <div class="row" *ngIf="GeneratedCertificate.CertificateRegarding == 1 || GeneratedCertificate.CertificateRegarding == 2">
+                <div class="col-4">
+                  <div class="form-row">
+                    
+                    <custom-text-box [type]="'text'" name="CurrentGeneralPlanApprovalProjects" #CurrentGeneralPlanApprovalProjects="ngModel"
+                      [label]="'QualificationCertificate.CurrentGeneralPlanApprovalProjects'" [isReadOnly]="true"
+                      [(ngModel)]="GeneratedCertificate.CurrentGeneralPlanApprovalProjects" >
+                    </custom-text-box>
+                   
+                  </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="form-row">
+                      <!--TOOL-->
+                      <custom-text-box [type]="'text'" name="CurrentGeneralBuildingLicenseProjects" #CurrentGeneralBuildingLicenseProjects="ngModel"
+                        [label]="'QualificationCertificate.CurrentGeneralBuildingLicenseProjects'" [isReadOnly]="true"
+                        [(ngModel)]="GeneratedCertificate.CurrentGeneralBuildingLicenseProjects">
+                      </custom-text-box>
+      
+                    </div>
+                  </div>
+
+               
+                
+  
+  
+                
+              </div>
+
+              <div class="row"  *ngIf="GeneratedCertificate.CertificateRegarding == 3 || GeneratedCertificate.CertificateRegarding == 2">
+
+                  <div class="col-4">
+                      <div class="form-row">
+                        <!--TOOL-->
+                        <custom-text-box [type]="'text'" name="CurrentSafetyPlanApprovalProjects" #CurrentSafetyPlanApprovalProjects="ngModel"
+                          [label]="'QualificationCertificate.CurrentSafetyPlanApprovalProjects'" [isReadOnly]="true"
+                          [(ngModel)]="GeneratedCertificate.CurrentSafetyPlanApprovalProjects">
+                        </custom-text-box>
+        
+                      </div>
+                    </div>
+
+                  <div class="col-4">
+                      <div class="form-row">
+                        <!--TOOL-->
+                        <custom-text-box [type]="'text'" name="CurrentSafetyBuildingLicenseProjects" #CurrentSafetyBuildingLicenseProjects="ngModel"
+                          [label]="'QualificationCertificate.CurrentSafetyBuildingLicenseProjects'" [isReadOnly]="true"
+                          [(ngModel)]=" GeneratedCertificate.CurrentSafetyBuildingLicenseProjects">
+                        </custom-text-box>
+        
+                      </div>
+                    </div>
+              </div>
+
+              <app-Uploaders-List [uploaders]="GeneratedCertificate.Documents" [SectionName]="'OfficeCertificateReport'" [form]="form"
+              [IsLiveChanges]="true" [IsReadOnly]="true" >
+              </app-Uploaders-List>
+     
+
+      </div>
+    </form>
+    
+    
+  </div>

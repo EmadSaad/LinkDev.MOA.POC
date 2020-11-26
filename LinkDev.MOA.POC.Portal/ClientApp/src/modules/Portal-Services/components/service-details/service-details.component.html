@@ -1,0 +1,28 @@
+<div class="row align-items-center service" >
+    <div class="col-md-9">
+        <h4 class="page-title" *ngIf="service.ServiceName">{{'Service_Details.serviceName' | translate}}</h4>
+        <p class="mb-4" *ngIf="service.ServiceName">{{service.ServiceName}}</p>
+        <h4 class="page-title" *ngIf="service.ServiceDefinition">{{'Service_Details.serviceDefinition' | translate}}</h4>
+        <p class="mb-4" *ngIf="service.ServiceDefinition">{{service.ServiceDefinition}}</p>
+    </div>
+    <div class="col-md-3 text-center right-separator mt-4">
+        <img src="./assets/images/services/{{service.IconName}}" [title]="service.ServiceName" [alt]="service.ServiceName" *ngIf="service.IconName">
+        <h4 class="page-title">{{service.ServiceName}}</h4>
+        <a [href]="service.ServiceURL" [title]="service.ServiceName" class="main-btn start-btn w-100 mt-4">{{'Service_Details.startService' | translate}}</a>
+    </div>
+</div>
+<div class="row top-separator" *ngIf="service.ServiceTimeFrame || Prerequisites.length > 0">
+    <div class="col-md-9">
+        <h4 class="page-title" *ngIf="service.ServiceTimeFrame">{{'Service_Details.serviceTimeFrame' | translate}}</h4>
+        <p *ngIf="service.ServiceTimeFrame">{{service.ServiceTimeFrame}}</p>
+        <h4 class="page-title" *ngIf="Prerequisites.length > 0">{{'Service_Details.servicePrerequisites' | translate}}</h4>
+        <ul *ngIf="Prerequisites.length > 0" class="p-0">
+            <li *ngFor="let item of service.ServicePrerequisites">{{item}}</li>
+        </ul>
+    </div>
+</div>
+<div class="row justify-content-center mb-5" *ngIf="service.ServiceTimeFrame || Prerequisites.length > 0">
+    <div class="col-md-3 text-center">
+        <a [href]="service.ServiceURL" [title]="service.ServiceName" class="main-btn w-100 start-btn mt-4">{{'Service_Details.startService' | translate}}</a>
+    </div>
+</div>

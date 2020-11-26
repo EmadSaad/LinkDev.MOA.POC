@@ -1,0 +1,612 @@
+  .general-form {
+    background-color: #fff;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.16);
+  }
+
+  .has-2-btn {
+    .main-btn-secondary {
+      margin-#{$right}: 10px;
+    }
+  }
+  /*Form styles*/
+  .small-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .toggle-center {
+    display: flex;
+    align-items: center;
+    height: 40px;
+  }
+
+  input {
+    overflow-x: auto;
+  }
+
+  .form-validation {
+    font-size: $font-size-base;
+    color: #ff0000;
+    margin-top: 0.25rem;
+    // font-weight: bold;
+    // margin-top: 5px;
+    &.recap {
+      margin-bottom: 10px;
+    }
+  }
+
+  .number-in {
+    input {
+      padding: 5px !important;
+      text-align: center;
+    }
+  }
+
+  .info-btn {
+    background: $brand-color;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    #{$left}: 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 7px;
+    color: #000000;
+    line-height: 27px;
+
+    &.email {
+      direction: ltr;
+    }
+
+    &.readonly {
+      width: 100%;
+      border: 1px solid $border-color;
+      background: $lightGrey !important;
+      height: 2.5625rem;
+      padding:0.5rem 19px !important;
+      color: #252c27;
+      background: #fff;
+      font-size: 0.875rem;
+      //opacity: 0.7;
+      border-radius: 2px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 20px;
+      margin-bottom: 0;
+
+      &.email {
+        direction: ltr;
+      }
+    }
+
+    &.textarea-readonly {
+      height: auto;
+      width: 100%;
+      border: 1px solid $border-color;
+      padding: 10px 19px;
+      color: #252c27;
+      background: #fff;
+      font-size: 1rem;
+      //opacity: 0.7;
+      border-radius: 2px;
+      line-height: 20px;
+      min-height: 40px;
+    }
+  }
+
+  adahi-recaptcha {
+    display: block;
+    margin-bottom: 15px;
+    margin-top: 20px;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  input,
+  .ngx-dropdown-container .ngx-dropdown-button,
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="date"],
+  .uploader-input {
+    width: 100%;
+    border: 1px solid $border-color;
+    height: 2.5625rem;//40px;
+    padding: 10px 19px;
+    color: #252c27;
+    border-radius: 2px;
+    & + [class^="icon-"], [class*=" icon-"]{
+      position: absolute;
+      color: $babyBlue;
+      #{$left}: 20px;
+      bottom: 34%;
+      z-index: 3;
+    }
+    /*&:active {
+        border-color: #878C90
+    }*/
+    @include on-event(true) {
+      border-color: $border-color;
+    }
+
+    &:hover {
+      // border-color: #878C90;
+      // box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25)
+    }
+  }
+
+  input.ngb-tp-input.form-control {
+    padding: 0;
+  }
+
+  textarea {
+    width: 100%;
+    border: 1px solid $border-color;
+    padding: 10px 19px;
+    color: #252c27;
+    border-radius: 2px;
+    resize: none;
+    outline: none;
+    height: 130px;
+
+    &.form-control {
+      &:hover,
+      &:active,
+      &:focus {
+        //box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+        outline: none;
+        border-color: $border-color;
+      }
+    }
+
+    &.form-control {
+      &:hover,
+      &:active,
+      &:focus {
+        //box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+        outline: none;
+        border-color: $border-color;
+      }
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      //box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+      outline: none;
+      border-color: $border-color;
+    }
+  }
+
+  input,
+  select,
+  .ngx-dropdown-container,
+  input[type="text"],
+  input[type="tel"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="number"],
+  input[type="search"],
+  input[type="date"],
+  textarea,
+  input[type="password"] {
+    font-size: 0.875rem;
+  }
+  label {
+    font-size: 1rem;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: image("dropdown-arrow.png") if-rtl(18px, 98%) 50% no-repeat #fff;
+    background-size: 10px;
+
+    &.custom-select {
+      background: image("dropdown-arrow.png") if-rtl(18px, 98%) 50% no-repeat #fff;
+
+      &:focus {
+        border: 0;
+        box-shadow: none;
+      }
+    }
+  }
+
+  select::-ms-expand {
+    display: none;
+  }
+
+  .system-config-form {
+    .form-wrapper {
+      .form-row {
+        align-content: space-between;
+      }
+    }
+  }
+
+  .form-wrapper {
+    &.form-padding {
+      padding: 20px;
+    }
+    // border: 1px solid #878C90;
+    // background-color: #E6E6E6;
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+    .img-wrapper {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      box-shadow: 0px 0px 7px 2px #ccc;
+    }
+
+    .required { 
+      input,
+      .ngx-dropdown-container .ngx-dropdown-button,
+      input[type="text"],
+      input[type="tel"],
+      input[type="tel"],
+      input[type="email"],
+      textarea,
+      input[type="password"],
+      input[type="number"],
+      input[type="search"],
+      input[type="date"],
+      .uploader-input {
+        box-shadow: rgba(255, 0, 0, 0.25) 0px 0px 0px 0.2rem;
+      }
+      input[type="email"],
+      input[type="password"]{
+        padding-#{$left}: 42px;
+      }
+    }
+
+    div[class*="col"] {
+      margin-bottom: 25px;
+    }
+    &.form-bg-blue{
+      .form-row,.form-group{
+        .form-validation{
+          color:#fff;  
+          &:before{
+            content:"\e947";
+            font-family: $icomoon-font-family!important;
+            color:#ff0000;// #f99494;
+            font-size: 1.2rem;
+            vertical-align: middle;
+            background-color: #fff;
+            border-radius:50%
+          } 
+        }
+      }
+    }
+    .form-row {
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+      display: flex;
+      align-content: flex-start;
+      height: 100%;
+
+      & > *:not(button) {
+        width: 100%;
+      }
+
+      .form-control[readonly] {
+        background-color: $lightGrey;
+
+        &.datepicker {
+          z-index: 1;
+          background-color: transparent;
+
+          &:disabled {
+            background-color: $lightGrey;
+          }
+        }
+      }
+
+      &.readonly {
+        //opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .form-validation {
+        font-size: $font-size-base;
+        color: #ff0000;
+        
+        // font-weight: bold;
+        // margin-top: 5px;
+      }
+
+      adahi-text-box {
+        > label {
+          margin-bottom: 0;
+        }
+      }
+
+      adahi-password-textbox {
+        position: relative;
+      }
+    }
+
+    .main-btn,
+    .main-btn-secondary {
+      padding: 10px 18px;
+      min-width: auto;
+      text-align: center;
+    }
+
+    .required {
+      color: #ff0000;
+    }
+
+    .your-account {
+      display: inline-block;
+      font-weight: bold;
+      margin-#{$left}: 5px;
+    }
+  }
+  /*PopUp styles*/
+  .modal {
+    .modal-title {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .modal-footer > :not(:first-child) {
+      margin-#{$right}: 0.25rem;
+      margin-#{$left}: 0;
+    }
+
+    
+  }
+  //Grid styles
+  //Messages
+  .alert {
+    margin-bottom: 30px;
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+  // Extra large devices (large desktops, 768px and up)
+  @media (min-width: 768px) {
+    .general-form {
+      .main-title {
+        margin-bottom: 35px;
+      }
+    }
+
+    select {
+      padding-#{$left}: 12px;
+      background-size: 12px;
+    }
+
+    .form-wrapper {
+      .main-btn,
+      .main-btn-secondary {
+        padding: 10px 40px;
+      }
+    }
+  }
+  // Extra large devices (large desktops, 1200px and up)
+  @media (min-width: 1200px) {
+    .general-form {
+      .main-title {
+        margin-bottom: 40px;
+      }
+    }
+
+    .form-wrapper {
+      &.form-padding {
+        padding: 30px 45px;
+      }
+
+      .form-row {
+        select {
+          padding-#{$left}: 14px;
+          background-size: 14px;
+        }
+      }
+
+      .main-btn,
+      .main-btn-secondary {
+        padding: 9px 15px;
+      }
+    }
+  }
+  // Extra large devices (large desktops, 1500px and up)
+  @media (min-width: 1500px) {
+    button.ngx-dropdown-button {
+      line-height: 1;
+      overflow: visible;
+    }
+
+    label {
+      &.readonly {
+        height: 2.5625rem;
+        padding-top: 15px;
+        padding-bottom: 12px;
+        font-size: 0.875rem;
+      }
+    }
+
+    .toggle-center {
+      height: 45px;
+    }
+
+    .info-btn {
+      line-height: 45px;
+    }
+
+    button.ngx-dropdown-button {
+      line-height: 1;
+      overflow: visible;
+    }
+
+    input,
+    .ngx-dropdown-container .ngx-dropdown-button,
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="search"],
+    input[type="date"],
+    
+    .uploader-input {
+      height: 2.5625rem;
+      padding-top: 15px;
+      padding-bottom: 12px;
+    }
+
+    input.ngb-tp-input.form-control {
+      padding: 0;
+    }
+
+    input,
+    select,
+    .ngx-dropdown-container,
+    input[type="text"],
+    textarea,
+    input[type="password"],
+    input[type="tel"],
+    input[type="email"],
+    input[type="number"],
+    input[type="search"],
+    input[type="date"],
+    .uploader-input {
+      font-size: 0.875rem;
+    }
+    label {
+      font-size: 1rem;
+    }
+    .general-form {
+      .main-title {
+        margin-bottom: 50px;
+      }
+    }
+  }
+  // New Styles
+  .form-control:disabled,
+  .form-control[readonly],
+  textarea:disabled {
+    background-color: $lightGrey;
+  }
+
+  .form-control:disabled,   
+  textarea:disabled {
+    cursor: not-allowed;
+  }
+  input.form-control:disabled.datepicker {
+    background-color:$lightGrey;
+  
+}
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  label,
+  input,
+  select,
+  .ngx-dropdown-container,
+  input[type="text"],
+  input[type="tel"],
+  input[type="tel"],
+  input[type="email"],
+  textarea,
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  input[type="date"],
+  .uploader-input {
+    font-size: 1.1666666667rem;
+  }
+
+  .form-wrapper {
+    .main-btn,
+    .main-btn-secondary {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    
+  }
+}
+.input-group{
+  .currencyInput{
+    padding-#{$left}:3.5rem;
+    &:disabled{
+      background-color:$readonly-bg;
+    }
+  }
+  .currency-icon{
+    &:before{
+      @if $dir == rtl{
+        content:"ريال";
+      }@else{
+        content:"SAR";
+      }
+      position: absolute;
+      top:0.7rem;
+      font-size: 0.875rem;
+      #{$left}:1rem;
+      border-#{$right}: 1px solid #ccc;
+      padding-#{$right}:5px
+    }
+  }
+}
+.placeholderColor{
+  &::placeholder {
+    color:  #bebebe;
+    opacity: 1; /* Firefox */
+  }
+  
+  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #bebebe;
+  }
+  
+  &::-ms-input-placeholder { /* Microsoft Edge */
+   color:  #bebebe;
+  }
+}
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .form-wrapper {
+    [class*="main-btn"] {
+      &:first-of-type {
+        margin-#{$left}: 10px;
+        margin-#{$right}: 0;
+      }
+
+      &:first-of-type:last-of-type {
+        margin-#{$left}: 0px;
+      }
+    }
+  }
+}
+.modal-header .close {
+  margin-#{$right}: 0;
+  padding-#{$right}: 0 !important;
+  span{
+    font-size: 2rem;
+  }
+}
+.modal-body{
+  padding: 1rem 3.7rem;
+}
+.modal-lg, .modal-xl {
+  max-width: 79.625rem;
+}

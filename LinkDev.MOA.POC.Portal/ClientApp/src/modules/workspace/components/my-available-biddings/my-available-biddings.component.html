@@ -1,0 +1,62 @@
+<form class="form-wrapper">
+  <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+  <div class="grey-bg grey-bg-padding m-0">
+    <div class="row">
+      <div class="col-md-4">
+        <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr'" [propertyToSelect]="'Value'"
+          [viewMode]="false" [multiple]="false" [config]="config" [isRequiredLabel]="false" [options]="CRs"
+          [(ngModel)]="currentCR.Text" #WorkspaceCR="ngModel" (change)="UpdateCr($event)">
+        </mutliselect>
+      </div>
+    </div>
+  </div>
+</form>
+<form class="form-wrapper" (ngSubmit)="searchBiddings(searchForm)" #searchForm="ngForm" *ngIf="!error">
+  <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+  <div class="grey-bg grey-bg-padding mx-0">
+    <div class="row">
+      <div class="col-md-4">
+        <custom-text-box [type]="'text'" id="BiddingNumber" name="BiddingNumber" [label]="'WORKSPACE.BiddingNumber'"
+          autocomplete="" aria-label="Name" [isRequiredLabel]="false" #BiddingNumber="ngModel"
+          [(ngModel)]="biddingFilteration.BiddingNumber">
+        </custom-text-box>
+      </div>
+      <div class="col-md-4">
+        <mutliselect id="BiddingType" name="BiddingType" [label]="'WORKSPACE.BiddingType'" [propertyToSelect]="'Value'"
+          [options]="lookupService.lookupEntities['ldv_bidding_ldv_biddingrequesttype_OptionSet']" [viewMode]="false"
+          [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="biddingFilteration.BiddingType"
+          #BiddingType="ngModel">
+        </mutliselect>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 reg-date">
+        <label>{{'WORKSPACE.RegDate' | translate}}</label>
+        <ngbd-datepicker-popup [(ngModel)]="biddingFilteration.From" #FromDate="ngModel" name="FromDate"
+        [placeholder]="'WORKSPACE.From' | translate">
+        </ngbd-datepicker-popup>
+        <ngbd-datepicker-popup [(ngModel)]="biddingFilteration.To" #ToDate="ngModel" name="ToDate"
+        [placeholder]="'WORKSPACE.To' | translate">
+        </ngbd-datepicker-popup>
+      </div>
+      <div class="col-md-4">
+        <label class="v-hidden">Button</label>
+        <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+        <button type="button" class="main-btn-secondary" (click)="resetSearch(searchForm)">
+          {{'WORKSPACE.Clear' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="d-flex justify-content-between align-items-center" *ngIf="!error">
+  <h4 class="page-title m-0">{{'WORKSPACE.AvailableBiddings' | translate}}</h4>
+</div>
+<app-listing-grid [type]="'availableBiddings'"  *ngIf="!error"></app-listing-grid>
+<div class="alerts-wrapper mt-4" *ngIf="error">
+  <message [mode]="errorMode">
+      <p class="error-select">
+          {{'WORKSPACE.ErrorMsg' | translate}}
+      </p>
+  </message>
+</div>

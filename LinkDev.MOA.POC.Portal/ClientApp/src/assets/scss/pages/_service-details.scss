@@ -1,0 +1,42 @@
+service-details{  
+    .start-btn{
+        border-radius: 40px;
+    } 
+    ul{
+        list-style: none;
+        li{
+            padding-#{$right}: 25px;
+            position: relative;
+            margin-bottom: 10px;
+            &::before{
+                content: "";
+                display: inline-block;
+                width: 7px;
+                height: 7px;
+                background: $babyGreen;
+                border-radius: 50%;
+                position: absolute;
+                #{$right}: 0;
+                margin-top: 6px;
+            }
+        }
+    }
+}
+@media (min-width:768px){
+    service-details{
+        .service{
+            .right-separator{
+                border-#{$right}: 1px solid $babyBlue;
+            }
+        }
+        .top-separator{
+            &::before{
+                content:"";
+                display: block;
+                height:1px;
+                width: 60%;
+                background-color: #D2D2D2;
+            }
+        }
+    }
+}

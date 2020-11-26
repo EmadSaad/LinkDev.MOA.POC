@@ -1,0 +1,134 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+$default-float: right;
+$opposite-float: left;
+
+$default-dir: left;
+$opposite-dir: right;
+
+// / Regular font family
+// / @type List
+$text-font-stack: "icomoon", "Open Sans", "Helvetica Neue Light",
+  "Helvetica Neue", "Helvetica", "Arial", sans-serif !default;
+
+// / Code (monospace) font family
+// / @type List
+$code-font-stack: "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",
+  "Monaco", monospace !default;
+
+// / Copy text color
+// / @type Color
+$text-color: #000000 !default;
+
+/// Light text color
+// / @type Color
+$light-text-color: rgba(0, 0, 0, 0.9) !default;
+
+// / Main brand color
+// / @type Color
+$brand-color: #689bed !default;
+// $brand-color-secondary: #23457a;
+$brand-color-secondary: #266892;
+// / Light grey
+// / @type Color
+$light-grey: #e5e5e5 !default; //rgb(237, 237, 237)
+$lighter-grey: #F3F3F3 !default;
+// / Medium grey
+// / @type Color
+$mid-grey: rgb(153, 153, 153) !default;
+
+/// Dark grey
+// / @type Color
+$dark-grey: #252c27 !default; //rgb(68, 68, 68)
+$darker-grey: #878c90 !default;
+
+/// Card grey
+// / @type Color
+$card-grey: #e6e6e6 !default;
+
+/// Light Card grey
+// / @type Color
+$card-light-grey: #f9f9f9 !default;
+
+/// Dark Green
+// / @type Color
+$dark-green: #187845 !default;
+$darker-green: #145b36 !default;
+
+/// Light Green
+// / @type Color
+$light-green: rgba(116, 191, 68, 0.7) !default;
+
+/// Bluish Green
+// @type Color
+$petrol: #003c4b !default;
+
+// Yellow (Selected Color)
+//@type Color
+$yellow: #fdc300 !default;
+
+// Red (Notification Color)
+//@type Color
+$red: #bf4444 !default;
+
+// Red (Notification Color)
+//@type Color
+$green: #37aa6d !default;
+
+// Red Delete
+//@type Color
+$red-danger: #ff0000 !default;
+
+$forms-grey: rgba(255, 255, 255, 0.85);
+// / Container's maximum width
+// / @type Length
+$max-width: 1264px !default; //1180px
+
+//
+
+// / Breakpoints map
+// @prop {String} keys - Keys are identifiers mapped to a given length
+// / @prop {Map} values - Values are actual breakpoints expressed in pixels
+$breakpoints: (
+  "small": 320px,
+  "medium": 768px,
+  "large": 1024px
+) !default;
+
+// / Relative or absolute URL where all assets are served from
+// / @type String
+// / @example scss - When using a CDN
+// /   $base-url: 'http://cdn.example.com/assets/';
+// $base-url: './assets/' !default; // Local
+$base-url: "../" !default; // Local
+
+//Bootstrap variables override
+//inner-layout
+//breadcrumb
+$breadcrumb-bg: #e8e9e9;
+
+//change colors
+$primary: $brand-color !default;
+$secondary: $dark-grey !default;
+$info: $light-green !default;
+
+// FAQ accordion bootstrap theming
+$card-cap-bg: $brand-color;
+$card-cap-color: #fff;
+
+// New Styles
+$fuchsia: #23457a;
+$font-size-extra-sm: 0.75rem !default;
+$grey-bg: #f5f5f7;
+// $border-color: #dbdbdb;
+$border-color:#CBCBCB;
+$background-pink: rgba(165, 24, 120, 0.4) no-repeat;
+$background-purple: rgba(44, 47, 123, 0.4) no-repeat;
+$lightGrey: #efefef;
+$about-us-bg: #fbfbfb;
+$blue: #2e3285;
+$babyBlue:#51B7DD;
+$readonly-bg:#E8E8E8;
+$babyGreen:#90C542;

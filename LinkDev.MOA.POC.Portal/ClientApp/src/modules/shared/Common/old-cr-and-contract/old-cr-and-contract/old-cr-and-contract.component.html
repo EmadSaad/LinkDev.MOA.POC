@@ -1,0 +1,310 @@
+<div class="row">
+  <div class="col-lg-4 col-md-6">
+
+    <mutliselect id="CR" name="CR" #CR="ngModel"
+      [label]="'SplitRequest.CR'" [propertyToSelect]="'Value'"
+      [options]="lookupService.lookupEntities['account_CRsByTypeInvestor']"
+      [viewMode]="CRIsReadonly" [multiple]="false" [config]="config"
+      [(ngModel)]="Application.Request.CRId" [required]="!Application?.IsReadOnly"
+      [isRequiredLabel]="!Application?.IsReadOnly" (change)="onChangeCR(false)"
+      [ngClass]="{ 'is-invalid required  validation':  CR.errors && (submit || CR.dirty)  }">
+    </mutliselect>
+    <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+    [controlName]="CR" [form]="form" [submit]="submit">
+  </app-validation-viewer>
+
+  </div>
+
+  <div class="col-11 col-lg-4 col-md-6" [hidden]="Application.Request.CRId == null || Application.Request.CRId === 'Guid.EMPTY.toString()'">
+    <mutliselect id="Contract" name="Contract" #Contract="ngModel" [label]="contractLabel"
+      [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_contract_ContractOptionModel']"
+      [viewMode]="ContractIsReadonly" [multiple]="false" [config]="config"
+      [(ngModel)]="Application.Request.ContractId"
+      [required]="!Application.IsReadOnly" (change)="onChangeContract(false)"
+      [isRequiredLabel]="!Application.IsReadOnly"
+      [ngClass]="{ 'is-invalid required  validation': Contract.errors && (submit || Contract.dirty ) }">
+    </mutliselect>
+
+    <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+    [controlName]="Contract" [form]="form" [submit]="submit">
+    </app-validation-viewer>
+
+  </div>
+
+  <app-info-viewer  [modalFormTitleKey]="'SplitRequest.ContractInfo'" [hidden]="Application.Request.CRId == null || Application.Request.ContractId == null || Application.Request.ContractId == 'Guid.EMPTY.toString()'" >
+
+    <!-- CR -->
+    <div class="row">
+        <div class="col-11 col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="CR" #CR="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.AccountName" [label]="'SplitRequest.CR'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+         <div class="modal-info-btn" [class.clicked]="showCRInfo" (click)="showHideCRInfo()" title="{{'SplitRequest.showInfo'|translate }} {{'SplitRequest.CR' | translate}}"><span class="icon-view"></span></div>
+    </div>
+    <div class="infoInsidePopup" *ngIf="showCRInfo">
+
+      <div class="main-title">{{'SplitRequest.CRInfo'|translate }}</div>
+      <div class="row">
+
+        <!-- CR Type -->
+        <div class="col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="CRType" #CRType="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.CRType" [label]="'SplitRequest.CRType'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+
+        <!-- CR Number -->
+        <div class="col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="CRNumber" #CRNumber="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.CRNumber" [label]="'SplitRequest.CRNumber'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+
+         <!-- CR Name -->
+         <div class="col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="CRName" #CRName="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.CRName" [label]="'SplitRequest.CRName'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+
+        <!-- CR Issue Date -->
+        <div class="col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="CRIssueDate" #CRIssueDate="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.IssueDate" [label]="'SplitRequest.CRIssueDate'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+
+        <!-- CR Expiry Date -->
+        <div class="col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="CRExpiryDate" #CRExpiryDate="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.ExpiryDate" [label]="'SplitRequest.CRExpiryDate'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+
+        <!-- Issuance City Name -->
+        <div class="col-md-6 col-lg-4">
+          <custom-text-box [type]="'text'" name="IssuanceCityName" #IssuanceCityName="ngModel"
+            [(ngModel)]="oldContract.CRDetailsModel.IssuanceCity" [label]="'SplitRequest.IssuanceCity'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+          </custom-text-box>
+        </div>
+
+
+      </div>
+
+      <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Owners'" [canEdit]="false"
+      [canDelete]="false" [(data)]="oldContract.CRDetailsModel.CROwners" [columns]="CROwnerGridcols">
+      </app-grid>
+
+      <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.CRActivity'" [canEdit]="false"
+      [canDelete]="false" [(data)]="oldContract.CRDetailsModel.CRActivities" [columns]="CRActivityGridcols">
+      </app-grid>
+
+
+    </div>
+
+     <!-- IL -->
+    <div class="row" *ngIf="oldContract.ProductMainFamilyId == '1' && getILProductsLength() == 0 ">
+      <div class="col-11 col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="IL" #IL="ngModel"
+          [(ngModel)]="oldContract.IndustrialLicenseName" [label]="'SplitRequest.IL'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+      <div class="modal-info-btn" [class.clicked]="showILInfo" (click)="showHideILInfo()" title="{{'SplitRequest.showInfo'|translate }} {{'SplitRequest.IL' | translate}}"><span class="icon-view"></span></div>
+    </div>
+    <div class="infoInsidePopup" *ngIf="showILInfo">
+
+      <div class="main-title">{{'SplitRequest.ILInfo'|translate }}</div>
+        <div class="row">
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="ILStatus" #ILStatus="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.ILStatus" [label]="'SplitRequest.ILStatus'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="ILType" #ILType="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.ILType" [label]="'SplitRequest.ILType'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="IssueDate" #IssueDate="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.IssueDate" [label]="'SplitRequest.IssueDate'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+           <!-- Expiry Date -->
+           <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="ExpiryDate" #ExpiryDate="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.ExpiryDate" [label]="'SplitRequest.ExpiryDate'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="ILSource" #ILSource="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.ILSource" [label]="'SplitRequest.ILSource'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="CityName" #CityName="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.CityName" [label]="'SplitRequest.CityName'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="FactoryName" #FactoryName="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.FactoryName" [label]="'SplitRequest.FactoryName'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <custom-text-box [type]="'text'" name="ILProducts" #ILProducts="ngModel"
+              [(ngModel)]="oldContract.ILDetailsModel.ILProducts" [label]="'SplitRequest.ILProducts'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+            </custom-text-box>
+          </div>
+
+
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Products'"
+            [canEdit]="false" [canDelete]="false" [data]="oldContract.ILDetailsModel.ILProductsList"
+            [columns]="ILProductsgridcols">
+            </app-grid>
+          </div>
+
+          <div class="col-6">
+            <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Activities'"
+            [canEdit]="false" [canDelete]="false" [data]="oldContract.ILDetailsModel.ILActivities"
+            [columns]="ILActivityGridcols">
+            </app-grid>
+        </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+      <!-- Product Main Family -->
+      <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="ProductMainFamily" #ProductMainFamily="ngModel"
+          [(ngModel)]="oldContract.ProductMainFamilyName" [label]="'SplitRequest.ProductMainFamily'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+      <!-- Product Sub Family Name -->
+      <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="ProductSubFamily" #ProductSubFamily="ngModel"
+          [(ngModel)]="oldContract.ProductSubFamilyName" [label]="'SplitRequest.ProductSubFamily'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+      <!-- Product Name  -->
+      <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="Product" #Product="ngModel"
+          [(ngModel)]="oldContract.ProductName" [label]="'SplitRequest.Product'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+
+    </div>
+
+    <div class="row">
+
+
+       <!-- Industrial City -->
+       <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="IndustrialCityName" #IndustrialCityName="ngModel"
+          [(ngModel)]="oldContract.IndustrialCityName" [label]="'SplitRequest.IndustrialCityName'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+
+      <!-- Construction Status -->
+      <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="ConstructionContractStatus" #ConstructionContractStatus="ngModel"
+          [(ngModel)]="oldContract.ConstructionContractStatus" [label]="'SplitRequest.ConstructionContractStatus'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+      <!-- Legal Status -->
+      <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="LegalStatus" #LegalStatus="ngModel"
+          [(ngModel)]="oldContract.LegalStatus" [label]="'SplitRequest.LegalStatus'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+       <!-- pricing type -->
+       <div class="col-md-6 col-lg-4" >
+        <custom-text-box [type]="'text'" name="ContractPricingDate" #ContractPricingDate="ngModel"
+          [(ngModel)]="oldContract.PricingDate" [label]="'SplitRequest.ContractPricingDate'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div> 
+
+      <!-- Contract Starting Date -->
+      <div class="col-md-6 col-lg-4" >
+        <custom-text-box [type]="'text'" name="ContractStartingDate" #ContractStartingDate="ngModel"
+          [(ngModel)]="oldContract.ContractStartingDate" [label]="'SplitRequest.ContractStartingDate'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+
+      <!-- Contract Expiry Date -->
+      <div class="col-md-6 col-lg-4">
+        <custom-text-box [type]="'text'" name="ContractExpiryDate" #ContractExpiryDate="ngModel"
+          [(ngModel)]="oldContract.ContractExpiryDate" [label]="'SplitRequest.ContractExpiryDate'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+        </custom-text-box>
+      </div>
+    </div>
+
+    
+
+    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.ContactDetails'"
+                  [canEdit]="false" [canDelete]="false" [data]="oldContract.ContactDetails"
+                  [columns]='ContactDetailsGridcols'>
+     </app-grid>
+
+    
+     <app-grid *ngIf="oldContract.ProductMainFamilyId == '1' && getILProductsLength() > 0 " [canAdd]="false" [tableHeadTitle]="'SplitRequest.Products'"
+                  [canEdit]="false" [canDelete]="false" [data]="oldContract.ContractProducts"
+                  [columns]='ContractProductsgridcols'>
+     </app-grid>
+
+     
+
+
+
+  </app-info-viewer>
+
+</div>

@@ -1,0 +1,105 @@
+<div class="col-lg-9">
+  <!--Page-Title-->
+  <h4 class="page-title">{{'FactoryInsideFactory.FactoryInsideFactoryRequest' | translate}}</h4>
+  
+  <div class="alert alert-light" role="alert">
+    <span class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }}
+  </div>
+
+  <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+                               [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+  <form #FirstStage="ngForm" novalidate autocomplete="off">
+    <!--Request Main Info-->
+    <div id="RequestMainInfoSection">
+      <h5 class="stage-title">{{'ContractSubmission.RequestMainInfo' | translate}}</h5>
+      <div class="row">
+        <!--Contract-->
+        <div class="col-md-6 col-lg-4">
+          <mutliselect id="ContractNumber" name="ContractNumber" #ContractNumber="ngModel"
+                       [label]="'FactoryInsideFactory.ContractNumber'" [propertyToSelect]="'Value'"
+                       [options]="getContractLookup()"
+                       [viewMode]="true" [multiple]="false"
+                       [config]="config" [(ngModel)]="Application.Request.ContractNumber" [required]="true">
+          </mutliselect>
+        </div>
+        <!--CR-->
+        <div class="col-md-6 col-lg-4">
+          <mutliselect id="CR" name="CR" #CR="ngModel"
+                       [label]="'FactoryInsideFactory.CR'" [propertyToSelect]="'Value'"
+                       [options]="getCrsLookup()"
+                       [viewMode]="true" [multiple]="false"
+                       [config]="config" [(ngModel)]="Application.Request.CR" [required]="true">
+          </mutliselect>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <mutliselect id="Requester" name="Requester" #Requester="ngModel"
+                       [label]="'FactoryInsideFactory.Requester'" [propertyToSelect]="'Value'"
+                       [options]="getContactLookup()"
+                       [viewMode]="true" [multiple]="false"
+                       [config]="config" [(ngModel)]="Application.Request.Requester" [required]="true">
+          </mutliselect>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <mutliselect id="SecondCR" name="SecondCR" #SecondCR="ngModel"
+                       [label]="'FactoryInsideFactory.SecondCR'" [propertyToSelect]="'Value'"
+                       [options]="getCrsLookup()"
+                       [viewMode]="true" [multiple]="false"
+                       [config]="config" [(ngModel)]="Application.Request.SecondCR" [required]="true">
+          </mutliselect>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+          <custom-text-box [type]="'text'" name="EstablishingContractNumber" autocomplete="" aria-label="'FactoryInsideFactory.EstablishingContractNumber'"
+                           [(ngModel)]="Application.Request.EstablishingContractNumber" #EstablishingContractNumber="ngModel"
+                           [label]="'FactoryInsideFactory.EstablishingContractNumber'">
+          </custom-text-box>
+        </div>
+        <!--SharePercentage-->
+        <div class="col-xl-3 col-lg-4 col-md-6">
+          <custom-text-box [type]="'text'" name="SharePercentage" aria-label="'FactoryInsideFactory.SharePercentage'"
+                           [(ngModel)]="Application.Request.SharePercentage" #SharePercentage="ngModel"
+                           [label]="'FactoryInsideFactory.SharePercentage'">
+          </custom-text-box>
+
+        </div>
+
+      </div>
+      <!--Establishing Contract Date In hijri-->
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-6">
+          <!--EstablishingContractNumber-->
+          <custom-text-box [type]="'text'" name="EstablishingContractNumber" autocomplete="" aria-label="'FactoryInsideFactory.EstablishingContractNumber'"
+                           [(ngModel)]="Application.Request.EstablishingContractNumber"  #EstablishingContractNumber="ngModel"
+                           [label]="'FactoryInsideFactory.EstablishingContractNumber'">
+          </custom-text-box>
+        </div>
+        <!--SharePercentage-->
+        <div class="col-xl-3 col-lg-4 col-md-6">
+          <custom-text-box [type]="'text'" name="SharePercentage" aria-label="'FactoryInsideFactory.SharePercentage'"
+                           [(ngModel)]="Application.Request.SharePercentage" #SharePercentage="ngModel"
+                           [label]="'FactoryInsideFactory.SharePercentage'">
+          </custom-text-box>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-4">
+          <mutliselect id="SecondIL" name="SecondIL" #SecondIL="ngModel"
+                       [label]="'FactoryInsideFactory.SecondIL'" [propertyToSelect]="'Value'"
+                       [options]="getILLookup()"
+                       [viewMode]="true" [multiple]="false"
+                       [config]="config" [(ngModel)]="Application.Request.SecondIL" [required]="true">
+          </mutliselect>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

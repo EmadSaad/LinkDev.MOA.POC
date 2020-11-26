@@ -1,0 +1,35 @@
+.overview-item{
+    width:calc(100% - 20px);
+    //max-width: 200px;
+    height: 205px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    &.selected{
+        background:#90C542 image("card-bg.png") no-repeat 0 bottom;
+        background-size:contain ;
+        pointer-events: none;
+        .title,.total-number{
+            color:#fff;
+        }
+    }
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 4px 10px 30px rgba(0, 0, 0, 0.09);
+    font-weight: bold;
+    .title{
+        color: $brand-color-secondary;   
+    }
+    .total-number{
+        color:#92C841;
+        font-size: 2rem;
+    }
+}
+@media (min-width:1920px){
+    .overview-item{
+        height: 250px;
+    }
+}

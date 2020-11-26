@@ -1,0 +1,117 @@
+<app-breadcrumb [CurrnetComponentName]="'99'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="Index1" [structure]="formStructure">
+      </app-side-stages>
+    </div>
+  </div>
+  <div class="col-md-9 col-12">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'TicketManagement.NewTicket' | translate}}</h4>
+    <!--Validation-Message-->
+    <div class="alert alert-light" role="alert">
+      {{'FORM_VALIDATION_MESSAGE' | translate}}
+    </div>
+    <div>
+      <form (ngSubmit)="onSubmit(model)" #model="ngForm">
+        <!--This part where you should have all UI componets-->
+       
+       
+        <!--CR dropdown-->
+        <div class="row">
+          <div class="col-xl-4 col-lg-6" [ngClass]="{'required':!isRequestValid}">
+            <mutliselect id="CRId" name="CRId" [label]="'TicketManagement.CR'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['account_CRsByTypeInvestor']" [viewMode]="Application.Request.Id"
+              [multiple]="false" [config]="config" searchPlaceholder="'TicketDetails.CR'"
+              [(ngModel)]="Application.Request.CRId" [required]="true" [disabled]="false" [isRequiredLabel]="true"
+              (change)="cRChanged()" #CRIdField="ngModel" >
+            </mutliselect>
+          </div>
+        </div>
+        <span *ngIf="!CRIdField.control.valid && model.submitted"
+          style=color:red>{{'TicketManagement.Field' | translate}}</span>
+        <!--Contact Information-->
+        <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <mutliselect id="Contacts" name="Contacts" [label]="'TicketManagement.Contact'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+              [viewMode]="false" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.Contacts" [required]="true" [isRequiredLabel]="true"
+              #Contacts="ngModel">
+            </mutliselect>
+           
+          </div>
+        </div>
+      
+      
+        <br />
+         <!--This is the Ticket Title-->
+         <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [label]="'TicketManagement.TicketTitle'" autocomplete="" [required]="true"
+              name="CaseTitle" [isRequiredLabel]="true" [(ngModel)]="caseTitleField" #caseTitle="ngModel">
+            </custom-text-box>
+            <span *ngIf="!caseTitle.control.valid && model.submitted"
+              style=color:red>{{'TicketManagement.Filed' | translate}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <label>{{'TicketManagement.TicketType' | translate}}<span style=color:red>*</span></label>
+            <select class="form-control" name="CaseType" [required]="true" [(ngModel)]="caseType"
+              #caseTypeField="ngModel">
+              <option value="" selected="selected">{{'TicketManagement.Select' | translate}}</option>
+              <option value="1">{{'TicketManagement.Query' | translate}}</option>
+              <option value="2">{{'TicketManagement.Complain' | translate}}</option>
+              <option value="3">{{'TicketManagement.Suggestion' | translate}}</option>
+              <option value="4">{{'TicketManagement.Issue' | translate}}</option>
+              <option value="5">{{'TicketManagement.Request' | translate}}</option>
+            </select>
+          </div>
+        </div>
+        <span *ngIf="!caseTypeField.control.valid && model.submitted"
+          style=color:red>{{'TicketManagement.Filed' | translate}}</span>
+
+        <!--Ticket Note-->
+        <br />
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <label>{{'TicketManagement.TicketDescription' | translate}}<span style=color:red>*</span></label>
+            <textarea name="Description" [required]="true" [(ngModel)]="caseNote"
+              #caseNoteField="ngModel"></textarea>
+          </div>
+        </div>
+        <span *ngIf="!caseNoteField.control.valid  && model.submitted"
+          style=color:red>{{'TicketManagement.Filed' | translate}}</span>
+        <!--This Part is repersenting the custom uploader-->
+        <br />
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <form>
+                  <div class="form-group">
+                    <label for="file">{{'TicketManagement.Attachment'| translate}}</label>
+                    <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="main-btn">
+              {{'TicketManagement.Submit'| translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #popup let-modal>
+  <app-ticket-popup [ticketNumber]="ticketNumber"></app-ticket-popup>
+</ng-template>

@@ -1,0 +1,10 @@
+<div class="form-row">
+  <div *ngIf="pickerState" class="calender-wrapper">
+    <input type="text" [owlDateTime]="dt1" [min]="min" [max]="max" name="datetimePicker" readonly="readonly" [owlDateTimeTrigger]="dt1" [disabled]="isDisabled" placeholder="{{'DATE_PLACEHOLDER'| translate}}" class="form-control datepicker" [(ngModel)]="Value">
+    <owl-date-time #dt1 [hour12Timer]="true" [pickerType]="pickerState"></owl-date-time>
+  </div>
+  <div *ngIf="!pickerState" class="calender-wrapper">
+    <input type="text" [owlDateTime]="dt1" [min]="min" [max]="max" name="datetimePicker" readonly="readonly" [owlDateTimeTrigger]="dt1" [disabled]="isDisabled" placeholder="{{'DATE_TIME_PLACEHOLDER'| translate}}" class="form-control datepicker" [(ngModel)]="Value">
+    <owl-date-time #dt1 [hour12Timer]="true"></owl-date-time>
+  </div>
+</div>

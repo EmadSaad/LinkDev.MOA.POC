@@ -1,0 +1,43 @@
+﻿.breadcrumb {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .share-btn {
+        i[class*="icon-share"], .word {
+            color: $brand-color;
+        }
+
+        .a2a_button_facebook {
+            #{$right}: 0;
+        }
+
+        .a2a_button_twitter {
+            #{$right}: 35px;
+        }
+
+        .a2a_button_copy_link {
+            #{$right}: 70px;
+        }
+
+        .a2a_button_facebook, .a2a_button_twitter, .a2a_button_copy_link {
+            color: #fff;
+        }
+    }
+}
+    // Extra large devices (large desktops, 1200px and up)
+    @media (min-width: 1200px) {
+        .breadcrumb {
+            .share-btn {
+                .a2a_button_twitter {
+                    #{$right}: get-vw(60px);
+                }
+
+                .a2a_button_copy_link {
+                    #{$right}: get-vw(120px);
+                }
+            }
+        }
+    }
+
+    

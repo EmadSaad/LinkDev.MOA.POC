@@ -1,0 +1,77 @@
+a.service-item{
+    padding: 2rem .75rem;
+    margin: 1rem;
+    box-shadow: 0 0 15px #d4d2d2;
+    text-align: center;
+    height: 205px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-decoration: none;
+    &.serviceBox{
+        background:image("card-bg.png") no-repeat 0 bottom;
+        background-size: contain;
+    }
+    .title{
+        color: $brand-color-secondary;
+        margin: 5px 0;
+        font-weight: bold;
+        //font-size:1rem
+    }
+    .icon{
+        .hover-img{
+            display: none;
+        }
+    }
+    &.onHover{
+        .icon{
+            .default-img{
+                display:none;
+            }
+            .hover-img{
+                display: block;
+            }
+        }  
+    }
+    .description{
+        color: $mid-grey;
+        ///font-size: 0.875rem;
+    }
+    span{
+        opacity: 0;
+        height: 0;  
+        color:#fff
+    }
+    &:hover{
+       @extend .onHover;
+       background:#90C542 image("card-bg.png") no-repeat 0 bottom;
+       background-size: contain;
+       .title,.icon,.description,a,a:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus{
+           color:#fff
+       }
+       span{
+           opacity: 1;
+           height: 30px;
+           display: block;
+           border:1px solid #fff;
+           border-radius:35px;
+           padding:5px 10px;
+           margin-top: 10px;
+       }
+       transition: all 0.3s ease-in;
+    }
+    transition: all 0.3s ease-in;
+}
+@media (min-width:768px){
+    a.service-item{
+       margin:1rem 0;
+    } 
+}
+@media (min-width:1920px){
+    a.service-item{
+        height: 305px;
+    }
+}

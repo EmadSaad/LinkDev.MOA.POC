@@ -1,0 +1,105 @@
+﻿
+.counter-wrapper {
+	min-width: 30.68px;
+	display: inline-block;
+	flex-wrap: wrap;
+	background: #fff;
+	border: 1px solid #E2E2E2;
+
+	input[type="number"], input[type="text"], input[type="search"], input[type="date"]  {
+		-moz-appearance: textfield;
+		height: 27px;
+		padding: 0;
+		text-align: center;
+		font-size: .875rem;
+		border-top: 0;
+		border: 0;
+		line-height: 17px;
+		color: #707070;
+		border-top: 1px solid #E2E2E2;
+		background: transparent;
+		border-bottom: 1px solid #E2E2E2;
+
+		&:hover {
+			box-shadow: none;
+		}
+
+		&::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+			/* display: none; <- Crashes Chrome on hover */
+			-webkit-appearance: none;
+			margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+		}
+	}
+
+	span {
+		height: 19px;
+		width: 100%;
+		display: block;
+		padding: 0;
+		text-align: center;
+		font-family: "Segoe UI";
+		color: #000;
+		cursor: pointer;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		font-size: .875rem;
+		user-select: none;
+		position: relative;
+
+		&:active {
+			background: #fff;
+			outline-color: transparent
+		}
+
+		&:hover, &:focus {
+			box-shadow: 0 0 0 0.1rem rgba(24, 120, 69, 0.25);
+			outline: none;
+		}
+	}
+}
+.required {
+    .counter-wrapper {
+        box-shadow: rgba(255, 0, 0, 0.25) 0px 0px 0px 0.2rem;
+    }
+}
+
+    .horizontal {
+        .counter-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            /*width: 75px;*/
+            height: 40px;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: reverse;
+            -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+            max-width: 105px;
+            border-color: #878C90;
+
+            input[type="number"], span, input[type="text"], input[type="search"], input[type="date"]  {
+                width: 33.33%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-top: 0;
+                border-bottom: 0;
+            }
+
+            input[type="number"], input[type="text"], input[type="search"], input[type="date"] {
+                border-left: 1px solid #878C90;
+                border-right: 1px solid #878C90;
+            }
+        }
+    }
+
+    @media (min-width: 1500px) {
+        .horizontal {
+            .counter-wrapper {
+                height: 45px;
+            }
+        }
+    }

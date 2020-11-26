@@ -1,0 +1,32 @@
+<div class="d-block d-md-flex request-header" *ngIf="appHeader">
+  <!--Request-Status-->
+  <div class="d-flex" *ngIf="appHeader.PortalStatusName">
+    <span class="icon-timer"></span>
+    <div>
+      <div>{{'RequestHeader.Status' | translate}}</div>
+      <div>{{appHeader.PortalStatusName}}</div>
+    </div>
+  </div>
+  <!--Separator-->
+  <span class="d-md-inline-block d-none separator" *ngIf="appHeader.RequestNumber">|</span>
+  <div class="d-block d-md-none m-3 separator" *ngIf="appHeader.RequestNumber"></div>
+  <!--Request-Number-->
+  <div class="d-flex" *ngIf="appHeader.RequestNumber">
+    <span class="icon-hashtag"></span>
+    <div>
+      <div>{{'RequestHeader.Number' | translate}}</div>
+      <div>{{appHeader.RequestNumber}} </div>
+    </div>
+  </div>
+  <!--Separator-->
+  <span class="d-md-inline-block d-none separator" *ngIf="appHeader.SubmissionDateString">|</span>
+  <div class="d-block d-md-none m-3 separator" *ngIf="appHeader.RequestNumber"></div>
+  <!--Request-Date-->
+  <div class="d-flex" *ngIf="appHeader.SubmissionDateString">
+    <span class="icon-calendar"></span>
+    <div>
+      <div>{{'RequestHeader.Date' | translate}}</div>
+      <div>{{appHeader.SubmissionDateString}}</div>
+    </div>
+  </div>
+</div>

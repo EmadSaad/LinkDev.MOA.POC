@@ -1,0 +1,301 @@
+<div [hidden]="!(!currentBidding.BiddingNumber&&CurrentUser==testUserEnum.Investor)">
+  <!-- <h1>Bidding</h1> -->
+  <!-- <h1>{{'Bidding.Bidding' | translate}}</h1> -->
+  <div class="filter-wrapper">
+    <!-- Begine Investor Choice Bidding / Office -->
+    <div class="row" [hidden]="!(BiddingType==biddingTypeEnum.Office)">
+      <div class="col">
+
+        <div class="custom-radio">
+          <input type="radio" 
+                 id="BiddingradioOffice" 
+                 name="radio-group-Office" 
+                 [(ngModel)]="officeorbidding" 
+                 #BiddingradioOffice="ngModel"
+                 [value]="BiddingOrOfficeEnum.Bidding" 
+                 [checked]="officeorbidding==BiddingOrOfficeEnum.Bidding"
+                 (click)="EmptyOffice();getOfficeBidding()" 
+                 [disabled]=IsReadOnly>
+          <!--(click)="choose($event['target']['value'])">-->
+          <label for="BiddingradioOffice">{{'Bidding.Bidding' | translate}}</label>
+        </div>
+
+        <div class="custom-radio">
+          <input type="radio" 
+                 id="Officeradio" 
+                 name="radio-group-Office" 
+                 [(ngModel)]="officeorbidding" 
+                 #Officeradio="ngModel"
+                 [value]="BiddingOrOfficeEnum.Office" 
+                 [checked]="officeorbidding==BiddingOrOfficeEnum.Office || IsSpecific"
+                 [disabled]=IsReadOnly>
+          <!--(click)="choose($event['target']['value'])">-->
+          <label for="Officeradio">{{'Bidding.SpacificConsultingOffice' | translate}}</label>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row" [hidden]="!(BiddingType==biddingTypeEnum.Contractor)"> -->
+      <div class="row" *ngIf="(BiddingType==biddingTypeEnum.Contractor)">
+      <div class="col">
+        <div class="custom-radio">
+          <input type="radio" id="BiddingradioContractor" name="radio-group-Contractor" [(ngModel)]="contractororBidding"
+            #BiddingradioContractor="ngModel" [value]="contractororBiddingEnum.Bidding"
+            [checked]="contractororBidding==contractororBiddingEnum.Bidding" (click)="EmptyOffice();getOfficeBidding();"
+            [disabled]=IsReadOnly>
+          <!--(click)="choose($event['target']['value'])">-->
+          <label for="BiddingradioContractor">{{'Bidding.Bidding' | translate}}</label>
+        </div>
+        <div class="custom-radio">
+          <input type="radio" id="Contractorradio" name="radio-group-Contractor" [(ngModel)]="contractororBidding"
+            #Contractorradio="ngModel" [value]="contractororBiddingEnum.Contractor"
+            [checked]="contractororBidding==contractororBiddingEnum.Contractor" [disabled]=IsReadOnly>
+          <!--(click)="choose($event['target']['value'])">-->
+          <label for="Contractorradio">{{'Bidding.SpecificContractor' | translate}}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- <div class="col-xl-4 col-lg-6" [ngClass]="{'required':ScopeOfWork.dirty&&ScopeOfWork.value==null}">
+        <custom-text-box [type]="'text'" [label]="'Bidding.ScopeOfWork'" [(ngModel)]="currentBidding.AddScopOfWork"
+          #ScopeOfWork="ngModel" name="ScopeOfWork" [required] [isReadOnly]="IsReadOnly"></custom-text-box>
+        <div *ngIf="ScopeOfWork.dirty&&ScopeOfWork.value==null" class="form-validation">Please Enter a valid value
+        </div>
+      </div> -->
+      
+      <!-- [options]="lookupService.lookupEntities['account_Account']" -->
+      <!-- {{lookupService.lookupEntities['account_ContractSubmissionCRs'] | json}}
+      {{currentBidding.ConsultingOfficeId}} -->
+      <!-- {{lookupService.lookupEntities['account_Account'] | json}} -->
+
+      <div [hidden]="!(BiddingType==biddingTypeEnum.Office &&  officeorbidding==BiddingOrOfficeEnum.Office)"
+        class="col-xl-4 col-lg-6">        
+        <mutliselect 
+          id="ConsultingOfficeDropdown" 
+          name="ConsultingOfficeDropdown" 
+          [label]="'Bidding.ConsultingOffice'"
+          [propertyToSelect]="'Value'" 
+          [options]="lookupService.lookupEntities['account_FilteredOffice']"
+          [viewMode]="IsReadOnly" 
+          [multiple]="false" 
+          [config]="config" 
+          [(ngModel)]="currentBidding.ConsultingOfficeId"
+          #ConsultingOfficeDropdown="ngModel" 
+          (change)="getOfficeBidding()"
+          [specifySearchPlaceholder]="true"
+          [searchlabel]="'Bidding.SearchInOffices'">
+        </mutliselect>
+        <!-- {{lookupService.lookupEntities['account_Account'] | json}}
+               46546 -->
+      </div>
+  
+      <div 
+      [hidden]="!(BiddingType==biddingTypeEnum.Contractor &&  contractororBidding==contractororBiddingEnum.Contractor)"
+        class="col-xl-4 col-lg-6">
+        
+        <mutliselect 
+          id="ContractorDropdown" 
+          name="ContractorDropdown" 
+          [label]="'Bidding.Contractor'"
+          [propertyToSelect]="'Value'" 
+          [options]="lookupService.lookupEntities['account_FilteredContractor']"
+          [viewMode]="IsReadOnly" 
+          [multiple]="false" 
+          [config]="config" 
+          [(ngModel)]="currentBidding.ContractorId"
+          #ContractorDropdown="ngModel" 
+          (change)="getOfficeBidding()"
+          [specifySearchPlaceholder]="true"
+          [searchlabel]="'Bidding.SearchInContractors'">
+        </mutliselect>
+        <!-- {{lookupService.lookupEntities['account_Account'] | json}}
+                -->
+      </div>
+    </div>
+    <div class="col-12 form-footer">
+      <button class="main-btn"
+        [disabled]="
+          (officeorbidding==BiddingOrOfficeEnum.Office && currentBidding.ConsultingOfficeId==null)||
+          (contractororBidding==contractororBiddingEnum.Contractor && currentBidding.ContractorId==null)||
+          (IsReadOnly)"
+        (click)="onSubmit()">{{'Bidding.Submit' | translate}}</button>
+    </div>
+    <!-- End Investor Choice Bidding / Office -->
+  </div>
+</div>
+<div *ngIf="IsReadOnly&&currentBidding.BiddingNumber">
+  <!-- <h1>Bidding</h1> -->
+  <!-- <h1>{{'Bidding.Bidding' | translate}}</h1> -->
+    <!-- Begine get scope after Submition for every one -->
+    <div class="row">
+      <div class="col-xl-4 col-lg-6">
+        <!-- <label>Bidding Number</label> -->
+        <custom-text-box [type]="'text'" [label]="'Bidding.BiddingNumber'" [(ngModel)]="currentBidding.BiddingNumber"
+          #BiddingNumber="ngModel" name="BiddingNumber" [isReadOnly]="true"></custom-text-box>
+      </div>
+      <div class="col-xl-4 col-lg-6" *ngIf="currentBidding.BiddingStatus">
+        <!-- <label>Bidding Status</label> -->
+        <custom-text-box [type]="'text'" [label]="'Bidding.BiddingStatus'"
+          [(ngModel)]="currentBidding.BiddingStatus.Name" #BiddingStatus="ngModel" name="BidderStatus"
+          [isReadOnly]="true"></custom-text-box>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-lg-6" *ngIf="currentBidding.PlanApprovalRequestNumber">
+        <!-- <label>Plan Approval Request Number</label> -->
+        <custom-text-box [type]="'text'" [label]="'Bidding.PlanApprovalRequestNumber'"
+          [(ngModel)]="currentBidding.PlanApprovalRequestNumber.Name" #PlanApprovalRequestNumber="ngModel"
+          name="PlanApprovalRequestNumber" [isReadOnly]="true"></custom-text-box>
+      </div>
+      <!-- <div class="col-xl-4 col-lg-6" [ngClass]="{'required':ScopeofWork.dirty&&ScopeofWork.value==null}">
+         <label>Scope of Work</label>
+        <custom-text-box [type]="'text'" [label]="'Bidding.ScopeOfWork'" [(ngModel)]="currentBidding.AddScopOfWork"
+          #ScopeofWork="ngModel" name="ScopeofWork" [isReadOnly]="true"></custom-text-box>
+      </div> -->
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-lg-6">
+        <mutliselect id="QualifyDropdown" name="QualifyDropdown" [label]="'Bidding.Qualify'"
+          [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_bidding_ldv_qualify_OptionSet']"
+          [viewMode]="true" [multiple]="false" [config]="config" [(ngModel)]="currentBidding.Qualify" [required]="false"
+          [isRequiredLabel]="false">
+        </mutliselect>
+      </div>
+      <!-- {{currentBidding.Qualify | json}}
+            {{lookupService.lookupEntities['ldv_bidding_ldv_qualify_OptionSet'] | json}} -->
+      <div class="col-xl-4 col-lg-6" *ngIf="currentBidding.Qualify=='1'&&currentBidding.ConsultingOffice">
+        <custom-text-box [type]="'text'" [label]="'Bidding.ConsultingOffice'"
+          [(ngModel)]="currentBidding.ConsultingOffice.Name" #ConsultingOffice="ngModel" name="ConsultingOffice"
+          [isReadOnly]="true"></custom-text-box>
+      </div>
+      <div class="col-xl-4 col-lg-6" *ngIf="currentBidding.Qualify=='2'&&currentBidding.Contractor">
+        <custom-text-box [type]="'text'" [label]="'Bidding.Contractor'" [(ngModel)]="currentBidding.Contractor.Name"
+          #Contractor="ngModel" name="Contractor" [isReadOnly]="true"></custom-text-box>
+      </div>
+    </div>
+    <!-- Investor Info -->
+    <div class="row">
+      <div class="col-xl-4 col-lg-6">
+        <!--TODO: Investor Name-->
+        <custom-text-box [type]="'text'" [label]="'Bidding.InvestorName'" [(ngModel)]="currentBidding.RequesterName"
+          #InvestorName="ngModel" name="InvestorName" [isReadOnly]="true"></custom-text-box>
+      </div>
+      <div class="col-xl-4 col-lg-6">
+        <!--TODO: Investor Email-->
+        <custom-text-box [type]="'text'" [label]="'Bidding.InvestorEmail'" [(ngModel)]="currentBidding.RequesterEmail"
+          #InvestorEmail="ngModel" name="InvestorEmail" [isReadOnly]="true"></custom-text-box>
+      </div>
+      <div class="col-xl-4 col-lg-6">
+        <!--TODO: Investor Phone Number-->
+        <custom-text-box [type]="'text'" [label]="'Bidding.InvestorPhoneNumber'"
+          [(ngModel)]="currentBidding.RequesterMobilePhoneNumber" #InvestorPhoneNumber="ngModel"
+          name="InvestorPhoneNumber" [isReadOnly]="true"></custom-text-box>
+      </div>
+    </div>
+    <!-- End get scope after Submition for every one -->
+</div>
+<app-grid *ngIf="oldBiddings&&oldBiddings.length > 0" [modalFormTitle]="'Biddings'"
+  [tableHeadTitle]="'Bidding.OldBiddings'" [(data)]="oldBiddings" [columns]="gridcols" [(model)]="gridModel"
+  [canAdd]="false" [canEdit]="false" [canDelete]="false">
+</app-grid>
+<!--<form class="general-form" novalidate autocomplete="off" #BiddingForm="ngForm" >
+  <div class="form-wrapper form-padding">
+    <h1>Bidding</h1>
+    <div class="filter-wrapper">
+
+      <div class="row">
+        <div class="col-6 col-md-6">
+          <div class="form-row"  [ngClass]="{'required':BiddingNumber.dirty&&BiddingNumber.value==null}">
+            <label>Bidding Number</label>
+          <custom-text-box [type]="'text'" [label]="'Bidding Number'"  [(ngModel)]="currentBidding.BiddingNumber" #BiddingNumber="ngModel" name="BiddingNumber" [isReadOnly]="true" ></custom-text-box>
+          <div *ngIf="BiddingNumber.dirty&&BiddingNumber.value==null" class="form-validation">Please Enter a valid value</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-6">
+          <div class="form-row" [ngClass]="{'required':BiddingStatus.dirty&&BiddingStatus.value==null}">
+            <label>Bidding Status</label>
+          <custom-text-box [type]="'text'" [label]="'Bidding Status'"  [(ngModel)]="currentBidding.BiddingStatus.Name" #BiddingStatus="ngModel" name="BidderStatus" [isReadOnly]="true"  ></custom-text-box>
+          <div *ngIf="BiddingStatus.dirty&&BiddingStatus.control.value==null" class="form-validation">Please Enter a valid value</div>
+        {{BiddingStatus.value|json}}
+        </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 col-md-6">
+          <div class="form-row"  [ngClass]="{'required':PlanApprovalRequestNumber.dirty&&PlanApprovalRequestNumber.value==null}">
+            <label>Plan Approval Request Number</label>
+          <custom-text-box [type]="'text'" [label]="'Plan Approval Request Number'"  [(ngModel)]="currentBidding.PlanApprovalRequestNumber.Name" #PlanApprovalRequestNumber="ngModel" name="PlanApprovalRequestNumber" [isReadOnly]="true"></custom-text-box>  
+          [isReadOnly]="true" 
+          <div *ngIf="PlanApprovalRequestNumber.dirty&&PlanApprovalRequestNumber.value==null" class="form-validation">Please Enter a valid value</div>
+          </div>
+        </div>
+        <div  class="col-6 col-md-6">
+            <div class="form-row">
+                <mutliselect id="selectDropdown" name="selectDropdown"
+                            [label]="'Qualify'"
+                            [propertyToSelect]="'key'"
+                            [options]="dropdownOptionsQualify"
+                            [viewMode]="false"
+                            [multiple]="false"
+                            [config]="config"
+                            [(ngModel)]="currentBidding.Qualify"
+                            #selectDropdown="ngModel"
+                          >
+                </mutliselect>
+              </div>
+              {{multiselectObj|json}}
+        </div> 
+         <div *ngIf="" class="col-12 col-md-4">
+          <div class="form-row required" [ngClass]="{'required': true}">
+          <custom-text-box class="required" [type]="'text'" [label]="'Contractor'" #Contractor="ngModel" name="Contractor" ></custom-text-box>
+          </div>
+        </div> 
+      </div>
+      <div class="row">
+          <div class="col-6 col-md-6" >
+              <div class="form-row"  [ngClass]="{'required':ScopeofWork.dirty&&ScopeofWork.value==null}">
+                  <custom-text-box [type]="'text'" [label]="'Scope of Work'"  [(ngModel)]="currentBidding.AddScopOfWork" #ScopeofWork="ngModel" name="ScopeofWork"  [isRequiredLabel]></custom-text-box>
+                  <div *ngIf="ScopeofWork.dirty&&ScopeofWork.value==null" class="form-validation">Please Enter a valid value</div>                  
+                </div>
+          </div>
+        <div *ngIf="currentBidding.Qualify==1" class="col-6 col-md-6" >
+            <div class="form-row">
+                <custom-text-box [type]="'text'" [label]="'Consulting Office'"  [(ngModel)]="currentBidding.ConsultingOffice.Name" #ConsultingOffice="ngModel" name="ConsultingOffice"  ></custom-text-box>
+                </div>
+        </div>
+        <div *ngIf="currentBidding.Qualify==2" class="col-6 col-md-6" >
+            <div class="form-row">
+                <custom-text-box [type]="'text'" [label]="'Contractor'"  [(ngModel)]="currentBidding.Contractor" #Contractor="ngModel" name="Contractor"  ></custom-text-box>
+                </div>
+        </div>
+      </div>
+       {{multiselectObj.name}} 
+         <form #gridForm="ngForm"> *ngIf="currentBidding.BiddingNumber"
+           <app-grid  [modalFormTitle]="'Price Offer'"
+                      [addNewRecord]="'Add New Record'"
+                      [tableHeadTitle]="'Price Offers'"
+                      [(data)]="currentBidding.PriceOfferList"
+                      [columns]="gridcols"
+                      [(model)]="gridModel"
+                      [canAdd]="true"
+                      [canEdit]="false"
+                      [canDelete]="true"
+                      [templateForm]="BiddingForm"
+                      [(popUpOpened)]="isPopUpOpened"
+                      [template]="gridContent"
+                      >
+              <ng-container #gridContent>
+              <app-Price-Offer [(currentPriceOffer)]="gridModel" ></app-Price-Offer>
+              </ng-container>
+          </app-grid> 
+       </form> 
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <label></label>
+          <div class="form-row">
+              <button class="main-btn" (click)="onSubmitBidding()">Submit</button>
+          </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</form> -->

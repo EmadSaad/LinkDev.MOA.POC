@@ -1,0 +1,48 @@
+<form class="form-wrapper">
+  <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+  <div class="grey-bg grey-bg-padding m-0">
+    <div class="row">
+      <div class="col-md-4">
+        <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr' | translate"
+          [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config" [isRequiredLabel]="false"
+          [options]="CRs" [(ngModel)]="currentCR.Text" #WorkspaceCR="ngModel" (change)="UpdateCr($event)">
+        </mutliselect>
+      </div>
+    </div>
+  </div>
+</form>
+<form class="form-wrapper" (ngSubmit)="searchContracts(searchForm)" #searchForm="ngForm">
+  <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+  <div class="grey-bg grey-bg-padding mx-0">
+    <div class="row">
+      <div class="col-md-4">
+        <mutliselect id="MainType" name="MainType" [label]="'WORKSPACE.ContractType' | translate"
+          [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['product_ContractMainType']"
+          [viewMode]="false" [multiple]="false" [config]="config" [isRequiredLabel]="false"
+          [(ngModel)]="contractFilteration.MainType" #RequestType="ngModel">
+        </mutliselect>
+      </div>
+      <div class="col-md-4 reg-date">
+        <label>{{'WORKSPACE.IssuanceDate' | translate}}</label>
+        <ngbd-datepicker-popup [(ngModel)]="contractFilteration.From" #FromDate="ngModel" name="FromDate"
+          [placeholder]="'WORKSPACE.From' | translate">
+        </ngbd-datepicker-popup>
+        <ngbd-datepicker-popup [(ngModel)]="contractFilteration.To" #ToDate="ngModel" name="ToDate"
+          [placeholder]="'WORKSPACE.To' | translate">
+        </ngbd-datepicker-popup>
+      </div>
+      <div class="col-md-4">
+        <label class="v-hidden">Button</label>
+        <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+        <button type="button" class="main-btn-secondary" (click)="resetSearch(searchForm)">
+          {{'WORKSPACE.Clear' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h4 class="page-title m-0">{{'WORKSPACE.Contracts' | translate}}</h4>
+</div>
+<app-listing-grid [type]="'contracts'"></app-listing-grid>

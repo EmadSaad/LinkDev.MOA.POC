@@ -1,0 +1,15 @@
+<div style="width: 25%; float:left">
+  <div *ngFor="let parent of Stages">
+    <h4 (click)="LevelOneClickFun(parent.Index)">{{parent.TextKey | translate}}</h4>
+    <div *ngIf="ActiveLevelOneIndex === parent.Index">
+        <div *ngFor="let child of parent.Childs">
+            <h5 (click)="LevelTwoClickFun(child.Index)">{{child.TextKey | translate}}</h5>
+            <div *ngIf="ActiveLevelTwoIndex === child.Index">
+              <div *ngFor="let branch of child.Childs">
+                ><a href="{{router.url.split('#')[0]}}#{{branch.HashLinkKey}}">{{branch.TextKey | translate}}</a>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<ng-template #popup let-modal>
+  <div class="modal-content border-0">
+   
+      <!--MODAL-HEADER-->
+      <div class="modal-header">
+        <h4 class="modal-title flex-grow-1 text-center">{{modalFormTitle | translate}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--MODAL_BODY-->
+      <div class="modal-body">
+        <div class="form-wrapper mt-3">
+          <ng-content>
+          </ng-content>
+        </div>
+      </div>
+      <!--MODAL_FOOTER-->
+      <div class="modal-footer justify-content-center">
+        <button type="button" *ngIf="showAdd" [disabled]="!templateForm.valid" class="main-btn" (click)="modal.close()">
+          {{'ADD'|translate}}
+        </button>
+        <button type="button" *ngIf="showUpdate" [disabled]="!templateForm.valid" class="main-btn"
+          (click)="modal.close()">
+          {{'UPDATE'|translate}}
+        </button>
+        <button type="button" *ngIf="showOk" class="main-btn" (click)="modal.close(contentForm)">
+          {{'CLOSE'|translate}}
+        </button>
+      </div>
+   
+  </div>
+</ng-template>
+<div class="form-wrapper">
+  <div *ngIf="responseList&&responseList.length>0">
+    <ul class="alert alert-danger px-5 ">
+      <li *ngFor="let responseMsg of responseList| filterBy: 'IsDeleted' :false ;  let j =index " role="alert"
+        [ngClass]="{'failed' : responseMsg.IsResponsefail}">
+        <span *ngIf="responseMsg.IsResponseFailed">{{responseMsg.ResponseMsg}}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="table-title position-relative">
+    <!--TITLE-->
+    <h6 class="d-inline-block" *ngIf="tableHeadTitle" title="{{tableHeadTitle | translate}}">{{tableHeadTitle |translate}}</h6>
+    <!--ADD_NEW_RECORD-->
+    <a class="add-record" *ngIf="canAdd" (click)="addNewItem()" title="{{addNewRecord | translate}}"><i
+      class="icon-plus"></i>{{addNewRecord | translate}}</a>
+      <!-- <button class="main-btn addNew" *ngIf="canAdd" (click)="addNewItem()"
+    title="{{addNewRecord | translate}}">{{addNewRecord | translate}}</button> -->
+    <table class="table-template" *ngIf="columns&&columns.length>0">
+      <thead [ngClass]="{'responsive-table-head' : !data || data.length == 0}">
+        <tr>
+          <th *ngFor="let col of columns">{{col.header | translate}}</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="data&&data.length>0">
+        <tr *ngFor="let item of data| filterBy: 'IsDeleted' :false  ;  let j =index "
+          [ngClass]="{'failed' : item.invalidField == true}">
+          <td class="accordion" *ngFor="let col of columns; let i =index "
+            [ngClass]="{'accordion': i==0 || col.typeConfig.type == '','panel':i!=0 , 'hide-max-sm': !item[col.field] && col.typeConfig.type !== '' }">
+            <!-- <span class="icon hide-block-768"></span> -->
+            <span class="icon hide-block-768">{{col.header | translate}} </span>
+            <a *ngIf="col.typeConfig.type == 'href'" href="{{item[col.typeConfig.urlKey]}}">{{item[col.field]}}</a>
+            <span *ngIf="col.typeConfig.type == 'text'">{{item[col.field]}}</span>
+            <span *ngIf="col.typeConfig.type == 'date'">{{item[col.field] | date:col.typeConfig.dateFormat}}</span>
+            <span *ngIf="col.typeConfig.type == 'number'">{{item[col.field] | currency:' '}}</span>
+            <!-- <mutliselect
+              *ngIf="col.typeConfig.type == 'dropdown'&&LookupEntities&&LookupEntities[col.typeConfig.lookupKey]&&LookupEntities[col.typeConfig.lookupKey].length>0"
+              [multiple]="false" [config]="col.typeConfig.dropDownconfig"
+              [options]="LookupEntities[col.typeConfig.lookupKey]" [(ngModel)]="item[col.field]" [viewMode]="true"
+              [propertyToSelect]="'Value'">
+            </mutliselect> -->
+            <span
+            *ngIf="col.typeConfig.type == 'dropdown'&&LookupEntities&&LookupEntities[col.typeConfig.lookupKey]&&LookupEntities[col.typeConfig.lookupKey].length>0">
+              {{getDDLText(LookupEntities[col.typeConfig.lookupKey],item[col.field])}}
+            </span>
+            <div *ngIf="col.typeConfig.type == ''" class="options">
+              <a href="javascript:void(0);" *ngIf="canView" (click)="viewItem(item)" class="mr-1 underline icon-view"
+                    title="View"></a>
+              <a href="javascript:void(0);" *ngIf="canEdit" (click)="editItem(item)" class="icon-edit" title="Edit"></a>
+              <a href="javascript:void(0);" *ngIf="canDelete" (click)="deleteItem(item)" class="icon-rubbish-bin"
+                title="Delete"></a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table-template" *ngIf="!data || data.length == 0">
+      <tbody>
+        <tr>
+          <td class="bg-white text-center text-muted">
+            {{'NO_RESULT_FOUND' | translate }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="py-3 text-muted border-0">
+      </div> -->
+  </div>
+</div>

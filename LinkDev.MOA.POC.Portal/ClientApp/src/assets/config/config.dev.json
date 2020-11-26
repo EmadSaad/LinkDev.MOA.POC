@@ -1,0 +1,22 @@
+{
+  "apiBaseUrl": "http://localhost:3139/",
+  "APIURL": "http://localhost:3139/",
+  "recaptchaSiteKey": "6LcCbgAVAAAAANO04BMGfgow_d7HTWmjF8ODUQrG",
+  "googleMapsToken": "AIzaSyC_SR_vI_jtfPzY__8UPKPvvUWCezerzS8",
+  "PasswordValidationPattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#^()_\\-+=<>~:|\/\\\\[\\]{}.'\"])[A-Za-z\\d@$!%*?&#^()_\\-+=<>~:|\/\\\\[\\]{}.'\"]{8,20}",
+  "EmailValidationPattern": "^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)",
+  "MobileValidationPattern": "^(\\+966)([0-9]{9})$",
+  "ArabicValidationPattern": "^[\u0621-\u064A0-9 ]+$",
+  "NumberValidationPattern": "^[0-9]{1,15}$",
+  "IdentityNumberValidationPattern": "^(?=\\d{10}$)(1|2)\\d+",
+  "NewMobileValidationPattern": "^(?=\\d{10}$)(05)\\d+",
+  "NewPhoneValidationPattern": "^(?=\\d{10}$)(01)\\d+",
+  "inpection_results_page_max_size": 6,
+  "decimalNumbersPattern": "^\\d{1,10}(\\.\\d{1,10})?$",
+  "GlobalMobileNumberPattern": "(^\\+[0-9]{2}|^\\+[0-9]{2}\\(0\\)|^\\(\\+[0-9]{2}\\)\\(0\\)|^00[0-9]{2}|^0)([0-9]{9}$|[0-9\\-\\s]{10}$)",
+  "ScriptPattern": "^[^<>]+$",
+  "urlPattern": "^(([hH][tT][tT][pP][sS]?|[Ff][Tt][Pp]|[sS][mM][tT][pP]):\\/\\/)?([wW][Ww][Ww].)?([a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*?\\.[a-zA-Z]{2,3}\\/?)+(\\/[a-zA-Z0-9]+([-_()%$?&#=][a-zA-Z0-9]+)*?\\/?)*$",
+  "idleTime": 1200,
+  "investmentGuidDocumentCode": "1"
+}
+

@@ -1,0 +1,62 @@
+<div class="row grey-bg mx-0 mt-4 pt-3">
+  <div class="col-lg-4 col-md-6">
+    <custom-text-box [type]="'text'" [ngModel]="MODONText" [label]="'ContractSubmission.BillingName'" autocomplete=""
+      aria-label="Name" [isReadOnly]="true">
+    </custom-text-box>
+  </div>
+  <div class="col-lg-4 col-md-6">
+    <custom-text-box [type]="'text'" [ngModel]="Items.QuoteNumber" [label]="'ContractSubmission.PriceOfferNumber'"
+      autocomplete="" aria-label="Name" [isReadOnly]="true">
+    </custom-text-box>
+  </div>
+</div>
+
+<div class="grey-bg mt-2 pt-3 px-3 mb-4">
+  <h5>{{'ContractSubmission.MainData' | translate}}</h5>
+  <div class="border-2 mt-3 separator"></div>
+  <div class="row">
+    <div class="col">
+      <b>{{priceOfferDate}}</b>
+    </div>
+  </div>
+</div>
+
+
+  <h5>{{'ContractSubmission.PriceOffer' | translate}}</h5>
+  <div class="alert alert-light mb-3" role="alert"><span class="icon-info"></span> {{'ContractSubmission.BeginingNote' | translate}}</div>
+  <div class="row">
+    <div class="col-md-8 mb-0">
+      <app-grid [canAdd]="false" [canEdit]="false" [canDelete]="false" [(data)]="Items.QuoteLineModelsToShow"
+        [columns]="ItemsGridcols">
+      </app-grid>
+      <section class="order-grid">
+        <div class="border-2 mt-0 mb-0 separator"></div>
+        <table class="table-strip space-between">
+          <tr>
+            <td>{{'ContractSubmission.TotalBeforeVat' | translate}}</td>
+            <td>{{Items.TotalAmountBeforeVat}}</td>
+          </tr>
+          <tr>
+            <td>{{'ContractSubmission.TotalVat'| translate}}</td>
+            <td>{{Items.TotalVat}}</td>
+          </tr>
+          <tr>
+            <td>{{'ContractSubmission.Total' | translate}}</td>
+            <td>{{Items.TotalAmount}}</td>
+          </tr>
+        </table>
+        <div class="border-2 mt-0 separator"></div>
+      </section>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-light d-flex" role="alert"><span class="icon-info"></span> {{'ContractSubmission.FinaleNote' | translate}}</div>
+    </div>
+  </div>
+
+
+
+
+
+

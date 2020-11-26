@@ -1,0 +1,48 @@
+<div [ngClass]="{'main-menu':true,'dropdown-bg':has_bg}">
+  <div class="container menu-container">
+    <div class="row">
+      <div class="col p-0">
+        <nav class="navbar navbar-expand-lg navbar-light p-0">
+          <button class="navbar-toggler no-border collapsed" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="closeMenu">×</span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav p-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#" title="{{'Nav.Home'|translate}}">{{'Nav.Home'|translate}} <span
+                    class="sr-only">(current)</span></a>
+              </li>
+              <li [ngClass]="{'nav-item dropdown':true,'show':has_bg}" (click)="enableDropdownBg($event)"
+                *ngIf="servicesCategory.length > 0 && isAuthorized" >
+                <a class="nav-link dropdown-toggle" title="{{'Nav.ModonServices'|translate}}" id="navbarDropdown"
+                  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{'Nav.ModonServices'|translate}}
+                </a>
+                <div [ngClass]="{'dropdown-menu w-100':true,'show':has_bg}" aria-labelledby="navbarDropdown">
+                  <div class="item" *ngFor="let category of servicesCategory">
+                    <a href="/modon-services/services/{{category.Code}}" class="bold"
+                      title="{{category.Name}}"><span class="d-none d-lg-inline-flex"><img src="./assets/images/services/{{category.IconName}}"
+                          alt="{{category.Name}}"></span>{{category.Name}}</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink='/CR-Managment/MyCRs' title="{{'Nav.AccountsManagement'|translate}}"
+                  routerLinkActive="active">{{'Nav.AccountsManagement'|translate}}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/workspace" routerLinkActive="active"
+                  title="{{'Nav.Workspace'|translate}}">{{'Nav.Workspace'|translate}}</a>
+              </li>
+
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

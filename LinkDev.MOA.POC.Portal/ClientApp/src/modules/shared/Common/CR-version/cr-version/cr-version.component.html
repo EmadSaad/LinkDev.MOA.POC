@@ -1,0 +1,22 @@
+
+    <mutliselect id="CRVersion" name="CRVersion" #CRVersion="ngModel"
+    [label]="'SplitRequest.CR'" [propertyToSelect]="'Value'"
+    [options]="lookupService.lookupEntities['account_CRsByTypeInvestor']"
+    [viewMode]="IsReadOnly" [multiple]="false" [config]="config"
+    [(ngModel)]="Contract[CRFieldName]" [required]="IsRequired"
+    [isRequiredLabel]="IsRequired" (change)="onChangeCRVersion(false,false)"
+    [ngClass]="{ 'is-invalid required  validation':  CRVersion.errors && CRVersion.dirty }">
+    </mutliselect>
+    <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+    [controlName]="CRVersion" [form]="form" [submit]="submit">
+    </app-validation-viewer>
+    
+
+    <button [hidden]="Contract['ClonedCRId'] == undefined || this.Contract['ClonedCRId'] != Contract[CRFieldName] ||
+     Contract['Id'] == null || Application?.IsReadOnly || !Application?.Request?.Id || Contract['isCRUpdated'] == true " 
+    type="button" class="main-btn mt-3 mx-4" (click)="onChangeCRVersion(true,false)">{{'SplitRequest.Update'|translate }}</button>
+
+
+
+
+

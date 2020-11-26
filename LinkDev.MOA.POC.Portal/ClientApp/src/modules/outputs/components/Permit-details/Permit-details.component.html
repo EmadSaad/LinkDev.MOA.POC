@@ -1,0 +1,101 @@
+<app-breadcrumb [CurrnetComponentName]="'LicenseDetails'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="activeLevelOne" [activeSecondLevel]="0"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{tabText | translate}}</h4>
+    <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+      [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+    <form #form="ngForm" novalidate autocomplete="off">
+      <div *ngIf="activeLevelOne === 1">
+     
+        <div class="row">
+
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.PermitLetterNumber'"
+              [(ngModel)]="PermitLetterInfo.PermitLetterNumber" name="PermitLetterNumber"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Contractname'"
+              [(ngModel)]="PermitLetterInfo.Contractname" name="Contractname">
+            </custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Permitstartdate'"
+              [(ngModel)]="PermitLetterInfo.Permitstartdate" name="Permitstartdate">
+            </custom-text-box>
+          </div>
+
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Permitenddate'"
+              [(ngModel)]="PermitLetterInfo.Permitenddate" name="Permitenddate">
+            </custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.PermitTypeEN'"
+              [(ngModel)]="PermitLetterInfo.PermitTypeEN" name="PermitTypeEN">
+            </custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.PermitTypeAR'"
+              [(ngModel)]="PermitLetterInfo.PermitTypeAR" name="PermitTypeAR">
+            </custom-text-box>
+          </div>
+
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Permitstatus'"
+              [(ngModel)]="PermitLetterInfo.Permitstatus" name="Permitstatus">
+            </custom-text-box>
+          </div>
+          <!-- <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Permitstatusname'"
+              [(ngModel)]="buildingLicenseInfo.MainActivityType" name="Permitstatusname"></custom-text-box>
+          </div> -->
+        </div>
+        <!-- <div class="row">
+
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Permitstartdate'"
+              [(ngModel)]="buildingLicenseInfo.LicenseType" name="Permitstartdate"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter'"
+              [(ngModel)]="buildingLicenseInfo.FloorsNumber" name="FloorsNumber"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.Permitenddate'"
+              [(ngModel)]="buildingLicenseInfo.ApprovedPlanNumber" name="Permitenddate"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Permit_Letter.PermitTypeAR'"
+              [(ngModel)]="buildingLicenseInfo.ApprovedPlanNumber" name="PermitTypeAR"></custom-text-box>
+          </div>
+
+        </div> -->
+        
+        </div>
+      <div *ngIf="activeLevelOne === 2">
+
+          <app-Uploaders-List [uploaders]="documentSettings" [IsReadOnly]="true" [IsLiveChanges]="true">
+          </app-Uploaders-List>
+          <div *ngIf="documentSettings.length === 0">
+            {{'NO_RESULT_FOUND' | translate }}
+          </div>
+        </div>
+    </form>
+
+    </div>
+  </div>
+

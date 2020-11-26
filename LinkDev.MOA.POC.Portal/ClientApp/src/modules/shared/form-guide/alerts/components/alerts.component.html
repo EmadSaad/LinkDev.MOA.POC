@@ -1,0 +1,13 @@
+<div class="row layout-padding">
+    <div class="col-12">
+        <div class="alerts-wrapper">
+            <div *ngIf="message" [ngClass]="message.cssClass">
+                <!-- Success message -->
+                <i [ngClass]="message.iconCssClass"></i>
+                <h4 class="msg-title"></h4>
+                <p class="success-select" [innerHTML]="message.text"> </p>
+                <a href="{{message.url}}" title="{{message.urlLinkTitle|translate}}">{{message.urlLinkTitle|translate}}</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+footer {
+  background: #f5f5f5;
+  position: relative;
+  // height: 150px;
+  padding: 2.219rem 0;
+  background: #f5f5f5 image("footer.png") no-repeat $right bottom;
+  //margin-top: 90px;
+  .icon-headset {
+    font-size: 2.3rem;
+    vertical-align: super;
+    background: #fff;
+    color: $brand-color-secondary;
+    padding: 7px;
+    border-radius: 16px;
+    margin-#{$left}: 15px;
+  }
+  .rights,
+  .contacts {
+    text-align: center;
+    p {
+      margin-bottom: 0;
+    }
+  }
+  .contacts {
+    margin-top: 23px;
+  }
+  .partner-care {
+    display: inline-block;
+    background: $brand-color-secondary;
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 16px;
+    p {
+      &:first-child {
+        font-size: 1.75rem;
+      }
+      &:last-child {
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  footer {
+    .rights {
+      text-align: $right;
+    }
+    .contacts {
+      text-align: $left;
+      margin-top: 0;
+      .partner-care {
+        text-align: $right;
+      }
+    }
+  }
+}
+// -----------------------------------------------------------------------------
+// // This file contains all styles related to the footer of the site/application.
+// // -----------------------------------------------------------------------------
+
+// //variables to skew footer shape
+// $_25deg: if-rtl(25deg, -25deg);
+// $_24deg: if-rtl(-24deg, 24deg);
+// $_30deg: if-rtl(30deg, -30deg);
+
+// footer {
+//   background-color: $blue;
+//   padding: 21px 0;
+
+//   .col-12 {
+//     text-align: center;
+//     margin-bottom: 15px;
+
+//     img {
+//       max-width: 100%;
+//     }
+//   }
+
+//   .terms {
+//     a {
+//       display: inline-block;
+//       font-size: $font-size-sm;
+//       color: #a51878;
+//       //&:first-child {
+//       margin-#{$right}: 25px;
+//       margin-#{$left}: auto;
+//       // }
+//     }
+//   }
+
+//   .social-media {
+//     text-align: center;
+
+//     a {
+//       display: inline-block;
+//       margin-#{$left}: 8px;
+//       margin-#{$right}: auto;
+
+//       &:hover {
+//         text-decoration: none;
+
+//         .icon-twitter {
+//           &:before {
+//             color: #1da1f2;
+//           }
+//         }
+
+//         .icon-linkedin {
+//           &:before {
+//             color: #4875b4;
+//           }
+//         }
+
+//         .icon-youtube {
+//           &:before {
+//             color: red;
+//           }
+//         }
+
+//         i {
+//           &:before {
+//             -webkit-transition: all 0.4s ease-in; /* Safari */
+//             transition: all 0.4s ease-in;
+//           }
+//         }
+//       }
+
+//       i {
+//         &:before {
+//           color: $white;
+//           font-size: 1.45rem;
+//         }
+//       }
+
+//       &:first-child {
+//         margin-#{$left}: 0;
+//       }
+//     }
+//   }
+
+//   .service-policy {
+//     a {
+//       color: $white !important;
+//     }
+//   }
+
+//   .copyright {
+//     color: $white;
+//   }
+// }
+// // Small devices (landscape phones, 576px and up)
+// @media (min-width: 576px) {
+//   footer {
+//     .social-media,
+//     .col-12 {
+//       // text-align: center;
+//     }
+//   }
+// }
+// // Medium devices (tablets, 768px and up)
+// @media (min-width: 768px) {
+// }
+// // Large devices (desktops, 992px and up)
+// @media (min-width: 992px) {
+
+//   footer {
+
+//     .col-12 {
+//       text-align: $left;
+//     }
+
+//     .social-media {
+//       text-align: $right;
+//     }
+//   }
+// }

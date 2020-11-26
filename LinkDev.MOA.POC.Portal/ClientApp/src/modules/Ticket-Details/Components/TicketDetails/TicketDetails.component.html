@@ -1,0 +1,185 @@
+<app-breadcrumb [CurrnetComponentName]="'99'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="Index1" [structure]="formStructure">
+      </app-side-stages>
+    </div>
+  </div>
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'TicketManagement.TicketDetails' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="header"></app-app-header>
+    <!--............................................................................................................-->
+    <hr class="my-4">
+    <h4 style="color:#266892">{{'TicketManagement.TicketDetails'| translate}}</h4>
+    <hr class="my-4">
+    <!--Case Title..................................................................................................-->
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'TicketManagement.TicketTitle'" name="Title"
+          [(ngModel)]="caseTitle" [isReadOnly]="true">
+        </custom-text-box>
+      </div>
+    </div>
+    <!--TicketNote....................................................................................................-->
+    <div class="row">
+      <div class="col-12 col-md-8">
+        <label>{{'TicketManagement.TicketDescription' | translate}}</label>
+        <textarea name="Description" [(ngModel)]="caseDescription" readonly="true"></textarea>
+      </div>
+    </div>
+    <!--Reply if there is any..........................................................................................-->
+    <div *ngIf="hasReply">
+      <!--WE have to see it when evert there is reply-->
+      <hr class="my-4">
+      <!--<button type="button" class="btn btn-primary">-->
+      <h4 style="color:#266892">{{'TicketManagement.Reply'| translate}}</h4>
+      <!--<span class="sr-only">unread messages</span>
+    </button>-->
+      <hr class="my-4">
+      <!--Reply Tiltle...................................................................................................-->
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'TicketManagement.replyTitle'" name="NoteTitle"
+            [(ngModel)]="noteTitle" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+      </div>
+      <!--Reply Body ...................................................................................................-->
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <label>{{'TicketManagement.ReplyNote' | translate}}</label>
+          <textarea name="Note" [(ngModel)]="note" readonly="true"></textarea>
+        </div>
+      </div>
+    </div>
+    <!--..............................................................................................................-->
+    <div *ngIf="caseStatus === 0">
+      <!--IF the Ticket is not resloved-->
+      <hr class="my-4">
+      <h4 style="color:#266892">{{'TicketManagement.AddCommentTicket'| translate}}</h4>
+      <hr class="my-4">
+      <!-- Form Started...............................................................................................-->
+      <form (ngSubmit)="onSubmit(model)" #model="ngForm">
+        <!--Ticket Note-->
+        <br />
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <label>{{'TicketManagement.Comment' | translate}}<span style=color:red>*</span></label>
+            <textarea name="Note" [required]="true" [(ngModel)]="note"
+              #Note="ngModel"></textarea>
+          </div>
+        </div>
+        <span *ngIf="!Note.control.valid  && model.submitted"
+          style=color:red>{{'TicketManagement.RequiredField' | translate}}</span>
+        <!--This Part is repersenting the custom uploader-->
+        <br />
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <form>
+                  <div class="form-group">
+                    <label for="file">{{'TicketManagement.Attachment'| translate}}</label>
+                    <input type="file" id="file" (change)="handleFileInput($event.target.files)">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="main-btn">
+              {{'TicketManagement.AddComment'| translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- Rating Block.................................................................................................................-->
+    <div *ngIf="caseStatus === 1 && ratingScore === null">
+      <!---->
+      <hr class="my-4">
+      <h4 style="color:#266892">{{'TicketManagement.RateTicket'| translate}}</h4>
+      <hr class="my-4">
+      <!--..............................................................................-->
+      <form (ngSubmit)="RateTicket(activeStars,model)" #model="ngForm">
+        <div class="row">
+          <div class="col-sm">
+            <ul>
+              <li *ngFor="let star of stars; let i = index" class="star" [ngClass]="{'active-star': i < activeStars}"
+                (click)="onStarClick(i)">
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm">
+            <div class="rating-summary">{{activeStars}} of {{stars.length}}</div>
+          </div>
+          <div class="col-sm">
+            <div class="rating-summary" [ngSwitch]="activeStars">
+              <div *ngSwitchCase="1">
+                <h2>{{'TicketManagement.VeryBad'| translate}}</h2>
+              </div>
+              <div *ngSwitchCase="2">
+                <h2>{{'TicketManagement.Bad'| translate}}</h2>
+              </div>
+              <div *ngSwitchCase="3">
+                <h2>{{'TicketManagement.Avrg'| translate}}</h2>
+              </div>
+              <div *ngSwitchCase="4">
+                <h2>{{'TicketManagement.Good'| translate}}</h2>
+              </div>
+              <div *ngSwitchCase="5">
+                <h2>{{'TicketManagement.VeryGood'| translate}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm"></div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <label>{{'TicketManagement.Comment' | translate}}</label>
+            <textarea name="Ticket" [required]="true" [(ngModel)]="Note" #ticketNote="ngModel"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="main-btn">
+              {{'TicketManagement.RateTicket'| translate}}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="ratingScore != null && caseStatus === 1">
+      <hr class="my-4">
+      <h4 style="color:#266892">{{'TicketManagement.RatedTicket'| translate}}</h4>
+      <hr class="my-4">
+      <div class=row>
+        <div class="col-12 col-md-8">
+          <label>{{'TicketManagement.Rating'| translate}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <ul>
+            <li *ngFor="let star of stars; let i = index" class="star" (loaded)="onStarClick(ratingScore -1)"
+              [ngClass]="{'active-star': i < activeStars}">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <label>{{'TicketManagement.Comment' | translate}}</label>
+          <textarea name="ticketComment" [(ngModel)]="note" readonly="true"></textarea>
+        </div>
+      </div>
+    </div>
+    <!--.................................................................................................................-->
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div id="verify-wrapper">
+  <div id="dialog">
+    <div id="verfiyBoxes" #inputs>
+      <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" (keyup)="goToNextInput($event , 0)" (keydown)="onKeyDown($event, 0)" />
+      <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" (keyup)="goToNextInput($event , 1)" (keydown)="onKeyDown($event, 1)" />
+      <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" (keyup)="goToNextInput($event , 2)" (keydown)="onKeyDown($event, 2)" />
+      <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" (keyup)="goToNextInput($event , 3)" (keydown)="onKeyDown($event, 3)" />
+      <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" (keyup)="goToNextInput($event , 4)" (keydown)="onKeyDown($event, 4)" />
+      <input type="text" maxLength="1" size="1" min="0" max="9" pattern="[0-9]{1}" (keyup)="goToNextInput($event , 5)" (keydown)="onKeyDown($event, 5)" />
+    </div>
+  </div>
+</div>

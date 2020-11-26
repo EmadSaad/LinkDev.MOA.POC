@@ -1,0 +1,6 @@
+<h1 class="page-title">{{servicesByCategory.ServiceCategoryName}}</h1>
+<div class="row">
+    <div *ngFor="let service of servicesByCategory.Services" class="col-md-4 col-lg-3">
+        <service-card [item]="service" [service]="true"></service-card>
+    </div>
+</div>

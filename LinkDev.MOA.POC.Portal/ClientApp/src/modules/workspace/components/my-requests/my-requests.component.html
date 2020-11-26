@@ -1,0 +1,68 @@
+<form class="form-wrapper">
+  <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+  <div class="grey-bg grey-bg-padding m-0">
+    <div class="row">
+      <div class="col-md-4">
+        <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr'"
+          [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config" [isRequiredLabel]="false"
+          [options]="CRs" [(ngModel)]="currentCR.Text" #WorkspaceCR="ngModel" (change)="UpdateCr($event)">
+        </mutliselect>
+      </div>
+      <div class="col-md-4">
+        <mutliselect id="WorkspaceContract" name="WorkspaceContract" [label]="'WORKSPACE.ContractNumber'" [propertyToSelect]="'Value'"
+          [options]="lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" [viewMode]="false"
+          [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="currentContract.Text"
+          #WorkspaceContract="ngModel" (change)="UpdateContract($event)">
+        </mutliselect>
+      </div>
+    </div>
+  </div>
+</form>
+<form class="form-wrapper" (ngSubmit)="searchRequests(searchForm)" #searchForm="ngForm">
+  <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+  <div class="grey-bg grey-bg-padding mx-0">
+    <div class="row">
+      <div class="col-md-4">
+        <custom-text-box [type]="'text'" id="RequestNumber" name="RequestNumber" [label]="'RequestHeader.Number'" autocomplete=""
+          aria-label="Name" [isRequiredLabel]="false" #RequestNumber="ngModel"
+          [(ngModel)]="requestFilteration.RequestNumber">
+        </custom-text-box>
+      </div>
+      <div class="col-md-4">
+        <mutliselect id="RequestType" name="RequestType" [label]="'WORKSPACE.RequestType'" [propertyToSelect]="'Value'"
+          [options]="lookupService.lookupEntities['ldv_service_WorkspaceServiceDefinitions']" [viewMode]="false"
+          [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="requestFilteration.RequestType"
+          #RequestType="ngModel">
+        </mutliselect>
+      </div>
+      <div class="col-md-4">
+        <mutliselect id="RequestStatus" name="RequestStatus" [label]="'RequestHeader.Status'" [propertyToSelect]="'Value'"
+          [options]="lookupService.lookupEntities['ldv_requeststatus_WorkspaceRequestStatus']" [viewMode]="false"
+          [multiple]="true" [config]="config" [isRequiredLabel]="false" [(ngModel)]="requestFilteration.RequestStatus"
+          #RequestStatus="ngModel" [selectedItems]="false">
+        </mutliselect>
+        <!-- {{lookupService.lookupEntities['ldv_requeststatus_WorkspaceRequestStatus'] | json}} -->
+      </div>
+      <div class="col-md-4 reg-date">
+        <label>{{'WORKSPACE.RegDate' | translate}}</label>
+        <ngbd-datepicker-popup [(ngModel)]="requestFilteration.From" #FromDate="ngModel" name="FromDate"
+        [placeholder]="'WORKSPACE.From' | translate">
+        </ngbd-datepicker-popup>
+        <ngbd-datepicker-popup [(ngModel)]="requestFilteration.To" #ToDate="ngModel" name="ToDate"
+        [placeholder]="'WORKSPACE.To' | translate">
+        </ngbd-datepicker-popup>
+      </div>
+      <div class="col-md-4">
+        <label class="v-hidden">Button</label>
+        <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+        <button type="button" class="main-btn-secondary" (click)="resetSearch(searchForm)">
+          {{'WORKSPACE.Clear' | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="d-flex justify-content-between align-items-center">
+  <h4 class="page-title m-0">{{'WORKSPACE.MyRequests' | translate}}</h4>
+</div>
+<app-listing-grid [type]="'requests'"></app-listing-grid>

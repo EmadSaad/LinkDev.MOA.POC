@@ -1,0 +1,72 @@
+<app-breadcrumb [CurrnetComponentName]="'workspace'"></app-breadcrumb>
+<div class="row workspace">
+  <div class="col-lg-3">
+    <app-workspace-sidenav [crType]="crType"></app-workspace-sidenav>
+  </div>
+
+  <div class="col-lg-9">
+    <form class="form-wrapper">
+      <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+      <div class="grey-bg grey-bg-padding m-0">
+        <div class="row">
+          <div class="col-md-4">
+            <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr'"
+              [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config"
+              [isRequiredLabel]="false" (change)="updateCr($event)"
+              [options]="lookupService.lookupEntities['account_WorkspaceCRs']" #workspaceCr="ngModel"
+              [(ngModel)]="filtration.CRId">
+            </mutliselect>
+            <!-- (change)="UpdateCr($event)"  [(ngModel)]="currentCR.Text"-->
+          </div>
+         
+        </div>
+        
+      </div>
+    </form>
+    <form class="form-wrapper" (ngSubmit)="search()" #searchForm="ngForm">
+      <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+      <div class="grey-bg grey-bg-padding mx-0">
+        <div class="row">
+          <div class="col-md-4">
+            <custom-text-box [type]="'text'" id="QualificationNumber" name="QualificationNumber" [label]="'RequestHeader.Number'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #QualificationNumber="ngModel"
+              [(ngModel)]="filtration.QualificationNumber">
+            </custom-text-box>
+          </div>
+          <!-- <div class="col-md-4">
+            <mutliselect id="RequestType" name="RequestType" [label]="'WORKSPACE.RequestType'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_service_WorkspaceServiceDefinitions']" [viewMode]="false"
+              [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="filtration.QualificationType"
+              #RequestType="ngModel">
+            </mutliselect>
+          </div> -->
+        </div>
+        <div class="row">
+             <div class="col-md-4 reg-date">
+            <label>{{'WORKSPACE.RegDate' | translate}}</label>
+            <ngbd-datepicker-popup [(ngModel)]="filtration.From" #FromDate="ngModel" name="FromDate"
+              [placeholder]="'WORKSPACE.From' | translate">
+            </ngbd-datepicker-popup>
+            <ngbd-datepicker-popup [(ngModel)]="filtration.To" #ToDate="ngModel" name="ToDate"
+              [placeholder]="'WORKSPACE.To' | translate">
+            </ngbd-datepicker-popup>
+          </div>
+          <div class="col-md-4">
+            <label class="v-hidden">Button</label>
+            <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+            <button type="button" class="main-btn-secondary" (click)="clear(searchForm)">
+              {{'WORKSPACE.Clear' | translate}}
+            </button>
+            <!-- (click)="resetSearch(searchForm)" -->
+          </div>
+        </div>
+      </div>
+    </form>
+    <app-listing-grid [data]="result?.Data" [cols]="cols" [totalNumberOfItems]="result?.TotalNumber"
+      (notifyPageChanged)="pageChanged($event)" [filter]="filtration" [pages]="math.ceil(result?.TotalNumber /
+  this.result?.NumberPerPage)" [totalNumberOfText]="'WORKSPACE.MyQualification'">
+
+    </app-listing-grid>
+  </div>
+</div>

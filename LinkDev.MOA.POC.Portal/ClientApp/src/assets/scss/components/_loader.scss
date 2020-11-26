@@ -1,0 +1,82 @@
+﻿.loader {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index:999999;
+	background: rgb(0,0,0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+//new css 
+#loading-bar-spinner-component.loading {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 9999;
+		// background-color: rgb(5, 21, 66);
+		background: #051542db;
+	
+	.cls-4 {
+		fill: #fefefe;
+	}
+	.cls-1,.cls-2,.cls-3{
+		fill: none;
+		stroke-dasharray: 1000;
+		stroke-dashoffset: 1000;
+		stroke-width:2;
+	}
+	#Path_1,#Path_4{
+		stroke:#51b2dc;
+		animation: fill-first-shape 2s alternate infinite;	
+	}
+	#Path_2,#Path_5,#Path_6{
+		stroke:#286780;	
+		animation: fill-second-shape 2s alternate infinite;	
+	}
+	#Path_3,#Path_7{
+		stroke:#8dc440;
+		animation: fill-third-shape 2s alternate infinite;	
+	}
+}
+@keyframes fill-first-shape {
+	0%{
+		stroke-dashoffset: 0;
+		fill: transparent;	
+	}
+	50%{
+		fill: transparent;
+	}
+	100%{	
+		fill:#51b2dc;
+	}
+}
+@keyframes fill-second-shape {
+	0%{
+		stroke-dashoffset: 0;
+		fill: transparent;		
+	}
+	50%{
+		fill: transparent;
+	}
+	100%{	
+		fill:#286780;
+	}
+}
+@keyframes fill-third-shape {
+	0%{
+		stroke-dashoffset: 0;
+		fill: transparent;			
+	}
+	50%{
+		fill: transparent;
+	}
+	100%{	
+		fill:#8dc440;
+	}
+}

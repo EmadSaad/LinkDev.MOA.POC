@@ -1,0 +1,150 @@
+<form #gridForm="ngForm">
+  <h4 class="page-title">{{'CRManagement.IndustrialLicenseInfo' | translate}}</h4>
+
+  <div class="row">
+    <div class="col-12" *ngIf="SuccessMsg">
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{SuccessMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="ServerErrorMsg">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ServerErrorMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-grid-emitter [modalFormTitle]="'CRManagement.NewIndustrialLicense'" [addNewRecord]="'CRManagement.AddNewIndustrialLicense'"
+                    [tableHeadTitle]="' '" [(data)]="CRils" [columns]="gridcols"
+                    [(model)]="ILInfo" [canAdd]="true" [canEdit]="false" [canView]="true" [canDelete]="true" [templateForm]="gridForm"
+                    [(popUpOpened)]="isPopUpOpened" [template]="gridContent" (addedItem)="CreateIL($event)"
+                    (deletedItem)="DeleteIL($event)" [resetData]="ILInfo.ILISICActivities" [addItemFailed]="addItemFailed"
+                    [LookupEntities]="lookupService.lookupEntities" (isViewMode)="ViewMode($event)" (isModalClosed)="ModalClosed($event)">
+
+    <ng-container #gridContent>
+      <div class="col-12 p-lg-0">
+        <div *ngIf="PopupMsg" [className]="'alert-dismissible fade show ' + PopupMsgClass" role="alert">
+          {{PopupMsg | translate}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <!--<div class="col-12 col-md-4" *ngIf="!viewModeItems">
+          <mutliselect id="ILTypeMutliselect" name="ILTypeMutliselect" [propertyToSelect]="'Value'"
+                       [label]="'CRManagement.ILType'" [options]="getILTypeOptionSet()" [viewMode]="false" [multiple]="false"
+                       [config]="config" [isRequiredLabel]="true" [(ngModel)]="ILInfo.ILType" #ILTypeMutliselect="ngModel"
+                       [required]="true" (change)="GetSelectedValue($event)"
+                       [ngClass]="{ 'is-invalid required  validation':  ILTypeMutliselect.errors&&ILTypeMutliselect.touched  }">
+          </mutliselect>
+          <div *ngIf="ILTypeMutliselect.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="ILTypeMutliselect.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+          </div>
+        </div>-->
+        <div class="col-12 col-md-4" *ngIf="!viewModeItems">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.ILNumber'" [(ngModel)]="ILNumbertxt"
+                           #IL_Nametxt="ngModel" id="ILNumbertxt" name="ILNumbertxt" autocomplete="" aria-label="ILNumbertxt" [isRequiredLabel]="true"
+                           [required]="isPopUpOpened" (change)="ResetILForm()"
+                           [ngClass]="{ 'is-invalid required  validation': IL_Nametxt.touched&& IL_Nametxt.errors }">
+          </custom-text-box>
+          <div *ngIf="IL_Nametxt.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="IL_Nametxt.errors.required">
+              {{'CRManagement.RequiredField' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4" *ngIf="!viewModeItems">
+          <label class="v-hidden">Button</label>
+          <button type="button" class="main-btn find-btn"
+                  (click)="GetindustrialLicensesByNumber()" [disabled]="!ILNumbertxt">
+            {{'CRManagement.Find' | translate}}
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.ILNumber'" [(ngModel)]="ILInfo.ILNumber"
+                           #ILNumber="ngModel" name="ILNumber" autocomplete="" aria-label="ILNumber" [isReadOnly]="true" [isRequiredLabel]="true"
+                           [required]="isPopUpOpened"
+                           [ngClass]="{ 'is-invalid required  validation': ILNumber.dirty && ILNumber.errors }">
+          </custom-text-box>
+          <div *ngIf="ILNumber.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="ILNumber.errors.required">
+              {{'CRManagement.RequiredField' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.IssueDate'" name="ILIssueDate" autocomplete=""
+                           aria-label="IssueDate" [disabled]="'disabled'" [(ngModel)]="ILInfo.ILIssuedate" #ILIssueDate="ngModel">
+          </custom-text-box>
+        </div>
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.ExpiryDate'" name="ILExpirydate" autocomplete=""
+                           aria-label="ExpiryDate" [disabled]="'disabled'" [(ngModel)]="ILInfo.ILExpirydate" #ILExpirydate="ngModel">
+          </custom-text-box>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <mutliselect id="ILTypeMutliselect" name="ILTypeMutliselect" [propertyToSelect]="'Value'"
+                       [label]="'CRManagement.ILType'" [options]="getILTypeOptionSet()" [viewMode]="true" [multiple]="false"
+                       [config]="config" [isRequiredLabel]="true" [(ngModel)]="ILInfo.ILType" #ILTypeMutliselect="ngModel"
+                       [required]="false">
+          </mutliselect>
+
+        </div>
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.ILKSACity'" name="ILCity" autocomplete=""
+                           aria-label="ILCity" [disabled]="'disabled'" [(ngModel)]="ILInfo.ILCity" #ILCity="ngModel">
+          </custom-text-box>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.FactoryName'" name="ILFactoryName" autocomplete=""
+                           aria-label="FactoryName" [disabled]="'disabled'" [(ngModel)]="ILInfo.ILFactoryName"
+                           #ILFactoryName="ngModel">
+          </custom-text-box>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-12 col-md-12">
+          <app-grid-emitter [modalFormTitle]="''" [addNewRecord]="''" [tableHeadTitle]="'CRManagement.ILProduct'"
+                            [(data)]="ILInfo.IlProducts" [columns]="ILProductsgridcols" [(model)]="ILProductsgridModel" [canAdd]="false"
+                            [canEdit]="false" [canDelete]="false" [(popUpOpened)]="isPopUpOpened">
+          </app-grid-emitter>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-12">
+          <app-grid-emitter [modalFormTitle]="''" [addNewRecord]="''" [tableHeadTitle]="'CRManagement.ILISICActivities'"
+                            [(data)]="ILInfo.ILISICActivities" [columns]="ISICActivitygridcols" [(model)]="ISICActivitygridModel" [canAdd]="false" [canEdit]="false"
+                            [canDelete]="false" [(popUpOpened)]="isPopUpOpened" [template]="gridContent" [(resetData)]="ILInfo.ILISICActivities">
+            <ng-container #gridContent>
+            </ng-container>
+          </app-grid-emitter>
+
+        </div>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-md-4 text-left" *ngIf="viewModeItems">
+          <button type="button" class="main-btn"
+                  (click)="UpdateIL()">
+            {{'CRManagement.Update' | translate}}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </app-grid-emitter>
+</form>

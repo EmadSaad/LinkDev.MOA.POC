@@ -1,0 +1,165 @@
+<form class="form-wrapper">
+    <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+    <div class="grey-bg grey-bg-padding m-0">
+        <div class="row">
+            <div class="col-md-4">
+                <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr' | translate"
+                    [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config"
+                    [isRequiredLabel]="false" [options]="CRs" [(ngModel)]="currentCR.Text" #WorkspaceCR="ngModel"
+                    (change)="UpdateCr($event)">
+                </mutliselect>
+            </div>
+            <div class="col-md-4">
+                <mutliselect id="WorkspaceContract" name="WorkspaceContract"
+                    [label]="'WORKSPACE.ContractNumber' | translate" [propertyToSelect]="'Value'"
+                    [options]="this.lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" [viewMode]="false"
+                    [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="currentContract.Text"
+                    #WorkspaceContract="ngModel" (change)="UpdateContract($event)">
+                </mutliselect>
+            </div>
+        </div>
+        <div class="row" *ngIf="currentContract.Text && currentContractDetails">
+            <div class="col-12"><h6 class="bold">{{'WORKSPACE.contractDetails.title' | translate}}</h6></div> 
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.CityName">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.cityName' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.CityName}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.LandNumber">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.landNumber' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.LandNumber}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.LandArea">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.landArea' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.LandArea}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductMainFamilyName">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.productMainFamily' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.ProductMainFamilyName}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductSubFamily">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.productSubFamily' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.ProductSubFamily}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductName">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.productName' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.ProductName}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.PricingType">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.pricingType' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.PricingType}}</div>
+            </div>
+            <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.PricePerMeterOrUnit">
+                <div class="text-black-50">{{'WORKSPACE.contractDetails.pricePerMeter' | translate}}</div>
+                <div class="bold mt-3">{{currentContractDetails.PricePerMeterOrUnit}}</div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="d-flex justify-content-between align-items-center"  *ngIf="OverviewData">
+    <h4 class="page-title">{{'WORKSPACE.Overview' | translate}}</h4>
+</div>
+<!-- <p>crtype = {{crType}}</p> -->
+<div class="overviewWrapper" *ngIf="OverviewData">
+    <swiper class="swiper-container">
+        <div class="swiper-slide">
+            <div class="overview-item" (click)="listData('requests')" [class.selected]="typeOfItems == 'requests'">
+                <!-- <img src="./assets/images/requests.png" alt="Requests" class="logo-img"> -->
+                <div class="requests-img dashboard-img"></div>
+                <div class="total-number">{{OverviewData.Requests}}</div>
+                <div class="title">{{'WORKSPACE.MyRequests' | translate}}</div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="overview-item" (click)="listData('contracts')" [class.selected]="typeOfItems == 'contracts'">
+                <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+                <div class="contracts-img dashboard-img"></div>
+                <div class="total-number">{{OverviewData.Contracts}}</div>
+                <div class="title">{{'WORKSPACE.Contracts' | translate}}</div>
+            </div>
+        </div>
+        <div class="swiper-slide">
+            <div class="overview-item" (click)="listData('tasks')" [class.selected]="typeOfItems == 'tasks'">
+                <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+                <div class="contracts-img dashboard-img"></div>
+                <div class="total-number">{{OverviewData.Tasks}}</div>
+                <div class="title">{{'WORKSPACE.MyTasks' | translate}}</div>
+            </div>
+        </div>
+        <div class="swiper-slide" *ngIf="crType == 1">
+            <div class="overview-item" (click)="listData('licenses')" [class.selected]="typeOfItems == 'licenses'">
+                <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+                <div class="licenses-img dashboard-img"></div>
+                <div class="total-number">{{OverviewData.Licenses}}</div>
+                <div class="title">{{'WORKSPACE.Licenses' | translate}}</div>
+            </div>
+        </div>
+        <div class="swiper-slide" *ngIf="crType == 6 || crType == 7">
+            <div class="overview-item" (click)="listData('wonBiddings')"
+                [class.selected]="typeOfItems == 'wonBiddings'">
+                <div class="licenses-img dashboard-img"></div>
+                <div class="total-number">{{OverviewData.WonBidding}}</div>
+                <div class="title">{{'WORKSPACE.WonBiddings' | translate}}</div>
+            </div>
+        </div>
+        <div class="swiper-slide" *ngIf="crType == 6 || crType == 7">
+            <div class="overview-item" (click)="listData('availableBiddings')"
+                [class.selected]="typeOfItems == 'availableBiddings'">
+                <div class="licenses-img dashboard-img"></div>
+                <div class="total-number">{{OverviewData.AvailableBidding}}</div>
+                <div class="title">{{'WORKSPACE.AvailableBiddings' | translate}}</div>
+            </div>
+        </div>
+    </swiper>
+</div>
+<div class="d-flex justify-content-between align-items-center lising-header" [ngSwitch]="typeOfItems">
+    <h4 class="page-title m-0">
+        {{'WORKSPACE.Last' | translate}}
+        <span *ngSwitchCase="'requests'">{{'WORKSPACE.MyRequests' | translate}}</span>
+        <span *ngSwitchCase="'tasks'">{{'WORKSPACE.MyTasks' | translate}}</span>
+        <span *ngSwitchCase="'contracts'">{{'WORKSPACE.Contracts' | translate}}</span>
+        <span *ngSwitchCase="'wonBiddings'">{{'WORKSPACE.WonBiddings' | translate}}</span>
+        <span *ngSwitchCase="'availableBiddings'">{{'WORKSPACE.AvailableBiddings' | translate}}</span>
+        <span *ngSwitchCase="'licenses'">{{'WORKSPACE.Licenses' | translate}}</span>
+    </h4>
+    <a routerLink="my-requests" [title]="'View_All' | translate" *ngSwitchCase="'requests'">{{'View_All' | translate}} <span
+        class="icon-back"></span> </a>
+    <a routerLink="my-tasks" [title]="'View_All' | translate" *ngSwitchCase="'tasks'">
+        {{'View_All' | translate}} <span class="icon-back"></span></a>
+    <a routerLink="my-contracts" [title]="'View_All' | translate" *ngSwitchCase="'contracts'">{{'View_All' | translate}} <span
+        class="icon-back"></span> </a>
+    <a routerLink="my-biddings/wonBidding" [title]="'View_All' | translate" *ngSwitchCase="'wonBiddings'">{{'View_All' | translate}} <span
+        class="icon-back"></span></a>
+    <a routerLink="my-biddings/availableBidding" [title]="'View_All' | translate"
+        *ngSwitchCase="'availableBiddings'">{{'View_All' | translate}} <span class="icon-back"></span> </a>
+    <a routerLink="my-licenses" [title]="'View_All' | translate" *ngSwitchCase="'licenses'">{{'View_All' | translate}} <span
+        class="icon-back"></span> </a>
+</div>
+<div [ngSwitch]="typeOfItems" class="mb-5" *ngIf="!error">
+    <div *ngSwitchCase="'requests'">
+        <app-listing-grid [type]="'requests'" [onlyLast5]="true"></app-listing-grid>
+    </div>
+    <div *ngSwitchCase="'tasks'">
+        <app-listing-grid [type]="'tasks'" [onlyLast5]="true"></app-listing-grid>
+    </div>
+    <div *ngSwitchCase="'contracts'">
+        <app-listing-grid [type]="'contracts'" [onlyLast5]="true"></app-listing-grid>
+    </div>
+    <div *ngSwitchCase="'wonBiddings'">
+        <app-listing-grid [type]="'wonBiddings'" [onlyLast5]="true" *ngIf="crType == 6 || crType == 7">
+        </app-listing-grid>
+    </div>
+    <div *ngSwitchCase="'availableBiddings'">
+        <app-listing-grid [type]="'availableBiddings'" [onlyLast5]="true" *ngIf="crType == 6 || crType == 7">
+        </app-listing-grid>
+    </div>
+    <div *ngSwitchCase="'licenses'">
+        <app-listing-grid [type]="'licenses'" [onlyLast5]="true" *ngIf="crType == 1"></app-listing-grid>
+    </div>
+</div>
+<div class="alerts-wrapper mt-4" *ngIf="error">
+    <message [mode]="errorMode">
+        <p class="error-select">
+            {{'WORKSPACE.ErrorMsg' | translate}}
+        </p>
+    </message>
+</div>

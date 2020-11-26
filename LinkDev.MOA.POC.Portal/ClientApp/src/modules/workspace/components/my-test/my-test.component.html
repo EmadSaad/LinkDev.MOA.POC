@@ -1,0 +1,11 @@
+<p>
+  my-test works!
+</p>
+<div class="col-md-4">
+  <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'رقم السجل التجاري/المنشأة'" [propertyToSelect]="'Value'"
+    [viewMode]="false" [multiple]="false" [config]="config" [isRequiredLabel]="true" 
+    [options]="lookupService.lookupEntities['account_WorkspaceCRs']"
+    [(ngModel)]="currentCR.Text" #WorkspaceCR="ngModel">
+  </mutliselect>
+</div>
+options {{lookupService.lookupEntities['account_WorkspaceCRs'] | json}}

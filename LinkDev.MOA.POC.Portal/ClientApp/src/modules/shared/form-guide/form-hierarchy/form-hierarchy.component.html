@@ -1,0 +1,24 @@
+<div class="form-hierarchy">
+  <div [ngClass]="{'d-none': isFormHierarchyOpened}" class="form-hierarchy-collapse"
+    (click)="isFormHierarchyOpened = !isFormHierarchyOpened">
+    <div>
+      {{activeFirstLevelLabel | translate}}, {{activeSecondLevelLabel | translate}}
+    </div>
+    <span class="icon-dropdow-arrow"></span>
+  </div>
+  <div class="h-100 form-hierarchy-menu" [ngClass]="{'show': isFormHierarchyOpened}">
+    <span class="icon-cancel-music" (click)="isFormHierarchyOpened = !isFormHierarchyOpened"></span>
+    <p-tree [value]="structure" (onNodeExpand)="nodeExpand($event)" (onNodeCollapse)="nodeCollapse($event)"
+      selectionMode="single">
+      <ng-template let-node pTemplate="child">
+        <div class="child-label" (click)="handleChildNode(node)">{{node.label | translate}}</div>
+      </ng-template>
+      <ng-template let-node pTemplate="section">
+        <div class="section-label"><a (click)="handleSectionNode(node)">{{node.label | translate}}</a></div>
+      </ng-template>
+      <ng-template let-node pTemplate="parent">
+        <div class="parent-label" (click)="handleParentNode(node)">{{node.label | translate}}</div>
+      </ng-template>
+    </p-tree>
+  </div>
+</div>

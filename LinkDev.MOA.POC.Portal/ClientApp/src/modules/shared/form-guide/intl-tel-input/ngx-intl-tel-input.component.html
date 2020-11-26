@@ -1,0 +1,51 @@
+<div class="intl-tel-input allow-dropdown" *ngIf='!ViewMode else viewModeTemp'>
+  <div class="flag-container" dropdown [ngClass]="{'disabled': disabled}">
+    <div class="selected-flag dropdown-toggle" dropdownToggle>
+      <div class="iti-flag" [ngClass]="selectedCountry.flagClass">
+      </div>
+      <div *ngIf="!disableDropdown && !isReadOnly" class="iti-arrow"></div>
+      <div *ngIf="!isReadOnly" class="dial-code">{{selectedCountry.dialCode}}</div>
+    </div>
+    <ng-template [ngIf]="!disableDropdown && !isReadOnly">
+      <ul class="country-list dropdown-menu" *dropdownMenu>
+        <li class="country" *ngFor="let country of preferredCountriesInDropDown"
+          (click)="onCountrySelect(country, focusable)">
+          <div class="flag-box">
+            <div class="iti-flag" [ngClass]="country.flagClass"></div>
+          </div>
+          <span class="country-name">{{country.name}}</span>
+          <span class="dial-code">+{{country.dialCode}}</span>
+        </li>
+        <li class="divider" *ngIf="preferredCountriesInDropDown?.length"></li>
+        <li class="country" *ngFor="let country of allCountries" (click)="onCountrySelect(country, focusable)">
+          <div class="flag-box">
+            <div class="iti-flag" [ngClass]="country.flagClass"></div>
+          </div>
+          <span class="country-name">{{country.name}}</span>
+          <span class="dial-code">+{{country.dialCode}}</span>
+        </li>
+      </ul>
+    </ng-template>
+  </div>
+  <input type="tel" id="phone" autocomplete="off" [ngClass]="cssClass" (blur)="onTouched()"
+    (keypress)="onInputKeyPress($event)" [(ngModel)]="phoneNumber" (ngModelChange)="onPhoneNumberChange()"
+    [disabled]="disabled" [placeholder]="selectedCountry.placeHolder" [maxlength]="maxLength" [readonly]="isReadOnly"
+    #focusable>
+</div>
+
+<ng-template #viewModeTemp>
+  <div *ngIf= "showFlagInViewMode else viewModeWithoutFlagTemp" class="intl-tel-input">
+    <label class="readonly">
+      <span class="selected-flag">
+        <span class="iti-flag" [ngClass]="selectedCountry.flagClass">
+        </span>
+        <span class="dial-code">{{selectedCountry.dialCode +' '+ ViewMode}}</span>
+      </span>
+    </label>
+  </div>
+  <ng-template #viewModeWithoutFlagTemp>
+    <div class="intl-tel-input">
+      <span>{{ViewMode}}</span>
+    </div>
+  </ng-template>
+</ng-template>

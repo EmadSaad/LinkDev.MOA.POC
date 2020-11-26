@@ -1,0 +1,128 @@
+<app-breadcrumb [CurrnetComponentName]="'LicenseDetails'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="activeLevelOne" [activeSecondLevel]="activeLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{tabText | translate}}</h4>
+    <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+      [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+    <form #form="ngForm" novalidate autocomplete="off">
+      <div *ngIf="activeLevelOne === 1">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.LicenseNumber'"
+              [(ngModel)]="buildingLicenseInfo.LicenseNumber" name="LicenseNumber"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.ContractNumber'"
+              [(ngModel)]="buildingLicenseInfo.ContractNumber" name="ContractNumber"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.CRNumber'"
+              [(ngModel)]="buildingLicenseInfo.CRNumber" name="CRNumber"></custom-text-box>
+          </div>
+
+
+        </div>
+        <div class="row">
+
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.IndustrialLicense'"
+              [(ngModel)]="buildingLicenseInfo.IndustrialLicense" name="IndustrialLicense"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.IndustrialCity'"
+              [(ngModel)]="buildingLicenseInfo.IndustrialCity" name="IndustrialCity">
+            </custom-text-box>
+          </div>
+
+
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.MainActivityType'"
+              [(ngModel)]="buildingLicenseInfo.MainActivityType" name="MainActivityType"></custom-text-box>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.LicenseType'"
+              [(ngModel)]="buildingLicenseInfo.LicenseType" name="LicenseType"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.FloorsNumber'"
+              [(ngModel)]="buildingLicenseInfo.FloorsNumber" name="FloorsNumber"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.ApprovedPlanNumber'"
+              [(ngModel)]="buildingLicenseInfo.ApprovedPlanNumber" name="ApprovedPlanNumber"></custom-text-box>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.LicenseDuration'"
+              [(ngModel)]="buildingLicenseInfo.LicenseDuration" name="LicenseDuration"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.StartDuration'"
+              [(ngModel)]="buildingLicenseInfo.IssuanceDateInHigri" name="IssuanceDateInHigri"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.License.Details.ExpiryDate'"
+              [(ngModel)]="buildingLicenseInfo.ExpiryDateInHigri" name="ExpiryDate"></custom-text-box>
+          </div>
+
+
+        </div>
+      </div>
+    </form>
+    <div *ngIf="activeLevelOne === 2">
+
+      <app-grid-emitter [modalFormTitle]="'Outputs.License.AddSafety'" [tableHeadTitle]="' '"
+        [addNewRecord]="'Outputs.License.AddSafety'" [columns]="contractorsGridColumns" [model]="{}"
+        [(data)]="contractContractorsAndConsultingOffice" [canAdd]="true" [canEdit]="false" [canDelete]="false"
+        [template]="'gridContent'" [templateForm]="popupForm" [addItemFailed]="addItemFailed"
+        (addedItem)="addSafety($event)" (isModalClosed)="modalClosed($event)">
+        <ng-container #gridContent>
+          <form #popupForm="ngForm" novalidate>
+
+            <mutliselect id=" safetyType" name="safetyType" #safetyType="ngModel"
+              [label]="'Outputs.License.ConsultingOfficeAndContractor.SafetyType'" [propertyToSelect]="'Value'"
+              [options]="safetyList" [viewMode]="false" [multiple]="false" [(ngModel)]="selectedSafety"
+              [required]="true" [config]="config" (change)="safetySelectionChanged($event)">
+            </mutliselect>
+
+            <mutliselect [hidden]="selectedSafety !== 3" id="safetyContractor" name="safetyContractor"
+              #safetyContractor="ngModel" [label]="'Outputs.License.ConsultingOfficeAndContractor.SafetyContractor'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_contractorcertificate_LookupWithId']" [viewMode]="false"
+              [multiple]="false" [(ngModel)]="contractor" [config]="config">
+            </mutliselect>
+
+            <mutliselect [hidden]="selectedSafety !==5" id="safetyConsulting" name="safetyConsulting"
+              #safetyConsulting="ngModel"
+              [label]="'Outputs.License.ConsultingOfficeAndContractor.SafetyConsultingOffice'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_qualificationcertificate_LookupWithId']" [viewMode]="false"
+              [multiple]="false" [(ngModel)]="consultingOffice" [config]="config">
+            </mutliselect>
+          </form>
+        </ng-container>
+      </app-grid-emitter>
+    </div>
+    <div *ngIf="activeLevelOne === 3">
+
+      <app-Uploaders-List [uploaders]="documentSettings" [IsReadOnly]="true" [IsLiveChanges]="true">
+      </app-Uploaders-List>
+      <div *ngIf="documentSettings.length === 0">
+        {{'NO_RESULT_FOUND' | translate }}
+      </div>
+    </div>
+  </div>

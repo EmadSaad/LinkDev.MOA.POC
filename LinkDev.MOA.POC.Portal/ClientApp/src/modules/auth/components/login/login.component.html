@@ -1,0 +1,113 @@
+<div class="row auth-padding">
+  <div class="col-md-11 mx-auto">
+    <div class="auth row border-box">
+      <div class="col-12 col-lg-6 order-lg-2 NIC">
+        <div class="welcome-wrapper text-center">
+          <img src="./assets/images/NIC-logo.png" alt="NIC Logo">
+          <h1>{{'ProfileManagment.LoginPageTitle'| translate}}</h1>
+          <p>
+            {{'ProfileManagment.LoginPageBody'| translate}}
+          </p>
+        </div>
+        <div class="text-center left-login-button">
+          <button type="submit" class="main-btn login-button" id="btn-login"
+            (click)="RedirectToIam()">{{'LOGIN'|translate}}</button>
+          <button type="submit" class="main-btn login-button" id="btn-login" (click)="RedirectToIam()">
+            {{'Register'|translate}}</button>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6 one-border">
+        <div class="or">{{"OR" | translate}}</div>
+        <div class="text-center">
+          <img src="./assets/images/Logo-white.png" alt="NIC Logo">
+        </div>
+        <form class="form-horizontal form-wrapper form-bg-blue" novalidate #loginForm="ngForm">
+          <div class="form-group row">
+            <!--ERROR_MESSAGE -->
+            <div class="col-12 mt-5 mb-0">
+              <div *ngIf="message" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{message | translate}} <span *ngIf="ShowResendActivationMail"
+                  class="pointer text-decoration-underline colored-text"
+                  (click)="Resendactivationemail()">{{"ClickHere"  | translate}}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Start Email -->
+            <div class="col-12">
+              <div class="form-row">
+
+                <custom-text-box [type]="'email'" name="email" autocomplete="" aria-label="email"
+                  [placeholder]="'LOGIN_EMAIL'|translate" [label]="'ProfileManagment.Email'"
+                  [pattern]="emailValidationPattern" [(ngModel)]="UserLogin.email" #email="ngModel" [required]="true"
+                  [ngClass]="{ 'is-invalid required  validation':  email.errors || email.errors?.pattern }">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="EmailValidation" [controlName]="email" [form]="loginForm"
+                  [submit]="submitted">
+                </app-validation-viewer>
+
+              </div>
+
+            </div>
+            <!-- End Email -->
+            <!-- Start Password -->
+
+            <div class="col-12">
+              <div class="form-row">
+
+                <password-textbox [label]="'LOGIN_PASSWORD'|translate" name="password"
+                  [placeholder]="'LOGIN_PASSWORD'|translate" [pattern]="passwordValidationPattern" [required]="true"
+                  aria-label="password" #password="ngModel" [(ngModel)]="UserLogin.password"
+                  [ngClass]="{ 'is-invalid required  validation':  password.errors?.required  || password.errors?.pattern }">
+                </password-textbox>
+                <app-validation-viewer [requiredValidations]="PasswordValidation" [controlName]="password"
+                  [form]="loginForm" [submit]="submitted">
+                </app-validation-viewer>
+
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center align-items-center">
+            <div class="col-12 text-center">
+              <button type="submit" class="main-btn login-button" id="btn-login"
+                (click)="onSubmit()">{{'LOGIN'|translate}}</button>
+            </div>
+            <div class="col-12 forget-ps">
+              <span class="">
+                <a [routerLink]="['../','forgetpassword']" class="text-decoration-underline"
+                  title="{{'FORGET_YOUR_PASSWORD'|translate}}"> {{'FORGET_YOUR_PASSWORD'|translate}}</a>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #popup let-modal>
+    <!--MODAL_BODY-->
+    <div class="modal-body">
+      <h3 class="page-title text-center mt-0">{{'Rating_Popup.ratingService' | translate}}</h3>
+      <div class="row mt-5">
+        <div class="col-md-6 text-center">
+          <div class="text-black-50 mb-3">{{'Rating_Popup.requestNumber' | translate}}</div>
+          <div>{{lastNonRatedApp.ApplicationNumber}}</div>
+        </div>
+        <div class=" mt-4 mt-md-0 col-md-6 text-center">
+          <div class="text-black-50 mb-3">{{'Rating_Popup.requestType' | translate}}</div>
+          <div>{{lastNonRatedApp.ServiceName}}</div>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-5 no-gutters">
+        <p-rating [(ngModel)]="rateValue" [cancel]="false"></p-rating>   
+        <div class="form-validation text-center w-100"  *ngIf="notYetRated">{{'Rating_Popup.ratingValidationMsg' | translate}}</div> 
+      </div>     
+      <div class="row justify-content-center no-gutters mt-5">    
+          <button type="button" class="main-btn" (click)="handleRate()">{{'Rating_Popup.rateNowbtn' | translate}}</button>
+          <button type="button" class="main-btn-secondary" (click)="noRate()">{{'Rating_Popup.closeWithoutRatebtn' | translate}}</button>
+      </div>
+    </div>
+</ng-template>
