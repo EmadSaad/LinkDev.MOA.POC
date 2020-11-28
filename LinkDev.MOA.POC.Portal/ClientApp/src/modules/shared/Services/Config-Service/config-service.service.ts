@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 export class ConfigService {
 
   static APIURL: string;
+  static MOAAPIURL: string;
   static CRMAPI: string;
   static OldModonURL: string;
   static PasswordValidationPattern: string;
@@ -25,6 +26,7 @@ export class ConfigService {
       this.http.get(jsonFile).toPromise().then((response: any) => {
         ConfigService.CRMAPI = response.CRMAPI;
         ConfigService.APIURL = response.APIURL;
+        ConfigService.MOAAPIURL = response.MOAAPIURL;
         ConfigService.PasswordValidationPattern = response.PasswordValidationPattern;
         ConfigService.EmailValidationPattern = response.EmailValidationPattern;
         ConfigService.MobileValidationPattern = response.MobileValidationPattern;

@@ -117,7 +117,9 @@
     "UPDATE_CONTRACT": "طلب التحديث",
     "MERGE_CONTRACT": "طلب دمج",
     "CONTRACT_EDIT": "طلب التعديل",
-    "TICKET_MANAGEMENT": "التذاكر والشكاوى"
+    "TICKET_MANAGEMENT": "التذاكر والشكاوى",
+    "MOARequests": "الطلبات",
+    "moaCreateCase":"طلب جديد"
   },
   "Nav": {
     "Home": "الصفحة الرئيسية",
@@ -128,10 +130,10 @@
     "LicencesServices": "خدمات الرخص",
     "RequestProduct": "طلب منتج",
     "ConsultingOfficeServices": "خدمات المكتب الاستشاري",
-    "ContractManagement": "ادارة العقود",
-    "ContractorServices": "خدمات المقاول",
+    "ContractManagement": "ادارة العقود",    "ContractorServices": "خدمات المقاول",
     "CoordinationLetters": "الخطابات التنسيقية",
-    "TicketsServices": "خدمات التذاكر"
+    "TicketsServices": "خدمات التذاكر",
+    "Requests": "الطلبات"
   },
   "Documents": {
     "ValidationAllowedExtenstions": "لا يمكن تحميل هذا الإمتداد",
@@ -1455,5 +1457,23 @@
     "RatedTicket": "رضا الشريك",
     "Rating": "التقييم",
     "TikcetStatus": "حالة التذكرة"
+  },
+  "MOACases":{
+    "MyRequests":"طلباتي"
+  },
+  "MOACreateCase":{
+    "ImportingRequest": "طلب إذن أستيراد",
+    "MainInfo":"المعلومات الأساسية",
+    "ProductInfo":"معلومات المنتج",
+    "PricingInfo":"معلومات التسعير",
+    "CompanyName": "إسم الشركة",
+    "Product": "المنتج",
+    "ExporterName": "اسم المورد",
+    "MadeInCountry": "بلد المنشأ",
+    "ExportingCountry": "بلد الشحن",
+    "UnitPrice": "سعر الوحدة",
+    "Qunatity": "الكمية",
+    "TotalPrice": "إجمالي السعر",
+    "ArrivingPort": "ميناء الوصول"
   }
 }

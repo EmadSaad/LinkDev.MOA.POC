@@ -1,6 +1,7 @@
 {
-  "apiBaseUrl": "http://localhost:3139/",
-  "APIURL": "http://localhost:3139/",
+  "apiBaseUrl": "https://emodonqcapir2.linkdev.com/",
+  "APIURL": "https://emodonqcapir2.linkdev.com/",
+  "MOAAPIURL":"https://localhost:44387/",
   "CRMAPI": "http://stgcrm1:81/api/",
   "OldModonURL":"",
   "recaptchaSiteKey": "6LcCbgAVAAAAANO04BMGfgow_d7HTWmjF8ODUQrG",

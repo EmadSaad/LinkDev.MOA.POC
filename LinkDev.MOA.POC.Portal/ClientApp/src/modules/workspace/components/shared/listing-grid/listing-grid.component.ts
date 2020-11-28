@@ -9,6 +9,8 @@ import { IBiddingsFiltration } from 'src/modules/workspace/interfaces/BiddingsFi
 import { ILicenseFiltration } from 'src/modules/workspace/interfaces/LicenseFiltration.interface';
 import { ResponseCode } from 'src/modules/shared/Models/api-generic-response';
 import { Service } from 'src/modules/workspace/interfaces/service.enum';
+import { TFiltration } from 'src/modules/MOA-Cases/Models/TFiltration';
+import {MOAService} from 'src/modules/MOA-Cases/Services/MOA-Service.service'
 
 @Component({
   selector: 'app-listing-grid',
@@ -20,6 +22,7 @@ export class ListingGridComponent implements OnInit {
   contractFilter: IContractFiltration;
   biddingFilter: IBiddingsFiltration;
   licenseFilter: ILicenseFiltration;
+  MOACasesFilter: TFiltration;
   serviceEnum = Service;
   @Input() service;
   @Input() filter;

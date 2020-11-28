@@ -46,6 +46,8 @@ export const MODONbreadcrumbs: BreadCrumbItem[] = [
   { ComponentName: "contractmerge", ItemTextKey: "BREADCRUMB.MERGE_CONTRACT", HasRoute: true, Parameters: "", ParentComponentName: "2", Route: "/contract-merge" },
   { ComponentName: "contractedit", ItemTextKey: "BREADCRUMB.CONTRACT_EDIT", HasRoute: true, Parameters: "", ParentComponentName: "2", Route: "/contract-edit" },
   { ComponentName: "Updatecontract", ItemTextKey: "BREADCRUMB.UPDATE_CONTRACT", HasRoute: true, Parameters: "", ParentComponentName: "2", Route: "/contract-update" },
-    // Ticket Service
+    // Ticket Service 
     { ComponentName: "99", ItemTextKey: "BREADCRUMB.TICKET_MANAGEMENT", HasRoute: true, Parameters: "", ParentComponentName: "ModonServices", Route: "/modon-services/services/99" },
+    { ComponentName: "moacases", ItemTextKey: "BREADCRUMB.MOARequests", HasRoute: true, Parameters: "", ParentComponentName: "Home", Route: "/moa-cases" },
+    { ComponentName: "moaCreateCase", ItemTextKey: "BREADCRUMB.moaCreateCase", HasRoute: true, Parameters: "", ParentComponentName: "moacases", Route: "/create-case" },
 ];

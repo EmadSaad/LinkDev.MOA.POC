@@ -27,9 +27,7 @@
            <a [href]="rowData['Url']" title="{{rowData[col.field]}}">{{rowData[col.field]}}</a>
          </td>
          <td *ngIf="service === serviceEnum.Requests">
-           <p-rating *ngIf="rowData['ShowRating']" [(ngModel)]="rowData['Rating']" [cancel]="false"
-             [readonly]="rowData['Rating'] != 0 && rowData['Rating'] != null" (onRate)="handleRate($event, rowIndex)">
-           </p-rating>
+          
          </td>
          <td class="listing-arrow">
            <a [href]="rowData['Url']" title="{{'Show_Details' | translate}}"><span class="icon-arrow-right"></span></a>

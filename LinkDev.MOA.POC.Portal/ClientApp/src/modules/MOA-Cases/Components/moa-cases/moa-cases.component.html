@@ -1,0 +1,61 @@
+<app-breadcrumb [CurrnetComponentName]="'moacases'"></app-breadcrumb>
+
+<div class="row workspace">
+  <div class="col-lg-3">
+    <app-MOA-SideNav [requestStatistics]="requestStatistics" [openChildMenu]="true"
+      [tab]="'requests'">
+    </app-MOA-SideNav>
+  </div>
+
+  <div class="col-lg-9">
+    <form class="form-wrapper">
+      <h6 class="page-title">{{'MOACases.MyRequests' | translate}}</h6>
+      <div class="grey-bg grey-bg-padding m-0">
+        <div class="row">
+          <div class="col-md-4">
+            <custom-text-box [type]="'text'" id="RequestNumber" name="RequestNumber" [label]="'RequestHeader.Number'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #RequestNumber="ngModel"
+              [(ngModel)]="filtration.RequestNumber">
+            </custom-text-box>
+          </div>
+          <div class="col-md-4">
+            <mutliselect id="RequestType" name="RequestType" [label]="'WORKSPACE.RequestType'"
+              [propertyToSelect]="'Value'"
+              [options]="[]" [viewMode]="false"
+              [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="filtration.RequestType"
+              #RequestType="ngModel">
+            </mutliselect>
+          </div>
+          <div class="col-md-4">
+            <mutliselect id="RequestStatus" name="RequestStatus" [label]="'RequestHeader.Status'"
+              [propertyToSelect]="'Value'"
+              [options]="[]" [viewMode]="false"
+              [multiple]="true" [config]="config" [isRequiredLabel]="false" [(ngModel)]="filtration.RequestStatus"
+              #RequestStatus="ngModel" [selectedItems]="false">
+            </mutliselect>
+          </div>
+          <div class="col-md-4 reg-date">
+            <label>{{'WORKSPACE.RegDate' | translate}}</label>
+            <ngbd-datepicker-popup [(ngModel)]="filtration.From" #FromDate="ngModel" name="FromDate"
+              [placeholder]="'WORKSPACE.From' | translate">
+            </ngbd-datepicker-popup>
+            <ngbd-datepicker-popup [(ngModel)]="filtration.To" #ToDate="ngModel" name="ToDate"
+              [placeholder]="'WORKSPACE.To' | translate">
+            </ngbd-datepicker-popup>
+          </div>
+          <div class="col-md-4">
+            <label class="v-hidden">Button</label>
+            <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+            <button type="button" class="main-btn-secondary" (click)="clear(searchForm)">
+              {{'WORKSPACE.Clear' | translate}}
+            </button>
+          </div>
+      </div>
+      </div>
+    </form>
+    <app-listing-grid *ngIf="!error" [data]="result?.Data" [cols]="cols" [totalNumberOfItems]="result?.TotalNumber"
+       (notifyPageChanged)="pageChanged($event)" [filter]="filtration" [service]="1" [pages]="math.ceil(result?.TotalNumber /
+  this.result?.NumberPerPage)" [totalNumberOfText]="'WORKSPACE.MyRequests'">
+     </app-listing-grid>
+  
+</div>

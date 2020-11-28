@@ -34,6 +34,10 @@
                 <a class="nav-link" routerLink='/CR-Managment/MyCRs' title="{{'Nav.AccountsManagement'|translate}}"
                   routerLinkActive="active">{{'Nav.AccountsManagement'|translate}}</a>
               </li>
+              <li class="nav-item" *ngIf="isAuthorized">
+                <a class="nav-link" routerLink="/moa-cases" routerLinkActive="active"
+                  title="{{'Nav.Requests'|translate}}">{{'Nav.Requests'|translate}}</a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" routerLink="/workspace" routerLinkActive="active"
                   title="{{'Nav.Workspace'|translate}}">{{'Nav.Workspace'|translate}}</a>

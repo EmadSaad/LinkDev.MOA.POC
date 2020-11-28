@@ -34,8 +34,9 @@ const routes: Routes = [
   { path: 'partial-building-request', loadChildren:'src/modules/Partial-Building-Request/partial-building-request.module#PartialBuildingRequestModule', canActivate: [] },
   { path: 'contract-edit', loadChildren: 'src/modules/Contract-Edit/contract-edit.module#ContractEditModule', canActivate: [AuthGuardService] },
   { path: 'contract-merge', loadChildren: 'src/modules/Contract-Merge/contract-merge.module#ContractMergeModule', canActivate: [] },
-
-  { path: 'contract-split', loadChildren: 'src/modules/Split-Request/split-request.module#SplitRequestModule', canActivate: [] },
+{ path:'moa-cases', loadChildren: 'src/modules/MOA-Cases/moa-cases.module#MoaCasesModule', canActivate: []},
+  {path: 'create-case', loadChildren: 'src/modules/MOA-CreateCase/MOA-CreateCase.module#MOACreateCaseModule',canActivate:[]},
+{ path: 'contract-split', loadChildren: 'src/modules/Split-Request/split-request.module#SplitRequestModule', canActivate: [] },
   { path: 'contract-update', loadChildren: 'src/modules/Contract-Update/contract-update.module#ContractUpdateModule', canActivate: [AuthGuardService] },
   { path: 'operating-license-request', loadChildren:'src/modules/Operating-License-Request/operating-license-request.module#OperatingLicenseRequestModule', canActivate: [] },
   { path: "**", redirectTo: "not-found" },

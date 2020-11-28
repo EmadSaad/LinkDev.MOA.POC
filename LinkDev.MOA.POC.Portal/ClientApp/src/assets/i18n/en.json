@@ -118,7 +118,9 @@
     "SPLIT_CONTRACT": "Split Request",
     "UPDATE_CONTRACT": "Update Contract",
     "CONTRACT_EDIT": "Edit Contract",
-    "TICKET_MANAGEMENT": "Tickets Managment"
+    "TICKET_MANAGEMENT": "Tickets Managment",
+    "MOARequests": "Requests",
+    "moaCreateCase":  "New Request"
   },
   "Nav": {
     "Home": "Home",
@@ -132,7 +134,8 @@
     "ContractManagement": "Contract management",
     "ContractorServices": "Contractor services",
     "CoordinationLetters": "Coordination letters",
-    "TicketsServices": "Tickets services"
+    "TicketsServices": "Tickets services",
+    "Requests": "Requests"
   },
   "Documents": {
     "ValidationAllowedExtenstions": "File type is not allowed",
@@ -1410,7 +1413,24 @@
     "RatedTicket": "Partner Stisfacation",
     "Rating": "Rating",
     "TikcetStatus": "Ticket Status"
+  },
+  "MOACases":{
+    "MyRequests":"My Requests"
+  },
+  "MOACreateCase":{
+    "ImportingRequest": "Importing Request",
+    "MainInfo":"Main Info",
+    "ProductInfo":"Product Info",
+    "PricingInfo": "Pricing Info",
+    "CompanyName": "Company Name",
+    "Product": "Product",
+    "ExporterName":"Exporter Name",
+    "MadeInCountry": "MadeIn Country",
+    "ExportingCountry": "Exporting Country",
+    "UnitPrice": "Unit Price",
+    "Qunatity": "Qunatity",
+    "TotalPrice": "Total Price",
+    "ArrivingPort": "Arriving Port"
   }
-
 
 }
