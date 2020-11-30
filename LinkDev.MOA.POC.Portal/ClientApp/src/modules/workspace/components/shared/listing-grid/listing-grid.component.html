@@ -14,7 +14,7 @@
          <th *ngFor="let col of columns">
            {{col.header | translate}}
          </th>
-         <th width="120px" *ngIf="service ===serviceEnum.Requests">{{"WORKSPACE.Rating" | translate}}</th>
+         <!--th width="120px" *ngIf="service ===serviceEnum.Requests">{{"WORKSPACE.Rating" | translate}}</th-->
          <th></th>
        </tr>
      </ng-template>
@@ -27,7 +27,7 @@
            <a [href]="rowData['Url']" title="{{rowData[col.field]}}">{{rowData[col.field]}}</a>
          </td>
          <td *ngIf="service === serviceEnum.Requests">
-          
+
          </td>
          <td class="listing-arrow">
            <a [href]="rowData['Url']" title="{{'Show_Details' | translate}}"><span class="icon-arrow-right"></span></a>

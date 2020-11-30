@@ -36,14 +36,15 @@ export class WelcomeControlComponent implements OnInit {
         //this.FullName =
         if (this.FullName == "" || this.FullName == undefined || this.FullName == null) {
           if (this.userData != null && this.userData != undefined)
-            this.FullName = this.userData.UserFullName;
+            //this.FullName = this.userData.UserFullName;
+            this.FullName = "محمد إبراهيم فهمي";
         }
       }
     );
   }
 
   ngOnInit() {
-    this.FullName = this.tokenService.getUserFullName();
+    this.FullName = "محمد إبراهيم فهمي";
   }
 
   ngAfterViewInit() {
@@ -71,7 +72,7 @@ export class WelcomeControlComponent implements OnInit {
     // SharedHelper.showLoader();
     this.MyProfileService.get().subscribe(res => {
       SharedHelper.hideLoader();
-      this.FullName = res.Content.FullName;
+      this.FullName = "محمد إبراهيم فهمي";
     },
       err => {
         SharedHelper.hideLoader();

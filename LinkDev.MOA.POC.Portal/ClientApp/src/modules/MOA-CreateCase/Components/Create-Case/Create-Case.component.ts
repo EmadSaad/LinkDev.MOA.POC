@@ -1,3 +1,4 @@
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -28,7 +29,10 @@ export class CreateCaseComponent implements OnInit {
   submitUrlLabel: string = 'LAYOUT.WORKSPACE';
   submissionAlertClass: string = null;
   submit : boolean;
-  CompaniesLookups: LookupsModel[]=[{LookupSchemaName:"tt",Text:"lol",Value:"1"}];
+  CompaniesLookups: LookupsModel[];
+  CountriesLookups: LookupsModel[];
+  ArrivingPortsLookups: LookupsModel[];
+  ProductsLookups: LookupsModel[];
   ActiveLevelOne: number = 1;
   ActiveLevelTwo: number = 1;
   constructor(protected createcaseservice:CreateCaseService,protected activatedRoute: ActivatedRoute,
@@ -51,8 +55,12 @@ export class CreateCaseComponent implements OnInit {
       TotalPrice:null,
       UnitPrice:null
     };
+    this.titleService.setTitle("MOA | Requests");
     this.GetCompanies();
    }
+   protected getQueryStringNames(): string[] {
+    return ["Id"];
+  };
   formStructure: FormHierarchyBase[] = [
     {index:1,label:"MergeRequest.RequestDetails",type:NodeType.Parent,children:
       [
@@ -77,23 +85,44 @@ export class CreateCaseComponent implements OnInit {
     }
     SharedHelper.scrollToBody();
   }
-  
+
 
   @ViewChild('FirstStage') firstStage: NgForm;
   @ViewChild('CaseForm') CaseForm: NgForm;
 
   config = {
-    displayKey: 'Text',
-    search: true,
-    placeholder: 'Select',
-    noResultsFound: 'No results found!',
-    searchPlaceholder: 'Search',
-    searchOnKey: 'Text'
+    displayKey: "Text", //if objects array passed which key to be displayed defaults to description
+    search: true, //true/false for the search functionlity defaults to false,
+    placeholder: "Select", // text to be displayed when no item is selected defaults to Select,
+    noResultsFound: "No results found!", // text to be displayed when no items are found while searching
+    searchPlaceholder: "Search", // label thats displayed in search input,
+    searchOnKey: 'Text' ,// key on which search should be performed this will be selective search. if undefined this will be extensive search on all keys
+    moreText: 'More Values',
+    height: '250px'
   };
   ngOnInit() {
+    this.translateService.get('SELECT').subscribe(
+      sel => {
+        this.translateService.get('NO_RESULT_FOUND').subscribe(
+          no => {
+            this.translateService.get('SEARCH').subscribe(
+              search => {
+                this.translateService.get('moreValues').subscribe(
+                  moreValues =>{
+                    this.config['placeholder'] = sel;
+                    this.config['noResultsFound'] = no;
+                    this.config['searchPlaceholder'] = search;
+                    this.config['moreText'] = moreValues;
+                  }
+                )
+              });
+          });
+    });
+
+
   }
   saveRequest(){
-  
+
   };
   submitRequest(){  this.submit = true;
     debugger;
@@ -110,7 +139,7 @@ export class CreateCaseComponent implements OnInit {
   }
 
   get SetImportingDocuments():DocumentSettingModel[]{
-    
+
     let Documents:DocumentSettingModel[]=[{Id:"ccb5ecd9-e11d-eb11-a9ec-000d3aaa6848",Name:"نموذج الأستيراد + 2صورة منه",Description: null,IsRequired: true,MinAllowedFiles: 3,MaxAllowedFiles: 3,AllowedSize: 30240,AllowedExtensions: "PDF,XLSX,XLS,DOCX,PNG,DOC,JPG,JPEG",SectionName: null,DependentFields:[],TemplateId: null,Files:[],Errors:[],IsVisible: true},
    {Id:"ccb5ecd9-e11d-eb11-a9ec-000d3aaa6848",Name:"طلب بأسم السيد رئيس اللجنة + 2 صورة منه ، شارحا فيه الكميات و الأصناف و السعر",Description: null,IsRequired: true,MinAllowedFiles: 3,MaxAllowedFiles: 3,AllowedSize: 30240,AllowedExtensions: "PDF,XLSX,XLS,DOCX,PNG,DOC,JPG,JPEG",SectionName: null,DependentFields:[],TemplateId: null,Files:[],Errors:[],IsVisible: true},
    {Id:"ccb5ecd9-e11d-eb11-a9ec-000d3aaa6848",Name:"فاتورة مبدئية+5 صورة منها",Description: null,IsRequired: true,MinAllowedFiles: 5,MaxAllowedFiles: 5,AllowedSize: 10240,AllowedExtensions: "PDF,XLSX,XLS,DOCX,PNG,DOC,JPG,JPEG",SectionName: null,DependentFields:[],TemplateId: null,Files:[],Errors:[],IsVisible: true},
@@ -123,7 +152,7 @@ export class CreateCaseComponent implements OnInit {
   }
 
   public submitForm(): void {
-    // debugger;
+     debugger;
     this.disableButton = true;
     this.Application.IsSubmitted = true;
     let isDocumentsValid = this.validateDocuments();
@@ -166,6 +195,7 @@ export class CreateCaseComponent implements OnInit {
   protected saveApplication(): void {
     this.submissionInfo = null;
     SharedHelper.showLoader();
+    this.Application.Documents.forEach(x=>x.Files.forEach(y=>y["Content"]=null));
     this.createcaseservice.post(this.Application).subscribe(savingResult => {
       if (savingResult.ResponseCode === ResponseCode.Success) {
         debugger;
@@ -237,6 +267,15 @@ export class CreateCaseComponent implements OnInit {
   GetCompanies(){
     this.createcaseservice.getCompaniesLookups().subscribe(results => {
 this.CompaniesLookups=results;
+    });
+    this.createcaseservice.getCountriesLookups().subscribe(result=>{
+      this.CountriesLookups=result;
+    });
+    this.createcaseservice.getArrivingPortsLookups().subscribe(result=>{
+      this.ArrivingPortsLookups=result;
+    });
+    this.createcaseservice.getProductsLookups().subscribe(result=>{
+      this.ProductsLookups=result;
     });
   }
 }

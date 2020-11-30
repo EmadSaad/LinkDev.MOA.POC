@@ -1,5 +1,8 @@
-﻿using LinkDev.MOA.POC.Portal.BLL.CustomModels;
+﻿using LinkDev.MOA.POC.CRMModel.Incident;
+using LinkDev.MOA.POC.Portal.BLL.CustomModels;
 using LinkDev.MOA.POC.Portal.BLL.Helpers.CRMMapper;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
@@ -11,162 +14,130 @@ namespace LinkDev.MOA.POC.Portal.BLL.Requests
 {
     public class RequestsBLL: BaseBLL
     {
-        #region Commented
-        /*
-        public GridResultBase<RequestResult> GetRequests(RequestTaskFiltration requestFiltration, Guid contactId, Guid? requestId = null)
+
+        public ApplicationPostModel PostCase(EServiceModel<CaseModel> eServiceModel)
         {
-           
+            Entity Case = new Entity(incident.EntityName);
+            Case[incident.ldv_moacasetype] = new OptionSetValue((int)incident.ldv_moacasetype_OptionSet.ImportingPermissionRequest);
+            Case[incident.customerid] = new EntityReference("contact", Guid.Parse("d888ded5-7913-eb11-a812-000d3ab114e3"));
+            Case[incident.caseorigincode] = new OptionSetValue((int)incident.caseorigincode_OptionSet.Web);
+            Case[incident.ldv_importercompany] = new EntityReference("account", Guid.Parse(eServiceModel.Request.CompanyId));
+            Case[incident.ldv_quantity] = eServiceModel.Request.Qunatity;
+            Case[incident.ldv_importedproduct] = new EntityReference("product", Guid.Parse(eServiceModel.Request.ProductId));
+            Case[incident.ldv_exportername] = eServiceModel.Request.Exporter;
+            Case[incident.ldv_madeincountry] = new EntityReference("ldv_country", Guid.Parse(eServiceModel.Request.MadeInCountryId));
+            Case[incident.ldv_exportingcountry] = new EntityReference("ldv_country", Guid.Parse(eServiceModel.Request.ExportingCountryId));
+            Case[incident.ldv_unitprice] = new Money(eServiceModel.Request.UnitPrice);
+            Case[incident.ldv_arrivingport] = new EntityReference("ldv_arrivingport", Guid.Parse(eServiceModel.Request.ArrivingPortId));
+            var CaseId = CRMAccess.Create(Case);
 
-
-          
-
-            var result = new GridResultBase<RequestResult>();
-
-            var requestsQuery = new QueryExpression(ldv_applicationheader.EntityName) { NoLock = true };
-
-            requestsQuery.AddOrder(ldv_applicationheader.createdon, OrderType.Descending);
-
-
-            requestsQuery.ColumnSet.AddColumns(
-                ldv_applicationheader.PrimaryName,
-                ldv_applicationheader.ldv_relatedapplicationid,
-                ldv_applicationheader.ldv_submissiondate,
-                ldv_applicationheader.ldv_closuredate,
-                ldv_applicationheader.ldv_rating
-                );
-
-            requestsQuery.Criteria.AddCondition("Service", ldv_service.ldv_isshowinrequests, ConditionOperator.Equal, true);
-
-            //requestsQuery.Criteria.AddCondition("Account", Account.PrimaryKey, ConditionOperator.Equal, requestFiltration.CRId);
-
-            requestsQuery.Criteria.AddCondition(ldv_applicationheader.ldv_accountid, ConditionOperator.Equal, requestFiltration.CRId);
-
-            if (requestId != null && requestId != Guid.Empty)
+            var request = new ExecuteMultipleRequest()
             {
-                requestsQuery.Criteria.AddCondition(ldv_applicationheader.ldv_relatedapplicationid, ConditionOperator.Equal, requestId.ToString());
-            }
-
-            if (requestFiltration.ContractId != Guid.Empty && requestFiltration.ContractId != null)
-            {
-                requestsQuery.Criteria.AddCondition("ldv_contractid", ConditionOperator.Equal, requestFiltration.ContractId);
-            }
-
-            if (requestFiltration.RequestNumber != null && !string.IsNullOrWhiteSpace(requestFiltration.RequestNumber))
-            {
-                requestsQuery.Criteria.AddCondition(ldv_applicationheader.PrimaryName, ConditionOperator.Like, $"%{requestFiltration.RequestNumber}%");
-            }
-
-            if (requestFiltration.RequestType != null && requestFiltration.RequestType != Guid.Empty)
-            {
-                requestsQuery.Criteria.AddCondition("Service", ldv_service.PrimaryKey, ConditionOperator.Equal, requestFiltration.RequestType);
-            }
-
-            if (requestFiltration.RequestStatus != null && requestFiltration.RequestStatus.Count > 0)
-            {
-                var statusesIds = new List<object>();
-                statusesIds.AddRange((requestFiltration.RequestStatus.Select(e => (object)e)));
-                requestsQuery.Criteria.AddCondition(new ConditionExpression("PortalRequestStatus", ldv_requeststatus.PrimaryKey, ConditionOperator.In, statusesIds.ToArray()));
-            }
-
-            if (requestFiltration.From != null)
-            {
-
-                var dateForFiltration =
-                    $"{requestFiltration.From.year}-{requestFiltration.From.month}-{requestFiltration.From.day}";
-                requestsQuery.Criteria.AddCondition(ldv_applicationheader.ldv_submissiondate, ConditionOperator.OnOrAfter, dateForFiltration);
-            }
-            if (requestFiltration.To != null)
-            {
-                var dateForFiltration =
-                    $"{requestFiltration.To.year}-{requestFiltration.To.month}-{requestFiltration.To.day}";
-                requestsQuery.Criteria.AddCondition(ldv_applicationheader.ldv_submissiondate, ConditionOperator.OnOrBefore, dateForFiltration);
-            }
-
-            var serviceLink = requestsQuery.AddLink(ldv_service.EntityName, ldv_applicationheader.ldv_serviceid, ldv_service.PrimaryKey, JoinOperator.LeftOuter);
-            serviceLink.EntityAlias = "Service";
-            serviceLink.Columns.AddColumns(ldv_service.ldv_name_ar, ldv_service.ldv_name_en, ldv_service.ldv_portalurl);
-
-            //var accountLink = requestsQuery.AddLink("ldv_ldv_applicationheader_account", ldv_applicationheader.PrimaryKey, "ldv_applicationheaderid", JoinOperator.LeftOuter);
-            //accountLink.EntityAlias = "Account";
-
-
-            var portalRequestStatusLink = requestsQuery.AddLink(ldv_requeststatus.EntityName, ldv_applicationheader.ldv_portalrequeststatus, ldv_requeststatus.PrimaryKey, JoinOperator.LeftOuter);
-            portalRequestStatusLink.EntityAlias = "PortalRequestStatus";
-            portalRequestStatusLink.Columns.AddColumns(ldv_requeststatus.ldv_namear, ldv_requeststatus.ldv_nameen);
-
-
-            AddPagingData(requestsQuery, requestFiltration.PageNumber);
-
-            var res = CRMAccess.RetrieveMultiple(requestsQuery);
-
-            result.TotalNumber = res.TotalRecordCount;
-            result.NumberPerPage = requestFiltration.PageSize;
-
-            if (res.Entities != null && res.Entities.Count > 0)
-            {
-
-                result.Data = res.Entities.Select(e => new RequestResult
+                Requests = new OrganizationRequestCollection(),
+                Settings = new ExecuteMultipleSettings
                 {
-                    RequestNumber = e.GetAttributeValue<string>(ldv_applicationheader.PrimaryName),
-                    SubmissionDate = e.GetAttributeValue<DateTime>(ldv_applicationheader.ldv_submissiondate) != DateTime.MinValue ?
-                       e.GetAttributeValue<DateTime>(ldv_applicationheader.ldv_submissiondate).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) : null,
-                    PortalUrl = e.GetAttributeValue<AliasedValue>($"Service.{ldv_service.ldv_portalurl}")?.Value.ToString(),
-                    RelatedRecordId = e.GetAttributeValue<string>(ldv_applicationheader.ldv_relatedapplicationid),
-                    PortalStatusName = LanguageHelper.IsArabic ? e.GetAttributeValue<AliasedValue>($"PortalRequestStatus.{ldv_requeststatus.ldv_namear}")?.Value.ToString() :
-                        e.GetAttributeValue<AliasedValue>($"PortalRequestStatus.{ ldv_requeststatus.ldv_nameen }")?.Value.ToString(),
-                    ServiceName = LanguageHelper.IsArabic ? e.GetAttributeValue<AliasedValue>($"Service.{ldv_service.ldv_name_ar}")?.Value.ToString() :
-                        e.GetAttributeValue<AliasedValue>($"Service.{ldv_service.ldv_name_en}")?.Value.ToString(),
-                    ContainsClosureDate = e.Contains((ldv_applicationheader.ldv_closuredate)),
-                    Rating = e.Contains("ldv_rating") ? e.GetAttributeValue<OptionSetValue>("ldv_rating").Value : (int?)null
+                    ContinueOnError = false,
+                    ReturnResponses = true
+                }
+            };
 
-                }).ToList();
+
+            foreach (var document in eServiceModel.Documents)
+            {
+                foreach (var file in document.Files)
+                {
+                    Entity documentActivity = new Entity("ldv_documents", Guid.Parse(file.FileId));
+                    documentActivity["regardingobjectid"] = new EntityReference(incident.EntityName, CaseId);
+
+
+                    var createRequest = new UpdateRequest()
+                    {
+                        Target = documentActivity
+                    };
+                    request.Requests.Add(createRequest);
+                }
+
             }
+            var response = (ExecuteMultipleResponse)CRMAccess.Execute(request);
+            var CaseAttr = CRMAccess.Retrieve(incident.EntityName, CaseId, new ColumnSet(incident.ticketnumber));
+            var CaseNumber = CaseAttr[incident.ticketnumber].ToString();
+            return new ApplicationPostModel
+            {
+                RequestId = CaseId,
+                RequestNumber = CaseNumber
+            };
 
-            return GenerateResult<RequestResult>(result.Data, result.TotalNumber);
-          
-    }
- */
-        #endregion
+        }
 
-        public List<LookupModel> GetRelatedCompanies()
+
+        public GridResultBase<RequestResult> GetRequests(
+            RequestTaskFiltration requestFiltration)
         {
             // Define Condition Values
-            var query_ldv_accounttype = 5;
-            var query_contact_contactid = "d888ded5-7913-eb11-a812-000d3ab114e3";
+            var QEincident_customerid = "d888ded5-7913-eb11-a812-000d3ab114e3";
+            var RequestStatus = requestFiltration.RequestStatus.Where(x => !string.IsNullOrEmpty(x)).ToList();
 
-            // Instantiate QueryExpression query
-            var query = new QueryExpression("account");
+            // Instantiate QueryExpression QEincident
+            var Query = new QueryExpression("incident");
 
-            // Add columns to query.ColumnSet
-            query.ColumnSet.AddColumns("name", "accountid", "ldv_accounttype");
-
-            // Define filter query.Criteria
-            query.Criteria.AddCondition("ldv_accounttype", ConditionOperator.Equal, query_ldv_accounttype);
-
-            // Add link-entity query_contact
-            var query_contact = query.AddLink("contact", "primarycontactid", "contactid");
-            query_contact.EntityAlias = "RelatedCompanies";
-
-            // Add columns to query_contact.Columns
-            query_contact.Columns.AddColumns("accountid");
-
-            // Define filter query_contact.LinkCriteria
-            query_contact.LinkCriteria.AddCondition("contactid", ConditionOperator.Equal, query_contact_contactid);
+            // Add columns to QEincident.ColumnSet
+            Query.ColumnSet.AddColumns("statuscode", "createdon", "ticketnumber", "incidentid","ldv_moacasetype");
 
 
-            var CRMRelatedCompanies = CRMAccess.RetrieveMultiple(query);
-            List<LookupModel> RelatedCompnaies = CRMRelatedCompanies.Entities.Select(x => CrmMapper.ConvertToT<LookupModel>(x)).ToList()
-               .GroupBy(c => c.Value).Select(c =>
-               {
-                   return new LookupModel
-                   {
-                      LookupSchemaName="Companies",
-                      Value=c.First().Value,
-                      Text=c.First().Text
-                   };
-               }).ToList();
+            // Define filter QEincident.Criteria
+            Query.Criteria.AddCondition("customerid", ConditionOperator.Equal, QEincident_customerid);
+            var QEincident_Criteria_0 = new FilterExpression();
+            Query.Criteria.AddFilter(QEincident_Criteria_0);
 
-            return RelatedCompnaies;
+            // Define filter QEincident_Criteria_0
+            QEincident_Criteria_0.FilterOperator = LogicalOperator.Or;
+            if(!string.IsNullOrEmpty(requestFiltration.RequestType))
+            QEincident_Criteria_0.AddCondition("ldv_moacasetype", ConditionOperator.Equal, Convert.ToInt32(requestFiltration.RequestType));
+            if (RequestStatus.Count() > 0)
+            {
+                var Statuses = RequestStatus.Select(x => (Convert.ToInt32(x))).ToArray();
+                QEincident_Criteria_0.AddCondition("statuscode", ConditionOperator.In, Statuses);
+            }
+                if(requestFiltration.From?.day>0&&requestFiltration.To?.day>0)
+            QEincident_Criteria_0.AddCondition("createdon", ConditionOperator.Between, requestFiltration.From, requestFiltration.To);
+            var Cases = CRMAccess.RetrieveMultiple(Query).Entities;
+            List<RequestResult> CasesList  = Cases.Select(x => CrmMapper.ConvertToT<RequestResult>(x)).ToList();
+
+            return new GridResultBase<RequestResult>
+            {
+                Data = CasesList,
+                TotalNumber = CasesList.Count(),
+                NumberPerPage = 5
+            };
+        }
+
+        public CaseStatisticsModel CaseStatistics()
+        {
+            // Define Condition Values
+            var QEincident_customerid = "d888ded5-7913-eb11-a812-000d3ab114e3";
+
+            // Instantiate QueryExpression QEincident
+            var Query = new QueryExpression("incident");
+
+            // Add columns to QEincident.ColumnSet
+            Query.ColumnSet.AddColumns("statuscode", "createdon", "ticketnumber", "incidentid");
+
+            // Define filter QEincident.Criteria
+            Query.Criteria.AddCondition("customerid", ConditionOperator.Equal, QEincident_customerid);
+
+            var AllCases = CRMAccess.RetrieveMultiple(Query);
+            var ActiveCases = AllCases.Entities.Where(x => ((OptionSetValue)x["statuscode"]).Value == 1 || ((OptionSetValue)x["statuscode"]).Value == 3).ToList();
+            int NumberOfActiveCases;
+            int NumberClosedCases;
+            int NumberOfAllCases = AllCases.Entities.Count();
+             NumberOfActiveCases = ActiveCases.Count();
+             NumberClosedCases = NumberOfAllCases - NumberOfActiveCases;
+
+            return new CaseStatisticsModel
+            {
+                ActiveNumber = NumberOfActiveCases,
+                CloseNumber = NumberClosedCases
+            };
         }
     }
 }

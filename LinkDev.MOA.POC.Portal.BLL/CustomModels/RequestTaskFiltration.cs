@@ -10,8 +10,8 @@ namespace LinkDev.MOA.POC.Portal.BLL.CustomModels
     public class RequestTaskFiltration
     {
         public string RequestNumber { get; set; }
-        public Guid? RequestType { get; set; }
-        public List<Guid> RequestStatus { get; set; }
+        public string RequestType { get; set; }
+        public List<string> RequestStatus { get; set; }
         public DateModel From { get; set; }
         public DateModel To { get; set; }
         public int PageSize { get; set; }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SharedHelper } from 'src/modules/shared/services/shared-helper';
 import { WorkspaceRequestStatistics } from 'src/modules/workspace/interfaces/WorkspaceRequestStatistics.interface';
+import { CaseStatistics } from '../../Models/case-statistics';
 
 @Component({
   selector: 'app-MOA-SideNav',
@@ -8,11 +9,11 @@ import { WorkspaceRequestStatistics } from 'src/modules/workspace/interfaces/Wor
   styleUrls: ['./MOA-SideNav.component.css']
 })
 export class MOASideNavComponent implements OnInit {
- 
-  @Input() requestStatistics: WorkspaceRequestStatistics;
+
+  @Input() requestStatistics: CaseStatistics;
   @Input() openChildMenu = false;
   @Input() tab: string;
- 
+
   openMenu = false;
   openBiddingMenu = false;
   currentUrl;

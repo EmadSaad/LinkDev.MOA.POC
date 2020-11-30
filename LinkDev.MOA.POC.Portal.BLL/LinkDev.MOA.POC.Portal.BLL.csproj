@@ -90,10 +90,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseBLL.cs" />
+    <Compile Include="CRMModels\incident.cs" />
+    <Compile Include="CustomModels\ApiGenericResponse.cs" />
+    <Compile Include="CustomModels\ApplicationHeader.cs" />
+    <Compile Include="CustomModels\ApplicationPostModel.cs" />
+    <Compile Include="CustomModels\CaseModel.cs" />
+    <Compile Include="CustomModels\CaseStatisticsModel.cs" />
+    <Compile Include="CustomModels\DependentField.cs" />
+    <Compile Include="CustomModels\DocumentSettingModel.cs" />
+    <Compile Include="CustomModels\EServiceModel.cs" />
+    <Compile Include="CustomModels\FileInfoModel.cs" />
     <Compile Include="CustomModels\GridResultBase.cs" />
     <Compile Include="CustomModels\LookupModel.cs" />
+    <Compile Include="CustomModels\Lookups\ArrivingPortsLookupsModel.cs" />
+    <Compile Include="CustomModels\Lookups\CountriesLookupModel.cs" />
+    <Compile Include="CustomModels\Lookups\ProductsLookupModel.cs" />
     <Compile Include="CustomModels\RequestResult.cs" />
     <Compile Include="CustomModels\RequestTaskFiltration.cs" />
+    <Compile Include="CustomModels\SaveDocumentFilesResult.cs" />
+    <Compile Include="Documents\DocumentsBLL.cs" />
+    <Compile Include="Helpers\Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Helpers\Common\Caching.cs" />
     <Compile Include="Helpers\CRMConnector\CRMConnector.cs" />
     <Compile Include="Helpers\CRMMapper\CrmMapper.cs" />
@@ -105,6 +121,11 @@
     <Compile Include="Helpers\CRMMapper\MultiSelectItem.cs" />
     <Compile Include="Helpers\CRMMapper\OptionSetItem.cs" />
     <Compile Include="Helpers\CRMMapper\PriceItem.cs" />
+    <Compile Include="Helpers\Resources\MOAEnums.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MOAEnums.resx</DependentUpon>
+    </Compile>
     <Compile Include="LookupsBLL\LookupsBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\RequestsBLL.cs" />
@@ -112,6 +133,12 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Helpers\Resources\MOAEnums.ar.resx" />
+    <EmbeddedResource Include="Helpers\Resources\MOAEnums.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MOAEnums.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

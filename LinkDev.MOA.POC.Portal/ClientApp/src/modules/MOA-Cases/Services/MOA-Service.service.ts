@@ -5,6 +5,7 @@ import { APIService } from 'src/modules/shared/Services/API-Service/api-service.
 import { IGridResultBase } from 'src/modules/workspace/interfaces/GridResultBase.interface';
 import { IRequestFiltration } from 'src/modules/workspace/interfaces/RequestFiltration.interface';
 import { IRequestsResult } from 'src/modules/workspace/interfaces/RequestResult.interface';
+import { CaseStatistics } from '../Models/case-statistics';
 
 
 
@@ -12,13 +13,17 @@ import { IRequestsResult } from 'src/modules/workspace/interfaces/RequestResult.
   providedIn: 'root'
 })
 export class MOAService {
-  
-  private portalUrl = 'api/Workspace';
+
+  private MOACasesUrl = 'https://localhost:44387/api/Requests/GetRequests';
   constructor(private api: APIService) { }
- 
- 
+
+
 
   search(filter: IRequestFiltration): Observable<ApiGenericResponse<IGridResultBase<IRequestsResult>>> {
-    return this.api.Post<ApiGenericResponse<IGridResultBase<IRequestsResult>>>(`${this.portalUrl}/GetRequests`, filter).pipe();
+    return this.api.Post<ApiGenericResponse<IGridResultBase<IRequestsResult>>>(`${this.MOACasesUrl}`, filter).pipe();
+}
+
+getCaseStatistics():Observable<CaseStatistics>{
+  return this.api.Get<CaseStatistics>("https://localhost:44387/api/Requests/CaseStatistics").pipe();
 }
 }

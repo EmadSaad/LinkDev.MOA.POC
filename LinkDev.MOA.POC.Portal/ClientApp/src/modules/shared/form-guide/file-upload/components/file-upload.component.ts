@@ -41,7 +41,7 @@ export class FileUploadComponent  implements OnInit, OnDestroy {
         for (let i = 0; i < files.length; i++) {
             debugger;
             var currentFile = (<File>files[i]);
-            
+console.log(currentFile);
             if (this.documentSetting.Files && this.documentSetting.Files.find(x => x.FileName.toLocaleLowerCase().trim() === currentFile.name.split('.')[0].toLocaleLowerCase().trim() && x.IsDeleted === false)) {
               this.documentSetting.Errors.push('Documents.ValidationFileAlreadyUploaded');
               this.isLoaded = false;
@@ -72,9 +72,9 @@ export class FileUploadComponent  implements OnInit, OnDestroy {
           let fileToUpload = <File>files[i];
 
           formData.append('file' + i, fileToUpload, fileToUpload.name);
-          
+
         }
-        this.api.PostFile<ApiGenericResponse<FileInfoModel[]>>(`api/documents/upload?folderName=${this.folderName}&documentSettingId=${this.documentSetting.Id}`,formData)
+        this.api.PostFile<ApiGenericResponse<FileInfoModel[]>>(`https://localhost:44387/api/documents/upload?folderName=${this.folderName}&documentSettingId=${this.documentSetting.Id}`,formData)
             .subscribe(res =>{
                 if(res.ResponseCode == ResponseCode.Success)
                 {

@@ -49,20 +49,20 @@
           <div class="row">
             <div class="col-md-6 col-lg-4">
               <mutliselect id="MadeInCountry" name="MadeInCountry" [label]="'MOACreateCase.MadeInCountry'"
-                [propertyToSelect]="'Value'" [options]="[]" [viewMode]="false" [multiple]="false" [config]="config"
+                [propertyToSelect]="'Value'" [options]="CountriesLookups" [viewMode]="false" [multiple]="false" [config]="config"
                 [isRequiredLabel]="false" [(ngModel)]="Application.Request.MadeInCountryId" #MadeInCountry="ngModel">
               </mutliselect>
             </div>
             <div class="col-md-6 col-lg-4">
               <mutliselect id="ExportingCountry" name="ExportingCountry" [label]="'MOACreateCase.ExportingCountry'"
-                [propertyToSelect]="'Value'" [options]="[]" [viewMode]="false" [multiple]="false" [config]="config"
+                [propertyToSelect]="'Value'" [options]="CountriesLookups" [viewMode]="false" [multiple]="false" [config]="config"
                 [isRequiredLabel]="false" [(ngModel)]="Application.Request.ExportingCountryId"
                 #ExportingCountry="ngModel">
               </mutliselect>
             </div>
             <div class="col-md-6 col-lg-4">
               <mutliselect id="ArrivingPort" name="ArrivingPort" [label]="'MOACreateCase.ArrivingPort'"
-                [propertyToSelect]="'Value'" [options]="[]" [viewMode]="false" [multiple]="false" [config]="config"
+                [propertyToSelect]="'Value'" [options]="ArrivingPortsLookups" [viewMode]="false" [multiple]="false" [config]="config"
                 [isRequiredLabel]="false" [(ngModel)]="Application.Request.ArrivingPortId" #ArrivingPort="ngModel">
               </mutliselect>
             </div>
@@ -75,7 +75,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-4">
               <mutliselect id="Product" name="Product" [label]="'MOACreateCase.Product'"
-                [propertyToSelect]="'Value'" [options]="[]" [viewMode]="false" [multiple]="false" [config]="config"
+                [propertyToSelect]="'Value'" [options]="ProductsLookups" [viewMode]="false" [multiple]="false" [config]="config"
                 [isRequiredLabel]="false" [(ngModel)]="Application.Request.ProductId" #Product="ngModel">
               </mutliselect>
             </div>
@@ -114,20 +114,20 @@
             <app-Uploaders-List [uploaders]="Application.Documents" [form]="CaseForm"
               [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true">
             </app-Uploaders-List>
-  
+
           </div>
         </div>
       </div>
       <!--Actions-->
-  
+
       <div *ngIf="!Application.IsReadOnly"
         class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
         <h1></h1>
         <button type="button" class="main-btn" (click)="submitRequest()"
           [disabled]="false">{{ 'ServicesCommon.Submit' | translate}}</button>
       </div>
-    
-  
+
+
     </div>
   </div>
 </div>

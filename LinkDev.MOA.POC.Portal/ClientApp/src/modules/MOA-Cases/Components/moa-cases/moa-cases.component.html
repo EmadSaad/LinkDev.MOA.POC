@@ -13,6 +13,17 @@
       <div class="grey-bg grey-bg-padding m-0">
         <div class="row">
           <div class="col-md-4">
+
+              <button type="button" class="main-btn" (click)="createNew()"
+          [disabled]="false">{{ 'MOACases.AddNew' | translate}}</button>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="grey-bg grey-bg-padding m-0">
+        <div class="row">
+          <div class="col-md-4">
             <custom-text-box [type]="'text'" id="RequestNumber" name="RequestNumber" [label]="'RequestHeader.Number'"
               autocomplete="" aria-label="Name" [isRequiredLabel]="false" #RequestNumber="ngModel"
               [(ngModel)]="filtration.RequestNumber">
@@ -49,6 +60,7 @@
             <button type="button" class="main-btn-secondary" (click)="clear(searchForm)">
               {{'WORKSPACE.Clear' | translate}}
             </button>
+
           </div>
       </div>
       </div>
@@ -57,5 +69,5 @@
        (notifyPageChanged)="pageChanged($event)" [filter]="filtration" [service]="1" [pages]="math.ceil(result?.TotalNumber /
   this.result?.NumberPerPage)" [totalNumberOfText]="'WORKSPACE.MyRequests'">
      </app-listing-grid>
-  
+
 </div>

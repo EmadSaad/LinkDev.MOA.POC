@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ResponseCode } from 'src/modules/shared/Models/api-generic-response';
@@ -10,6 +11,7 @@ import { IGridResultBase } from 'src/modules/workspace/interfaces/GridResultBase
 import { IRequestsResult } from 'src/modules/workspace/interfaces/RequestResult.interface';
 import { WorkspaceRequestStatistics } from 'src/modules/workspace/interfaces/WorkspaceRequestStatistics.interface';
 import { SharedService } from 'src/modules/workspace/services/shared.service';
+import { CaseStatistics } from '../../Models/case-statistics';
 import { TFiltration } from '../../Models/TFiltration';
 import { MOAService } from '../../Services/MOA-Service.service';
 
@@ -19,8 +21,7 @@ import { MOAService } from '../../Services/MOA-Service.service';
   styleUrls: ['./moa-cases.component.css']
 })
 export class MoaCasesComponent implements OnInit {
-  requestStatistics: WorkspaceRequestStatistics = {DraftNumber:5,
-    SubmittedNumber:10};
+  requestStatistics: CaseStatistics;
     public filtration?: TFiltration={RequestNumber:"",RequestType:"",RequestStatus:["",""],From:null,To:null,PageNumber:0,ShowRating:false};
     public errorMessage?: string;
     public math: any;
@@ -40,7 +41,7 @@ export class MoaCasesComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public alertService: AlertService,
     public translateService: TranslateService,
-    public sharedService: SharedService) {
+    public sharedService: SharedService,protected router: Router,private titleService:Title) {
     this.cols = [
       { field: 'RequestNumber', header: 'WorkspaceBase.Requests.RequestNumber' },
       { field: 'ServiceName', header: 'WorkspaceBase.Requests.RequestType' },
@@ -61,14 +62,17 @@ export class MoaCasesComponent implements OnInit {
           }
         );
       });
-     
+      this.titleService.setTitle("MOA | Requests");
+this.pageChanged(0);
+this.getCaseStatistics();
    }
 
   ngOnInit() {
   }
   public search() {
+    debugger;
     SharedHelper.showLoader();
-    if (this.filtration.RequestNumber) {
+
         this.MOAIService.search(this.filtration).subscribe(res => {
             if (res.ResponseCode === ResponseCode.Success) {
                 this.result = res.Content;
@@ -82,10 +86,21 @@ export class MoaCasesComponent implements OnInit {
             console.log(err);
             SharedHelper.hideLoader();
         });
-    }
+
 }
   public pageChanged(pageNumber: number) {
+    debugger;
     this.filtration.PageNumber = pageNumber;
     this.search();
+}
+
+createNew(){
+  this.router.navigateByUrl('/create-case');
+}
+
+getCaseStatistics(){
+  this.MOAIService.getCaseStatistics().subscribe(res=>{
+    this.requestStatistics=res;
+  });
 }
 }

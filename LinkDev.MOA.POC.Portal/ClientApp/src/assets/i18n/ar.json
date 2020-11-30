@@ -1459,7 +1459,10 @@
     "TikcetStatus": "حالة التذكرة"
   },
   "MOACases":{
-    "MyRequests":"طلباتي"
+    "MyRequests":"طلباتي",
+    "ClosedRequests": "الطلبات المغلقة",
+    "ActiveRequests": "الطلبات النشطة",
+    "AddNew":"إضافة جديد"
   },
   "MOACreateCase":{
     "ImportingRequest": "طلب إذن أستيراد",

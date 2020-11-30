@@ -1415,7 +1415,10 @@
     "TikcetStatus": "Ticket Status"
   },
   "MOACases":{
-    "MyRequests":"My Requests"
+    "MyRequests":"My Requests",
+    "ClosedRequests": "Closed Requests",
+    "ActiveRequests": "Active Requests",
+    "AddNew":"Add New"
   },
   "MOACreateCase":{
     "ImportingRequest": "Importing Request",

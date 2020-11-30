@@ -12,9 +12,9 @@ export class APIService {
   rootURL: string = "";
   token: string = "";
   constructor(private http: HttpClient, private translate: TranslateService) {
-    this.rootURL = ConfigService.APIURL;
+    this.rootURL = ConfigService.MOAAPIURL;
   }
-  
+
   Get<T>(url: string): Observable<T> {
     var headers = new HttpHeaders({
       'Accept-Language': this.translate.currentLang,
@@ -36,7 +36,7 @@ export class APIService {
     return this.http.get<T>(this.rootURL + url, httpOptions).pipe();
   }
 
-  
+
   Post<T>(url: string, body: any): Observable<T> {
     var headers = new HttpHeaders({
       'Accept-Language': this.translate.currentLang,

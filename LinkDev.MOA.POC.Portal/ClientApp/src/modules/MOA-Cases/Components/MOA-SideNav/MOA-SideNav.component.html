@@ -13,7 +13,7 @@
         </div>
       </a>
     </div>
-    
+
     <div class="parent-label" routerLinkActive="active">
       <a [routerLink]="['/', 'workspace', 'my-requests']" class="text-decoration-none">
         <div class="label" (click)="openChildWrapper('requests')" [class.opened]="openChildMenu && tab == 'requests'">
@@ -23,22 +23,22 @@
       </a>
       <div class="child-container" [class.show]="openChildMenu && tab == 'requests'">
         <span class="child-label pointer" (click)="SubmitDraftsRequests()">
-          {{ "WORKSPACE.DraftRequests" | translate }}
-          <span class="counter">{{ requestStatistics?.DraftNumber }}</span>
+          {{ "MOACases.ClosedRequests" | translate }}
+          <span class="counter">{{ requestStatistics?.CloseNumber }}</span>
         </span>
         <span class="child-label pointer" (click)="SubmitSubmittedRequests()">
-          {{ "WORKSPACE.SubmittedRequests" | translate }}
-          <span class="counter">{{ requestStatistics?.SubmittedNumber }}</span>
+          {{ "MOACases.ActiveRequests" | translate }}
+          <span class="counter">{{ requestStatistics?.ActiveNumber }}</span>
         </span>
       </div>
     </div>
-   
 
 
 
-   
 
-     
+
+
+
   </div>
 
 </div>

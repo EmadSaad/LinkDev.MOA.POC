@@ -12,11 +12,12 @@ import { APIHelperService } from './ApiHelper-service';
   providedIn: 'root'
 })
 export class CreateCaseService {
+  private baseUrl: string = "https://localhost:44387/api/";
   private getUrl: string = "https://localhost:44387/api/Lookups/CompaniesLookups";
-  private postUrl: string = "api/MergeRequest/PostMergeContractRequest";
+  private postUrl: string = "https://localhost:44387/api/Requests/PostCase";
 constructor(protected api: APIService) { }
-public get(params: string): Observable<ApiGenericResponse<EServiceModel<CaseModel>>> {
-  return this.api.Get<ApiGenericResponse<EServiceModel<CaseModel>>>(`${this.getUrl}${params}`);
+public get(params: string): Observable<EServiceModel<CaseModel>> {
+  return this.api.Get<EServiceModel<CaseModel>>(`${this.getUrl}${params}`);
 }
 
 public post(application: EServiceModel<CaseModel>): Observable<ApiGenericResponse<ApplicationPostModel>>{
@@ -24,6 +25,18 @@ public post(application: EServiceModel<CaseModel>): Observable<ApiGenericRespons
 }
 
 public getCompaniesLookups(): Observable<LookupsModel[]> {
-  return this.api.Get<LookupsModel[]>(`${this.getUrl}`);
+  return this.api.Get<LookupsModel[]>(`${this.baseUrl}Lookups/CompaniesLookups`);
+}
+
+public getCountriesLookups(): Observable<LookupsModel[]> {
+  return this.api.Get<LookupsModel[]>(`${this.baseUrl}Lookups/CountriesLookups`);
+}
+
+public getArrivingPortsLookups(): Observable<LookupsModel[]> {
+  return this.api.Get<LookupsModel[]>(`${this.baseUrl}Lookups/ArrivingPortsLookups`);
+}
+
+public getProductsLookups(): Observable<LookupsModel[]> {
+  return this.api.Get<LookupsModel[]>(`${this.baseUrl}Lookups/ProductsLookups`);
 }
 }
