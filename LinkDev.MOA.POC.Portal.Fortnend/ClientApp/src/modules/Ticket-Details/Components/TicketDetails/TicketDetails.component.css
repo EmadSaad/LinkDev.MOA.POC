@@ -1,0 +1,20 @@
+ul {
+    padding-left: 0; 
+}
+
+li {
+    list-style: none;
+    display: inline-block;
+    height: 55px;
+    width: 35px;
+}
+
+.star {
+  background-image: url("/assets/images/star-regular.svg");
+  background-repeat: no-repeat;
+}
+
+.active-star {
+  background-image: url("/assets/images/star-solid.svg");
+  background-repeat: no-repeat;
+}

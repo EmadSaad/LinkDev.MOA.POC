@@ -1,0 +1,22 @@
+.chat-history-wrapper{
+    .title{
+        color: $brand-color-secondary;
+        font-size: 1.285rem;
+    }
+    .date{
+        color: $mid-grey;//#727272;
+        text-align: $left;
+    }
+    .comment{
+        background-color: $lighter-grey;
+        @if $dir == rtl{
+            border-radius: 20px 20px 20px 0;
+        }@else{
+            border-radius: 20px 20px 0 20px;
+        }    
+        padding: 20px;
+        margin-top: 10px;
+        color:#4d4d4d;
+        margin-bottom: 20px;
+    }
+}

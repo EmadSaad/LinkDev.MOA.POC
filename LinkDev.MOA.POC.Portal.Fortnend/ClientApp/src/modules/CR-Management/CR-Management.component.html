@@ -1,0 +1,64 @@
+<div class="form-wrapper mb-0">
+  <div class="row">
+    <div class="col-lg-3 mb-0">
+      <div class="h-100">
+        <app-side-stages [activeFirstLevel]="activeFirstLevel"
+                         [structure]="formStructure"
+                         (onChange)="onSelect($event)">
+        </app-side-stages>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="d-block d-md-flex request-header mt-5">
+        <!--CR-Name-->
+        <div class="d-flex">
+          <span class="icon-building-o"></span>
+          <div>
+            <div>{{ "CRManagement.CRName" | translate }}</div>
+            <div>{{CRName}}</div>
+          </div>
+        </div>
+        <!--Separator-->
+        <span class="d-md-inline-block d-none separator">|</span>
+        <div class="d-block d-md-none m-3 separator">
+        </div>
+        <!--CR-Number-->
+        <div class="d-flex">
+          <span class="icon-hashtag"></span>
+          <div>
+            <div>{{ "CRManagement.Number" | translate }}</div>
+            <div>{{CRNumber}}</div>
+          </div>
+        </div>
+        <!--Separator-->
+        <span class="d-md-inline-block d-none separator">|</span>
+        <div class="d-block d-md-none m-3 separator">
+        </div>
+        <div class="d-flex">
+          <span class="icon-library"></span>
+          <div>
+            <div>{{ "CRManagement.CRCity" | translate }}</div>
+            <div>{{CRCity}}</div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="activeFirstLevel == 1">
+        <app-CrDetails (CRNameOutput)="GetCRName($event)" (CRNumberOutput)="GetCRNumber($event)" (CRCityOutput)="GetCRCity($event)"></app-CrDetails>
+      </div>
+      <div *ngIf="activeFirstLevel == 2">
+        <app-crinfo></app-crinfo>
+      </div>
+
+      <div *ngIf="activeFirstLevel == 3">
+        <app-CRindustrialLicenses></app-CRindustrialLicenses>
+      </div>
+
+      <div *ngIf="activeFirstLevel == 4">
+        <app-crcontact-details-and-representatives></app-crcontact-details-and-representatives>
+      </div>
+      <div *ngIf="activeFirstLevel == 5">
+        <app-crcontracts></app-crcontracts>
+      </div>
+    </div>
+  </div>
+</div>

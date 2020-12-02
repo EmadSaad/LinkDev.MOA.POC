@@ -1,0 +1,44 @@
+<div class="form-hierarchy customized-form-hierarchy">
+  <div class="form-hierarchy-collapse" (click)="openMenu = !openMenu" [class.opened]="openMenu">
+    <span *ngIf="!openMenu"> {{ "WORKSPACE.Home" | translate }}</span>
+    <span class="icon-dropdow-arrow" *ngIf="!openMenu"></span>
+    <span class="icon-cancel-music" *ngIf="openMenu"></span>
+  </div>
+  <div class="form-hierarchy-menu" [class.show]="openMenu">
+    <!-- {{crType}}    -->
+    <div class="parent-label" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a [routerLink]="['/', 'workspace']" class="text-decoration-none">
+        <div class="label" (click)="openChildMenu = false">
+          {{ "WORKSPACE.Home" | translate }}
+        </div>
+      </a>
+    </div>
+
+    <div class="parent-label" routerLinkActive="active">
+      <a [routerLink]="['/', 'workspace', 'my-requests']" class="text-decoration-none">
+        <div class="label" (click)="openChildWrapper('requests')" [class.opened]="openChildMenu && tab == 'requests'">
+          {{ "WORKSPACE.MyRequests" | translate }}
+          <span class="icon-dropdow-arrow"></span>
+        </div>
+      </a>
+      <div class="child-container" [class.show]="openChildMenu && tab == 'requests'">
+        <span class="child-label pointer" (click)="SubmitDraftsRequests()">
+          {{ "MOACases.ClosedRequests" | translate }}
+          <span class="counter">{{ requestStatistics?.CloseNumber }}</span>
+        </span>
+        <span class="child-label pointer" (click)="SubmitSubmittedRequests()">
+          {{ "MOACases.ActiveRequests" | translate }}
+          <span class="counter">{{ requestStatistics?.ActiveNumber }}</span>
+        </span>
+      </div>
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+</div>

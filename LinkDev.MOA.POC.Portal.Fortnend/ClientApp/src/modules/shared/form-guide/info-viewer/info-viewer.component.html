@@ -1,0 +1,23 @@
+<ng-template #popup let-modal>
+    <div class="modal-content border-0">
+      <main>
+        <!--MODAL-HEADER-->
+        <div class="modal-header">
+          <h4 class="modal-title flex-grow-1 text-center">{{modalFormTitleKey | translate}}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--MODAL_BODY-->
+        <div class="modal-body">
+          <div class="form-wrapper mt-3">
+            <ng-content>
+            </ng-content>
+          </div>
+        </div>
+      </main>
+    </div>
+</ng-template>
+
+<!-- <p *ngIf="isLoading">loading...</p> -->
+<i (click)="showInfo()" class="icon-info-bg"></i>

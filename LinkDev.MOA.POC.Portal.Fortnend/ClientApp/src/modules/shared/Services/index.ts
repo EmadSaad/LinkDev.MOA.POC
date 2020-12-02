@@ -1,0 +1,1 @@
+export {AlertService} from '../services/alert.service';

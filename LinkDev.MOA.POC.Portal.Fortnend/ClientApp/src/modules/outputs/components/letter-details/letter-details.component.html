@@ -1,0 +1,79 @@
+
+<app-breadcrumb [CurrnetComponentName]="'CoordinationLetter'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="activeLevelOne" [activeSecondLevel]="0"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{tabText | translate}}</h4>
+    <form #form="ngForm" novalidate autocomplete="off">
+         <div *ngIf="activeLevelOne === 1">
+     
+            <div class="row">
+
+                <div class="col-12 col-md-4">
+                    <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.LetterNumber'"
+                    [(ngModel)]="LetterInfo.LetterNumber" name="LetterNumber"></custom-text-box>
+                </div>
+                <div class="col-12 col-md-4">
+
+                    <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.ContractNumber'"
+                    [(ngModel)]="LetterInfo.ContractNumber" name="ContractNumber">
+                    </custom-text-box>
+                </div>
+                <div class="col-12 col-md-4">
+
+                    <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.CR'"
+                    [(ngModel)]="LetterInfo.CR" name="CR">
+                    </custom-text-box>
+                </div>
+
+                <div class="col-12 col-md-4">
+
+                    <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.CreateDate'"
+                    [(ngModel)]="LetterInfo.CreateDate" name="CreateDate">
+                    </custom-text-box>
+                </div>
+                <div class="col-12 col-md-4">
+
+                    <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.Regarding'"
+                    [(ngModel)]="LetterInfo.Regarding" name="Regarding">
+                    </custom-text-box>
+                </div>
+                
+                <div class="col-12 col-md-4">
+
+                  <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.RequestDestination'"
+                  [(ngModel)]="LetterInfo.RequestDestination" name="RequestDestination">
+                  </custom-text-box>
+              </div>
+              <div class="col-12 col-md-4" *ngIf=" LetterInfo.ManagerComment">
+
+                <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.LetterDetails.ManagerComment'"
+                [(ngModel)]="LetterInfo.ManagerComment" name="ManagerComment">
+                </custom-text-box>
+              </div>
+            </div>
+            
+            
+            
+            
+        </div>
+        <div *ngIf="activeLevelOne === 2">
+
+          <app-Uploaders-List [uploaders]="documentSettings" [IsReadOnly]="true" [IsLiveChanges]="true">
+          </app-Uploaders-List>
+          <div *ngIf="documentSettings.length === 0">
+            {{'NO_RESULT_FOUND' | translate }}
+          </div>
+        </div>
+    
+    </form>
+
+    </div>
+  </div>

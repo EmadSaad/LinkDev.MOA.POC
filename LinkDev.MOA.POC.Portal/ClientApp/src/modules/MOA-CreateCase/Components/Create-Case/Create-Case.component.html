@@ -1,0 +1,134 @@
+<app-breadcrumb [CurrnetComponentName]="'moaCreateCase'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'MOACreateCase.ImportingRequest' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+    <!--Request Details-->
+    <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light mt-4" *ngIf="!Application.IsReadOnly" role="alert"><span
+          class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+<app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+    <!--First Stage-->
+    <div>
+      <form #ContractForm="ngForm" novalidate autocomplete="off">
+        <!--Main Info-->
+        <div id="MainInfo">
+          <h5 class="stage-title mt-4">{{'MOACreateCase.MainInfo' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="Company" name="Company" [label]="'MOACreateCase.CompanyName'"
+                [propertyToSelect]="'Value'" [options]="CompaniesLookups" [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                [isRequiredLabel]="true" [required]="true" [(ngModel)]="Application.Request.CompanyId" #Company="ngModel"
+                [ngClass]="{ 'is-invalid required  validation': Company.errors && (Company.dirty ||  submit)  }">
+              </mutliselect>
+              <div class="form-validation" *ngIf="Company.errors && (Company.dirty || submit)">
+                {{'Validations.Required' | translate}}
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="Exporter" name="Exporter" [label]="'MOACreateCase.ExporterName'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+                [(ngModel)]="Application.Request.Exporter">
+              </custom-text-box>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="MadeInCountry" name="MadeInCountry" [label]="'MOACreateCase.MadeInCountry'"
+                [propertyToSelect]="'Value'" [options]="CountriesLookups" [viewMode]="false" [multiple]="false" [config]="config"
+                [isRequiredLabel]="false" [(ngModel)]="Application.Request.MadeInCountryId" #MadeInCountry="ngModel">
+              </mutliselect>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="ExportingCountry" name="ExportingCountry" [label]="'MOACreateCase.ExportingCountry'"
+                [propertyToSelect]="'Value'" [options]="CountriesLookups" [viewMode]="false" [multiple]="false" [config]="config"
+                [isRequiredLabel]="false" [(ngModel)]="Application.Request.ExportingCountryId"
+                #ExportingCountry="ngModel">
+              </mutliselect>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="ArrivingPort" name="ArrivingPort" [label]="'MOACreateCase.ArrivingPort'"
+                [propertyToSelect]="'Value'" [options]="ArrivingPortsLookups" [viewMode]="false" [multiple]="false" [config]="config"
+                [isRequiredLabel]="false" [(ngModel)]="Application.Request.ArrivingPortId" #ArrivingPort="ngModel">
+              </mutliselect>
+            </div>
+          </div>
+        </div>
+         <!--Product Info-->
+         <div id="ProductInfo">
+          <h5 class="stage-title mt-4">{{'MOACreateCase.ProductInfo' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="Product" name="Product" [label]="'MOACreateCase.Product'"
+                [propertyToSelect]="'Value'" [options]="ProductsLookups" [viewMode]="false" [multiple]="false" [config]="config"
+                [isRequiredLabel]="false" [(ngModel)]="Application.Request.ProductId" #Product="ngModel">
+              </mutliselect>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="Qunatity" name="Qunatity" [label]="'MOACreateCase.Qunatity'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Qunatity="ngModel" (change)="totalPrice()"
+                [(ngModel)]="Application.Request.Qunatity">
+              </custom-text-box>
+            </div>
+          </div>
+        </div>
+         <!--Pricing Info-->
+         <div id="PricingInfo">
+          <h5 class="stage-title mt-4">{{'MOACreateCase.PricingInfo' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="UnitPrice" name="UnitPrice" [label]="'MOACreateCase.UnitPrice'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #UnitPrice="ngModel"(change)="totalPrice()"
+                [(ngModel)]="Application.Request.UnitPrice">
+              </custom-text-box>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="TotalPrice" name="TotalPrice" [label]="'MOACreateCase.TotalPrice'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" [isReadOnly]="true" #TotalPrice="ngModel"
+                [(ngModel)]="Application.Request.TotalPrice">
+              </custom-text-box>
+            </div>
+          </div>
+        </div>
+
+      </form>
+      <div>
+        <div class="row">
+        <div class="col-lg-8 col-md-6">
+            <app-Uploaders-List [uploaders]="Application.Documents" [form]="CaseForm"
+              [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true">
+            </app-Uploaders-List>
+
+          </div>
+        </div>
+      </div>
+      <!--Actions-->
+
+      <div *ngIf="!Application.IsReadOnly"
+        class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+        <h1></h1>
+        <button type="button" class="main-btn" (click)="submitRequest()"
+          [disabled]="false">{{ 'ServicesCommon.Submit' | translate}}</button>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>

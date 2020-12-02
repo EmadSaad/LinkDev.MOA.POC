@@ -1,0 +1,58 @@
+{
+    "ApiResponseMessage": {
+        "ResponseCode": 200,
+        "FriendlyResponseMessage": null,
+        "InternalMessage": null
+    },
+    "Content": [
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_identityTypecode",
+            "Value": 1,
+            "Label": "هوية وطنية"
+        },
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_identityTypecode",
+            "Value": 2,
+            "Label": "رقم اقامة "
+        },
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_identityTypecode",
+            "Value": 3,
+            "Label": "جواز سفر"
+        },
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_",
+            "Value": 4,
+            "Label": "جواز سفر"
+        },
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_",
+            "Value": 4,
+            "Label": "جواز سفر"
+        },
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_",
+            "Value": 4,
+            "Label": "جواز سفر"
+        },
+        {
+            "LookupStrategyKey": 0,
+            "EntityLogicalName": "ldv_profilemanagement",
+            "OptionSetLogicalName": "ldv_",
+            "Value": 4,
+            "Label": "جواز سفر"
+        }
+    ]
+}

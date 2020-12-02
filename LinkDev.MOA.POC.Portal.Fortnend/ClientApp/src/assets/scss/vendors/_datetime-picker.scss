@@ -1,0 +1,67 @@
+//Date navigation
+.owl-dt-calendar-control {
+  > .owl-dt-control-arrow-button {
+    &:first-child {
+      position: absolute;
+      #{$left}: 0;
+    }
+
+    &:last-child {
+      position: absolute;
+      #{$right}: 0;
+    }
+  }
+}
+// Date Calender
+.owl-dt-calendar-table {
+  .owl-dt-calendar-cell-content {
+    &.owl-dt-calendar-cell-selected {
+      background-color: $brand-color-secondary;
+    }
+  }
+}
+//Time
+.owl-dt-container-row {
+  &.owl-dt-timer {
+    @if $dir == rtl {
+      -webkit-box-orient: horizontal !important;
+      -webkit-box-direction: reverse !important;
+      -ms-flex-direction: row-reverse !important;
+      flex-direction: row-reverse !important;
+    }
+  }
+
+  .owl-dt-control-button-content, .owl-dt-timer-hour12, .owl-dt-timer-input {
+    color: $brand-color;
+  }
+
+  .owl-dt-timer-divider {
+    left: -.3em;
+
+    &:before, &:after {
+      color: $brand-color;
+    }
+  }
+
+  .owl-dt-timer-content {
+    .owl-dt-timer-input {
+      border-color: $brand-color;
+    }
+  }
+
+  .owl-dt-timer-hour12 {
+    .owl-dt-timer-hour12-box {
+      .owl-dt-control-button-content {
+        padding: .4rem;
+      }
+
+      &:hover {
+        .owl-dt-control-button-content {
+          background-color: $brand-color;
+        }
+      }
+
+      border-color: $brand-color;
+    }
+  }
+}

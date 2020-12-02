@@ -1,0 +1,50 @@
+.rating {
+  &.main-rating {
+    .br-default {
+      .br-units {
+        > .br-selected, > .br-unit {
+          &:after {
+            color: $brand-color-secondary !important;
+          }
+        }
+      }
+    }
+  }
+
+  .br.br-default {
+    margin: 0;
+  }
+
+  .br-default {
+    &.br-readonly {
+      .br-unit {
+        cursor: inherit !important;
+      }
+    }
+
+    .br-units {
+      margin-#{$left}: 5px;
+      .br-active, .br-selected, .br-unit {
+        &:after {
+          font-family: $icomoon-font-family;
+          // color: $white;
+        }
+      }
+
+      > .br-active, > .br-selected {
+        &:after {
+          content: $icon-rated !important;
+        }
+      }
+
+      .br-unit {
+        margin-right: 0px;
+        font-size: 1rem;
+
+        &:after {
+          content: $icon-rate;
+        }
+      }
+    }
+  }
+}

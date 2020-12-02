@@ -1,0 +1,136 @@
+﻿// -----------------------------------------------------------------------------
+// This file contains all styles related to the messages component.
+// -----------------------------------------------------------------------------
+
+.alerts-wrapper {
+    // width: 50%;
+    margin: 0 auto;
+    text-align: center;
+
+    .message {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 30px;
+        margin: 0 auto 20px;
+        border: 1px solid;
+        border-radius: 10px;
+        text-align: center;
+
+        [class*="-select"] {
+            max-width: 100%;
+        }
+
+        > i {
+            color: #fff;
+            // width: 50px;
+            // height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+        }
+
+        .msg-title {
+            margin-top: 10px;
+        }
+
+        a {
+            color: $brand-color;
+        }
+
+        &.message-success {
+            border-color: green;
+
+            .icon-success {
+                background-color: green;
+            }
+
+            .msg-title {
+                color: green;
+            }
+        }
+
+        &.message-warning {
+            border-color: darkorange;
+            background: rgba(255, 140, 0, 0.16);
+            .icon-warning {
+                background-color: darkorange;
+            }
+
+            .msg-title {
+                color: darkorange;
+            }
+        }
+
+        &.message-error {
+            border-color: $red-danger;
+            background: rgba(255, 0, 0, 0.16);
+
+            .icon-cancel-music {
+                background-color: $red-danger;
+            }
+
+            .msg-title {
+                color: $red-danger;
+            }
+        }
+
+        &.message-empty {
+            min-height: 500px;
+        }
+
+        .message-heading {
+            width: 100%;
+            font-weight: bold;
+            color: $text-color;
+            align-self: flex-start;
+        }
+
+        p {
+            width: 100%;
+            align-self: flex-start;
+        }
+    }
+}
+
+
+/*No data Found message*/
+
+.message-wrapper {
+	background-color: $lighter-grey;
+	text-align: center;
+	padding: 30px;
+	border-radius: 10px;
+
+	img {
+		display: block;
+		margin: 0 auto;
+	}
+
+	p {
+		padding-top: 15px;
+	}
+}
+// -----------------------------------------------------------------------------
+// Media Queries.
+// -----------------------------------------------------------------------------
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+    .alerts-wrapper {
+        .message {
+            // margin-bottom: 0;
+
+            > i {
+                // width: 4.16666667vw;
+                // height: 4.16666667vw;
+            }
+
+            &.message-empty {
+                min-height: auto;
+            }
+        }
+    }
+}

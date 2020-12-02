@@ -1,0 +1,61 @@
+<div class="row workspace">
+    <div class="col-lg-3">
+      <app-workspace-sidenav [crType]="crType"></app-workspace-sidenav>
+    </div>
+<!-- Advance Search -->
+<div class="col-lg-9">
+<form class="form-wrapper">
+    <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+    <div class="grey-bg grey-bg-padding m-0">
+      <div class="row">
+        <div class="col-md-4">
+          <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr'" [propertyToSelect]="'Value'"
+            [viewMode]="false" [multiple]="false" [config]="config" [isRequiredLabel]="false" [options]="lookupService.lookupEntities['account_WorkspaceCRs']"
+            [(ngModel)]="currentCR.Text" #WorkspaceCR="ngModel" (change)="getTicketsList(currentCR.Text)">
+          </mutliselect>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Other Search -->
+<form class="form-wrapper" (ngSubmit)="searchTasks(searchForm)" #searchForm="ngForm">
+    <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+    <div class="grey-bg grey-bg-padding mx-0">
+        <div class="row">
+            <div class="col-md-4">
+                <custom-text-box [type]="'text'" id="ticketNumber" name="ticketNumber"
+                    [label]="'TicketManagement.TicketNumber' | translate" autocomplete="" aria-label="Name"
+                    [isRequiredLabel]="false" #RequestNumber="ngModel" [(ngModel)]="ticketFilteration.ticketNumber">
+                </custom-text-box>
+            </div>
+            <div class="col-md-4 reg-date">
+                <label>{{'WORKSPACE.RegDate' | translate}}</label>
+                <ngbd-datepicker-popup [(ngModel)]="ticketFilteration.From" #FromDate="ngModel" name="FromDate"
+                    [placeholder]="'WORKSPACE.From' | translate">
+                </ngbd-datepicker-popup>
+                <ngbd-datepicker-popup [(ngModel)]="ticketFilteration.To" #ToDate="ngModel" name="ToDate"
+                    [placeholder]="'WORKSPACE.To' | translate">
+                </ngbd-datepicker-popup>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="v-hidden">Button</label>
+                <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+                <button type="button" class="main-btn-secondary" (click)="resetSearch(searchForm)">
+                    {{'WORKSPACE.Clear' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="d-flex justify-content-between align-items-center">
+    <h4 class="page-title m-0">{{'WORKSPACE.MyTicket' | translate}}</h4>
+</div>
+
+<app-listing-grid [data]="result?.Data" [cols]="cols" [totalNumberOfItems]="result?.TotalNumber"
+      (notifyPageChanged)="pageChanged($event)" [filter]="filtration" [pages]="math.ceil(result?.TotalNumber /
+  this.result?.NumberPerPage)" [totalNumberOfText]="'WORKSPACE.Ticket'" [service]="1">
+    </app-listing-grid>
+</div>
+</div>

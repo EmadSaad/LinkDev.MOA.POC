@@ -1,0 +1,14 @@
+<label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+<textarea  
+    [tabIndex]="tabIndex"  
+    [minlength]='minLength' 
+    [maxlength]='maxLength'
+    [placeholder]='placeholder'
+    [(ngModel)]="value" 
+    [readonly]="isReadOnly"
+    (input)="onChangeFn()" (blur)="onBlurFn()"
+    [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}"
+    [disabled]="disabled" 
+    [cols]='cols'
+    [rows]='rows'
+    ></textarea>

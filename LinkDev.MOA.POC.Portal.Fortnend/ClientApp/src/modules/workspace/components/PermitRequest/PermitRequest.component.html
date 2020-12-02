@@ -1,0 +1,79 @@
+
+  <div class="row workspace">
+    <div class="col-lg-3">
+      <app-workspace-sidenav [crType]="crType"></app-workspace-sidenav>
+    </div>
+  
+    <div class="col-lg-9">
+      <form class="form-wrapper">
+        <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+        <div class="grey-bg grey-bg-padding m-0">
+          <div class="row">
+            <div class="col-md-4">
+              <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr'"
+                [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config"
+                [isRequiredLabel]="false" (change)="updateCr($event)"
+                [options]="lookupService.lookupEntities['account_WorkspaceCRs']" #workspaceCr="ngModel"
+                [(ngModel)]="filtration.CRId">
+              </mutliselect>
+            </div>
+            <div class="col-md-4">
+              <mutliselect id="WorkspaceContract" name="WorkspaceContract" [label]="'WORKSPACE.ContractNumber'"
+                [propertyToSelect]="'Value'" [viewMode]="false" [(ngModel)]="filtration.ContractId"
+                (change)="updateContract($event)" #WorkspaceContract="ngModel"
+                [options]="lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" [multiple]="false"
+                [config]="config" [isRequiredLabel]="false">
+  
+                <!-- [(ngModel)]="currentContract.Text" (change)="UpdateContract($event)"   #WorkspaceContract="ngModel"
+            [options]="lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" -->
+              </mutliselect>
+            </div>
+          </div>
+        </div>
+      </form>
+  
+      <form class="form-wrapper" (ngSubmit)="advancedSearch()" #searchForm="ngForm" *ngIf="!error">
+        <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+        <div class="grey-bg grey-bg-padding mx-0">
+          <div class="row">
+            <div class="col-md-4">
+              <custom-text-box [type]="'text'" id="PermitRequestNumber" name="PermitRequestNumber" [label]="'WORKSPACE.PermitRequestNumber'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #LicenseNumber="ngModel"
+                [(ngModel)]="filtration.PermitRequestNumber">
+              </custom-text-box>
+            </div>
+            <div class="col-md-4 reg-date">
+              <label>{{'WORKSPACE.IssuanceDate' | translate}}</label>
+              <ngbd-datepicker-popup [(ngModel)]="filtration.From" #FromDate="ngModel" name="FromDate"
+                [placeholder]="'WORKSPACE.From' | translate">
+              </ngbd-datepicker-popup>
+              <ngbd-datepicker-popup [(ngModel)]="filtration.To" #ToDate="ngModel" name="ToDate"
+                [placeholder]="'WORKSPACE.To' | translate">
+              </ngbd-datepicker-popup>
+            </div>
+            <div class="col-md-4">
+              <label class="v-hidden">Button</label>
+              <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+              <button type="button" class="main-btn-secondary" (click)="clear(searchForm)">
+                {{'WORKSPACE.Clear' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <app-listing-grid *ngIf="!error" [data]="result?.Data" [cols]="cols" [totalNumberOfItems]="result?.TotalNumber"
+        (notifyPageChanged)="pageChanged($event)" [filter]="filtration" [pages]="math.ceil(result?.TotalNumber /
+    this.result?.NumberPerPage)" [totalNumberOfText]="'WORKSPACE.Licenses'">
+  
+      </app-listing-grid>
+      <div class="alerts-wrapper mt-4" *ngIf="error">
+        <message [mode]="errorMode">
+          <p class="error-select">
+            {{'WORKSPACE.ErrorMsg' | translate}}
+          </p>
+        </message>
+      </div>
+    </div>
+  
+  </div>
+  

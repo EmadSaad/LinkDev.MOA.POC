@@ -1,0 +1,118 @@
+<app-breadcrumb [CurrnetComponentName]="'workspace'"></app-breadcrumb>
+<div class="row workspace">
+  <div class="col-lg-3">
+    <app-workspace-sidenav [crType]="crType"></app-workspace-sidenav>
+  </div>
+
+  <div class="col-lg-9">
+    <form class="form-wrapper">
+      <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+      <div class="grey-bg grey-bg-padding m-0">
+        <div class="row">
+          <div class="col-md-4">
+            <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr'"
+              [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config"
+              [isRequiredLabel]="false" (change)="updateCr($event)"
+              [options]="lookupService.lookupEntities['account_WorkspaceCRs']" #workspaceCr="ngModel"
+              [(ngModel)]="filtration.CRId">
+            </mutliselect>
+            <!-- (change)="UpdateCr($event)"  [(ngModel)]="currentCR.Text"-->
+          </div>
+          <div class="col-md-4">
+            <mutliselect id="WorkspaceContract" name="WorkspaceContract" [label]="'WORKSPACE.ContractNumber'"
+              [propertyToSelect]="'Value'" [viewMode]="false" [(ngModel)]="filtration.ContractId"
+              (change)="updateContract($event)" #WorkspaceContract="ngModel"
+              [options]="lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" [multiple]="false"
+              [config]="config" [isRequiredLabel]="false">
+
+              <!-- [(ngModel)]="currentContract.Text" (change)="UpdateContract($event)"   #WorkspaceContract="ngModel"
+          [options]="lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" -->
+            </mutliselect>
+          </div>
+        </div>
+        <div class="row" *ngIf="currentContractDetails">
+          <div class="col-12">
+            <h6 class="bold">{{'WORKSPACE.contractDetails.title' | translate}}</h6>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.CityName">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.cityName' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.CityName}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.LandNumber">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.landNumber' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.LandNumber}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.LandArea">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.landArea' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.LandArea}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductMainFamilyName">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.productMainFamily' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.ProductMainFamilyName}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductSubFamily">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.productSubFamily' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.ProductSubFamily}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductName">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.productName' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.ProductName}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.PricingType">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.pricingType' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.PricingType}}</div>
+          </div>
+          <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.PricePerMeterOrUnit">
+            <div class="text-black-50">{{'WORKSPACE.contractDetails.pricePerMeter' | translate}}</div>
+            <div class="bold mt-3">{{currentContractDetails.PricePerMeterOrUnit}}</div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form class="form-wrapper" (ngSubmit)="search()" #searchForm="ngForm">
+      <h4 class="page-title">{{'WORKSPACE.AdvancedSearch' | translate}}</h4>
+      <div class="grey-bg grey-bg-padding mx-0">
+        <div class="row">
+          <div class="col-md-4">
+            <custom-text-box [type]="'text'" id="RequestNumber" name="RequestNumber" [label]="'RequestHeader.Number'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #RequestNumber="ngModel"
+              [(ngModel)]="filtration.RequestNumber">
+            </custom-text-box>
+          </div>
+          <div class="col-md-4">
+            <mutliselect id="RequestType" name="RequestType" [label]="'WORKSPACE.RequestType'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_service_WorkspaceServiceDefinitions']" [viewMode]="false"
+              [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="filtration.RequestType"
+              #RequestType="ngModel">
+            </mutliselect>
+          </div>
+        </div>
+        <div class="row">
+             <div class="col-md-4 reg-date">
+            <label>{{'WORKSPACE.RegDate' | translate}}</label>
+            <ngbd-datepicker-popup [(ngModel)]="filtration.From" #FromDate="ngModel" name="FromDate"
+              [placeholder]="'WORKSPACE.From' | translate">
+            </ngbd-datepicker-popup>
+            <ngbd-datepicker-popup [(ngModel)]="filtration.To" #ToDate="ngModel" name="ToDate"
+              [placeholder]="'WORKSPACE.To' | translate">
+            </ngbd-datepicker-popup>
+          </div>
+          <div class="col-md-4">
+            <label class="v-hidden">Button</label>
+            <button type="submit" class="main-btn">{{'WORKSPACE.Search' | translate}}</button>
+            <button type="button" class="main-btn-secondary" (click)="clear(searchForm)">
+              {{'WORKSPACE.Clear' | translate}}
+            </button>
+            <!-- (click)="resetSearch(searchForm)" -->
+          </div>
+        </div>
+      </div>
+    </form>
+    <app-listing-grid [data]="result?.Data" [cols]="cols" [totalNumberOfItems]="result?.TotalNumber"
+      (notifyPageChanged)="pageChanged($event)" [filter]="filtration" [pages]="math.ceil(result?.TotalNumber /
+  this.result?.NumberPerPage)" [totalNumberOfText]="'WORKSPACE.MyTasks'">
+
+    </app-listing-grid>
+  </div>
+</div>

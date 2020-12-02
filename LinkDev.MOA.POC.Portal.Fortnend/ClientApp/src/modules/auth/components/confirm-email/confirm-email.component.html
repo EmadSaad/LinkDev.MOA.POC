@@ -1,0 +1,12 @@
+<div #errMsgContainer class="alerts-wrapper" *ngIf="mode">
+  <message [mode]="mode">
+    <p *ngIf="mode === ErrorMode" class="error-select">
+      {{Message | translate}}
+    </p>
+    <p *ngIf="mode === SuccessMode" class="success-select">
+      {{Message | translate}}
+    </p>
+  </message>
+  <span *ngIf="ShowResendActivation" class="pointer text-decoration-underline colored-text" (click)="Resendactivationemail()" title="{{ 'Activation.ResendActionationMail' |translate }}"> {{ 'Activation.ResendActionationMail' |translate }}</span>
+
+</div>

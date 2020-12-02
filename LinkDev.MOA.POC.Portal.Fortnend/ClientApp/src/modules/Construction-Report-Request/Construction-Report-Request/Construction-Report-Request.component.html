@@ -1,0 +1,256 @@
+<div class="form-wrapper mb-0">
+  <div class="row">
+    <div class="col-lg-3 mb-0">
+      <div class="h-100">
+        <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+          [structure]="formStructure" (onChange)="onSelect($event)">
+        </app-side-stages>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <h1 class="page-title">{{'ConstructionReportRequest.ConstructionReportRequest' | translate}}</h1>
+      <!--Request-Header-->
+      <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+      <!--Validation-Message-->
+      <!-- <div class="alert alert-light" role="alert"> <i class="icon-info"></i>
+        {{'FORM_VALIDATION_MESSAGE' | translate}}
+      </div> -->
+      <!-- <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo">
+      </app-request-submission-info> -->
+
+      <div class="alert {{submissionAlertClass}}" role="alert" *ngIf="this.submissionInfo">
+        {{submissionInfo}}
+      </div>
+
+      
+          <div class="alert alert-danger" role="alert" *ngIf="displayMessage && displayMessage != ''">
+          {{displayMessage}}
+      </div>
+      
+
+<!-- Default Time Schedule -->
+      <div [hidden]="ActiveLevelOne != 1" >
+          <form #stageOne="ngForm" novalidate autocomplete="off">
+            <div class="row">
+              <div class="col-xl-4 col-lg-6">
+                  
+                  <mutliselect id="BuildingLicense" name="BuildingLicense"
+                  [label]="'ConstructionReportRequest.BuildingLicenseRequest'" [propertyToSelect]="'Value'"
+                  [options]="buildingLicOptions" [multiple]="false"
+                  [config]="config" [viewMode]="true" [(ngModel)]="Application.Request.BuildingLicenseId"
+                  #BuildingLicense="ngModel">
+                </mutliselect>
+              </div>
+              <div class="col-xl-4 col-lg-6">              
+                  <mutliselect id="ContractNumber" name="ContractNumber" [label]="'PlanApproval.ContractNumber'"
+                  [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_contract_LookupWithName']"
+                  [multiple]="false" [config]="config" [viewMode]="true"
+                  [(ngModel)]="Application.Request.ContractNumberId"
+                  #ContractNumber="ngModel" >
+                </mutliselect>
+              </div>
+              <div class="col-xl-4 col-lg-6">
+                <mutliselect id="ConsultingOfficeDropdown" name="ConsultingOfficeDropdown" [label]="'Bidding.ConsultingOffice'"
+                [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['account_Account']"
+                [viewMode]="true" [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ConsultingOfficeId"
+                #ConsultingOfficeDropdown="ngModel" >
+                </mutliselect>
+              </div>
+
+              <div class="col-xl-4 col-lg-6">
+                <mutliselect id="ContractorDropdown" name="ContractorDropdown" [label]="'BuildingLicenseRequest.Contractor'"
+                [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['account_Account']"
+                [viewMode]="true" [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ContractorId"
+                #ContractorDropdown="ngModel" >
+                </mutliselect>
+              </div>
+
+            </div>
+          </form>
+          <form #gridForm="ngForm">
+
+            <!-- [tableHeadTitle]="'ConstructionStage.ConstructionStage'" -->
+            <!-- <h1 class="page-title">{{'ConstructionStage.ConstructionStage' | translate}}</h1> -->
+            <app-grid 
+            [canAdd]="false"
+            [canDelete]="false"
+            [canEdit]="IsDefaultStages && currentUser == 1"
+            [modalFormTitle]="'ConstructionReportRequest.ConstructionReportRequest'"
+            [(data)]="Application.Request.ConstructionStages"
+            [columns]="ConstructionStageGridcols"
+            [template]="gridContent" 
+            [(model)]="gridModel"
+            [templateForm]="gridForm"
+            [(popUpOpened)]="isPopUpOpened">
+            <ng-container #gridContent  >
+                <div class="row">
+                    <div class="col-4">
+                    <div class="form-row" [ngClass]="{'required':PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)}">
+                        <!--TOOL-->
+                        <custom-text-box [type]="'number'" [required]=true name="PlannedPercentage" #PlannedPercentage="ngModel"
+                         [label]="'ConstructionStage.PlannedPercentage'"
+                          [isRequiredLabel]="true" [max]="100" [(ngModel)]="gridModel.PlannedPercentage" [pattern]="'^[0-9]$|^[1-9][0-9]$|^(100)$'">
+                        </custom-text-box>
+                        <div *ngIf="PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)" 
+                            class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-row" [ngClass]="{'required':ImplementationDuration.dirty&&!ImplementationDuration.valid &&  ImplementationDuration.value % 1 != 0}">
+                            <!--TOOL-->
+                            <custom-text-box [type]="'number'" [required]=true name="ImplementationDuration" #ImplementationDuration="ngModel"
+                             [label]="'ConstructionStage.ImplementationDuration'"
+                              [isRequiredLabel]="true" [(ngModel)]="gridModel.ImplementationDuration" pattern="(?<=\s|^)\d+(?=\s|$)">
+                            </custom-text-box>
+                            <div *ngIf="ImplementationDuration.dirty&&!ImplementationDuration.valid &&  ImplementationDuration.value % 1 != 0" 
+                            class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div>
+                          </div>
+                        </div>
+                   
+                </div>
+            </ng-container>
+          </app-grid>
+          </form>
+          <!-- <div class="col-12 form-footer" *ngIf="IsDefaultStages">
+              <button class="main-btn"
+                (click)="SubmitDefaultStages()">{{'ServicesCommon.Submit' | translate}}</button>
+              <button class="main-btn" (click)="saveApplication()">{{'SaveAsDraft' | translate}}</button>
+              <button class="main-btn" [disabled]="!stageOne.valid||isSubmit"
+                  (click)="Next()">{{'Next' | translate}}</button>
+            </div> -->
+      </div>
+
+<!-- Monthly Report -->
+      <div [hidden]="ActiveLevelOne != 2" >
+          <h5 class="mt-4 stage-title">{{'ConstructionReportRequest.ConstructionMonthlyReport' | translate}}</h5>
+              <div class="row">
+                <div class="col-lg-4 col-md-6">
+                  <custom-text-box [type]="'text'" [label]="'ConstructionReportRequest.MonthlyReportNumber'"  *ngIf="Application.Request.CurrentConstructionMonthlyReport"            
+                    [(ngModel)]="Application.Request.CurrentConstructionMonthlyReport.MonthlyReportNumber"
+                     #MonthlyReportNumber="ngModel"  name="MonthlyReportNumber"
+                    [isRequiredLabel]="false" [isReadOnly]="true">
+                  </custom-text-box>
+                </div>
+              </div>
+
+              <form #gridFormMonth="ngForm">
+
+                <!-- [tableHeadTitle]="'ConstructionStage.ConstructionStage'" -->
+                  <!-- <h1 class="page-title">{{'ConstructionStage.ConstructionStage' | translate}}</h1> -->
+                  <app-grid  *ngIf="Application.Request.CurrentConstructionMonthlyReport"
+                  [canAdd]="false"
+                  [canDelete]="false"
+                  [canEdit]="IsMonthlyReport && currentUser == 1"
+                  [modalFormTitle]="'ConstructionReportRequest.ConstructionReportRequest'"
+                  [(data)]="Application.Request.CurrentConstructionMonthlyReport.ConstructionStages"
+                  [columns]="MonthConstructionStageGridcols" [template]="gridContentMonth" [(model)]="gridModelMonth"
+                  [templateForm]="gridFormMonth" [(popUpOpened)]="isPopUpOpenedMonth">
+                  <ng-container #gridContentMonth>
+                    <div class="row">
+                      <div class="col-md-6 col-lg-4">
+                        <div class="form-row"
+                          [ngClass]="{'required':CurrentMonthImplementationPercentage.dirty&&!CurrentMonthImplementationPercentage.valid&& (CurrentMonthImplementationPercentage.value>100 || CurrentMonthImplementationPercentage.value % 1 != 0) }">
+                          <!--TOOL-->
+                          <custom-text-box [type]="'number'" [required]=true [max]="100" name="CurrentMonthImplementationPercentage"
+                            #CurrentMonthImplementationPercentage="ngModel"
+                            [label]="'ConstructionStage.CurrentMonthImplementationPercentage'" [isRequiredLabel]="true"
+                            [(ngModel)]="gridModelMonth.CurrentMonthImplementationPercentage" [pattern]="'^[0-9]$|^[1-9][0-9]$|^(100)$'">
+                          </custom-text-box>
+                          <div *ngIf="CurrentMonthImplementationPercentage.dirty&&!CurrentMonthImplementationPercentage.valid && ( CurrentMonthImplementationPercentage.value>100 || CurrentMonthImplementationPercentage.value % 1 != 0)"
+                            class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </app-grid>
+              </form>
+
+                <!-- <div class="col-12 form-footer" *ngIf="IsMonthlyReport">
+                    <button class="main-btn"
+                      (click)="SubmitMonthlyReport()">{{'ServicesCommon.Submit' | translate}}</button>
+                    <button class="main-btn" (click)="saveApplication()">{{'SaveAsDraft' | translate}}</button>
+                    <button class="main-btn" [disabled]="!stageOne.valid||isSubmit"
+                        (click)="Next()">{{'Next' | translate}}</button>
+                  </div> -->
+
+
+      </div>
+
+<!-- Previous Monthly Report -->
+      <div [hidden]="ActiveLevelOne != 3" >
+          <form #gridFormMonthlyReports="ngForm">
+
+            <!-- [tableHeadTitle]="'ConstructionReportRequest.ConstructionMonthlyReport'"   -->
+            <h1 class="page-title">{{'ConstructionReportRequest.ConstructionMonthlyReport' | translate}}</h1>
+              <app-grid  
+              [canAdd]="false"
+              [canDelete]="false"
+              [canEdit]="false"
+              [canView]="true"
+              [modalFormTitle]="'ConstructionReportRequest.ConstructionReportRequest'"
+              [(data)]="Application.Request.ConstructionMonthlyReport"
+              [columns]="MonthlyReportsConstructionStageGridcols"
+              [template]="gridContentMonthlyReports" 
+              [(model)]="gridModelMonthlyReports"
+              [templateForm]="gridFormMonthlyReports"
+              [(popUpOpened)]="isPopUpOpenedMonthlyReports">
+              <ng-container #gridContentMonthlyReports>
+                  <div class="row">     
+                      <div class="col-md-12">
+                        <app-grid  *ngIf="gridModelMonthlyReports.ConstructionStages"
+                          [canAdd]="false"
+                          [canDelete]="false"
+                          [canEdit]="false"
+                          [tableHeadTitle]="'ConstructionStage.ConstructionStage'"
+                          [(data)]="gridModelMonthlyReports.ConstructionStages"
+                          [columns]="MonthConstructionStageGridcols"
+                          [template]="gridModelMonth" 
+                          [(popUpOpened)]="StagesisPopUpOpenedMonth">
+                        </app-grid>
+                      </div> 
+                  </div>
+              </ng-container>
+            </app-grid>
+            </form>
+
+      </div>
+
+
+
+      <!-- Nav and Submit Bar -->
+
+
+
+<!-- {{currentUser}} -->
+      <div *ngIf="((IsDefaultStages&&ActiveLevelOne==1)||(IsMonthlyReport&&ActiveLevelOne==2)) && currentUser == 1" class="col-12 form-footer">
+          
+              <button type="button" class="main-btn" (click)="SubmitStages()">
+                {{'Save' | translate}}
+              </button>
+              <button type="button" class="main-btn-secondary" (click)="SaveAsDraft()">
+                {{'ServicesCommon.SaveAsDraft' | translate}}
+              </button>
+             
+           <!-- <div class="tab-nav-wrapper">
+              
+              
+              <a aria-label="Prev" title="{{'PREVIOUS' | translate}}" class="prev"  (click)="Previous()"  *ngIf="ActiveLevelOne != 1"> {{'PREVIOUS' | translate}}</a>
+              
+              <a aria-label="Next" title="{{'NEXT' | translate}}" class="next"  (click)="Next()" *ngIf="ActiveLevelOne != 3">{{'NEXT' | translate}}</a>
+
+            
+          </div> -->
+        </div>
+
+
+        <!-- <div class="col-12" *ngIf="displayMessage && displayMessage != ''">
+            <div class="alert alert-danger" role="alert">
+                {{displayMessage}}
+            </div>
+        </div> -->
+
+    </div>
+
+  </div>
+</div>
+

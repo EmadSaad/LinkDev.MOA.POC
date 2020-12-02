@@ -18,6 +18,7 @@ export class FileUploadComponent  implements OnInit, OnDestroy {
     @Input() folderName: string;
     @Input() IsReadOnly: boolean = false;
     public apiUrl: string = ConfigService.APIURL;
+    public documentURL: string="http://moa.westeurope.cloudapp.azure.com/api/documents/upload?folderName=";
     isLoaded:boolean = false;
 
     constructor(public translate: TranslateService, public api: APIService) {
@@ -41,7 +42,7 @@ export class FileUploadComponent  implements OnInit, OnDestroy {
         for (let i = 0; i < files.length; i++) {
             debugger;
             var currentFile = (<File>files[i]);
-            
+console.log(currentFile);
             if (this.documentSetting.Files && this.documentSetting.Files.find(x => x.FileName.toLocaleLowerCase().trim() === currentFile.name.split('.')[0].toLocaleLowerCase().trim() && x.IsDeleted === false)) {
               this.documentSetting.Errors.push('Documents.ValidationFileAlreadyUploaded');
               this.isLoaded = false;
@@ -72,9 +73,11 @@ export class FileUploadComponent  implements OnInit, OnDestroy {
           let fileToUpload = <File>files[i];
 
           formData.append('file' + i, fileToUpload, fileToUpload.name);
-          
+
         }
-        this.api.PostFile<ApiGenericResponse<FileInfoModel[]>>(`api/documents/upload?folderName=${this.folderName}&documentSettingId=${this.documentSetting.Id}`,formData)
+        if(this.documentSetting.Description=="payment")
+        this.documentURL="http://moa.westeurope.cloudapp.azure.com/api/payment/upload?folderName=";
+        this.api.PostFile<ApiGenericResponse<FileInfoModel[]>>(`${this.documentURL}${this.folderName}&documentSettingId=${this.documentSetting.Id}`,formData)
             .subscribe(res =>{
                 if(res.ResponseCode == ResponseCode.Success)
                 {

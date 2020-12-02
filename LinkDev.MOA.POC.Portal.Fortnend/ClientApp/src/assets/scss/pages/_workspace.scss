@@ -1,0 +1,70 @@
+app-my-dashboard {
+  .lising-header{
+    a{
+      color:$brand-color;
+    }
+    .icon-back {
+      margin-#{$right}:10px;
+      @if $dir == ltr {
+        transform: scaleX(-1);
+        display: inline-block;
+      }
+  }
+  }
+   
+  .overviewWrapper {
+    height: 275px;
+  }
+}
+.workspace {
+  .overview-item {
+    .dashboard-img{
+      height: 80px;
+      width: 80px;
+    }
+    .requests-img {
+      background: image("requests.png") no-repeat;
+    }
+    .contracts-img {
+      background: image("contracts-workspace.png") no-repeat;
+    }
+    .licenses-img{
+      background: image("licenses.png") no-repeat;
+    }
+    &.selected {
+      .requests-img {
+        background: image("requests-selected.png") no-repeat;
+      }
+      .contracts-img {
+        background: image("contracts-selected.png") no-repeat;
+      }
+      .licenses-img{
+        background: image("licenses-selected.png") no-repeat;
+      }
+    }
+  }
+
+  .grey-bg-padding {
+    padding: 1.625rem 1.4rem 0.625rem;
+  }
+  .form-wrapper {
+    .main-btn,
+    .main-btn-secondary {
+      height: 2.5625rem;
+      padding: 9px 2.405rem;
+    }
+    .main-btn-secondary {
+      background: transparent;
+      border-color: #727272;
+      color: #727272;
+      margin-top: 0;
+    }
+  }
+}
+@media (min-width: 1920px) {
+  app-my-dashboard {
+    .overviewWrapper {
+      height: 330px;
+    }
+  }
+}

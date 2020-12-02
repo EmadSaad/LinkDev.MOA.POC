@@ -1,0 +1,488 @@
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="0" [structure]="formStructure"
+        (onChange)="onSelect($event)"> </app-side-stages>
+    </div>
+  </div>
+
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'DrillingPermit.DrillingPermit' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+
+    <div [hidden]="ActiveLevelOne != 1">
+      <!--Validation-Message-->
+      <!-- <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span
+           class="icon-info"></span>{{'DrillingPermit.CompleteProfileSubHeader'| translate }}</div>  -->
+
+      <h5 class="stage-title">{{'DrillingPermit.RequestDetails' | translate}}</h5>
+      <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+        [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+      <form #DrillingPermitForm="ngForm" novalidate autocomplete="off">
+
+        <!-- <div class="form-validation mb-4" *ngIf="contractValidationMsg != '' ">{{contractValidationMsg}}</div> -->
+
+        <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="ContractNumberId" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer> -->
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="CRNameId" name="CRNameId" [label]="'DrillingPermit.CRName'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['account_CRsByTypeContractor']"
+              [viewMode]="Application.IsReadOnly || (Application.ApplicationHeader && Application.ApplicationHeader.PortalStatusCode === '59')" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.CRNameId" [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+              #CRNameId="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="CRNameId"
+              [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="RequestType" name="RequestType" [label]="'DrillingPermit.RequestType'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_drillingpermitrequest_ldv_requesttype_OptionSet']"
+              [viewMode]="Application.IsReadOnly || (Application.ApplicationHeader && Application.ApplicationHeader.PortalStatusCode === '59')" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.RequestType" [required]="true" (change)="OnRequestTypeChange()"
+              [isRequiredLabel]="!Application.IsReadOnly" #RequestType="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="RequestType  " [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+
+          <div class="col-lg-4 col-md-6" *ngIf="IsOldRequest">
+            <mutliselect id="OlddrilingPermitId" name="OlddrilingPermitId" [label]="'DrillingPermit.OlddrilingPermitId'"
+              [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_drillingpermit_LookupWithId']"
+              [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.OlddrilingPermitId" [required]="true" (change)="RequestNumberChanged()"
+              [isRequiredLabel]="!Application.IsReadOnly" #OlddrilingPermitId="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="OlddrilingPermitId" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="DesignorContractWithInvestor" name="DesignorContractWithInvestor"
+              [label]="'DrillingPermit.DesignorContractWithInvestor'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_drillingpermitrequest_ldv_designorcontractwithinvestor_OptionSet']"
+              [viewMode]="Application.IsReadOnly || IsOldRequest" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.DesignorContractWithInvestor" [required]="true"
+              (change)="DesignNumberChange()" [isRequiredLabel]="!Application.IsReadOnly"
+              #DesignorContractWithInvestor="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="DesignorContractWithInvestor" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="isDesign">
+            <custom-text-box [type]="'text'" name="DesignNumber" #DesignNumber="ngModel"
+              [(ngModel)]="Application.Request.DesignNumber" [label]="'DrillingPermit.DesignNumber'" autocomplete=""
+              aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              [isReadOnly]="Application.IsReadOnly || !IsNewRequest"></custom-text-box>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="DesignNumber" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="IsContract">
+            <custom-text-box [type]="'text'" name="ContractNumberString" #ContractNumberString="ngModel"
+              (change)="ContractChanged()" [(ngModel)]="Application.Request.ContractNumberString"
+              [label]="'DrillingPermit.ContractNumberId'" autocomplete="" aria-label="Name"
+              [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              [isReadOnly]="Application.IsReadOnly || !IsNewRequest">
+            </custom-text-box>
+            <div class="form-validation mb-4" *ngIf="!IsRequestValid">
+              {{contractValidationMsg}}
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="IndustrialCityId" name="IndustrialCityId" [label]="'DrillingPermit.IndustrialCityId'"
+              [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_industrialcity_LookupWithId']"
+              [viewMode]="Application.IsReadOnly || IsDefaultIndustrialcity || IsOldRequest" [multiple]="false"
+              [config]="config" [(ngModel)]="Application.Request.IndustrialCityId" [required]="true"
+              [isRequiredLabel]="!Application.IsReadOnly" #IndustrialCityId="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="IndustrialCityId" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="DrillingPermitTypeId" name="DrillingPermitTypeId"
+              [label]="'DrillingPermit.DrillingPermitTypeId'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_drillingpermittypes_LookupWithId']"
+              [viewMode]="Application.IsReadOnly || IsOldRequest" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.DrillingPermitTypeId" [required]="true" (change)="DrillingTyeChange()"
+              [isRequiredLabel]="!Application.IsReadOnly" #DrillingPermitTypeId="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="DrillingPermitTypeId" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="IsOther">
+            <custom-text-box [type]="'text'" name="Other" #Other="ngModel" [(ngModel)]="Application.Request.Other"
+              [label]="'DrillingPermit.Other'" autocomplete="" aria-label="Name"
+              [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              [isReadOnly]="Application.IsReadOnly || !IsNewRequest">
+            </custom-text-box>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="Other"
+              [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-8">
+            <label>{{'DrillingPermit.WorkDescription' | translate}}</label>
+            <textarea id="JobDescription" name="WorkDescription" [readOnly]="Application.IsReadOnly || !IsNewRequest"
+              #PermitReason="ngModel" [(ngModel)]="Application.Request.WorkDescription"
+              [ngModelOptions]="{standalone: true}"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <label>
+              {{'DrillingPermit.PermitStartingDate' | translate}}<span class="required"> *</span>
+            </label>
+            <ngbd-datepicker-islamiccivil [(ngModel)]="Application.Request.DrillingPermitStartingDateinhijri"
+              #PermitStartingDate="ngModel" name="PermitStartingDate" [required]="true" (change)="setIslamicDate()"
+              [ngClass]="{ 'is-invalid required  validation':  submit && PermitStartingDate.errors}"
+              [readonly]="Application.IsReadOnly">
+            </ngbd-datepicker-islamiccivil>
+            <div class="form-validation mb-4" *ngIf="IsStartDateInThePast">
+              لا يمكن إختيار تاريخ قديم
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="PermitStartingDate" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <label>
+              {{'DrillingPermit.PermitEndingDate' | translate}}<span class="required"> *</span>
+            </label>
+            <ngbd-datepicker-islamiccivil [(ngModel)]="Application.Request.DrillingPermitEndingDateinhijri"
+              #PermitEndingDate="ngModel" name="PermitEndingDate" [required]="true" (change)="setIslamicDate()"
+              [ngClass]="{ 'is-invalid required  validation':  isSubmit && PermitEndingDate.errors}"
+              [readonly]="Application.IsReadOnly">
+            </ngbd-datepicker-islamiccivil>
+            <div class="form-validation mb-4" *ngIf="IsEndDateInThePast">
+              لا يمكن إختيار تاريخ قديم
+            </div>
+            <div class="form-validation mb-4" *ngIf="IsEndLessThanStart">
+               تاريخ نهايةالتصريح يجب أن يكون بعد تاريخ بدايةالتصريح
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="PermitEndingDate" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+
+        </div>
+
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="DrillingMethod" name="DrillingMethod" [label]="'DrillingPermit.DrillingMethod'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_drillingpermitrequest_ldv_drillingmethod_OptionSet']"
+              [viewMode]="Application.IsReadOnly || IsOldRequest" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.DrillingMethod" [required]="true" (change)="DrillingMethodChange()"
+              [isRequiredLabel]="!Application.IsReadOnly" #DrillingMethod="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="DrillingMethod" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+
+          <div class="col-lg-4 col-md-6" *ngIf="isAutoOrManula">
+            <mutliselect id="DrillingType" name="DrillingType" [label]="'DrillingPermit.DrillingType'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_drillingpermitrequest_ldv_drillingtype_OptionSet']"
+              [viewMode]="Application.IsReadOnly || IsOldRequest" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.DrillingType" [required]="true"
+              [isRequiredLabel]="!Application.IsReadOnly" #DrillingType="ngModel">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="DrillingType" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="WorkLocation" #WorkLocation="ngModel"
+              [(ngModel)]="Application.Request.WorkLocation" [label]="'DrillingPermit.WorkLocation'" autocomplete=""
+              aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              [isReadOnly]="Application.IsReadOnly || !IsNewRequest"></custom-text-box>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="WorkLocation" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+
+        </div>
+
+
+
+        <h5 class="stage-title">{{'DrillingPermit.DimensionalDetails' | translate}}</h5>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="WorkDimensionLengthm" #WorkDimensionLengthm="ngModel"
+              [(ngModel)]="Application.Request.WorkDimensionLengthm" [label]="'DrillingPermit.WorkDimensionLengthm'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              (change)="NumbersValidation()" [isReadOnly]="Application.IsReadOnly "></custom-text-box>
+            <div class="form-validation mb-4" *ngIf="IsDecimalWorkDimensionLengthm">
+              الرجاء إدخال رقم عشري صالح
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="WorkDimensionLengthm" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+
+          <!-- <div class="col-lg-4 col-md-6">
+          <currency-input [submit]="submit" type="number" [label]="'DrillingPermit.WorkDimensionLengthm'"
+            [required]="true" [numeric]="true" name="WorkDimensionLengthm" #WorkDimensionLengthm="ngModel"
+            [(ngModel)]="Application.Request.WorkDimensionLengthm"
+             [maxLength]="28"
+            [ngClass]="{ 'is-invalid required  validation':  submit }">
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+            [controlName]="WorkDimensionLengthm" [form]="DrillingPermitForm" [submit]="submit">
+          </app-validation-viewer>
+          </currency-input>
+        </div> -->
+
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="WorkDimensionsWidthm" #WorkDimensionsWidthm="ngModel"
+              [(ngModel)]="Application.Request.WorkDimensionsWidthm" [label]="'DrillingPermit.WorkDimensionsWidthm'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              (change)="NumbersValidation()" [isReadOnly]="Application.IsReadOnly  "></custom-text-box>
+            <div class="form-validation mb-4" *ngIf="IsDecimalWorkDimensionsWidthm">
+              الرجاء إدخال رقم عشري صالح
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="WorkDimensionsWidthm" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="WorkDimensionsHeightm" #WorkDimensionsHeightm="ngModel"
+              [(ngModel)]="Application.Request.WorkDimensionsHeightm" [label]="'DrillingPermit.WorkDimensionsHeightm'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              (change)="NumbersValidation()" [isReadOnly]="Application.IsReadOnly "></custom-text-box>
+            <div class="form-validation mb-4" *ngIf="IsDecimalWorkDimensionsHeightm">
+              الرجاء إدخال رقم عشري صالح
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="WorkDimensionsHeightm" [form]="DrillingPermitForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+
+
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="WorkOverallLength" #WorkOverallLength="ngModel"
+              [(ngModel)]="Application.Request.WorkOverallLength" [label]="'DrillingPermit.WorkOverallLength'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+              (change)="NumbersValidation()" [isReadOnly]="Application.IsReadOnly "></custom-text-box>
+            <div class="form-validation mb-4" *ngIf="IsDecimalWorkOverallLength">
+              الرجاء إدخال رقم عشري صالح
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="WorkOverallLength" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+          </div>
+
+
+        </div>
+
+
+        <!-- <div class="row">
+          <div class="col-12 form-footer d-flex justify-content-between" *ngIf="!Application.IsReadOnly">
+            <button class="main-btn-secondary" [disabled]="!Application.Request.CRNameId || !IsRequestValid"
+              (click)="SaveAsDraft()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+            <button class="main-btn" [disabled]="!Application.Request.CRNameId || !IsRequestValid"
+              (click)="submitRequest()">{{'ServicesCommon.Submit' | translate}}</button>
+          </div>
+        </div> -->
+      </form>
+    
+
+    <!-- <div [hidden]="ActiveLevelOne != 2">
+      <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span
+          class="icon-info"></span>{{'DrillingPermit.CompleteProfileSubHeader'| translate }}</div>
+      <h5 class="stage-title">{{'DrillingPermit.ProjectDetails' | translate}}</h5>
+    </div> -->
+
+
+
+    <!-- <h5 class="stage-title">{{'DrillingPermit.Image' | translate}}</h5> -->
+    
+    <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'ImageLocation'" [IsLiveChanges]="true"
+      [IsReadOnly]="false">
+    </app-Uploaders-List>
+
+
+
+    <h5 class="stage-title">{{'DrillingPermit.ManagerDetails' | translate}}</h5>
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="ProjectManagerName" #ProjectManagerName="ngModel"
+          [(ngModel)]="Application.Request.ProjectManagerName" [label]="'DrillingPermit.ProjectManagerName'"
+          autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+          [isReadOnly]="Application.IsReadOnly  || !IsNewRequest"></custom-text-box>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="ProjectManagerName" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="ProjectManagerContactNumber" #ProjectManagerContactNumber="ngModel"
+          [(ngModel)]="Application.Request.ProjectManagerContactNumber"
+          [label]="'DrillingPermit.ProjectManagerContactNumber'" autocomplete="" aria-label="Name"
+          [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+          [isReadOnly]="Application.IsReadOnly  || !IsNewRequest">
+        </custom-text-box>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="ProjectManagerContactNumber" [form]="DrillingPermitForm" [submit]="submit">
+        </app-validation-viewer>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="ProjectManaggerMail" #ProjectManaggerMail="ngModel"
+          [(ngModel)]="Application.Request.ProjectManaggerMail" [label]="'DrillingPermit.ProjectManaggerMail'"
+          autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+          [isReadOnly]="Application.IsReadOnly  || !IsNewRequest"></custom-text-box>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="ProjectManaggerMail" [form]="DrillingPermitForm" [submit]="submit"></app-validation-viewer>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="SupervisingDestination" #SupervisingDestination="ngModel"
+          [(ngModel)]="Application.Request.SupervisingDestination" [label]="'DrillingPermit.SupervisingDestination'"
+          autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+          [isReadOnly]="Application.IsReadOnly  || !IsNewRequest"></custom-text-box>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="SupervisingDestination" [form]="DrillingPermitForm" [submit]="submit">
+        </app-validation-viewer>
+      </div>
+    </div>
+
+
+    <h5 class="stage-title">{{'DrillingPermit.Documents' | translate}}</h5>
+
+    <div class="row" *ngIf="IsNewRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'LetterFromOwningOrganization'"
+          [IsLiveChanges]="true" [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="IsNewRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'WorkPlan'" [IsLiveChanges]="true"
+          [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="IsNewRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'DrillingHorizontalSection'"
+          [IsLiveChanges]="true" [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="IsNewRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'ProjectTimePlan'" [IsLiveChanges]="true"
+          [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="IsNewRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'SaftyPlan'" [IsLiveChanges]="true"
+          [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div>
+
+    <!-- <div class="row" *ngIf="IsOldRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'ImageLocation'" [IsLiveChanges]="true"
+          [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div> -->
+
+    <div class="row" *ngIf="IsOldRequest">
+      <div class="col-lg-6 col-md-6">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'ProjectTimePlan'" [IsLiveChanges]="true"
+          [IsReadOnly]="false">
+        </app-Uploaders-List>
+      </div>
+    </div>
+
+    <div class="row" *ngFor="let CoordinationDestination of Application.Request.CoordinationDestination" >
+
+      <div class="col-lg-6 col-md-6" *ngIf="IsNewRequest">
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="CoordinationDestination.toString()"
+          [IsLiveChanges]="true" [IsReadOnly]="false">
+        </app-Uploaders-List>
+
+      </div>
+    </div>
+    <!-- <div class="col-lg-4 col-md-6">
+      <mutliselect id="CoordinationDestination" name="CoordinationDestination"
+        [label]="'DrillingPermit.CoordinationDestination'" [propertyToSelect]="'Value'"
+        [options]="lookupService.lookupEntities['ldv_drillingpermitrequest_ldv_coordinationdestination_OptionSet']"
+        [viewMode]="false" [multiple]="true" [config]="config"
+        [(ngModel)]="Application.Request.DesignorContractWithInvestor" [required]="true"
+         [isRequiredLabel]="false"
+        #CoordinationDestination="ngModel">
+      </mutliselect>
+      <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+        [controlName]="DesignorContractWithInvestor" [form]="DrillingPermitForm" [submit]="submit">
+      </app-validation-viewer>
+    </div> -->
+
+    <!-- <div class="row">
+      <div class="col-12 form-footer d-flex justify-content-between" *ngIf="!Application.IsReadOnly">
+        <button class="main-btn-secondary" [disabled]=" !IsRequestValid"
+          (click)="SaveAsDraft() ; ValidateDateInTheFuture()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+        <button class="main-btn" [disabled]=" !IsRequestValid"
+          (click)="submitRequest() ; ValidateDateInTheFuture()">{{'ServicesCommon.Submit' | translate}}</button>
+      </div>
+    </div> -->
+
+    <div class="row">
+      <div class="col-12 form-footer d-flex justify-content-between" *ngIf="!Application.IsReadOnly">
+        <button class="main-btn-secondary" [disabled]="!Application.Request.CRNameId || !IsRequestValid"
+          (click)="ValidateDateInTheFuture() ; SaveAsDraft() ">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+        <button class="main-btn" [disabled]="!Application.Request.CRNameId || !IsRequestValid"
+          (click)="ValidateDateInTheFuture() ; submitRequest() ">{{'ServicesCommon.Submit' | translate}}</button>
+      </div>
+    </div>
+
+  </div>
+    <!--Request Comments-->
+
+    <app-request-comments [regardingID]="Application.Request.Id"
+      [hidden]="ActiveLevelOne !== 3 || !Application.Request.Id || (Application.ApplicationHeader && Application.ApplicationHeader.PortalStatusCode === '1')">
+    </app-request-comments>
+
+
+  </div>

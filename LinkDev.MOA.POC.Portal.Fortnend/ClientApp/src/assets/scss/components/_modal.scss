@@ -1,0 +1,76 @@
+﻿
+.modal-content {
+    .modal-title {
+        color: $brand-color;
+        font-weight: bold;
+        margin:0;
+    }
+
+    .close {
+        margin: -1rem 0rem -1rem 0 !important;
+    }
+
+    .modal-footer > :not(:last-child) {
+        margin-#{$right}: .25rem;
+        margin-#{$left}: 0;
+    }
+
+    .modal-footer > :not(:first-child) {
+        margin-#{$left}: .25rem;
+        margin-#{$right}: 0;
+    }
+
+    .error {
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    .icon-cancel-music {
+        border: 0;
+
+        &:hover {
+            color: $brand-color;
+            background-color: transparent;
+        }
+
+        &:focus {
+            outline-color: transparent
+        }
+    }
+
+    padding: 10px;
+    border-radius: 5px;
+
+    input {
+        max-width: 100%;
+        height: 2.5625rem;
+    }
+    .modal-info-btn{
+        display: inline-block;
+        margin-top: 42px;
+        &:hover,&.clicked{
+            color:$brand-color;
+        }
+    }
+    .infoInsidePopup{
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        cursor: pointer;
+        margin-bottom: 30px;
+    }
+    .d-flex {
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .item-link {
+            margin-#{$left}: 15px
+        }
+    }
+}
+.successfull-save{
+  .modal-header{
+      padding: 1rem 0;
+  }
+}

@@ -1,0 +1,50 @@
+﻿.intl-tel-input.allow-dropdown input, .intl-tel-input.allow-dropdown input[type=text], .intl-tel-input.allow-dropdown input[type=tel], .intl-tel-input.separate-dial-code input, .intl-tel-input.separate-dial-code input[type=text], .intl-tel-input.separate-dial-code input[type=tel] {
+    padding-left: 0px !important; //72px 65px 75px
+    padding-right: 0px !important; //6px
+    direction: ltr;
+}
+
+.intl-tel-input .selected-flag {
+    direction: ltr;
+}
+
+.intl-tel-input {
+	display: inline-flex !important;
+
+	&.allow-dropdown {
+		display: flex !important;
+	}
+
+	direction: ltr;
+
+	&:focus {
+		box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+	}
+
+	.flag-container {
+		direction: ltr;
+		position: static !important;
+		padding: 0 !important;
+		border-top: 1px solid $darker-grey;
+		border-bottom: 1px solid $darker-grey;
+		border-left: 1px solid $darker-grey;
+		background-color: $white;
+		border-top-left-radius: 2px;
+		border-bottom-left-radius: 2px;
+	}
+
+	input[type="tel"] {
+		border-left: 0;
+        flex: 1 1 0;
+
+		&:focus, &:hover {
+			box-shadow: none;
+		}
+	}
+}
+.dial-code {
+    margin-left: 6px !important;
+}
+.intl-tel-input .country-list{
+    overflow-y:auto!important;
+}

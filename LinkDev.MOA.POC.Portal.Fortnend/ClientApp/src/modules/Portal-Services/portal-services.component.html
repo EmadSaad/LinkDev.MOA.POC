@@ -1,0 +1,4 @@
+<app-breadcrumb [CurrnetComponentName]="'ModonServices'" *ngIf="!breadcrmbComponent"></app-breadcrumb>
+<app-breadcrumb [CurrnetComponentName]="breadcrmbComponent" *ngIf="breadcrmbComponent"></app-breadcrumb>
+<!-- {{breadcrmbComponent}} -->
+<router-outlet></router-outlet>

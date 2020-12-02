@@ -1,0 +1,22 @@
+
+  <mutliselect id="IL" name="IL" #IL="ngModel"
+    [label]="'SplitRequest.IL'" [propertyToSelect]="'Value'"
+    [options]="lookupService.lookupEntities['ldv_industriallicense_LookupWithName']"
+    [viewMode]="IsReadOnly" [multiple]="false" [config]="config"
+    [(ngModel)]="Contract[ILFieldName]" (change)="onChangeILVersion(false,false)"
+    [required]="IsRequired"
+    [isRequiredLabel]="IsRequired"
+    [ngClass]="{ 'is-invalid required  validation': IL.errors && (IL.dirty ||  submit) }">
+  </mutliselect>
+  
+  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+    [controlName]="IL" [form]="form" [submit]="submit">
+  </app-validation-viewer>
+
+
+ 
+    <button [hidden]="Contract['ClonedILId'] == undefined || Contract['ClonedILId'] != Contract[ILFieldName] || 
+    Contract['Id'] == null || Application?.IsReadOnly || !Application?.Request?.Id || Contract['isILUpdated']"
+    type="button" class="main-btn mt-3 mx-2" (click)="onChangeILVersion(true,false)">{{'SplitRequest.Update'|translate }}</button>
+
+

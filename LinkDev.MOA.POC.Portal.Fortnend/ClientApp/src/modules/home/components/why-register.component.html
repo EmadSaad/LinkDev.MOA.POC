@@ -1,0 +1,39 @@
+<div class="txt-center why-register position-relative">
+    <div class="row">
+        <div class="col-12">
+            <h1> {{ "Homepage.WelcomeToModon" | translate}}</h1>
+        </div>
+        <div class="col-9 mx-auto welcome-message">
+            <p>​{{"Homepage.WelcomeMsg" | translate}} </p>
+        </div>
+
+    </div>
+    <div class="row features" *ngIf="!isAuthorized">
+        <div class="col-12 why-register-title">
+            <h2>{{"Homepage.WhyReg" | translate}}</h2>
+        </div>
+        <swiper *ngIf="type == 'component' && show" class="swiper-container" fxFlex="auto" [config]="config"
+            [disabled]="disabled">
+            <div class="swiper-slide">
+                <img src="./assets/images/connect.png" alt="Connect">
+                <h4>{{"Homepage.EasyCommuication" | translate}}</h4>
+                <p>{{"Homepage.EasyCommuicationDetails" | translate}}</p>
+            </div>
+            <div class="swiper-slide">
+                <img src="./assets/images/land.png" alt="Lands">
+                <h4>{{"Homepage.LandAlloc" | translate}}</h4>
+                <p>{{"Homepage.LandAllocDetails" | translate}}</p>
+            </div>
+            <div class="swiper-slide">
+                <img src="./assets/images/contract.png" alt="Contract">
+                <h4>{{"Homepage.ContractMang" | translate}}</h4>
+                <p>{{"Homepage.ContractMangDetails" | translate}}</p>
+            </div>
+        </swiper>
+    </div>
+    <div class="text-center why-btn" *ngIf="!isAuthorized">
+        <button type="submit" class="main-btn login-button" id="btn-login" (click)="RedirectToLogin()">
+            {{"Homepage.RegisterNow" | translate}}
+        </button>
+    </div>
+</div>

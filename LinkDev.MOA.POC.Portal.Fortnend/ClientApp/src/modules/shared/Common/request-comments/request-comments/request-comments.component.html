@@ -1,0 +1,16 @@
+<div *ngIf="isError">{{errorMessage}}</div>
+<div *ngIf="isCompleted&&(requestComment==undefined || requestComment.length == 0)">{{'NO_RESULT_FOUND' | translate}}
+</div>
+<div class="no-gutters row chat-history-wrapper mt-5" *ngIf="isCompleted&&requestComment&&requestComment.length>0">
+    <div class="col-md-8 m-0" *ngFor="let item of requestComment">
+        <div class="row no-gutters">
+            <div class="col-6 m-0">
+                <div class="title bold">{{'ContractSubmission.ModonComment' | translate}}</div>
+            </div>
+            <div class="col-6 m-0">
+                <div class="text-end date">{{item.CreatedOn | date:'dd/MM/yyyy'}}</div>
+            </div>
+            <div class="comment w-100">{{item.Comment}}</div>
+        </div>
+    </div>
+</div>

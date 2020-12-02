@@ -1,0 +1,20 @@
+<div class="service-catalog" >
+  <h2 class="service-catalog-title" *ngIf="categories.length > 0">{{'Our_Electonical_services' | translate}}</h2>
+  <div class="d-md-flex d-none row">
+    <div *ngFor="let category of categories | slice:0:8;" class="col-md-4 col-lg-3">
+      <service-card [item]="category"></service-card>
+    </div>
+  </div>
+
+  <div class="d-md-none d-block services-wrapper">
+    <swiper class="swiper-container" [config]="config">
+      <div *ngFor="let category of categories | slice:0:8;" class="swiper-slide">
+        <service-card [item]="category"></service-card>
+      </div>
+    </swiper>
+  </div>
+
+  <div class="text-center mt-4" *ngIf="categories.length > 0">
+    <a routerLink="modon-services" class="main-btn" title="{{'View_All_Services' | translate}}" id="viewmore-btn">{{'View_All_Services' | translate}}</a>
+  </div>
+</div>

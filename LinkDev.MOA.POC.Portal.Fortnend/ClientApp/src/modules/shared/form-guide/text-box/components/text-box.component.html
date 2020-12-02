@@ -1,0 +1,54 @@
+<ng-template [ngIf]='!isReadOnly'>
+  <ng-template [ngIf]='type === "text"'>
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+
+    <input autocomplete="off" [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}"
+      [(ngModel)]="value" class="form-control" [maxlength]='maxLength' autocomplete="off" [placeholder]='placeholder'
+      [disabled]="disabled" [readonly]="isReadOnly" type='text' (blur)="onBlurFn()">
+  </ng-template>
+  <ng-template [ngIf]='type === "password"'>
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+    <input autocomplete="off" [minlength]='minLength' [(ngModel)]="value" class="form-control"
+      [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}" [maxlength]='maxLength'
+      [placeholder]='placeholder' [readonly]="isReadOnly" type='password' (blur)="onBlurFn()">
+  </ng-template>
+  <ng-template [ngIf]='type === "email"'> 
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+   <div class="input-group">
+     <input autocomplete="off" [tabIndex]="tabIndex" [(ngModel)]="value" class="form-control" autocomplete="off"
+      [maxlength]='maxLength' [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}"
+      [placeholder]='placeholder' [readonly]="isReadOnly" type='email' (input)="onChangeFn()" [disabled]="disabled"
+      (blur)="onBlurFn()">
+      <span class="icon-email"></span>
+   </div>
+  </ng-template>
+  <ng-template [ngIf]='type === "mobile"'>
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+    <input autocomplete="off" [tabIndex]="tabIndex" [minlength]='minLength' [(ngModel)]="value" class="form-control"
+      [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}" [maxlength]='maxLength'
+      [placeholder]='placeholder' [OnlyNumber]='true' [isMobile]='true' [readonly]="isReadOnly" type='text'
+      (input)="onChangeFn()" (blur)="onBlurFn()">
+  </ng-template>
+  <ng-template [ngIf]='type === "number"'>
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+    <input autocomplete="off" [tabIndex]="tabIndex" [(ngModel)]="value" class="form-control" 
+      [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}" [placeholder]='placeholder'
+      [OnlyNumber]='true' min="{{min}}" max="{{max}}" [readonly]="isReadOnly" type='number' (input)="onChangeFn()"
+      (blur)="onBlurFn()">
+  </ng-template>
+  <ng-template
+    [ngIf]='type !== "text" && type !== "password" && type !== "email"  && type !== "mobile" && type !== "number"'>
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+    <input autocomplete="off" [(ngModel)]="value" [OnlyNumber]='true' class="form-control" [placeholder]='placeholder'
+      [ngClass]="{'align-text-ar': fieldLang === 'ar', 'align-text-en': fieldLang === 'en'}" [readonly]="isReadOnly"
+      [maxlength]='maxLength' type='text' (input)="onChangeFn()" (blur)="onBlurFn()">
+  </ng-template>
+</ng-template>
+<ng-template [ngIf]='isReadOnly'>
+  <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+  <label class="readonly">{{value}}</label>
+</ng-template>
+
+<div class="form-validation" *ngIf="scriptError === true">
+  {{'Error_Messages.invalid_value'| translate}}
+</div>

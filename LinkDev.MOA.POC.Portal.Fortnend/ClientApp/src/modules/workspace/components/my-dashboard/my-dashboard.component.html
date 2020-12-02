@@ -1,0 +1,240 @@
+<app-breadcrumb [CurrnetComponentName]="'workspace'"></app-breadcrumb>
+<div class="row workspace">
+   <div class="col-lg-3">
+     <app-workspace-sidenav [crType]="crType"></app-workspace-sidenav>
+   </div>
+   <div class="col-lg-9">
+     <form class="form-wrapper">
+       <h4 class="page-title">{{'WORKSPACE.SearchCriteria' | translate}}</h4>
+       <div class="grey-bg grey-bg-padding m-0">
+         <div class="row">
+           <div class="col-md-4">
+             <mutliselect id="WorkspaceCR" name="WorkspaceCR" [label]="'WORKSPACE.WorkspaceCr' | translate"
+               [propertyToSelect]="'Value'" [viewMode]="false" [multiple]="false" [config]="config"
+               [isRequiredLabel]="false" [options]="lookupService.lookupEntities['account_WorkspaceCRs']"
+               [(ngModel)]="filtration.CRId" #WorkspaceCR="ngModel" (change)="updateCr($event)">
+             </mutliselect>
+           </div>
+           <div class="col-md-4">
+             <mutliselect id="WorkspaceContract" name="WorkspaceContract"
+               [label]="'WORKSPACE.ContractNumber' | translate" [propertyToSelect]="'Value'"
+               [options]="lookupService.lookupEntities['ldv_contract_WorkspaceContracts']" [viewMode]="false"
+               [multiple]="false" [config]="config" [isRequiredLabel]="false" [(ngModel)]="filtration.ContractId"
+               #WorkspaceContract="ngModel" (change)="updateContract($event)">
+             </mutliselect>
+           </div>
+         </div>
+         <div class="row" *ngIf="currentContractDetails">
+           <div class="col-12">
+             <h6 class="bold">{{'WORKSPACE.contractDetails.title' | translate}}</h6>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.CityName">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.cityName' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.CityName}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.LandNumber">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.landNumber' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.LandNumber}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.LandArea">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.landArea' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.LandArea}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductMainFamilyName">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.productMainFamily' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.ProductMainFamilyName}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductSubFamily">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.productSubFamily' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.ProductSubFamily}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.ProductName">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.productName' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.ProductName}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.PricingType">
+             <div class="text-black-50">{{'WORKSPACE.contractDetails.pricingType' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.PricingType}}</div>
+           </div>
+           <div class="col-6 col-md-2 top-line green" *ngIf="currentContractDetails.PricePerMeterOrUnit">
+             <div class="text-black-50">{{' .contractDetails.pricePerMeter' | translate}}</div>
+             <div class="bold mt-3">{{currentContractDetails.PricePerMeterOrUnit}}</div>
+           </div>
+         </div>
+       </div>
+     </form>
+     <div class="d-flex justify-content-between align-items-center">
+       <h4 class="page-title">{{'WORKSPACE.Overview' | translate}}</h4>
+     </div>
+     <!-- <p>crtype = {{crType}}</p> -->
+     <div class="overviewWrapper" *ngIf="overviewData">
+       <swiper class="swiper-container">
+         <div class="swiper-slide">
+           <div class="overview-item" (click)="getData(serviceEnum.Requests)"
+             [class.selected]="service == serviceEnum.Requests">
+             <!-- <img src="./assets/images/requests.png" alt="Requests" class="logo-img"> -->
+             <div class="requests-img dashboard-img"></div>
+             <div class="total-number">{{overviewData.Requests}}</div>
+             <div class="title">{{'WORKSPACE.MyRequests' | translate}}</div>
+           </div>
+         </div>
+         <div class="swiper-slide">
+           <div class="overview-item" (click)="getData(serviceEnum.Contracts)"
+             [class.selected]="service == serviceEnum.Contracts">
+             <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+             <div class="contracts-img dashboard-img"></div>
+             <div class="total-number">{{overviewData.Contracts}}</div>
+             <div class="title">{{'WORKSPACE.Contracts' | translate}}</div>
+           </div>
+         </div>
+         <div class="swiper-slide">
+           <div class="overview-item" (click)="getData(serviceEnum.Tasks)"
+             [class.selected]="service == serviceEnum.Tasks">
+             <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+             <div class="contracts-img dashboard-img"></div>
+             <div class="total-number">{{overviewData.Tasks}}</div>
+             <div class="title">{{'WORKSPACE.MyTasks' | translate}}</div>
+           </div>
+         </div>
+         <div class="swiper-slide" *ngIf="crType === 1">
+           <div class="overview-item" (click)="getData(serviceEnum.Licenses)"
+             [class.selected]="service == serviceEnum.Licenses">
+             <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+             <div class="licenses-img dashboard-img"></div>
+             <div class="total-number">{{overviewData.Licenses}}</div>
+             <div class="title">{{'WORKSPACE.Licenses' | translate}}</div>
+           </div>
+         </div>
+         <div class="swiper-slide" *ngIf="crType === 1">
+          <div class="overview-item" (click)="getData(serviceEnum.OperatingLicenses)"
+            [class.selected]="service == serviceEnum.OperatingLicenses">
+            <!-- <img src="./assets/images/contracts.png" alt="Requests" class="logo-img"> -->
+            <div class="licenses-img dashboard-img"></div>
+            <div class="total-number">{{overviewData.OperatingLicenses}}</div>
+            <div class="title">{{'WORKSPACE.OperatingLicenses' | translate}}</div>
+          </div>
+        </div>
+         <div class="swiper-slide" *ngIf="crType == 6 || crType == 7">
+           <div class="overview-item" (click)="getData(serviceEnum.WonBiddings)"
+             [class.selected]="service == serviceEnum.WonBiddings">
+             <div class="licenses-img dashboard-img"></div>
+             <div class="total-number">{{overviewData.WonBidding}}</div>
+             <div class="title">{{'WORKSPACE.WonBiddings' | translate}}</div>
+           </div>
+         </div>
+         <div class="swiper-slide" *ngIf="crType == 6 || crType == 7">
+           <div class="overview-item" (click)="getData(serviceEnum.AvailableBiddings)"
+             [class.selected]="service == serviceEnum.AvailableBiddings">
+             <div class="licenses-img dashboard-img"></div>
+             <div class="total-number">{{overviewData.AvailableBidding}}</div>
+             <div class="title">{{'WORKSPACE.AvailableBiddings' | translate}}</div>
+           </div>
+         </div>
+         <div class="swiper-slide" *ngIf="crType == 6 || crType == 7">
+          <div class="overview-item" (click)="getData(serviceEnum.Quaifications)"
+            [class.selected]="service == serviceEnum.Quaifications">
+            <div class="licenses-img dashboard-img"></div>
+            <div class="total-number">{{overviewData.Qualifications}}</div>
+            <div class="title">{{'WORKSPACE.MyQualification' | translate}}</div>
+          </div>
+        </div>
+           <!--Ticketing-->
+        <div class="swiper-slide">
+          <div class="overview-item" (click)="getData(serviceEnum.Tickets)"
+               [class.selected]="service == serviceEnum.Tickets">
+            <div class="licenses-img dashboard-img"></div>
+            <div class="total-number">{{totalTickets}}</div>
+            <div class="title">{{'WORKSPACE.Tickets' | translate}}</div>
+          </div>
+        </div>
+       </swiper>
+     </div>
+
+     <!-- <div class="d-flex justify-content-between align-items-center lising-header" [ngSwitch]="service">
+       <h4 class="page-title m-0">
+         {{'WORKSPACE.Last' | translate}}
+         <span *ngSwitchCase="serviceEnum.Requests">{{'WORKSPACE.MyRequests' | translate}}</span>
+         <span *ngSwitchCase="serviceEnum.Tasks">{{'WORKSPACE.MyTasks' | translate}}</span>
+         <span *ngSwitchCase="serviceEnum.Contracts">{{'WORKSPACE.Contracts' | translate}}</span>
+         <span *ngSwitchCase="serviceEnum.WonBiddings">{{'WORKSPACE.WonBiddings' | translate}}</span>
+         <span *ngSwitchCase="serviceEnum.AvailableBiddings">{{'WORKSPACE.AvailableBiddings' | translate}}</span>
+         <span *ngSwitchCase="serviceEnum.Licenses">{{'WORKSPACE.Licenses' | translate}}</span>
+       </h4>
+       <a routerLink="my-requests" [title]="'View_All' | translate"
+         *ngSwitchCase="serviceEnum.Requests">{{'View_All' | translate}}
+         <span class="icon-back"></span> </a>
+       <a routerLink="my-tasks" [title]="'View_All' | translate" *ngSwitchCase="serviceEnum.Tasks">
+         {{'View_All' | translate}} <span class="icon-back"></span></a>
+       <a routerLink="my-contracts" [title]="'View_All' | translate"
+         *ngSwitchCase="serviceEnum.Contracts">{{'View_All' | translate}}
+         <span class="icon-back"></span> </a>
+       <a routerLink="my-biddings/wonBidding" [title]="'View_All' | translate"
+         *ngSwitchCase="serviceEnum.WonBiddings">{{'View_All' | translate}} <span class="icon-back"></span></a>
+       <a routerLink="my-biddings/availableBidding" [title]="'View_All' | translate"
+         *ngSwitchCase="serviceEnum.AvailableBiddings">{{'View_All' | translate}} <span class="icon-back"></span> </a>
+       <a routerLink="my-licenses" [title]="'View_All' | translate"
+         *ngSwitchCase="serviceEnum.Licenses">{{'View_All' | translate}}
+         <span class="icon-back"></span> </a> 
+   </div> -->
+     <div [ngSwitch]="service" class="mb-5" *ngIf="!error">
+       <div *ngSwitchCase="serviceEnum.Requests">
+         <app-listing-grid [data]="requestResult?.Data" [cols]="cols" [service]="1" [showAllLink]="'my-requests'"
+           [totalNumberOfText]="'WORKSPACE.MyRequests'" [gridHeaderText]="'WORKSPACE.MyRequests'"
+           [totalNumberOfItems]="requestResult?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+       </div>
+
+       <div *ngSwitchCase="serviceEnum.Tasks">
+         <app-listing-grid [data]="taskResult?.Data" [showAllLink]="'my-tasks'" [cols]="cols"
+           [totalNumberOfText]="'WORKSPACE.MyTasks'" [gridHeaderText]="'WORKSPACE.MyTasks'"
+           [totalNumberOfItems]="taskResult?.TotalNumber" [onlyLast5]="true">
+         </app-listing-grid>
+       </div>
+
+       <div *ngSwitchCase="serviceEnum.Contracts">
+         <app-listing-grid [data]="contractResult?.Data" [showAllLink]="'my-contracts'" [cols]="cols"
+           [gridHeaderText]="'WORKSPACE.Contracts'" [totalNumberOfText]="'WORKSPACE.Contracts'"
+           [totalNumberOfItems]="contractResult?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+       </div>
+       <div *ngSwitchCase="serviceEnum.WonBiddings">
+         <app-listing-grid [data]="wonBiddingResult?.Data" [showAllLink]="'my-won-bidding'" [cols]="cols"
+           [gridHeaderText]="'WORKSPACE.WonBiddings'" [totalNumberOfText]="'WORKSPACE.WonBiddings'"
+           [totalNumberOfItems]="wonBiddingResult?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+       </div>
+       <div *ngSwitchCase="serviceEnum.AvailableBiddings">
+         <app-listing-grid [data]="availableBiddingResult?.Data" [showAllLink]="'my-available-bidding'" [cols]="cols"
+           [gridHeaderText]="'WORKSPACE.AvailableBiddings'" [totalNumberOfText]="'WORKSPACE.AvailableBiddings'"
+           [totalNumberOfItems]="availableBiddingResult?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+       </div>
+       <div *ngSwitchCase="serviceEnum.Quaifications">
+        <app-listing-grid [data]="availableQualifications?.Data" [showAllLink]="'my-qualification'" [cols]="cols"
+          [gridHeaderText]="'WORKSPACE.MyQualification'" [totalNumberOfText]="'WORKSPACE.MyQualification'"
+          [totalNumberOfItems]="availableQualifications?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+      </div>
+       <div *ngSwitchCase="serviceEnum.Licenses">
+         <app-listing-grid [data]="licenseResult?.Data" [showAllLink]="'my-licenses'" [cols]="cols"
+           [gridHeaderText]="'WORKSPACE.Licenses'" [totalNumberOfText]="'WORKSPACE.Licenses'"
+           [totalNumberOfItems]="licenseResult?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+       </div>
+       <div *ngSwitchCase="serviceEnum.OperatingLicenses">
+        <app-listing-grid [data]="operatingLicenseResult?.Data" [showAllLink]="'my-operating-licenses'" [cols]="cols"
+          [gridHeaderText]="'WORKSPACE.OperatingLicenses'" [totalNumberOfText]="'WORKSPACE.OperatingLicenses'"
+          [totalNumberOfItems]="operatingLicenseResult?.TotalNumber" [onlyLast5]="true"></app-listing-grid>
+      </div>
+    
+        <!--Ticketing..............................................................................-->
+    <div *ngSwitchCase="serviceEnum.Tickets">
+      <app-listing-grid [data]="ticketResult?.Data" [showAllLink]="'my-ticket'" [cols]="cols"
+                        [gridHeaderText]="'WORKSPACE.MyTicket'" [totalNumberOfText]="'WORKSPACE.MyTicket'"
+                        [onlyLast5]="true"></app-listing-grid>
+    </div>
+    <!--........................................................................................-->
+  </div>
+     <div class="alerts-wrapper mt-4" *ngIf="error">
+       <message [mode]="errorMode">
+         <p class="error-select">
+           {{errorMessage}}
+         </p>
+       </message>
+     </div>
+  
+ </div>

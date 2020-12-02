@@ -1,0 +1,94 @@
+<form #gridForm="ngForm">
+  <h4 class="page-title">{{'CRManagement.CRContractslist' | translate}}</h4>
+
+  <div class="row">
+    <div class="col-12 mb-0" *ngIf="SuccessMsg">
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{SuccessMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="col-12 mb-0" *ngIf="ErrorMsg">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ErrorMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-grid-emitter [modalFormTitle]="'CRManagement.ContractModalTitle'" [addNewRecord]="''" [canView]="true"
+                    [tableHeadTitle]="' '" [(data)]="CRContractsList" [columns]="gridcols"
+                    [(model)]="gridModel" [canAdd]="false" [canEdit]="true" [canDelete]="false" [templateForm]="gridForm"
+                    [(popUpOpened)]="isPopUpOpened" [template]="gridContent" (editedItem)="updateContractContactDetailsRelation()"
+                    (isViewMode)="ViewMode($event)" (isEditMode)="EditMode($event)">
+    <ng-container #gridContent>
+
+      <div class="row">
+        <!--Name-->
+        <div class="col-12 col-md-4" *ngIf="viewModeItems || editModeItems">
+          <custom-text-box [type]="'text'" name="Name" #Name="ngModel" [(ngModel)]="gridModel.Name"
+                           [label]="'CRManagement.ContactName'" autocomplete="" aria-label="Name" [disabled]="true">
+          </custom-text-box>
+        </div>
+        <!--ContactsMultiselect-->
+        <div class="col-12 col-md-4" *ngIf="editModeItems">
+
+          <mutliselect id="ContactDetailsMutliselect" name="ContactDetailsMutliselect" [propertyToSelect]="'Value'"
+                       [label]="'CRManagement.ContractContactDetails'" [options]="ContactDetailsList" [viewMode]="false" [multiple]="true"
+                       [config]="config" [isRequiredLabel]="true" [(ngModel)]="gridModel.ContactDetailsValue"
+                       #ContactDetailsMutliselect="ngModel" [required]="true" (change)="getContactDetilsInfo($event)"
+                       [ngClass]="{ 'is-invalid required  validation':  ContactDetailsMutliselect.errors&&ContactDetailsMutliselect.touched  }">
+          </mutliselect>
+
+          <div *ngIf="ContactDetailsMutliselect.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="ContactDetailsMutliselect.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+            <div class="form-validation" *ngIf="ContactDetailsMutliselect.errors?.incorrect">
+              {{'Validations.MultiselectValidation' | translate}}
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <!--StartDate-->
+        <div class="col-12 col-md-4" >
+          <custom-text-box [type]="'text'" name="StartDate" #StartDate="ngModel" [(ngModel)]="gridModel.StartDate"
+                           [label]="'CRManagement.ContractStartingDate'" autocomplete="" aria-label="StartDate" [disabled]="true">
+          </custom-text-box>
+        </div>
+        <!--Expiry date-->
+        <div class="col-12 col-md-4" >
+          <custom-text-box [type]="'text'" name="EndDate" #EndDate="ngModel" [(ngModel)]="gridModel.EndDate"
+                           [label]="'CRManagement.ContractExpiryDate'" autocomplete="" aria-label="ContractExpiryDate" [disabled]="true">
+          </custom-text-box>
+        </div>
+        <!--Duration In Years-->
+        <div class="col-12 col-md-4" >
+          <custom-text-box [type]="'text'" name="DurationInYears" #DurationInYears="ngModel" [(ngModel)]="gridModel.DurationInYears"
+                           [label]="'CRManagement.DurationInYears'" autocomplete="" aria-label="DurationInYears" [disabled]="true">
+          </custom-text-box>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 " *ngIf="viewModeItems">
+          <app-grid-emitter [modalFormTitle]="''" [addNewRecord]="''"
+                            [tableHeadTitle]="'CRManagement.CRContracts'" [(data)]="gridModel.ContactDetailsList" [columns]="ContactDetailsgridcols"
+                            [(model)]="ContratContactDetailsModel" [canAdd]="false" [canEdit]="false" [canDelete]="false" [templateForm]="gridForm"
+                            [(popUpOpened)]="isPopUpOpened" [template]="gridContent">
+            <ng-container #gridContent>
+
+            </ng-container>
+          </app-grid-emitter>
+        </div>
+      </div>
+    </ng-container>
+  </app-grid-emitter>
+
+</form>

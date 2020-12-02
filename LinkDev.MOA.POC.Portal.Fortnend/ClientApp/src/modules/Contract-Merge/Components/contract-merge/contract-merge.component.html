@@ -1,0 +1,455 @@
+<app-breadcrumb [CurrnetComponentName]="'contractmerge'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'MergeRequest.MergeRequest' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+    <!--Request Details-->
+    <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light mt-4" *ngIf="!Application.IsReadOnly" role="alert"><span
+          class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+<app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+      <!--First Stage-->
+      <div>
+        <form #ContractForm="ngForm" novalidate autocomplete="off">
+          <!--Old Contract-->
+          <div id="OldContract">
+            <h5 class="stage-title mt-4">{{'MergeRequest.OldContract' | translate}}</h5>
+
+
+            <!-- CR And Contract -->
+            <app-old-cr-and-contract [Application]="Application" [Request]="Application.Request"  [submit]="submit"
+              [oldContract]="oldContract" (CRControl)="CRControlReady($event)" [config]="config" #OldContractChild
+              [form]="ContractForm" (ContractControl)="ContractControlReady($event)" [CRIsReadonly]="Application.ApplicationHeader?.SubmissionDateString"
+              [ContractIsReadonly]="Application.ApplicationHeader?.SubmissionDateString"
+              (CRChangeEvent)="onOldCRChange($event)" (ContractChangeEvent)="onContractChange($event)">
+               </app-old-cr-and-contract>
+          </div>
+
+          <!-- Merge reasons -->
+          <div class="row">
+            <div class="col-md-6 col-lg-8">
+              <label> {{'MergeRequest.MergeReasons' | translate}}<span class="required">*</span></label>
+              <textarea id="MergeReasons" name="MergeReasons" [readOnly]="Application.IsReadOnly"
+                #MergeReasons="ngModel" [(ngModel)]="Application.Request.MergeReasons" required
+                [ngClass]="{ 'is-invalid required  validation':  MergeReasons.errors && (MergeReasons.dirty || submit) }">
+      </textarea>
+              <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                [controlName]="MergeReasons" [form]="ContractForm" [submit]="submit">
+              </app-validation-viewer>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Merge Contract-->
+      <div id="MergeContracts">
+        <h5 class="stage-title">{{'MergeRequest.MergeContracts' | translate}}</h5>
+        <div class="row">
+          <div class="col-12">
+            <form #mergeContractGridForm="ngForm">
+              <app-grid [modalFormTitle]="'MergeRequest.AddMergeContract'" [addNewRecord]="'MergeRequest.AddNew'"
+                [(data)]="Application.Request.MergeContracts" [columns]="mergeContractGridcols"
+                [(model)]="mergeContractGridModel" [canAdd]="!Application.IsReadOnly && Application?.Request?.CRId"
+                [canEdit]="!Application.IsReadOnly" [canDelete]="!Application.IsReadOnly"
+                [templateForm]="mergeContractGridForm" [template]="mergeContractGridContent"
+                [LookupEntities]="lookupService.lookupEntities">
+
+                <ng-container #mergeContractGridContent>
+                  <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                      <mutliselect id="GridContracts" name="GridContracts" #GridContracts="ngModel"
+                        [label]="'MergeRequest.Contract'" [propertyToSelect]="'Value'"
+                        [options]="getContractsRelatedToUser()" (change)="OnMergeContractsChange()" [viewMode]="false"
+                        [multiple]="false" [config]="config" [(ngModel)]="mergeContractGridModel.Id" [required]="true"
+                        [isRequiredLabel]="true"
+                        [ngClass]="{ 'is-invalid required  validation':  GridContracts.errors && GridContracts.dirty }">
+                      </mutliselect>
+                      <div class="form-validation" *ngIf="GridContracts.errors && GridContracts.dirty">
+                        {{'Validations.Required' | translate}}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--div class="row">
+                    <div class="col-md-6 col-lg-4">
+                      <mutliselect id="ProductMainFamily" name="ProductMainFamily" #ProductMainFamily="ngModel"
+                        [label]="'MergeRequest.ProductMainFamily'" [propertyToSelect]="'Value'"
+                        [options]="getProductMainFamily()" [viewMode]="true" [multiple]="false" [config]="config"
+                        [(ngModel)]="mergeContractGridModel.ProductMainFamilyId" [required]="false"
+                        [isRequiredLabel]="false">
+
+                      </mutliselect>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                      <mutliselect id="ProductSubFamily" name="ProductSubFamily" #ProducSubFamily="ngModel"
+                        [label]="'MergeRequest.ProductSubFamily'" [propertyToSelect]="'Value'"
+                        [options]="getProductSubFamily()" [viewMode]="true" [multiple]="false" [config]="config"
+                        [(ngModel)]="mergeContractGridModel.ProductSubFamilyId" [required]="false"
+                        [isRequiredLabel]="false">
+
+                      </mutliselect>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                      <mutliselect id="Produc" name="Product" #Product="ngModel" [label]="'MergeRequest.Product'"
+                        [propertyToSelect]="'Value'" [options]="getProduct()" [viewMode]="true" [multiple]="false"
+                        [config]="config" [(ngModel)]="mergeContractGridModel.ProductId" [required]="false"
+                        [isRequiredLabel]="false">
+
+                      </mutliselect>
+                    </div>
+
+                  </div-->
+
+                </ng-container>
+              </app-grid>
+
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+      <!--New Contract-->
+      <div id="NewContract">
+        <h5 class="stage-title">{{'MergeRequest.NewContractInfo' | translate}}</h5>
+
+        <!-- Product Main Family & Sub Family & Product-->
+        <div class="row">
+          <div class="col-md-6 col-lg-4">
+            <mutliselect id="ProductMainFamily" name="ProductMainFamily" #ProductMainFamily="ngModel"
+              [label]="'MergeRequest.ProductMainFamily'" [propertyToSelect]="'Value'" [options]="getProductMainFamily()"
+              [viewMode]="true" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.ProductMainFamilyId" [required]="false" [isRequiredLabel]="false">
+
+            </mutliselect>
+          </div>
+
+
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="ProductSubFamily" name="ProductSubFamily" [label]="'MergeRequest.ProductSubFamily'"
+              [propertyToSelect]="'Value'" [options]="getContractProductSubFamily()" [viewMode]="true"
+              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ProductSubFamilyId"
+              [required]="false" [isRequiredLabel]="false" #ProductSubFamily="ngModel">
+            </mutliselect>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="ContractProduct" name="ContractProduct" [label]="'MergeRequest.Product'"
+              [propertyToSelect]="'Value'" [options]="getContractProduct()" [viewMode]="true" [multiple]="false"
+              [config]="config" [(ngModel)]="Application.Request.ProductId" #ContractProduct="ngModel">
+            </mutliselect>
+          </div>
+
+        </div>
+
+
+        <div class="row">
+
+          <!-- v ->{{Application?.Request?.CRVersionId}} -->
+          <div class="col-lg-4 col-md-6" *ngIf="Application?.Request?.CRId">
+            <app-cr-version [Contract]="Application.Request" [CRVersionModel]="CRVersionModel"
+              (CRChangeEvent)="onCRChange($event)" [CRFieldName]="'NewCRId'" [submit]="submit" [form]="ContractForm"
+              #CRVersionChild [IsReadOnly]="Application.IsReadOnly " [IsRequired]="true" [hidden]="false"
+              [Application]="Application" [config]="config" (CRVersionControl)="CRVersionControlReady($event)">
+            </app-cr-version>
+
+
+          </div>
+          <app-info-viewer *ngIf="Application.Request.NewCRId" [modalFormTitleKey]="'ContractEditMerge.CRInfo'">
+
+
+            <!-- <div class="main-title">{{'ContractEditMerge.CRInfo'|translate }}</div> -->
+            <div class="row">
+
+              <!-- CR Type -->
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" name="CRType" #CRType="ngModel" [(ngModel)]="CRVersionModel.CRType"
+                  [label]="'MergeRequest.CRType'" autocomplete="" aria-label="Name" [isReadOnly]="true"
+                  [ngModelOptions]="{standalone: true}">
+                </custom-text-box>
+              </div>
+
+
+
+              <!-- CR Name -->
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" name="CRName" #CRName="ngModel" [(ngModel)]="CRVersionModel.Name"
+                  [label]="'MergeRequest.CRName'" autocomplete="" [isReadOnly]="true"
+                  [ngModelOptions]="{standalone: true}">
+                </custom-text-box>
+              </div>
+
+              <!-- CR Issue Date -->
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" name="CRIssueDate" #CRIssueDate="ngModel"
+                  [(ngModel)]="CRVersionModel.IssueDate" [label]="'MergeRequest.CRIssueDate'" autocomplete=""
+                  aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                </custom-text-box>
+              </div>
+
+              <!-- CR Expiry Date -->
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" name="CRExpiryDate" #CRExpiryDate="ngModel"
+                  [(ngModel)]="CRVersionModel.ExpiryDate" [label]="'MergeRequest.CRExpiryDate'" autocomplete=""
+                  aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                </custom-text-box>
+              </div>
+
+              <!-- Issuance City Name -->
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" name="IssuanceCityName" #IssuanceCityName="ngModel"
+                  [(ngModel)]="CRVersionModel.IssuanceCity" [label]="'MergeRequest.IssuanceCity'" autocomplete=""
+                  aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                </custom-text-box>
+              </div>
+
+
+            </div>
+
+            <app-grid [canAdd]="false" [tableHeadTitle]="'MergeRequest.Owners'" [canEdit]="false" [canDelete]="false"
+              [(data)]="CRVersionModel.Owners" [columns]="OwnerGridcols">
+            </app-grid>
+
+            <app-grid [canAdd]="false" [tableHeadTitle]="'MergeRequest.CRActivity'" [canEdit]="false"
+              [canDelete]="false" [(data)]="CRVersionModel.Activities" [columns]="ActivitiesGridcols">
+            </app-grid>
+          </app-info-viewer>
+
+        </div>
+
+      </div>
+
+
+      <div class="row">
+
+        <div class="col-lg-4 col-md-6" [hidden]="!Application?.Request?.CRId || !Application?.Request?.NewCRId">
+          <mutliselect id="Contacts" name="Contacts" #Contacts="ngModel" [label]="'MergeRequest.Contacts'"
+            [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+            [viewMode]="Application.IsReadOnly || !Application?.Request?.NewCRId" [multiple]="true" [config]="config"
+            [(ngModel)]="Application.Request.ContactDetails" [required]="Application.Request.CRId || Application.Request.NewCRId"
+            [isRequiredLabel]="true"
+            [ngClass]="{ 'is-invalid required  validation': Contacts.errors && (Contacts.dirty || submit) }">
+          </mutliselect>
+
+          <div class="form-validation" *ngIf="Contacts.errors && (Contacts.dirty || submit)">
+            {{'Validations.Required' | translate}}
+          </div>
+        </div>
+
+        <!-- Application.Request.hasIL ||  -->
+        <div class="col-lg-4 col-md-6"
+          [hidden]="!Application?.Request?.NewCRId || Application.Request.ProductMainFamilyId !== '1'">
+          <mutliselect id="HasIL" name="HasIL" #HasIL="ngModel" [label]="'MergeRequest.HasIL'"
+            [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['YesNo']"
+            [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+            [(ngModel)]="Application.Request.hasIL" [required]="Application.Request.ProductMainFamilyId === '1'"
+            [isRequiredLabel]="true" [ngClass]="{ 'is-invalid required  validation': HasIL.errors && (HasIL.dirty ||  submit)  }">
+          </mutliselect>
+          <div class="form-validation" *ngIf="HasIL.errors && (HasIL.dirty || submit)">
+            {{'Validations.Required' | translate}}
+          </div>
+        </div>
+
+
+        <div class="col-lg-4 col-md-6"
+          [hidden]="Application.Request?.hasIL?.toString() !== 'false'||!Application.Request.NewCRId">
+          <mutliselect id="Products" name="Products" [label]="'MergeRequest.Products'" [propertyToSelect]="'Value'"
+            [options]="lookupService.lookupEntities['ldv_modonproduct_ModonProducts']"
+            [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+            [(ngModel)]="Application.Request.Products" [required]="Application.Request?.hasIL?.toString() === 'false'"
+            [isRequiredLabel]="true" #Products="ngModel"
+            [ngClass]="{ 'is-invalid required  validation': Products.errors && Products.dirty }">
+          </mutliselect>
+          <div class="form-validation" *ngIf="Products.errors && (Products.dirty ||  submit)">
+            {{'Validations.Required' | translate}}
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- IL Version -->
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <app-il-version [Contract]="Application.Request" [Application]="Application"
+            [IsReadOnly]="Application.IsReadOnly" [ILVersionModel]="ILVersionModel"
+            (ILVersionControl)="ILVersionControlReady($event)" [config]="config"
+            [IsRequired]="Application.Request?.hasIL?.toString() === 'true'" #IlVersionChild [ILFieldName]="'ILId'"
+            [ILVersionFieldName]="'ILVersionId'" [submit]="submit"
+            [hidden]="Application.Request?.hasIL?.toString() !== 'true'">
+          </app-il-version>
+
+        </div>
+
+        <app-info-viewer [hidden]="Application?.Request?.ILId == null ||
+   Application?.Request?.hasIL?.toString() == 'false'">
+
+          <div class="main-title">{{'ContractEditMerge.ILInfo'|translate }}</div>
+          <div class="row">
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="ILNumber" #ILNumber="ngModel" [(ngModel)]="ILVersionModel.ILNumber"
+                [label]="'MergeRequest.ILNumber'" autocomplete="" aria-label="Name" [isReadOnly]="true"
+                [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="ILStatus" #ILStatus="ngModel" [(ngModel)]="ILVersionModel.ILStatus"
+                [label]="'MergeRequest.ILStatus'" autocomplete="" aria-label="Name" [isReadOnly]="true"
+                [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="ILType" #ILType="ngModel" [(ngModel)]="ILVersionModel.ILType"
+                [label]="'MergeRequest.ILType'" autocomplete="" aria-label="Name" [isReadOnly]="true"
+                [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="IssueDate" #IssueDate="ngModel"
+                [(ngModel)]="ILVersionModel.IssueDate" [label]="'MergeRequest.IssueDate'" autocomplete=""
+                aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <!-- Expiry Date -->
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="ExpiryDate" #ExpiryDate="ngModel"
+                [(ngModel)]="ILVersionModel.ExpiryDate" [label]="'MergeRequest.ExpiryDate'" autocomplete=""
+                aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="ILSource" #ILSource="ngModel" [(ngModel)]="ILVersionModel.ILSource"
+                [label]="'MergeRequest.ILSource'" autocomplete="" aria-label="Name" [isReadOnly]="true"
+                [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="CityName" #CityName="ngModel" [(ngModel)]="ILVersionModel.CityName"
+                [label]="'MergeRequest.CityName'" autocomplete="" aria-label="Name" [isReadOnly]="true"
+                [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="FactoryName" #FactoryName="ngModel"
+                [(ngModel)]="ILVersionModel.FactoryName" [label]="'MergeRequest.FactoryName'" autocomplete=""
+                aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="OwnerName" #OwnerName="ngModel"
+                [(ngModel)]="ILVersionModel.OwnerName" [label]="'MergeRequest.OwnerName'" autocomplete=""
+                aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="InvestmentType" #InvestmentType="ngModel"
+                [(ngModel)]="ILVersionModel.InvestmentType" [label]="'MergeRequest.InvestmentType'" autocomplete=""
+                aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" name="Nationality" #Nationality="ngModel"
+                [(ngModel)]="ILVersionModel.Nationality" [label]="'MergeRequest.Nationality'" autocomplete=""
+                aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+              </custom-text-box>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <app-grid [canAdd]="false" [tableHeadTitle]="'MergeRequest.Products'" [canEdit]="false"
+                [canDelete]="false" [data]="ILVersionModel.ILProductsList" [columns]="ILProductsgridcols">
+              </app-grid>
+            </div>
+
+            <div class="col-6">
+              <app-grid [canAdd]="false" [tableHeadTitle]="'MergeRequest.Activities'" [canEdit]="false"
+                [canDelete]="false" [data]="ILVersionModel.ILActivities" [columns]="ILActivityGridcols">
+              </app-grid>
+            </div>
+
+          </div>
+
+
+        </app-info-viewer>
+      </div>
+
+
+
+
+
+    <div class="alerts-wrapper mt-2 d-none d-md-block"
+      *ngIf="(listLength<1 ||listLength>5 )&& submit">
+      <div class="message message-error p-3 align-left w-100">
+        <p class="mb-0 line-height">{{'MergeRequest.mergeContractsValidation'|translate}}</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="row">
+      <div class="col-lg-8 col-md-6">
+          <app-Uploaders-List [uploaders]="Application.Documents" [form]="ContractForm"
+            [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true">
+          </app-Uploaders-List>
+
+        </div>
+      </div>
+    </div>
+    <!--Actions-->
+
+    <div *ngIf="!Application.IsReadOnly"
+      class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+      <div *ngIf="!Application.IsReadOnly">
+        <button type="button" class="main-btn-secondary"
+          [disabled]="!Application?.Request?.CRId ||!Application?.Request?.ContractId"
+          (click)="saveRequest()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+      </div>
+
+      <button type="button" class="main-btn" (click)="submitRequest()"
+        [disabled]="!Application?.Request?.CRId ||!Application?.Request?.ContractId">{{ 'ServicesCommon.Submit' | translate}}</button>
+    </div>
+  </div>
+
+  <!-- Payment -->
+<div [hidden]="ActiveLevelOne !== 3 || !Application?.Request?.Id || Application?.ApplicationHeader?.PortalStatusCode !== '4'">
+  <app-request-quote [requestId]="Application?.ApplicationHeader?.Id"></app-request-quote>
+  </div>
+
+<!--Request Comments-->
+<app-request-comments [regardingID]="Application?.Request?.Id"
+[hidden]="ActiveLevelOne !== 2 || !Application?.Request?.Id || Application?.ApplicationHeader?.PortalStatusCode === '1'">
+</app-request-comments>
+</div>
+
+
+
+
+
+
+</div>
