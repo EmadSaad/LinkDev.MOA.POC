@@ -1,0 +1,121 @@
+.border-box {
+  border-radius: 4px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+}
+.auth {
+  .login-button {
+    width: 7.25rem;
+    padding: 0.625rem 0.3125rem;
+  }
+  position: relative;
+  background: image("login-bg.png");
+
+  .NIC,
+  a,
+  label,
+  h1 {
+    color: $white !important;
+  }
+  .one-border {
+    border-top: 4px solid rgba(255, 255, 255, 0.3);
+    border-#{$left}: none;
+    position: relative;
+  }
+  .col-lg-6 {
+    padding: 2.5rem 3.125rem 0;
+  }
+  .or {
+    position: absolute;
+    background: $white;
+    border-radius: 50%;
+    // padding: 1.688rem 1.494rem;
+    padding-top: 1.688rem; 
+    text-align: center;
+    color: $babyBlue;
+    // top: calc(50% - 52px);
+    #{$left}: calc(50% - 38px);
+    top: -43px;
+    font-size: 24px;
+    line-height: 24px;
+    width:4.875rem;
+    height:4.875rem;
+  }
+  .NIC {
+    margin-bottom: 5rem;
+  }
+  .forget-ps {
+    text-align: center;
+  }
+}
+#auth .modal-content{
+
+  background: #fff image("rating-bg.png") no-repeat;
+  background-size: cover;
+  .modal-body{
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    .ui-rating {
+      background-color: #f3f3f3;
+      a{
+        .ui-rating-icon:focus, &:focus,&{
+          outline:none;
+        }
+        .ui-rating-icon{
+          font-size: 2.5rem;
+          color:$brand-color-secondary;
+        }
+        .pi-star-o{   
+          &:before{
+            color:$brand-color-secondary;
+          }
+        }
+      } 
+    }
+    .main-btn-secondary,.main-btn{
+      border-radius:40px;
+      min-width: 100px;
+    }
+    .main-btn-secondary{
+      background: transparent;
+      border-color: #727272;
+      color: #727272;
+      margin-top: 0;
+    }
+  }
+ 
+}            
+@media (width: 320px) {
+  .auth {
+    .login-button {
+      margin-bottom: 10px;
+    }
+  }
+}
+@media (min-width: 992px) {
+  .auth {
+    .one-border {
+      border-#{$left}: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: none;
+    }
+    .NIC {
+      margin-bottom: 0;
+    }
+    .or {
+      top: calc(50% - 38px);
+      #{$left}: -2.6rem;//-40px
+    }
+    .forget-ps {
+      text-align: right;
+    }
+  }
+  .left-login-button {
+    position: absolute;
+    bottom: 87px;
+    #{$right}: calc(50% - 7.5rem);
+  }
+}
+@media(min-width:1400px){
+  #auth .modal.show .modal-dialog{
+    min-width: 45%;
+  }
+}

@@ -1,0 +1,10 @@
+<div class="toggle-wrapper">
+<div class="toggle-btn">
+        <input type="checkbox" [disabled]="isDisabled" [checked]="isChecked"
+(change)="changed.emit($event.target.checked)" [id]='id'>
+<label class="toggle-button-switch"  
+[attr.for]="id" ></label>
+
+</div>
+<label [attr.for]="id" class="txt-label">{{text}}</label>
+</div>

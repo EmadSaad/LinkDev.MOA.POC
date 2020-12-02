@@ -1,0 +1,352 @@
+.required {
+  .icon-upload {
+    box-shadow: rgba(255, 0, 0, 0.25) 0px 0px 0px 0.2rem;
+  }
+}
+
+.attachment {
+  .icon-upload {
+    padding: 0 15px;
+    background: #fff;
+    border-color: #878c90;
+    border-top-#{$right}-radius: 0;
+    border-bottom-#{$right}-radius: 0;
+    border-bottom-#{$left}-radius: 0.25rem;
+    border-top-#{$left}-radius: 0.25rem;
+    border-#{$right}: 0;
+  }
+}
+
+.uploader {
+  .uploader-input {
+    background-color: $white;
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    border: 0;
+
+    input[type="file"] {
+      position: absolute;
+      top: 0;
+      #{$right}: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .input-group-append + .input-group-append + input[type="file"] {
+      width: calc(100% - 4.4375rem);
+    }
+
+    .form-control {
+      border-top-#{$right}-radius: 0.25rem;
+      border-bottom-#{$right}-radius: 0.25rem;
+      border-bottom-#{$left}-radius: 0;
+      border-top-#{$left}-radius: 0;
+    }
+
+    button {
+      width: 4.4375rem;
+      border-color: #878c90;
+      border-top-#{$right}-radius: 0;
+      border-bottom-#{$right}-radius: 0;
+      border-bottom-#{$left}-radius: 0.25rem;
+      border-top-#{$left}-radius: 0.25rem;
+      border: 1px solid #878c90;
+      cursor: pointer;
+
+      &.icon-upload {
+        border-radius: 0;
+      }
+    }
+
+    .input-group-append {
+      margin: 0;
+
+      &.clear + .input-group-append {
+        border-#{$right}: 0;
+      }
+    }
+  }
+
+  .attachment {
+    background-color: white;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.18);
+
+    a {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    [class*="icon"] {
+      font-size: 1rem;
+      cursor: pointer;
+      position: relative;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &::after {
+        content: "";
+        height: 90%;
+        width: 1px;
+        background-color: $darker-grey;
+        position: absolute;
+        top: 50%;
+        #{$right}: 0;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  .validation {
+    margin-top: 10px;
+
+    span {
+      display: block;
+      margin-bottom: 5px;
+    }
+  }
+}
+.general-form {
+  margin-bottom: 60px;
+
+  .file-uploader {
+    .info {
+      margin-bottom: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-right: -5px;
+      margin-left: -5px;
+      background-color: $lightGrey;
+
+      div {
+        flex: 0 0 50%;
+        max-width: 50%;
+      }
+    }
+    .btn-danger {
+      border-radius: 40px;
+    }
+  }
+}
+
+.uploader {
+  text-align: center;
+  // width: 700px;
+  // padding: 20px;
+  // margin: 20px;
+  // background-color: #6b3d88;
+}
+.line-throught {
+  text-decoration: line-through;
+}
+
+.form {
+  border-radius: 0 5px 5px 0;
+  margin-bottom: 20px;
+}
+.file-uploader{
+  margin-bottom: 5px;
+  h5{
+    font-size:$font-size-base;
+    font-weight: normal;
+  }
+}
+.uploader-info {
+  p {
+    color: #5d5d5d;
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+  }
+}
+.uploaded-files-container {
+  position: relative;
+  background: $lighter-grey;
+  padding: 18px 20px;
+  line-height: 1;
+  border-bottom: 1px solid #a4a4a4;
+  font-weight: 300;
+  a{
+    color: $babyBlue !important;
+  }
+  .icon-rubbish-bin{
+    #{$left}: 20px;
+    #{$right}: auto;
+  }
+  .icon-download{
+    #{$left}: 40px;
+    #{$right}: auto;
+  }
+  a{
+    position: absolute;
+    cursor: pointer;
+  }
+}
+.file-upload-wrapper {
+  // border: 1px solid #dad2d2;
+  // border-radius: 7px;
+  $defaultColor: $brand-color;
+  $height: 40px;
+
+  position: relative;
+  width: 100%;
+  height: $height;
+  cursor: pointer;
+
+  &::after {
+    // content: attr(data-text);
+    // content: "No File Chosen";
+    // font-size: 18px;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // background: #fff;
+    // padding: 10px 15px;
+    // display: block;
+    // width: calc(100% - 40px);
+    // pointer-events: none;
+    // z-index: 20;
+    // height: 100%;
+    // line-height: $height - 20px;
+    // color: #999;
+    // border-radius: 5px 10px 10px 5px;
+    // font-weight: 300;
+  }
+  &:before {
+    content: "إضافة مرفقات" ;
+    @if $dir == ltr {
+      content: "Add Attachements" ;
+    }
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    height: 100%;
+    background: $babyBlue;
+    color: #fff;
+    font-size: 16px;
+    line-height: $height;
+    padding: 0 30px;
+    text-transform: capitalize;
+    pointer-events: none;
+    border-radius: 2px;
+    z-index: -1;
+    cursor: pointer !important;
+    width: 100%;
+    justify-content: center;
+
+  }
+
+  &:hover {
+    &:before {
+      cursor: pointer;
+      background: darken($defaultColor, 10%);
+    }
+  }
+  input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    overflow-x: unset;
+    padding: 20px;
+  }
+}
+.upload-header {
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+// .configurations, .permanent-files {
+//   // font-size: 10px;
+
+// }
+.configurations {
+  padding: 10px;
+  // color:white;
+}
+.permanent-files {
+  // padding:5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  overflow: hidden;
+
+  // td,th {
+  //   // padding: 10px;
+  // }
+}
+
+.temp-files {
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 15px;
+  padding: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  overflow: hidden;
+  td,
+  th {
+    padding: 10px;
+  }
+
+  a {
+    font-size: 15px;
+  }
+}
+
+.progress {
+  width: 80%;
+  margin: 20px auto;
+}
+.progressLoading{
+  width: 25%;
+  height: 4px;
+  position: absolute;
+  background-image: linear-gradient(90deg, $brand-color , rgba(255,255,255,0));
+  animation:linear infinite;
+  animation-name: load;
+  animation-duration: 1s;
+}
+@keyframes load {
+    0% { #{$right}: 0}
+    100%{ #{$right}: 75%}
+}
+// .validation {
+//   background-color: white;
+//   padding: 5px;
+//   color:red;
+//   width: 50%;
+//   margin: 10px auto;
+// }
+// .card-wrapper {
+//   border: 1px solid #efefef;
+//   border-radius: 10px;
+//   padding: 20px;
+//   margin-bottom: 35px;
+//   border-#{$left}-width: 8px;
+//   border-#{$right}-width: 1;
+//   border-#{$left}-color: $brand-color;
+//   border-#{$right}-color: #efefef;
+// }

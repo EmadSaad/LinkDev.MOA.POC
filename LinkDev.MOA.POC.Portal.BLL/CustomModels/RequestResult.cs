@@ -18,7 +18,7 @@ namespace LinkDev.MOA.POC.Portal.BLL.CustomModels
         [CrmFieldLogicalNameAttribute(incident.ticketnumber)]
         [DataMember]
         public string RequestNumber { get; set; }
-        [CrmFieldLogicalNameAttribute(incident.createdon)]
+        [CrmFormattedValueAtrribute(incident.createdon)]
         [DataMember]
         public string SubmissionDate { get; set; }
         [DataMember]
@@ -28,14 +28,15 @@ namespace LinkDev.MOA.POC.Portal.BLL.CustomModels
         [DataMember]
         [CrmFieldLogicalNameAttribute(incident.PrimaryKey)]
         public string RelatedRecordId { get; set; }
-        [CrmFieldLogicalNameAttribute(incident.statuscode)]
-        public OptionSetItem status { get; set; }
-        [CrmFieldLogicalNameAttribute(incident.ldv_moacasetype)]
-        public OptionSetItem CaseType { get; set; }
+        [CrmFormattedValueAtrribute(incident.statuscode)]
+        public string status { get; set; }
+
+        [CrmFormattedValueAtrribute(incident.ldv_moacasetype)]
+        public string CaseType { get; set; }
         [DataMember]
-        public string PortalStatusName =>((incident.statuscode_OptionSet)status?.Value).ToString();
+        public string PortalStatusName => status;
         [DataMember]
-        public string ServiceName => ((incident.ldv_moacasetype_OptionSet)CaseType?.Value).ToString();
+        public string ServiceName => CaseType;
         [DataMember]
         public bool ContainsClosureDate { get; set; }
         [DataMember]

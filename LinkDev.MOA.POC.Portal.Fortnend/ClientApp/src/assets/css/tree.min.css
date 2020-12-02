@@ -1,0 +1,115 @@
+.form-hierarchy .ui-tree {
+  width: auto;
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+
+.form-hierarchy .ui-tree > .ui-tree-container {
+  padding: 0;
+}
+
+.ui-tree-container .ui-treenode.child:not(.active-node) .ui-treenode-content .ui-tree-toggler.pi-caret-right {
+  border: 3px solid gray;
+}
+
+.ui-tree-container .ui-treenode.child:not(.active-node):not(.last-node) {
+  padding-bottom: 25px;
+}
+
+.ui-tree-container .ui-treenode.child:not(.active-node):not(.last-node) .ui-treenode-content .ui-tree-toggler.pi-caret-right {
+  position: relative;
+}
+
+.ui-tree-container .ui-treenode.child:not(.active-node):not(.last-node) .ui-treenode-content .ui-tree-toggler.pi-caret-right:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 3px;
+  height: 28px;
+  left: 49%;
+  top: 99%;
+  background: gray;
+}
+
+.ui-tree-container .ui-treenode.active-node {
+  padding: 0;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode .ui-treenode {
+  padding: 0;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode .ui-treenode .ui-treenode-content {
+  border: none !important;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode .ui-treenode .ui-treenode-content .ui-tree-toggler.pi-caret-down {
+  border: 3px solid blueviolet;
+  background: blueviolet;
+  color: white;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode .ui-treenode .ui-treenode-content .ui-tree-toggler.pi-caret-down, .ui-tree-container > p-treenode:first-child p-treenode .ui-treenode .ui-treenode-content .ui-tree-toggler.pi-caret-right {
+  margin-right: 14px;
+  border-radius: 50%;
+  padding: 6px;
+  padding-right: 23px;
+  padding-left: 17px;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode .ui-treenode .ui-treenode-children {
+  padding: 0;
+  border-left: 3px solid blueviolet;
+  margin-left: 22px;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(1) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(1) .ui-tree-toggler.pi-caret-right:before {
+  content: "1";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(2) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(2) .ui-tree-toggler.pi-caret-right:before {
+  content: "2";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(3) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(3) .ui-tree-toggler.pi-caret-right:before {
+  content: "3";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(4) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(4) .ui-tree-toggler.pi-caret-right:before {
+  content: "4";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(5) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(5) .ui-tree-toggler.pi-caret-right:before {
+  content: "5";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(6) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(6) .ui-tree-toggler.pi-caret-right:before {
+  content: "6";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(7) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(7) .ui-tree-toggler.pi-caret-right:before {
+  content: "7";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(8) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(8) .ui-tree-toggler.pi-caret-right:before {
+  content: "8";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(9) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(9) .ui-tree-toggler.pi-caret-right:before {
+  content: "9";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode:nth-child(10) .ui-tree-toggler.pi-caret-down:before, .ui-tree-container > p-treenode:first-child p-treenode:nth-child(10) .ui-tree-toggler.pi-caret-right:before {
+  content: "10";
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode p-treenode .ui-treenode {
+  padding: 0;
+}
+
+.ui-tree-container > p-treenode:first-child p-treenode p-treenode .ui-treenode .ui-treenode-content .ui-tree-toggler.pi-caret-down, .ui-tree-container > p-treenode:first-child p-treenode p-treenode .ui-treenode .ui-treenode-content .ui-tree-toggler.pi-caret-right {
+  margin-right: 14px;
+  padding: 0px;
+}
+/*# sourceMappingURL=tree.min.css.map */

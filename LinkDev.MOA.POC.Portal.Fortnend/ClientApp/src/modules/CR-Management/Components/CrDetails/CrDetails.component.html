@@ -1,0 +1,118 @@
+<form class="form-wrapper" novalidate autocomplete="off" #CrDetailsForm="ngForm">
+  <h4 class="page-title">{{'CRManagement.CRDetails' | translate}}</h4>
+  <div class="col-12 p-lg-0">
+    <div *ngIf="UpdateMsg" [className]="'alert-dismissible fade show ' + UpdateMsgClass" role="alert">
+      {{UpdateMsg}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="grey-bg grey-bg-padding">
+    <div class="row">
+      <div class="col-12 col-md-4">
+
+        <mutliselect id="CRType" name="CRType"
+                     [label]="'CRManagement.CRType'"
+                     [propertyToSelect]="'Value'"
+                     [options]="lookupService.lookupEntities['account_ldv_facilitytype_OptionSet']"
+                     [viewMode]="MyCurrentCR.ISThereIsRequestsOnCR"
+                     [multiple]="false"
+                     [config]="config"
+                     [(ngModel)]="MyCurrentCR.CRTypeValue"
+                     #CRType="ngModel">
+        </mutliselect>
+
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.AccountPhone'" [(ngModel)]="MyCurrentCR.AccountPhone" [isRequiredLabel]="true"
+                         #AccountPhone="ngModel" name="AccountPhone" autocomplete="" aria-label="Mobile" [pattern]="PhoneValidationPattern" [required]="true"
+                         [ngClass]="{ 'is-invalid required validation': AccountPhone.touched && AccountPhone.errors || AccountPhone.errors?.pattern }">
+        </custom-text-box>
+        <div *ngIf="AccountPhone.errors" class="invalid-feedback">
+          <div class="form-validation" *ngIf="AccountPhone.errors.required">
+            {{'Validations.Required' | translate}}
+          </div>
+          <div class="form-validation" *ngIf="AccountPhone.errors.pattern">
+            {{'Validations.NewPhoneValidation' | translate}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'email'" name="Email" #Email="ngModel" [(ngModel)]="MyCurrentCR.CrEmail"
+                         [label]="'CRManagement.CrEmail'" autocomplete="" aria-label="Email" [isRequiredLabel]="true"
+                         [pattern]="emailValidationPattern" [required]="true"
+                         [ngClass]="{ 'is-invalid required validation': Email.touched && Email.errors || Email.errors?.pattern }">
+        </custom-text-box>
+        <div *ngIf="Email.errors" class="invalid-feedback">
+          <div class="form-validation" *ngIf="Email.errors.required">
+            {{'Validations.Required' | translate}}
+          </div>
+          <div class="form-validation" *ngIf="Email.errors.pattern">
+            {{'Validations.EMAIL_FORMAT' | translate}}
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRPostalCode'" [(ngModel)]="MyCurrentCR.CrPostalCode"
+                         #CrPostalCode="ngModel" name="PostalCode" autocomplete="" aria-label="PostalCode">
+        </custom-text-box>
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRPoBox'" [(ngModel)]="MyCurrentCR.CrPoBox"
+                         #CrPoBox="ngModel" name="POBox" autocomplete="" aria-label="POBox">
+        </custom-text-box>
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'mobile'" [label]="'CRManagement.CRFax'" [(ngModel)]="MyCurrentCR.CrFax" #CrFax="ngModel"
+                         name="Fax" autocomplete="" aria-label="Fax">
+        </custom-text-box>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" name="UnitNumber" #UnitNumber="ngModel" [(ngModel)]="MyCurrentCR.UnitNumber"
+                         [label]="'CRManagement.CrUnitNumber'" autocomplete="" aria-label="Unit Number">
+        </custom-text-box>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CrAdditionalSymbol'" [(ngModel)]="MyCurrentCR.AdditionalSymbol"
+                         #AdditionalSymbol="ngModel" name="AdditionalSymbol" autocomplete="" aria-label="Additional Symbol">
+        </custom-text-box>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRAddress'" [(ngModel)]="MyCurrentCR.AccountAddress"
+                         #AccountAddress="ngModel" name="AccountAddress" autocomplete="" aria-label="Address">
+        </custom-text-box>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CrWebsite'" [(ngModel)]="MyCurrentCR.CrWebsite"
+                         #CrWebsite="ngModel" name="CrWebsite" autocomplete="" aria-label="Website">
+        </custom-text-box>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button type="button" class="main-btn" (click)="UpdateCR()" [disabled]="!CrDetailsForm.valid">
+          {{'CRManagement.Submit'| translate}}
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</form>

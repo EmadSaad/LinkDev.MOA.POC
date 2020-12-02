@@ -228,6 +228,7 @@
     <Compile Include="Attributes\OriginActionFilter.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Documents\DocumentsController.cs" />
+    <Compile Include="Controllers\Documents\PaymentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LookupsController\LookupsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />

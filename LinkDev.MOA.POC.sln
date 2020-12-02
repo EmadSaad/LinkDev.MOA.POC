@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkDev.MOA.POC.Portal.API"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkDev.MOA.POC.Portal.BLL", "LinkDev.MOA.POC.Portal.BLL\LinkDev.MOA.POC.Portal.BLL.csproj", "{37CBE57B-DBB2-493C-B805-DCAE560AB6F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkDev.MOA.POC.Entities", "LinkDev.MOA.POC.Entities\LinkDev.MOA.POC.Entities.csproj", "{E377C8A5-306D-4C27-9C1B-AB94AAFC45E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CRM", "CRM", "{6F58949E-79D1-4C65-9494-C2DC6F42ECDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkDev.MOA.POC.Plugins.Case", "LinkDev.MOA.POC.Plugins.Case\LinkDev.MOA.POC.Plugins.Case.csproj", "{B9614F14-0330-4D10-B420-1328F81007B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkDev.MOA.POC.Portal.Fortnend", "LinkDev.MOA.POC.Portal.Fortnend\LinkDev.MOA.POC.Portal.Fortnend.csproj", "{00A1C104-D866-4EC2-B3BA-C37EE8C6FE12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +35,24 @@ Global
 		{37CBE57B-DBB2-493C-B805-DCAE560AB6F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37CBE57B-DBB2-493C-B805-DCAE560AB6F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37CBE57B-DBB2-493C-B805-DCAE560AB6F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E377C8A5-306D-4C27-9C1B-AB94AAFC45E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E377C8A5-306D-4C27-9C1B-AB94AAFC45E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E377C8A5-306D-4C27-9C1B-AB94AAFC45E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E377C8A5-306D-4C27-9C1B-AB94AAFC45E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9614F14-0330-4D10-B420-1328F81007B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9614F14-0330-4D10-B420-1328F81007B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9614F14-0330-4D10-B420-1328F81007B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9614F14-0330-4D10-B420-1328F81007B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A1C104-D866-4EC2-B3BA-C37EE8C6FE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A1C104-D866-4EC2-B3BA-C37EE8C6FE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A1C104-D866-4EC2-B3BA-C37EE8C6FE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A1C104-D866-4EC2-B3BA-C37EE8C6FE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B9614F14-0330-4D10-B420-1328F81007B0} = {6F58949E-79D1-4C65-9494-C2DC6F42ECDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EEACEB7-43CA-42EF-BF54-4BA26BA4D117}

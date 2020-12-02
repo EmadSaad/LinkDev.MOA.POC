@@ -1,0 +1,26 @@
+﻿@media print {
+
+	.header .menu, .header .header__info, .breadcrumb-wrapper, .container .summary-buttons-wrapper, footer, .order-chatbot-wrapper, main .tree {
+		display: none !important
+	}
+	.header{
+		margin-bottom:50px;
+	}
+	.warning-msg{
+	
+		margin-top:150px;
+	}
+	.history-card, .col-lg-3, .col-lg-9 {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		margin: 0 auto
+	}
+	.history-card .order-wrapper{
+		margin:0 auto;
+		margin-bottom:15px;
+	}
+	* {
+		-webkit-print-color-adjust: exact;
+	}
+}

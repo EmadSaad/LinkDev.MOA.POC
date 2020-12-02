@@ -1,0 +1,160 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the inner layout of the site/application.
+// -----------------------------------------------------------------------------
+
+#s4-workspace {
+  height: auto !important;
+  overflow-x: hidden;
+}
+
+body {
+  // background: image('Pattren.png') 0 0 transparent !important;
+  overflow-y: auto;
+}
+
+.inner-layout {
+  min-height: calc(100vh - 414px);
+  position: relative;
+  overflow: hidden;
+}
+
+.layout-padding,
+.workspace-padding {
+  padding: 37px 0;
+}
+// .breadcrumb-wrapper {
+//   margin-bottom: 6%;
+//   background-color: $breadcrumb-bg;
+//   // margin-top: 100px;
+
+//   .breadcrumb {
+//     span[id$="_PlaceHolderBreadCrumb_breadcrumb"] {
+//       width: 75%;
+//       white-space: nowrap;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//     }
+
+//     a,
+//     .breadcrumbCurrentNode,
+//     span:nth-last-of-type(even) {
+//       font-weight: bold;
+//       line-height: 20px;
+//     }
+
+//     a {
+//       @include on-event(true) {
+//         color: $text-color;
+//       }
+//     }
+
+//     .breadcrumbCurrentNode,
+//     span:nth-last-of-type(even) {
+//       color: $brand-color;
+//     }
+
+//     /*To remove the first element in breadcrumb and the > separetor*/
+//     .breadcrumbRootNode,
+//     span:nth-of-type(2) {
+//       display: none;
+//     }
+
+//     // The separator between breadcrumbs (by default, a forward-slash: ">")
+//     /*+ .breadcrumb-item {
+//                 padding-#{$left}: 0;
+
+//                 &::before {
+//                     padding-#{$right}: $breadcrumb-item-padding;
+//                     padding-#{$left}: $breadcrumb-item-padding;
+//                     color: $breadcrumb-divider-color;
+//                     content: if-rtl($icon-arrow-right, $icon-arrow-left);
+//                     font-weight: normal !important;
+//                 }
+//             }*/
+//     /*}*/
+//   }
+// }
+
+.main-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+main {
+  position: relative;
+  min-height: calc(100vh - 350px); // screen height - headr & breadc height - container top bottom margins calc(100vh - 415px - 138px - 100px)
+  .tree {
+    position: absolute;
+    #{$right}: -203px;
+    top: 0;
+    z-index: -1;
+    height: 100%;
+  }
+
+  .main-btn {
+    padding: 10px 20px;
+  }
+
+  .main-btn-secondary {
+    padding: 10px 20px;
+    margin: 0.25rem;
+  }
+
+  .show-more {
+    padding: 15px 60px;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+  main {
+    min-height: get-vh(423px);
+
+    .tree {
+      height: get-vh(423px);
+    }
+
+    .show-more {
+      padding: get-vh(21px) get-vw(85px);
+    }
+  }
+}
+// Extra large devices (large desktops, 1500px and up)
+@media (min-width: 1500px) {
+  .container {
+    max-width: 1160px;
+  }
+}
+// Extra large devices (large desktops, 1500px and up)
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1590px;
+  }
+}
+// // Extra large devices (large desktops, 1500px and up)
+// @media (min-width: 1920px) {
+//   .inner-container {
+//     max-width: 1590px;
+//   }
+// }
+
+@media (max-width: 1199.98px) {
+  main {
+    .show-more {
+      &:focus,
+      &:hover {
+        background-color: $brand-color;
+        color: $white;
+        border-color: transparent;
+      }
+    }
+  }
+}
+

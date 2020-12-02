@@ -1,0 +1,44 @@
+<div class="file-uploader">
+    <form>
+        <section class="order-grid">
+            <h5 class="card-title">{{documentSetting.Name}}<span *ngIf="documentSetting.IsRequired" class="required">*</span></h5>
+            <div class="d-flex justify-content-between">
+                <div class="file-upload-wrapper w-50" data-text="" *ngIf="!IsReadOnly">
+                    <input [disabled]="IsReadOnly" class="file-upload-field"
+                        (click)="fileRef.value = null" title="" type="file" #fileRef
+                        (change)='handleFile(fileRef.files)' multiple name="file-upload-field" />
+                </div>
+                <div class="mx-4 uploader-info" *ngIf="!IsReadOnly">
+                    <p>
+                        {{'Documents.AllowedSize' | translate}} : {{documentSetting.AllowedSize}} {{'Documents.kbs' | translate}},
+                        {{'Documents.MaximumAllowedFiles' | translate}} : {{documentSetting.MaxAllowedFiles}} ,
+                        {{'Documents.MinimumAllowedFiles' | translate}} : {{documentSetting.MinAllowedFiles}} ,
+                        {{'Documents.AllowedExtensions' | translate}} : {{documentSetting.AllowedExtensions}}
+                    </p>
+                    <p *ngIf="!IsReadOnly && documentSetting.TemplateId" class="mt-2">
+                        <a href="{{apiUrl}}api/documents/download?fileId={{documentSetting.TemplateId}}" title="{{'Documents.DownloadTemplate' | translate}}"
+                        class="pointer text-decoration-none d-inline-block"
+                        target="_blank">{{'Documents.DownloadTemplate' | translate}}<span class="icon-download mx-1 mt-2"></span></a>
+                        
+                    </p>           
+                </div>  
+            </div>
+            <div class="alerts-wrapper mt-2 d-none d-md-block" *ngIf="documentSetting.Errors?.length != 0 && !isLoaded">
+                <div class="message message-error p-3 align-left w-100" *ngFor="let error of documentSetting.Errors">
+                    <p class="mb-0 line-height">{{error | translate}}</p>
+                </div>
+            </div>
+            <div *ngIf="FilesToShow().length == 0 && isLoaded" class="progressLoading mt-4"> 
+            </div>           
+        </section>
+    </form>
+    <section class="order-grid mt-2">   
+        <div class="uploaded-files-container " *ngFor="let file of FilesToShow()">
+            <span class="word-break w-75">{{file.FileName}}</span>
+            <a title="Download" class="icon-download" target="_blank"
+                href="{{apiUrl}}api/documents/download?fileId={{file.FileId}}"></a>
+            <a *ngIf="!IsReadOnly" class="icon-rubbish-bin" title="Delete"
+                (click)="DeleteFile(file.FileId)"></a>
+        </div> 
+    </section>
+   </div>

@@ -1,0 +1,89 @@
+<app-breadcrumb [CurrnetComponentName]="'MyProfile'" ></app-breadcrumb>
+<div class="layout-margin">
+  <h1 class="page-title">{{'ProfileManagment.MyProfile'|translate }}</h1>
+  <div class="alert alert-light" role="alert"><span class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+  <div class="form-wrapper">
+    <div class="col-12 p-lg-0" *ngIf="UpdateMsg">
+      <div [className]="'alert-dismissible fade show ' + UpdateMsgClass" role="alert">
+        {{UpdateMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+      <form #MyProfileForm="ngForm" novalidate autocomplete="off">
+
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <custom-text-box [type]="'text'" name="FullName" autocomplete="" aria-label="'ProfileManagment.FullName'"
+                             [(ngModel)]="UserInfo.FullName" #FullName="ngModel"
+                             [label]="'ProfileManagment.FullName'" [disabled]="'disabled'">
+            </custom-text-box>
+          </div>
+
+          <div class="col-12 col-md-3">
+            <mutliselect id="selectDropdown" name="selectDropdown"
+                         [label]="'ProfileManagment.IdentityType'"
+                         [propertyToSelect]="'Value'"
+                         [options]="getIdentityTypeeOptionSet()"
+                         [viewMode]="true"
+                         [multiple]="false"
+                         [config]="config"
+                         [isRequiredLabel]="true"
+                         [(ngModel)]="UserInfo.IdentityTypeId">
+            </mutliselect>
+          </div>
+          <div class="col-12 col-md-3">
+
+            <custom-text-box [type]="'text'" [label]="'ProfileManagment.IdentityNumber'" name="identityNumber" autocomplete="off" aria-label="identityNumber" [disabled]="'disabled'"
+                             [(ngModel)]="UserInfo.IdentityNumber" #identityNumber="ngModel">
+            </custom-text-box>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 col-md-3">
+            <custom-text-box [type]="'email'" [label]="'ProfileManagment.Email'" name="email" autocomplete="" aria-label="email" [disabled]="'disabled'"
+                             [(ngModel)]="UserInfo.Email" #email="ngModel">
+            </custom-text-box>
+          </div>
+        </div>
+        <!--Start Phone and Mobile-->
+        <div class="row">
+          <!--Phone-->
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="PhoneNumber" autocomplete="" aria-label="'ProfileManagment.PhoneNumber'"
+                             [label]="'ProfileManagment.PhoneNumber'" [(ngModel)]="UserInfo.PhoneNumber"
+                             #PhoneNumber="ngModel" [pattern]="PhoneValidationPattern"
+                             [ngClass]="{ 'is-invalid validation': isSubmitted && PhoneNumber.errors || PhoneNumber.errors?.pattern }">
+            </custom-text-box>
+            <app-validation-viewer [requiredValidations]="{'pattern': 'Validations.NewPhoneValidation'}"
+                                   [controlName]="PhoneNumber" [form]="MyProfileForm" [submit]="isSubmitted">
+            </app-validation-viewer>
+          </div>
+          <!--Mobile-->
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="mobile" autocomplete="" aria-label="'ProfileManagment.MobileNumber'"
+                             [(ngModel)]="UserInfo.MobileNumber" [pattern]="mobileValidationPattern"
+                             [label]="'ProfileManagment.MobileNumber'" #mobile="ngModel"
+                             [ngClass]="{ 'is-invalid  validation': isSubmitted && mobile.errors || mobile.errors?.pattern }">
+            </custom-text-box>
+            <app-validation-viewer [requiredValidations]="{'pattern': 'Validations.NewMobileValidation'}"
+                                   [controlName]="mobile" [form]="MyProfileForm" [submit]="isSubmitted">
+            </app-validation-viewer>
+          </div>
+        </div>
+
+        <div class="align-right col-12">
+          <span class="text-right">
+            <a [routerLink]="['/auth/change-password']" class="text-decoration-underline"
+               title="{{'CHANGE_YOUR_PASSWORD'|translate}}"> {{'CHANGE_YOUR_PASSWORD'|translate}}</a>
+          </span>
+        </div>
+        <div class="col-12 form-footer">
+          <button type="button" class="main-btn" (click)="submitForm()">{{'Save'| translate}} </button>
+        </div>
+
+      </form>
+  </div>
+</div>

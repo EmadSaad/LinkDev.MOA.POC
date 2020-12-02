@@ -1,0 +1,332 @@
+
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="0"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  
+
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'PermitLetter.PermitLetter' | translate}}</h4>
+     <!--Request-Header-->
+     <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+        
+   
+    <div [hidden]="ActiveLevelOne != 1">
+       <!--Validation-Message-->
+   <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span
+    class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'| translate }} </div>
+    <!-- <ng-select name="anyName" ... ></ng-select> -->
+      <h5 class="stage-title">{{'PermitLetter.RequestDetails' | translate}}</h5>
+      <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+      <form #PermitsLetterForm="ngForm" novalidate autocomplete="off">
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="ContractNumberId" name="ContractNumberId" [label]="'PermitLetter.ContractNumber'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_contract_PermitRequestContracts']" [viewMode]="Application.IsReadOnly || LockBasicFields "
+              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ContractNumberId" [required]="true"
+              [isRequiredLabel]="!Application.IsReadOnly" #ContractNumberId="ngModel" (change) = "ContractChanged()"
+              [ngClass]="{ 'is-invalid required  validation':  ContractNumberId.errors && (ContractNumberId.dirty || submit) }">
+            </mutliselect>
+             <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+            [controlName]="ContractNumberId" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>
+          <app-info-viewer [isLoading]="isCurrentContract" [modalFormTitleKey]="'ContractSubmission.Info'"
+                  name="ContactInfo" *ngIf="Application.Request.ContractNumberId&&CurrentContract">
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.CR">
+                      <custom-text-box [type]="'text'" name="CRContract" #CRContract="ngModel"
+                        [(ngModel)]="CurrentContract.CR.Name" [label]="'PermitLetter.CR'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.Industrialcity">
+                      <custom-text-box [type]="'text'" name="ContractIndustrialCity" #ContractIndustrialCity="ngModel"
+                        [(ngModel)]="CurrentContract.Industrialcity.Name" [label]="'PermitLetter.IndustrialCity'"
+                        autocomplete="" aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.ProductMainfamily">
+                      <custom-text-box [type]="'text'" name="ContractProductMainFamily"
+                        #ContractProductMainFamily="ngModel" [(ngModel)]="CurrentContract.ProductMainfamily.Name"
+                        [label]="'PermitLetter.ProductMainFamily'" autocomplete="" aria-label="Name"
+                        [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.ProductSubFamily">
+                      <custom-text-box [type]="'text'" name="ContractProductSubFamily"
+                        #ContractProductMainFamily="ngModel" [(ngModel)]="CurrentContract.ProductSubFamily.Name"
+                        [label]="'PermitLetter.ProductSubFamily'" autocomplete="" aria-label="Name"
+                        [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.Product">
+                      <custom-text-box [type]="'text'" name="ContractProduct" #ContractProduct="ngModel"
+                        [(ngModel)]="CurrentContract.Product.Name" [label]="'ContractSubmission.Product'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractConstructionAmountValue"
+                        #ContractConstructionAmountValue="ngModel"
+                        [(ngModel)]="CurrentContract.ConstructionContractStatus"
+                        [label]="'PermitLetter.ConstructionAmountValue'" autocomplete="" aria-label="Name"
+                        [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractLegalStatus" #ContractLegalStatus="ngModel"
+                        [(ngModel)]="CurrentContract.LegalStatus" [label]="'PermitLetter.LegalStatus'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractPricingdate" #ContractPricingdate="ngModel"
+                        [(ngModel)]="CurrentContract.Pricingdate" [label]="'PermitLetter.Pricingdate'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractFileNumber" #ContractFileNumber="ngModel"
+                        [(ngModel)]="CurrentContract.FileNumber" [label]="'PermitLetter.FileNumber'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- <custom-text-box [type]="'text'" name="LandNumber" #ContractPricingdate="ngModel"
+                    [(ngModel)]="CurrentContract.LandNumber" [label]="'PlanApproval.LandNumber'"
+                    autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box> -->
+                      <label>{{'PermitLetter.ContractStartingDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentContract.ContractStartingDate" [readonly]="true"
+                        name="ContractStartingDate"></ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- {{CurrentContract.ContractStartingDate | json}} -->
+                      <label>{{'PermitLetter.ContractExpiryDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentContract.ContractExpiryDate" [readonly]="true"
+                        name="ContractExpiryDate"></ngbd-datepicker-popup>
+
+                    </div>
+
+                  </div>
+                  <app-grid *ngIf="contactDetailsfromContract && contactDetailsfromContract.length > 0" [canAdd]="false"
+                    [canDelete]="false" [canEdit]="false" [modalFormTitle]="'ContractContactsDetails'"
+                    [tableHeadTitle]="'PlanApproval.ContactDetails'" [(data)]="contactDetailsfromContract"
+                    [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false" [canDelete]="false">
+                  </app-grid>
+
+                </app-info-viewer>
+        </div>
+        <div class="form-validation mb-4" *ngIf="contractValidationMsg != '' ">{{contractValidationMsg}}</div>
+        <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <custom-text-box [type]="'text'" name="CRName" #CRName="ngModel"
+          [(ngModel)]="this.CRNameText" [label]="'PermitLetter.CR'"
+          autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly"  [isReadOnly]="true">
+        </custom-text-box>
+        </div>
+        <app-info-viewer [isLoading]="isCurrentCR" [modalFormTitleKey]="'ContractSubmission.Info'" name="CRInfo"
+        *ngIf="Application.Request.CRId">
+        <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+              [(ngModel)]="CurrentCR.CRType" [label]="'PermitLetter.CRType'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+              [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <label>{{'PermitLetter.CRIssuanceDate' | translate}}</label>
+            <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" name="IssueDate" [readonly]="true">
+            </ngbd-datepicker-popup>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <!-- {{CurrentCR.IssueDate | json}} -->
+            <label>{{'PermitLetter.CRExpiryDate' | translate}}</label>
+            <ngbd-datepicker-popup [(ngModel)]="CurrentCR.ExpiryDate" name="ExpiryDate" [readonly]="true">
+            </ngbd-datepicker-popup>
+          </div>
+          <div class="col-xl-4 col-lg-6">
+            <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+              [(ngModel)]="CurrentCR.CRName" [label]="'PermitLetter.CRName'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-xl-8">
+            <label>{{'PermitLetter.Activity' | translate}}</label>
+            <textarea id="CurrentCRActivity" name="CurrentCRActivity" [readOnly]="true"
+              #CurrentCRActivity="ngModel" [(ngModel)]="CurrentCR.CRActivity"></textarea>
+          </div>
+        </div>
+        <app-grid [canAdd]="false" [canDelete]="false" [canEdit]="false"
+          [tableHeadTitle]="'ContractSubmission.Owners'" [(data)]="CurrentCR.CROwners"
+          [columns]="CROwnerGridcols">
+        </app-grid>
+      </app-info-viewer>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="PermitTypeId" name="PermitTypeId" [label]="'PermitLetter.PermitType'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_permitstype_PermitsType']" [viewMode]="Application.IsReadOnly  || LockBasicFields"
+              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.PermitTypeId" [required]="true"
+              [isRequiredLabel]="!Application.IsReadOnly" #PermitTypeId="ngModel" (change)="OnPermitTypeChange()"
+              [ngClass]="{ 'is-invalid required  validation':  PermitTypeId.errors && (PermitTypeId.dirty || submit) }" >
+            </mutliselect>
+             <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="PermitTypeId" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer> 
+          </div>
+         
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="PermitDefaultDuration" #PermitDefaultDuration="ngModel"
+              [(ngModel)]="Application.Request.PermitDefaultDuration"  [label]="'PermitLetter.PermitDefaultDuration'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="true" [isReadOnly]="true"
+              [ngClass]="{ 'is-invalid required  validation':  PermitDefaultDuration.errors && (PermitDefaultDuration.dirty || submit) }">
+            </custom-text-box>
+             <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="PermitDefaultDuration" [form]="PermitsLetterForm" [submit]="submit">
+            </app-validation-viewer> 
+          </div>
+        </div>
+        <div class="form-validation mb-4" *ngIf="requestValidMsg != '' ">{{requestValidMsg}}</div>
+         <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="RequestType" name="RequestType" [label]="'PermitLetter.RequestType'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_permitrequest_ldv_requesttype_OptionSet']"
+              [viewMode]="Application.IsReadOnly || LockBasicFields|| Application.Request.ContractNumberId == undefined ||
+              Application.Request.PermitTypeId == undefined" [multiple]="false" [config]="config" (change) = "OnRequestTypeChange()"
+              [(ngModel)]="Application.Request.RequestType" [required]="true" [disabled]="false" [isRequiredLabel]="!Application.IsReadOnly"
+              #RequestType="ngModel" [ngClass]="{ 'is-invalid required  validation':  RequestType.errors && (RequestType.dirty || submit) }">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="RequestType"
+              [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="OldPermitId" name="OldPermitId" [label]="'PermitLetter.OldPermit'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_permit_Permits']" [viewMode]="true"
+              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.OldPermitId" [required]="Application.Request.RequestType == '2'"
+              [isRequiredLabel]="!Application.IsReadOnly" #OldPermitId="ngModel" [hidden] = "Application.Request.RequestType != '2' "
+              [ngClass]="{ 'is-invalid required  validation':  OldPermitId.errors && (OldPermitId.dirty || submit) }">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="OldPermitId" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <mutliselect id="Contacts" name="Contacts" [label]="'PermitLetter.Contacts'"
+            [propertyToSelect]="'Value'"
+            [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+            [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+            (change)="onContactChange($event)" [(ngModel)]="Application.Request.Contacts"
+            [required]="!Application.IsReadOnly" [disabled]="false" [isRequiredLabel]="!Application.IsReadOnly"
+             [ngClass]="{ 'is-invalid required  validation':  Contacts.errors && (Contacts.dirty || submit) }" #Contacts="ngModel">
+          </mutliselect> 
+          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+          [controlName]="Contacts" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+         
+           </div>
+         
+        </div>
+        <app-grid [modalFormTitle]="'Biddings'" [tableHeadTitle]="'PlanApproval.ContactDetails'"
+        [(data)]="contactsList" [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false"
+        [canDelete]="false">
+      </app-grid>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="IncludedWork" name="IncludedWork" [label]="'PermitLetter.IncludedWork'" [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_permitrequest_ldv_includedworkstypes_OptionSet']"
+              [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+              [(ngModel)]="Application.Request.IncludedWork" [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+              #IncludedWork="ngModel"
+              [ngClass]="{ 'is-invalid required  validation':  IncludedWork.errors && (IncludedWork.dirty || submit) }">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="IncludedWork" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>
+          <mutliselect id="RquireFireFight" name="RquireFireFight" [label]="'PermitLetter.RquireFireFight'"
+            [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['YesNo']"
+            [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+            [(ngModel)]="Application.Request.RquireFireFight" [required]="true"
+            [isRequiredLabel]="!Application.IsReadOnly" #RquireFireFight="ngModel"
+            [ngClass]="{ 'is-invalid required  validation':  RquireFireFight.errors && (RquireFireFight.dirty || submit) }">
+          </mutliselect>
+          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+            [controlName]="RquireFireFight" [form]="PermitsLetterForm" [submit]="submit">
+          </app-validation-viewer>
+        </div>
+       
+      
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <mutliselect id="RequestedPermitDuration" name="RequestedPermitDuration" [label]="'PermitLetter.RequestedPermitDuration'"
+              [propertyToSelect]="'Value'"
+              [options]="lookupService.lookupEntities['ldv_permitrequest_ldv_requestedpermitduration_OptionSet']"
+              [viewMode]="Application.IsReadOnly || LockBasicFields" [multiple]="false" [config]="config"
+              [(ngModel)]="Application.Request.RequestedPermitDuration" (change)="OnRequestedPermitDurationChange()" 
+              [required]="Application.IsReadOnly" [disabled]="false" [isRequiredLabel]="!Application.IsReadOnly" #RequestedPermitDuration="ngModel"
+              [ngClass]="{ 'is-invalid required  validation':  RequestedPermitDuration.errors && (RequestedPermitDuration.dirty || submit) }">
+            </mutliselect>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+              [controlName]="RequestedPermitDuration" [form]="PermitsLetterForm" [submit]="submit"></app-validation-viewer>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" name="RequestedPermitDurationInDays" #RequestedPermitDurationInDays="ngModel"
+              [(ngModel)]="Application.Request.RequestedPermitDurationInDays" [label]="'PermitLetter.RequestedPermitDurationInDays'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly" [required]="Application.Request.RequestedPermitDuration == 2" [isReadOnly]="Application.IsReadOnly"
+              [pattern]="'^[0-9]+$'" (change) = "CheckRequestedDuration()" *ngIf="Application.Request.RequestedPermitDuration == 2  "
+              [ngClass]="{ 'is-invalid required  validation':  RequestedPermitDurationInDays.errors && (RequestedPermitDurationInDays.dirty  ||submit )}">
+            </custom-text-box>
+            <div *ngIf="NotValidDuraton" class="form-validation">{{'PermitLetter.DurationValidation' | translate}}
+            </div>
+            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" *ngIf="Application.Request.RequestedPermitDuration == 2 "
+              [controlName]="RequestedPermitDurationInDays" [form]="PermitsLetterForm" [submit]="submit">
+            </app-validation-viewer>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-8">
+            <label>{{'PermitLetter.PermitReason' | translate}}</label>
+            <textarea id="PermitReason" name="PermitReason" [readOnly]="Application.IsReadOnly" #PermitReason="ngModel"
+              [(ngModel)]="Application.Request.PermitReason" [ngModelOptions]="{standalone: true}" ></textarea>
+          </div>
+        </div >
+        <h5 class="stage-title" *ngIf="AnyDocumentsToShow()">{{'PermitLetter.Attachments' | translate}}</h5>
+        <div class="row" >        
+          <div class="col-lg-8 col-md-6">
+            <app-Uploaders-List [uploaders]="Application.Documents" [form]="PermitsLetterForm" [IsReadOnly]="Application.IsReadOnly"
+              [IsLiveChanges]="true" >
+            </app-Uploaders-List>
+          </div>
+        </div>
+             
+       
+        <div class="row" >
+          <div class="col-12 form-footer d-flex justify-content-between" *ngIf="!Application.IsReadOnly">
+            <button class="main-btn-secondary"
+              [disabled]="!Application.Request.ContractNumberId || !IsRequestValid"
+              (click)="SaveAsDraft()" >{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+              <button class="main-btn"
+              [disabled]="!Application.Request.ContractNumberId || !IsRequestValid"
+              (click)="submitRequest()">{{'ServicesCommon.Submit' | translate}}</button>
+          </div>
+        </div>
+        
+      </form>
+    </div>
+   <!--Request Comments-->
+   
+   <app-request-comments [regardingID]="Application.Request.Id"
+   [hidden]="ActiveLevelOne !== 2 ">
+ </app-request-comments>
+ 
+  </div>

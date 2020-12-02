@@ -1,0 +1,682 @@
+<app-breadcrumb [CurrnetComponentName]="'contractedit'"></app-breadcrumb>
+
+
+<div class="row form-wrapper mb-0">
+    <div class="col-lg-3 mb-0">
+        <div class="h-100">
+            <app-side-stages [activeFirstLevel]="ActiveLevelOne"
+             [activeSecondLevel]="ActiveLevelTwo" 
+             [structure]="formStructure" (onChange)="onSelect($event)">
+            </app-side-stages>
+        </div>
+    </div>
+
+    <!--Form-Container-->
+    <div class="col-lg-9">
+        <!--Page-Title-->
+        <h4 class="page-title">{{'ContractEditMerge.ContractEdit' | translate}}</h4>
+
+        <!--Request-Header-->
+        <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+        <!--Request Details-->
+        <div class="OldContractInfoSection">
+            
+            <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+            <div [hidden]="ActiveLevelOne !== 1">
+              <!--Validation-Message-->
+            <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+
+                <form #ContractForm="ngForm" novalidate autocomplete="off">
+
+                    <!-- Old Contract -->
+                    <div id="OldContractInfoSection">
+
+                        <h5 class="stage-title mt-4">{{'ContractEditMerge.OldContractformation' | translate}}</h5>
+                        <!-- CR And Contract -->
+                        <app-old-cr-and-contract [Application]="Application"
+                        [Request]="Application.Request"
+                        [submit]="submit" [oldContract]="oldContract" 
+                        (CRControl)="CRControlReady($event)"
+                        [config]="config"
+                        [CRIsReadonly]="Application?.Request?.Id != null && Application?.ApplicationHeader?.PortalStatusCode && Application?.ApplicationHeader?.PortalStatusCode != '1'"
+                        [ContractIsReadonly]="Application?.Request?.Id != null && Application?.ApplicationHeader?.PortalStatusCode && Application?.ApplicationHeader?.PortalStatusCode != '1'"
+                        #OldContractChild
+                        [form]="ContractForm"
+                        (ContractControl)="ContractControlReady($event)"
+                        (CRChangeEvent)="onOldCRChange($event)"
+                        (ContractChangeEvent)="onContractChange($event)">
+                         </app-old-cr-and-contract> 
+                        <!-- Edit Type & Edit Reason -->
+                        <div class="row">
+                            <!-- Edit Type -->
+                            <div class="col-lg-4 col-md-6">
+                                <mutliselect id="EditType" name="EditType" #EditType="ngModel" 
+                                [label]="'ContractEditMerge.EditType'" [propertyToSelect]="'Value'"
+                                [options]="lookupService.lookupEntities['ldv_editcontract_ldv_edittype_OptionSet']"
+                                [multiple]="true" [viewMode]="Application.IsReadOnly"
+                                [config]="config" [(ngModel)]="Application.Request.EditType" 
+                                [required]="true" [isRequiredLabel]="!Application.IsReadOnly" 
+                                (change)="onEditTypeChange()" [ngClass]="{ 'is-invalid required  validation':  EditType.errors && (EditType.dirty || submit) }">
+                                </mutliselect>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="EditType" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                            <!-- Has Loan -->
+                            <div class="col-lg-4 col-md-6">
+                                <mutliselect id="HasLoan" name="HasLoan" [label]="'ContractEditMerge.HasLoan'" #HasLoan="ngModel"
+                                [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['YesNo']"
+                                [viewMode]="true" [multiple]="false" [config]="config" [(ngModel)]="Application.Request.HasLoan"
+                                [required]="true" [isRequiredLabel]="!Application.IsReadOnly" 
+                                [ngClass]="{ 'is-invalid required  validation':  HasLoan.errors && (HasLoan.dirty || submit) }">
+                                </mutliselect>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="HasLoan" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                            <!-- Edit Reason -->
+                            <div class="col-lg-4 col-md-6">
+                                <label>{{'ContractEditMerge.EditReason' | translate}}<span class="required">*</span></label>
+                                <textarea [required]="true" id="EditReason" name="EditReason" #EditReason="ngModel"
+                                 [(ngModel)]="Application.Request.EditReason" [readOnly]="Application.IsReadOnly" 
+                                 [ngClass]="{ 'is-invalid required  validation':  EditReason.errors && (EditReason.dirty || submit) }"></textarea>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                 [controlName]="EditReason" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                             
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- New Contract  -->
+                    <div id="NewContractInfoSection"  [hidden]="Application.Request.ContractId == null">
+                        <h5 class="stage-title">{{'ContractEditMerge.NewContractformation' | translate}}</h5>
+                        <!-- Product Main Family & Sub Family -->
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4">
+                                <mutliselect id="ProductMainFamily" name="ProductMainFamily" #ProductMainFamily="ngModel"
+                                [label]="'ContractEditMerge.ProductMainFamily'" [propertyToSelect]="'Value'" [options]="getProductMainFamily()"
+                                [viewMode]="Application.IsReadOnly || !Application?.Request?.EditType?.includes(editTypeCode.EditClassification)"
+                                [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ProductMainFamilyId"
+                                [required]="Application?.Request?.EditType?.includes(editTypeCode.EditClassification)" 
+                                [isRequiredLabel]="!Application.IsReadOnly|| Application?.Request?.EditType?.includes(editTypeCode.EditClassification)" 
+                                (change)="resetSubFamily()" 
+                                [ngClass]="{ 'is-invalid required  validation':  ProductMainFamily.errors && (ProductMainFamily.dirty || submit) }">
+                                </mutliselect>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="ProductMainFamily" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <mutliselect id="ProductSubFamily" name="ProductSubFamily" [label]="'ContractEditMerge.ProductSubFamily'" 
+                                [propertyToSelect]="'Value'" [options]="getProductSubFamily()" 
+                                [viewMode]=" Application.IsReadOnly || !Application?.Request?.EditType?.includes(editTypeCode.EditClassification)"
+                                [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ProductSubFamilyId"
+                                [required]="Application?.Request?.EditType?.includes(editTypeCode.EditClassification)"
+                                [isRequiredLabel]="!Application.IsReadOnly || Application?.Request?.EditType?.includes(editTypeCode.EditClassification)"
+                                #ProductSubFamily="ngModel" (change)="resetProduct()"
+                                [ngClass]="{ 'is-invalid required  validation':  ProductSubFamily.errors && (ProductSubFamily.dirty || submit) }">
+                                </mutliselect>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                 [controlName]="ProductSubFamily" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                            
+                            <div class="col-lg-4 col-md-6" [hidden]= "Application.Request.ProductMainFamilyId == productMainFamily.Industrial &&  Application.Request.ProductSubFamilyId !== productSubFamily.ReadyUnits">
+                                <mutliselect id="ContractProduct" name="ContractProduct" [label]="'ContractEditMerge.Product'"
+                                [propertyToSelect]="'Value'" [options]="getProduct()" 
+                                [viewMode]=" Application.IsReadOnly ||  !Application?.Request?.EditType?.includes(editTypeCode.EditClassification)"
+                                [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ProductId"
+                                [required]="(Application?.Request?.EditType?.includes(editTypeCode.EditClassification) && Application?.Request?.ProductSubFamilyId != productSubFamily?.IndustrialLands)"
+                                [isRequiredLabel]="!Application.IsReadOnly ||
+                                (Application?.Request?.EditType?.includes(editTypeCode.EditClassification) && Application?.Request?.ProductSubFamilyId != productSubFamily?.IndustrialLands)"
+                                 #ContractProduct="ngModel" 
+                                [ngClass]="{ 'is-invalid required  validation':  ContractProduct.errors && (ContractProduct.dirty || submit) }">
+                                </mutliselect>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                 [controlName]="ContractProduct" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                        </div>
+                      
+                        <div class="row"  >
+                          <!-- {{Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)}} -->
+                            <!-- Edit CR -->
+                            <div class="col-lg-4 col-md-6"
+                             [hidden]="Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer) ">
+                                <mutliselect id="EditCR" name="EditCR" [label]="'ContractEditMerge.EditCR'" #EditCR="ngModel"
+                                [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['YesNo']"
+                                [viewMode]="Application.IsReadOnly"  (change)="onEditCRChange()"
+                                [multiple]="false" [config]="config" [(ngModel)]="Application.Request.EditCR"
+                                [required]="true" [isRequiredLabel]="!Application.IsReadOnly" 
+                                [ngClass]="{ 'is-invalid required  validation':  EditCR.errors && (EditCR.dirty || submit) }">
+                                </mutliselect>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" 
+                                [controlName]="EditCR" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                        </div> 
+                        <div class="row">
+
+                          <!-- v ->{{Application?.Request?.CRVersionId}} -->
+                          <div class="col-lg-4 col-md-6">
+                              <app-cr-version  
+                              [Contract]="Application.Request"
+                              [CRVersionModel]="CRVersionModel"
+                              (CRChangeEvent)="onCRChange($event)"
+                              [CRFieldName]= "NewCRId"
+                              [submit]="submit"
+                              [config]="config"
+                              [form]="ContractForm"
+                              #CRVersionChild
+                              [IsReadOnly]="Application?.Request?.EditCR?.toString()== 'false'|| Application.IsReadOnly"
+                              [IsRequired]="true"
+                              [hidden]="Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)"
+                              (CRVersionControl)="CRVersionControlReady($event)"
+                              [Application]="Application">
+                              </app-cr-version>
+
+                              
+                          </div>
+                          <app-info-viewer *ngIf="Application.Request.CRId && !Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)"
+                              [modalFormTitleKey]="'ContractEditMerge.CRInfo'" >
+                                  
+
+                                      <!-- <div class="main-title">{{'ContractEditMerge.CRInfo'|translate }}</div> -->
+                                      <div class="row">
+                                      
+                                        <!-- CR Type -->
+                                        <div class="col-md-6 col-lg-4">
+                                          <custom-text-box [type]="'text'" name="CRType" #CRType="ngModel"
+                                            [(ngModel)]="CRVersionModel.CRType" [label]="'SplitRequest.CRType'" autocomplete=""
+                                            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                          </custom-text-box>
+                                        </div>
+                                    
+                                        
+                                    
+                                        <!-- CR Name -->
+                                        <div class="col-md-6 col-lg-4">
+                                          <custom-text-box [type]="'text'" name="CRName" #CRName="ngModel"
+                                            [(ngModel)]="CRVersionModel.Name" [label]="'SplitRequest.CRName'" autocomplete=""
+                                            [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                          </custom-text-box>
+                                        </div>
+                                      
+                                        <!-- CR Issue Date -->
+                                        <div class="col-md-6 col-lg-4">
+                                          <custom-text-box [type]="'text'" name="CRIssueDate" #CRIssueDate="ngModel"
+                                            [(ngModel)]="CRVersionModel.IssueDate" [label]="'SplitRequest.CRIssueDate'" autocomplete=""
+                                            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                          </custom-text-box>
+                                        </div>
+                                    
+                                        <!-- CR Expiry Date -->
+                                        <div class="col-md-6 col-lg-4">
+                                          <custom-text-box [type]="'text'" name="CRExpiryDate" #CRExpiryDate="ngModel"
+                                            [(ngModel)]="CRVersionModel.ExpiryDate" [label]="'SplitRequest.CRExpiryDate'" autocomplete=""
+                                            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                          </custom-text-box>
+                                        </div>
+                                    
+                                        <!-- Issuance City Name -->
+                                        <div class="col-md-6 col-lg-4">
+                                          <custom-text-box [type]="'text'" name="IssuanceCityName" #IssuanceCityName="ngModel"
+                                            [(ngModel)]="CRVersionModel.IssuanceCity" [label]="'SplitRequest.IssuanceCity'" autocomplete=""
+                                            aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                          </custom-text-box>
+                                        </div>
+                                    
+                                      
+                                      </div> 
+                                    
+                                      <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Owners'" [canEdit]="false"
+                                      [canDelete]="false" [(data)]="CRVersionModel.Owners" [columns]="OwnerGridcols">
+                                      </app-grid>
+                                    
+                                      <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.CRActivity'" [canEdit]="false"
+                                      [canDelete]="false" [(data)]="CRVersionModel.Activities" [columns]="ActivitiesGridcols">
+                                      </app-grid>
+                              </app-info-viewer>
+
+
+                        </div>
+                        <div class="row" [hidden]="Application.Request.ProductMainFamilyId !== productMainFamily.Industrial && !Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)" >
+                          <!--has IL -->
+                          <div class="col-lg-4 col-md-6">
+                              <mutliselect id="hasIL" name="hasIL" [label]="'ContractEditMerge.hasIL'" #hasIL="ngModel" 
+                              [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['YesNo']"
+                              [viewMode]="Application.IsReadOnly" (change)="onHasILChange()"
+                              [multiple]="false" [config]="config" [(ngModel)]="Application.Request.hasIL"
+                              [required]="Application.Request.ProductMainFamilyId == productMainFamily.Industrial" [isRequiredLabel]="!Application.IsReadOnly"
+                              [ngClass]="{ 'is-invalid required  validation':  hasIL.errors && (hasIL.dirty || submit) }">
+
+                              </mutliselect>
+                              <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="hasIL"
+                               [form]="ContractForm" [submit]="submit">
+                              </app-validation-viewer>
+                          </div>
+                          <!-- IL -->
+
+                          <!-- Products -->
+                          <div class="col-lg-4 col-md-6" [hidden]="Application?.Request?.hasIL?.toString() == 'true'">
+                              <mutliselect id="Products" name="Products" [label]="'ContractEditMerge.Product'" 
+                              #Products="ngModel" [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_modonproduct_ModonProducts']" 
+                              [viewMode]="Application.IsReadOnly"
+                              [multiple]="true" [config]="config" [(ngModel)]="Application.Request.Products"
+                              [required]="Application?.Request?.hasIL?.toString() == 'false' && Application.Request.ProductMainFamilyId == productMainFamily.Industrial" 
+                              [isRequiredLabel]="!Application.IsReadOnly || (Application?.Request?.hasIL?.toString() == 'false')" 
+                              [ngClass]="{ 'is-invalid required  validation':  Products.errors && (Products.dirty || submit) }">
+                              </mutliselect>
+                              <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" 
+                              [controlName]="Products" [form]="ContractForm" [submit]="submit">
+                              </app-validation-viewer>
+                          </div>
+
+
+                          <div class="col-lg-4 col-md-6" [hidden]="Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)">
+                        <app-il-version [Contract]="Application.Request" [Application]="Application"
+                        [IsReadOnly]="Application?.Request?.EditCR?.toString()== 'false'|| Application.IsReadOnly"
+                         [ILVersionModel]="ILVersionModel" (ILVersionControl)="ILVersionControlReady($event)"
+                         [IsRequired]="Application.Request?.hasIL?.toString() == 'true' && Application.Request.ProductMainFamilyId == productMainFamily.Industrial"
+                         #IlVersionChild
+                         [ILFieldName]= "NewILId"
+                         [config]="config"
+                         [hidden]="Application.Request?.hasIL?.toString() !== 'true'">
+                        </app-il-version>
+                      </div>
+                        <app-info-viewer [hidden]="Application?.Request?.ILId == null ||
+                         Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer) || 
+                         Application?.Request?.hasIL?.toString() == 'false'">
+                        
+                              <div class="main-title">{{'ContractEditMerge.ILInfo'|translate }}</div>
+                                <div class="row">
+                                
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILNumber" #ILNumber="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILNumber" [label]="'SplitRequest.ILNumber'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILStatus" #ILStatus="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILStatus" [label]="'SplitRequest.ILStatus'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILType" #ILType="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILType" [label]="'SplitRequest.ILType'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="IssueDate" #IssueDate="ngModel"
+                                      [(ngModel)]="ILVersionModel.IssueDate" [label]="'SplitRequest.IssueDate'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                   <!-- Expiry Date -->
+                                   <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ExpiryDate" #ExpiryDate="ngModel"
+                                      [(ngModel)]="ILVersionModel.ExpiryDate" [label]="'SplitRequest.ExpiryDate'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                                
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILSource" #ILSource="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILSource" [label]="'SplitRequest.ILSource'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="CityName" #CityName="ngModel"
+                                      [(ngModel)]="ILVersionModel.CityName" [label]="'SplitRequest.CityName'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="FactoryName" #FactoryName="ngModel"
+                                      [(ngModel)]="ILVersionModel.FactoryName" [label]="'SplitRequest.FactoryName'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="OwnerName" #OwnerName="ngModel"
+                                      [(ngModel)]="ILVersionModel.OwnerName" [label]="'SplitRequest.OwnerName'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="InvestmentType" #InvestmentType="ngModel"
+                                      [(ngModel)]="ILVersionModel.InvestmentType" [label]="'SplitRequest.InvestmentType'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="Nationality" #Nationality="ngModel"
+                                      [(ngModel)]="ILVersionModel.Nationality" [label]="'SplitRequest.Nationality'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                </div> 
+                            
+                                <div class="row">
+                                  <div class="col-6">
+                                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Products'"
+                                    [canEdit]="false" [canDelete]="false" [data]="ILVersionModel.ILProductsList"
+                                    [columns]="ILProductsgridcols">
+                                    </app-grid>
+                                  </div>
+                                
+                                  <div class="col-6">
+                                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Activities'"
+                                    [canEdit]="false" [canDelete]="false" [data]="ILVersionModel.ILActivities"
+                                    [columns]="ILActivityGridcols">
+                                    </app-grid>
+                                </div>
+                                </div>
+                                
+                            
+                        </app-info-viewer>
+
+                        </div>
+                          <!-- Transfer OwnerShip -->
+                        <div class="row align-items-center" [hidden]="!Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)">
+                            <div class="col-lg-4 col-md-6">
+                                <custom-text-box [type]="'text'" name="OwnerShipCR" #OwnerShipCR="ngModel"
+                                [(ngModel)]="Application.Request.OwnerShipCR" [label]="'ContractEditMerge.OwnerShipCR'"
+                                autocomplete="" [isReadOnly]="Application.IsReadOnly" aria-label="Name"
+                                [isRequiredLabel]="!Application.IsReadOnly || Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)"
+                                [required]=" Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)"
+                                [ngClass]="{ 'is-invalid required  validation':  OwnerShipCR.errors && (OwnerShipCR.dirty || submit)}">
+                                </custom-text-box>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" 
+                                [controlName]="OwnerShipCR" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                                
+                           
+                                <div *ngIf="CRValidationMessage != ''" class="is-invalid required  validation"> {{CRValidationMessage}}</div>
+                           
+                              </div>
+                              
+                              <button type="button" class="main-btn-secondary mt-3 mx-2" [hidden]="Application.IsReadOnly"
+                                 (click)="CheckCRTransferOwnerShip()">{{'ContractEditMerge.Search'| translate}}</button>
+                            <app-info-viewer *ngIf="showTransferCR"
+                            [modalFormTitleKey]="'ContractEditMerge.ILInfo'" >
+                                    <div class="row">
+                                      <!-- CR Type -->
+                                      <div class="col-md-6 col-lg-4">
+                                        <custom-text-box [type]="'text'" name="CRType" #CRType="ngModel"
+                                          [(ngModel)]="CRVersionModel.CRType" [label]="'SplitRequest.CRType'" autocomplete=""
+                                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                        </custom-text-box>
+                                      </div>
+                                  
+                                      
+                                  
+                                       <!-- CR Name -->
+                                       <div class="col-md-6 col-lg-4">
+                                        <custom-text-box [type]="'text'" name="CRName" #CRName="ngModel"
+                                          [(ngModel)]="CRVersionModel.Name" [label]="'SplitRequest.CRName'" autocomplete=""
+                                           [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                        </custom-text-box>
+                                      </div>
+                                    
+                                      <!-- CR Issue Date -->
+                                      <div class="col-md-6 col-lg-4">
+                                        <custom-text-box [type]="'text'" name="CRIssueDate" #CRIssueDate="ngModel"
+                                          [(ngModel)]="CRVersionModel.IssueDate" [label]="'SplitRequest.CRIssueDate'" autocomplete=""
+                                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                        </custom-text-box>
+                                      </div>
+                                  
+                                      <!-- CR Expiry Date -->
+                                      <div class="col-md-6 col-lg-4">
+                                        <custom-text-box [type]="'text'" name="CRExpiryDate" #CRExpiryDate="ngModel"
+                                          [(ngModel)]="CRVersionModel.ExpiryDate" [label]="'SplitRequest.CRExpiryDate'" autocomplete=""
+                                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                        </custom-text-box>
+                                      </div>
+                                  
+                                      <!-- Issuance City Name -->
+                                      <div class="col-md-6 col-lg-4">
+                                        <custom-text-box [type]="'text'" name="IssuanceCityName" #IssuanceCityName="ngModel"
+                                          [(ngModel)]="CRVersionModel.IssuanceCity" [label]="'SplitRequest.IssuanceCity'" autocomplete=""
+                                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                        </custom-text-box>
+                                      </div>
+                                  
+                                     
+                                    </div> 
+                                  
+                                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Owners'" [canEdit]="false"
+                                    [canDelete]="false" [(data)]="CRVersionModel.Owners" [columns]="OwnerGridcols">
+                                    </app-grid>
+                                  
+                                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.CRActivity'" [canEdit]="false"
+                                    [canDelete]="false" [(data)]="CRVersionModel.Activities" [columns]="ActivitiesGridcols">
+                                    </app-grid>
+                            </app-info-viewer>
+
+                            <div class="col-lg-4 col-md-6" [hidden]="Application?.Request?.hasIL?.toString() == 'false'">
+                                <custom-text-box [type]="'text'" name="OwnerShipIL"
+                                #OwnerShipIL="ngModel" [(ngModel)]="Application.Request.OwnerShipIL" 
+                                [label]="'ContractEditMerge.OwnerShipIL'" autocomplete="" [isReadOnly]="Application.IsReadOnly"
+                                aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly || Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)"
+                                [required]="Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer) && Application?.Request?.hasIL?.toString() == 'true'"
+                                [ngClass]="{ 'is-invalid required  validation':  OwnerShipIL.errors && (OwnerShipIL.dirty || submit)}">
+                                </custom-text-box>
+                                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" 
+                                [controlName]="OwnerShipIL" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                                <div *ngIf="ILValidationMessage" class="is-invalid required  validation"> {{ILValidationMessage}}</div>
+                               
+                            </div>
+                            <button type="button" class="main-btn-secondary mt-3 mx-2"  [hidden]="Application.IsReadOnly ||Application?.Request?.hasIL?.toString() == 'false'"
+                            (click)="CheckILTransferOwnerShip()">{{'ContractEditMerge.Search'| translate}}</button>
+                            <app-info-viewer *ngIf="showTransferIL">
+                          
+                              <div class="main-title">{{'ContractEditMerge.ILInfo'|translate }}</div>
+                                <div class="row">
+                                
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILNumber" #ILNumber="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILNumber" [label]="'SplitRequest.ILNumber'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILStatus" #ILStatus="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILStatus" [label]="'SplitRequest.ILStatus'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILType" #ILType="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILType" [label]="'SplitRequest.ILType'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="IssueDate" #IssueDate="ngModel"
+                                      [(ngModel)]="ILVersionModel.IssueDate" [label]="'SplitRequest.IssueDate'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                   <!-- Expiry Date -->
+                                   <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ExpiryDate" #ExpiryDate="ngModel"
+                                      [(ngModel)]="ILVersionModel.ExpiryDate" [label]="'SplitRequest.ExpiryDate'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                                
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="ILSource" #ILSource="ngModel"
+                                      [(ngModel)]="ILVersionModel.ILSource" [label]="'SplitRequest.ILSource'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="CityName" #CityName="ngModel"
+                                      [(ngModel)]="ILVersionModel.CityName" [label]="'SplitRequest.CityName'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="FactoryName" #FactoryName="ngModel"
+                                      [(ngModel)]="ILVersionModel.FactoryName" [label]="'SplitRequest.FactoryName'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="OwnerName" #OwnerName="ngModel"
+                                      [(ngModel)]="ILVersionModel.OwnerName" [label]="'SplitRequest.OwnerName'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="InvestmentType" #InvestmentType="ngModel"
+                                      [(ngModel)]="ILVersionModel.InvestmentType" [label]="'SplitRequest.InvestmentType'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                  <div class="col-md-6 col-lg-4">
+                                    <custom-text-box [type]="'text'" name="Nationality" #Nationality="ngModel"
+                                      [(ngModel)]="ILVersionModel.Nationality" [label]="'SplitRequest.Nationality'" autocomplete=""
+                                      aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                                    </custom-text-box>
+                                  </div>
+                            
+                                </div> 
+                            
+                                <div class="row">
+                                  <div class="col-6">
+                                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Products'"
+                                    [canEdit]="false" [canDelete]="false" [data]="ILVersionModel.ILProductsList"
+                                    [columns]="ILProductsgridcols">
+                                    </app-grid>
+                                  </div>
+                                
+                                  <div class="col-6">
+                                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Activities'"
+                                    [canEdit]="false" [canDelete]="false" [data]="ILVersionModel.ILActivities"
+                                    [columns]="ILActivityGridcols">
+                                    </app-grid>
+                                </div>
+                                </div>
+                                
+                            
+                        </app-info-viewer>
+
+                        </div>
+                     
+                         
+                        <div class="row">
+                            <!-- Partners Percentage -->
+                            <div class="col-lg-4 col-md-6"  [hidden]="!Application?.Request?.EditType?.includes(editTypeCode.EditPartners)">
+                                <custom-text-box [type]="'text'" name="PartnersPercentage" #PartnersPercentage="ngModel" 
+                                [(ngModel)]="Application.Request.PartnersPercentage" [label]="'ContractEditMerge.PartnersPercentage'" 
+                                autocomplete="" [isReadOnly]="Application.IsReadOnly" aria-label="Email"
+                                [isRequiredLabel]="!Application.IsReadOnly"
+                                [required]="Application?.Request?.EditType?.includes(editTypeCode.EditPartners)" 
+                                [pattern]="'^([0-9]|[1-9][0-9]|100)$'" 
+                                [maxLength]="8" [ngClass]="{ 'is-invalid required  validation':  PartnersPercentage.errors && (PartnersPercentage.dirty || submit)}">
+                                </custom-text-box>
+                                <app-validation-viewer [requiredValidations]="PercentageValidations"
+                                [controlName]="PartnersPercentage" [form]="ContractForm" [submit]="submit">
+                                </app-validation-viewer>
+                            </div>
+                           
+                        </div>
+
+                        <div class="row">
+                            <!-- Contact Details -->
+                          <div class="col-lg-6 col-md-6">
+                            <mutliselect id="Contacts" name="Contacts" #Contacts="ngModel" [label]="'ContractEditMerge.Contacts'" [propertyToSelect]="'Value'" 
+                            [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+                            [viewMode]="Application.IsReadOnly" [multiple]="true"
+                            [config]="config" [(ngModel)]="Application.Request.ContactDetails" 
+                            [required]="true" [isRequiredLabel]="!Application.IsReadOnly" [ngClass]="{ 'is-invalid required  validation':  Contacts.errors && (Contacts.dirty || submit) }">
+                            </mutliselect>
+                            <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="Contacts" [form]="ContractForm" [submit]="submit">
+                            </app-validation-viewer>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-lg-6 col-md-6" *ngIf="CompanyProfile">
+                            <app-Uploaders-List
+                              [uploaders]="Application.Documents" [form]="ContractForm" 
+                              [IsReadOnly]="Application.IsReadOnly"
+                              [SectionName]="'CompanyProfile'"
+                              [IsLiveChanges]="true" >
+                            </app-Uploaders-List>
+                          </div>
+                          <div class="col-lg-6 col-md-6" *ngIf="Application?.Request?.HasLoan?.toString()== 'true'">
+                            <app-Uploaders-List
+                              [uploaders]="Application.Documents" [form]="ContractForm" 
+                              [IsReadOnly]="Application.IsReadOnly"
+                              [SectionName]="'HasLoan'"
+                              [IsLiveChanges]="true" >
+                            </app-Uploaders-List>
+                          </div>
+                          <div class="col-lg-6 col-md-6" *ngIf="Application?.Request?.EditType?.includes(editTypeCode.OwnerShipTransfer)">
+                            <app-Uploaders-List
+                              [uploaders]="Application.Documents" [form]="ContractForm" 
+                              [SectionName]="'TransferOwnerShip'"
+                              [IsReadOnly]="Application.IsReadOnly"
+                              [IsLiveChanges]="true" >
+                            </app-Uploaders-List>
+                          </div>
+                          <div class="col-lg-6 col-md-6">
+                            <app-Uploaders-List
+                              [uploaders]="Application.Documents" [form]="ContractForm" 
+                              [IsReadOnly]="Application.IsReadOnly"
+                              [IsLiveChanges]="true" >
+                            </app-Uploaders-List>
+                          </div>
+                        </div>
+                   
+                    </div>
+                </form>
+                <!--Actions-->
+                <div *ngIf="!Application.IsReadOnly" class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+                    <div *ngIf="!Application.IsReadOnly">
+                        <button type="button" [disabled]="!Application.Request.ContractId" class="main-btn-secondary" (click)="saveForm()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+                    </div>
+                    <button type="button" [disabled]="!Application.Request.ContractId" class="main-btn" (click)="submitRequest()">{{ 'ServicesCommon.Submit' | translate}}</button>
+                </div>
+            </div>
+        </div>
+
+          <!-- Payment -->
+     <div *ngIf="Application && Application.ApplicationHeader && Application.ApplicationHeader.PortalStatusCode == '4' && ActiveLevelOne == 3">
+      <app-request-quote [requestId]="Application.ApplicationHeader.Id"></app-request-quote>
+      </div>
+     
+        <!--Request Comments-->
+        <app-request-comments [regardingID]="Application.Request.Id"
+         [hidden]="ActiveLevelOne !== 2 || !Application.Request.Id || Application.ApplicationHeader.PortalStatusCode === '1'">
+        </app-request-comments>
+    </div>
+</div>

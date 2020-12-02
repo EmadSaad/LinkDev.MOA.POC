@@ -1,0 +1,19 @@
+<ng-template [ngIf]="switch" [ngIfElse]="switchTemplate">
+    <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+    <ngx-select-dropdown *ngIf="!viewMode&&multiple||!multiple" [disabled]="viewMode" [(ngModel)]="obj"
+    [multiple]="multiple" [config]="configCopy" (change)="onChangeHandler($event)" [options]="options" #select="ngModel">
+  </ngx-select-dropdown>
+</ng-template>
+<ng-template #switchTemplate>
+   <label>{{label | translate}}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+  <ngx-select-dropdown *ngIf="!viewMode&&multiple||!multiple" [disabled]="viewMode" [(ngModel)]="obj"
+    [multiple]="multiple" [config]="configCopy" (change)="onChangeHandler($event)" [options]="options" #select="ngModel">
+  </ngx-select-dropdown>
+</ng-template>
+
+
+<div class="selected-options" *ngIf="multiple && selectedItems" [ngClass]="{'mt-4': obj && obj.length && !viewMode}">
+  <span *ngFor="let item of obj" class="selected-option mb-2">
+    {{item[configCopy.displayKey]}}
+  </span>
+</div>

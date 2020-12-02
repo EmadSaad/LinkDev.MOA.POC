@@ -1,0 +1,636 @@
+<app-breadcrumb [CurrnetComponentName]="'LicenseDetails'">
+</app-breadcrumb>
+
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+
+<div class="col-lg-9" [hidden]="ActiveLevelOne !== 1">
+
+  <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.CRName'"
+       [(ngModel)]="CertificateDetails.CRName" 
+       #CRName="ngModel"
+       name="CRName" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.POBox'"
+       [(ngModel)]="CertificateDetails.POBox" 
+       #POBox="ngModel"
+       name="POBox" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+ </div> 
+
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.PostalCode'"
+       [(ngModel)]="CertificateDetails.PostalCode" 
+       #PostalCode="ngModel"
+       name="PostalCode" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.AccountPhone'"
+       [(ngModel)]="CertificateDetails.AccountPhone" 
+       #AccountPhone="ngModel"
+       name="AccountPhone" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+ </div>
+
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.Fax'"
+       [(ngModel)]="CertificateDetails.Fax" 
+       #Fax="ngModel"
+       name="Fax" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.CRType'"
+       [(ngModel)]="CertificateDetails.CRType" 
+       #CRType="ngModel"
+       name="CRType" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+ </div> 
+ 
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails && CertificateDetails.IndustrialCity">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.IndustrialCity'"
+       [(ngModel)]="CertificateDetails.IndustrialCity.Name" 
+       #CertificateIndustrialCity="ngModel"
+       name="CertificateIndustrialCity" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.LicenseNumber'"
+       [(ngModel)]="CertificateDetails.LicenseNumber" 
+       #LicenseNumber="ngModel"
+       name="LicenseNumber" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+
+ </div> 
+
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <label>
+       {{'OperatingLicenseCertificate.LicenceStartDate' | translate}}
+     </label>
+     <ngbd-datepicker-popup 
+       [(ngModel)]="CertificateDetails.LicenceStartDate" 
+       name="LicenceStartDate" 
+       [readonly]="true">
+     </ngbd-datepicker-popup>
+
+   </div>
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+     <label>
+       {{'OperatingLicenseCertificate.LicenceExpiryDate' | translate}}
+     </label>
+     <ngbd-datepicker-popup 
+       [(ngModel)]="CertificateDetails.LicenceExpiryDate" 
+       name="LicenceExpiryDate" 
+       [readonly]="true">
+     </ngbd-datepicker-popup>
+    
+
+   </div>
+
+ </div> 
+
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails">
+
+     <label>
+       {{'OperatingLicenseCertificate.LicenceExpiryDate' | translate}}
+     </label>
+     <ngbd-datepicker-popup 
+       [(ngModel)]="CertificateDetails.LicenceExpiryDate" 
+       name="LicenceExpiryDate" 
+       [readonly]="true">
+     </ngbd-datepicker-popup>
+
+   </div>
+
+ </div> 
+
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6" *ngIf="CertificateDetails&&CertificateDetails.ContractNumber">
+
+     <custom-text-box 
+       [type]="'text'"
+       [label]="'OperatingLicenseCertificate.ContractNumber'"
+       [(ngModel)]="CertificateDetails.ContractNumber.Name" 
+       #ContractNumber="ngModel"
+       name="ContractNumber" 
+       [isRequiredLabel]="false" 
+       [isReadOnly]="true">
+     </custom-text-box>
+
+   </div>
+  
+   <app-info-viewer 
+   [isLoading]="isCurrentContract" 
+   [modalFormTitleKey]="'OperatingLicenseRequest.ContractInfo'"
+   name="ContactInfo" 
+   *ngIf="CurrentContract">
+
+   <div class="row">
+
+     <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.CR">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="CRContract" 
+         #CRContract="ngModel"
+         [(ngModel)]="CurrentContract.CR.Name" 
+         [label]="'ContractSubmission.CRId'" 
+         autocomplete=""
+         aria-label="Name" 
+         [isReadOnly]="true"> 
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Industrialcity">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractIndustrialCity" 
+         #ContractIndustrialCity="ngModel"
+         [(ngModel)]="CurrentContract.Industrialcity.Name" 
+         [label]="'ContractSubmission.IndustrialCity'"
+         autocomplete="" 
+         aria-label="Name" 
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductMainfamily">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractProductMainFamily"
+         #ContractProductMainFamily="ngModel" 
+         [(ngModel)]="CurrentContract.ProductMainfamily.Name"
+         [label]="'ContractSubmission.ProductMainFamily'" 
+         autocomplete="" 
+         aria-label="Name"
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductSubFamily">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractProductSubFamily"
+         #ContractProductMainFamily="ngModel" 
+         [(ngModel)]="CurrentContract.ProductSubFamily.Name"
+         [label]="'ContractSubmission.ProductSubFamily'" 
+         autocomplete="" 
+         aria-label="Name"
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Product">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractProduct" 
+         #ContractProduct="ngModel"
+         [(ngModel)]="CurrentContract.Product.Name" 
+         [label]="'ContractSubmission.Product'" 
+         autocomplete=""
+         aria-label="Name" 
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractConstructionAmountValue"
+         #ContractConstructionAmountValue="ngModel"
+         [(ngModel)]="CurrentContract.ConstructionContractStatus"
+         [label]="'ContractSubmission.ConstructionAmountValue'" 
+         autocomplete="" 
+         aria-label="Name"
+         [isReadOnly]="true">
+       </custom-text-box>
+
+       
+
+     </div>
+
+     <div class="col-lg-4 col-md-6">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractLegalStatus" 
+         #ContractLegalStatus="ngModel"
+         [(ngModel)]="CurrentContract.LegalStatus" 
+         [label]="'OperatingLicenseRequest.LegalStatus'"
+         autocomplete="" 
+         aria-label="Name" 
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractPricingdate" 
+         #ContractPricingdate="ngModel"
+         [(ngModel)]="CurrentContract.Pricingdate" 
+         [label]="'OperatingLicenseRequest.Pricingdate'"
+         autocomplete="" 
+         aria-label="Name" 
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6">
+
+       <custom-text-box 
+         [type]="'text'" 
+         name="ContractFileNumber" 
+         #ContractFileNumber="ngModel"
+         [(ngModel)]="CurrentContract.FileNumber" 
+         [label]="'OperatingLicenseRequest.FileNumber'"
+         autocomplete="" 
+         aria-label="Name" 
+         [isReadOnly]="true">
+       </custom-text-box>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6">
+
+       <label>
+         {{'OperatingLicenseRequest.ContractStartingDate' | translate}}
+       </label>
+
+       <ngbd-datepicker-popup 
+         [(ngModel)]="CurrentContract.ContractStartingDate" 
+         [readonly]="true"
+         name="ContractStartingDate">
+       </ngbd-datepicker-popup>
+
+     </div>
+
+     <div class="col-lg-4 col-md-6">
+
+       <!-- {{CurrentContract.ContractStartingDate | json}} -->
+       <label>
+         {{'OperatingLicenseRequest.ContractExpiryDate' | translate}}
+       </label>
+
+       <ngbd-datepicker-popup 
+         [(ngModel)]="CurrentContract.ContractExpiryDate" 
+         [readonly]="true"
+          name="ContractExpiryDate">
+         </ngbd-datepicker-popup>
+
+     </div>
+
+   </div>
+
+   <app-grid 
+     *ngIf="contactDetailsfromContract && contactDetailsfromContract.length > 0" 
+     [canAdd]="false"
+     [canDelete]="false" 
+     [canEdit]="false" 
+     [modalFormTitle]="'ContractContactsDetails'"
+     [tableHeadTitle]="'OperatingLicenseRequest.ContactDetails'" 
+     [(data)]="contactDetailsfromContract"
+     [columns]="gridcols" 
+     [(model)]="gridModel" 
+     [canAdd]="false" 
+     [canEdit]="false" 
+     [canDelete]="false">
+   </app-grid>
+
+ </app-info-viewer>
+
+ </div>
+
+ <div class="row">
+
+   <div class="col-lg-6 col-md-6">
+
+     <app-Uploaders-List 
+       [uploaders]="CertificateDetails.Documents" 
+       [SectionName]="'LicenseReport'"
+       [IsLiveChanges]="true" 
+       [IsReadOnly]="true"> 
+     </app-Uploaders-List>
+
+   </div>
+
+ </div>
+
+   <!-- Related Contract grid -->
+   <app-grid 
+     *ngIf="CertificateDetails.AddedContracts && CertificateDetails.AddedContracts.length>0 "
+     [modalFormTitle]="'ModonContract.ContractInfo'" 
+     [tableHeadTitle]="'OperatingLicenseCertificate.RelatedContracts'"
+     [(data)]="CertificateDetails.AddedContracts" 
+     [columns]="ContractGridCols" 
+     [(model)]="ContractGridModel" 
+     (modelChange)="ContractGridChanged($event)"
+     [template]="gridContent"
+     [canAdd]="false" 
+     [canEdit]="false"
+     [canView]="true"
+     [canDelete]="false">
+   
+
+   <ng-container #gridContent *ngIf="ContractGridModel&&CurrentContract">
+     
+     <div class="row">
+
+       <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.CR">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="CRContract" 
+           #CRContract="ngModel"
+           [(ngModel)]="CurrentContract.CR.Name" 
+           [label]="'ContractSubmission.CRId'" 
+           autocomplete=""
+           aria-label="Name" 
+           [isReadOnly]="true"> 
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Industrialcity">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractIndustrialCity" 
+           #ContractIndustrialCity="ngModel"
+           [(ngModel)]="CurrentContract.Industrialcity.Name" 
+           [label]="'ContractSubmission.IndustrialCity'"
+           autocomplete="" 
+           aria-label="Name" 
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductMainfamily">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractProductMainFamily"
+           #ContractProductMainFamily="ngModel" 
+           [(ngModel)]="CurrentContract.ProductMainfamily.Name"
+           [label]="'ContractSubmission.ProductMainFamily'" 
+           autocomplete="" 
+           aria-label="Name"
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.ProductSubFamily">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractProductSubFamily"
+           #ContractProductMainFamily="ngModel" 
+           [(ngModel)]="CurrentContract.ProductSubFamily.Name"
+           [label]="'ContractSubmission.ProductSubFamily'" 
+           autocomplete="" 
+           aria-label="Name"
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6" *ngIf="CurrentContract.Product">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractProduct" 
+           #ContractProduct="ngModel"
+           [(ngModel)]="CurrentContract.Product.Name" 
+           [label]="'ContractSubmission.Product'" 
+           autocomplete=""
+           aria-label="Name" 
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractConstructionAmountValue"
+           #ContractConstructionAmountValue="ngModel"
+           [(ngModel)]="CurrentContract.ConstructionContractStatus"
+           [label]="'ContractSubmission.ConstructionAmountValue'" 
+           autocomplete="" 
+           aria-label="Name"
+           [isReadOnly]="true">
+         </custom-text-box>
+
+         
+
+       </div>
+
+       <div class="col-lg-4 col-md-6">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractLegalStatus" 
+           #ContractLegalStatus="ngModel"
+           [(ngModel)]="CurrentContract.LegalStatus" 
+           [label]="'OperatingLicenseRequest.LegalStatus'"
+           autocomplete="" 
+           aria-label="Name" 
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractPricingdate" 
+           #ContractPricingdate="ngModel"
+           [(ngModel)]="CurrentContract.Pricingdate" 
+           [label]="'OperatingLicenseRequest.Pricingdate'"
+           autocomplete="" 
+           aria-label="Name" 
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6">
+
+         <custom-text-box 
+           [type]="'text'" 
+           name="ContractFileNumber" 
+           #ContractFileNumber="ngModel"
+           [(ngModel)]="CurrentContract.FileNumber" 
+           [label]="'OperatingLicenseRequest.FileNumber'"
+           autocomplete="" 
+           aria-label="Name" 
+           [isReadOnly]="true">
+         </custom-text-box>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6">
+
+         <label>
+           {{'OperatingLicenseRequest.ContractStartingDate' | translate}}
+         </label>
+
+         <ngbd-datepicker-popup 
+           [(ngModel)]="CurrentContract.ContractStartingDate" 
+           [readonly]="true"
+           name="ContractStartingDate">
+         </ngbd-datepicker-popup>
+
+       </div>
+
+       <div class="col-lg-4 col-md-6">
+
+         <!-- {{CurrentContract.ContractStartingDate | json}} -->
+         <label>
+           {{'OperatingLicenseRequest.ContractExpiryDate' | translate}}
+         </label>
+
+         <ngbd-datepicker-popup 
+           [(ngModel)]="CurrentContract.ContractExpiryDate" 
+           [readonly]="true"
+            name="ContractExpiryDate">
+           </ngbd-datepicker-popup>
+
+       </div>
+
+     </div>
+
+     <app-grid 
+       *ngIf="contactDetailsfromContract && contactDetailsfromContract.length > 0" 
+       [canAdd]="false"
+       [canDelete]="false" 
+       [canEdit]="false" 
+       [modalFormTitle]="'ContractContactsDetails'"
+       [tableHeadTitle]="'OperatingLicenseRequest.ContactDetails'" 
+       [(data)]="contactDetailsfromContract"
+       [columns]="gridcols" 
+       [(model)]="gridModel" 
+       [canAdd]="false" 
+       [canEdit]="false" 
+       [canDelete]="false">
+     </app-grid>
+   </ng-container>
+ </app-grid>
+   <!-- contact Details grid -->
+   <app-grid 
+     *ngIf="CertificateDetails.Contacts && CertificateDetails.Contacts.length>=0 && lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+     [modalFormTitle]="'Biddings'" 
+     [tableHeadTitle]="'OperatingLicenseCertificate.ContactDetails'"
+     [(data)]="certificateContactsList" 
+     [columns]="gridcols" 
+     [(model)]="gridModel" 
+     [canAdd]="false" 
+     [canEdit]="false"
+     [canDelete]="false">
+   </app-grid>
+ 
+ 
+</div>
+
+</div>

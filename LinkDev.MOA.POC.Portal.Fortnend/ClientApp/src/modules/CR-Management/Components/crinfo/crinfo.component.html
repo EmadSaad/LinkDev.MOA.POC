@@ -1,0 +1,93 @@
+<form class="form-wrapper" novalidate autocomplete="off" #CrInfoForm="ngForm">
+
+  <h4 class="page-title">{{'CRManagement.CRInfo' | translate}}</h4>
+  <div class="col-12 p-lg-0">
+    <div *ngIf="SyncMsg" [className]="'alert-dismissible fade show ' + SyncMsgClass" role="alert">
+      {{SyncMsg}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+  </div>
+  <div class="grey-bg grey-bg-padding">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRNumber'" [(ngModel)]="MyCurrentCR.CrNumber"
+                         #CrNumber="ngModel" name="CrNumber" autocomplete="" aria-label="CrNumber" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRIssueDate'" [(ngModel)]="MyCurrentCR.Issuedatehijri"
+                         #CRIssuedate="ngModel" name="IssueDate" autocomplete="" aria-label="IssueDate" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRExpiryDate'" [(ngModel)]="MyCurrentCR.Expirydatehijri"
+                         #CRExpirydate="ngModel" name="ExpiryDate" autocomplete="" aria-label="ExpiryDate" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRCity'" name="CrCity" [(ngModel)]="MyCurrentCR.CrCity"
+                         #CrCity="ngModel" autocomplete="" aria-label="CrCity" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CRName'" name="CrName" [(ngModel)]="MyCurrentCR.CRName"
+                         #CRName="ngModel" autocomplete="" aria-label="CrName" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CrPhone'" [(ngModel)]="MyCurrentCR.CrPhone"
+                         #CrPhone="ngModel" name="CrPhone" autocomplete="" aria-label="CrPhone" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+
+    </div>
+    <!--Legal Type-->
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <custom-text-box [type]="'text'" [label]="'CRManagement.CrLegalType'" [(ngModel)]="MyCurrentCR.LegalType"
+                         #LegalType="ngModel" name="LegalType" [disabled]="'disabled'">
+        </custom-text-box>
+      </div>
+    </div>
+    <div class="row">
+      <!--Address-->
+      <div class="col-12 col-md-4">
+        <label>{{'CRManagement.CRAddress' | translate}}</label>
+        <textarea [(ngModel)]="MyCurrentCR.CrAddress" #CrAddress="ngModel" name="CrAddress" [readOnly]="true" disabled></textarea>
+      </div>
+
+      <!--<div class="col-12 col-md-8">
+      <label>{{'CRManagement.CRActivity' | translate}}</label>
+      <textarea [(ngModel)]="MyCurrentCR.CrActivity" #CrActivity="ngModel" name="CrActivity" [readOnly]="true" disabled></textarea>
+    </div>-->
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="main-btn" title="{{'CRManagement.UpdateCRDataTitle' | translate}}"
+                (click)="UpdateCRFromIntgeration()">
+          {{'CRManagement.UpdateCRData' | translate}}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <h4 class="page-title">{{'CRManagement.CRISICActivities' | translate}}</h4>
+  <app-grid-emitter [modalFormTitle]="''" [addNewRecord]="''" [tableHeadTitle]="''"
+                    [(data)]="CRActivity" [columns]="ISICActivitygridcols" [(model)]="ISICActivitygridModel" [canAdd]="false"
+                    [canEdit]="false" [canDelete]="false" [(popUpOpened)]="isPopUpOpened">
+  </app-grid-emitter>
+
+  <h4 class="page-title">{{'CRManagement.CROwners' | translate}}</h4>
+  <app-grid [modalFormTitle]="'CRManagement.NewOwner'" [addNewRecord]="'CRManagement.AddNewOwner'" [(data)]="CROwners"
+            [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false" [canDelete]="false"
+            [templateForm]="CrInfoForm" [(popUpOpened)]="isPopUpOpened" [template]="gridContent">
+    <ng-container #gridContent>
+    </ng-container>
+  </app-grid>
+</form>

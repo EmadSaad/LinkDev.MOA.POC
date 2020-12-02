@@ -1,0 +1,147 @@
+<app-breadcrumb [CurrnetComponentName]="'ContractDetails'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="activeLevelOne" [activeSecondLevel]="activeLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <!--Page-Title-->
+
+    <h4 class="page-title">{{tabText | translate}}</h4>
+    <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+      [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+    <form #form="ngForm" novalidate autocomplete="off">
+      <div *ngIf="activeLevelOne === 1">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.ContractName'"
+              [(ngModel)]="contractDetails.ContractName" name="ContractName"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.ContractNumber'"
+              [(ngModel)]="contractDetails.ContractNumber" name="ContractNumber"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.CR'"
+              [(ngModel)]="contractDetails.CR" name="CR"></custom-text-box>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.IndustrialLicense'"
+              [(ngModel)]="contractDetails.IndustrialLicense" name="IndustrialLicense">
+            </custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.IndustrialCity'"
+              [(ngModel)]="contractDetails.IndustrialCity" name="IndustrialCity"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.ProdMainFamily'"
+              [(ngModel)]="contractDetails.ProdMainFamily" name="ProdMainFamily"></custom-text-box>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.ProdSubFamily'"
+              [(ngModel)]="contractDetails.ProdSubFamily" name="ProdSubFamily"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.Product'"
+              [(ngModel)]="contractDetails.Product" name="Product"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.ContractDuration'"
+              [(ngModel)]="contractDetails.ContractDuration" name="ContractDuration"></custom-text-box>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.StartDate'"
+              [(ngModel)]="contractDetails.StartDate" name="StartDate"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.EndDate'"
+              [(ngModel)]="contractDetails.EndDate" name="EndDate"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.LandArea'"
+              [(ngModel)]="contractDetails.LandArea" name="LandArea"></custom-text-box>
+          </div>
+        </div>
+        <div class="row">
+          <!-- <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.PricingType'"
+              [(ngModel)]="contractDetails.PricingType" name="PricingType"></custom-text-box>
+          </div> -->
+          <div class="col-12 col-md-4" *ngIf="contractDetails.PricingTypeValue === 1">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.AllocationType'"
+              [(ngModel)]="contractDetails.AllocationType" name="AllocationType"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Details.AnnualRentalPrice'"
+              [(ngModel)]="contractDetails.AnnualRentalPrice" name="AnnualRentalPrice"></custom-text-box>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="activeLevelOne === 2">
+      <app-grid-emitter [modalFormTitle]="'Outputs.Contract.Contacts.AddNewContact'" [tableHeadTitle]="' '" [model]="{}"
+        [addNewRecord]="'Outputs.Contract.Contacts.AddNewContact'" [columns]="contactsGridColumns"
+        [(data)]="contractContacts" [canAdd]="contractContacts.length < maximumContactNumber" [template]="'gridContent'"
+        [templateForm]="popupForm" [canEdit]="false" [canDelete]="true" (deletedItem)="deletedContact($event)"
+        [addItemFailed]="addItemFailed" (addedItem)="addContact($event)">
+        <ng-container #gridContent>
+          <form #popupForm="ngForm">
+            <mutliselect #contact id="contact" name="contact" #contact="ngModel" [label]="'ContractSubmission.Contacts'"
+              [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+              [viewMode]="false" [multiple]="false" [required]="true" [(ngModel)]="selectedContact" [config]="config"
+              (change)="contactChanged($event)">
+            </mutliselect>
+          </form>
+        </ng-container>
+      </app-grid-emitter>
+    </div>
+    <div *ngIf="activeLevelOne === 3">
+
+      <app-Uploaders-List [uploaders]="documentSettings" [IsReadOnly]="true" [IsLiveChanges]="true">
+      </app-Uploaders-List>
+      <div *ngIf="documentSettings.length === 0">
+        {{'NO_RESULT_FOUND' | translate }}
+      </div>
+    </div>
+    <div *ngIf="activeLevelOne === 4">
+      <form>
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Invoice.ERPBalance'"
+              [(ngModel)]="contractStatement.ERPBalance" name="ERPBalance"></custom-text-box>
+          </div>
+          <div class="col-12 col-md-4">
+            <custom-text-box [type]="'text'" [isReadOnly]="true" [label]="'Outputs.Contract.Invoice.FileNumber'"
+              [(ngModel)]="contractStatement.FileNumber" name="FileNumber"></custom-text-box>
+          </div>
+
+        </div>
+        <app-grid [tableHeadTitle]="'Outputs.Contract.ContractInvoices'" [(data)]="contractStatement.Transactions"
+          [columns]="invoicesGridColumns" [canDelete]="false" [canAdd]="false" [canEdit]="false">
+
+        </app-grid>
+      </form>
+
+    </div>
+    <div *ngIf="activeLevelOne === 5">
+
+      <app-grid [tableHeadTitle]="''" [(data)]="contractContractorsAndConsultingOffice"
+        [columns]="contractorsGridColumns" [canDelete]="false" [canAdd]="false" [canEdit]="false">
+
+      </app-grid>
+
+
+    </div>
+
+  </div>

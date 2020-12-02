@@ -1,0 +1,197 @@
+<form #gridForm="ngForm">
+
+  <!-- Representative-->
+  <h4 class="page-title">{{'CRManagement.MyRepresentatives' | translate}}</h4>
+    <div class="col-12 p-md-0">
+      <div class="alert alert-light alert-dismissible fade show" role="alert">
+        <i class="icon-info"></i>{{'CRManagement.RepresentativeDescription' | translate}}
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-12" *ngIf="RepresentativeSuccessMsg">
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{RepresentativeSuccessMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="RepresentativeErrorMsg">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{RepresentativeErrorMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-grid-emitter [modalFormTitle]="'CRManagement.NewRepresentative'" [addNewRecord]="'CRManagement.AddNewRepresentative'"
+                    [tableHeadTitle]="' '" [(data)]="UserInfoList" [columns]="gridcols"
+                    [(model)]="MyCurrentRepresentative" [canAdd]="IsUserCROwner" [canEdit]="false" [canDelete]="IsUserCROwner" [templateForm]="gridForm"
+                    [(popUpOpened)]="isPopUpOpened" [template]="gridContent" (addedItem)="CreateRepresentative($event)"
+                    [LookupEntities]="lookupService.lookupEntities" (deletedItem)="DeleteRepresentative($event)" [addItemFailed]="addItemFailed">
+    <ng-container #gridContent>
+
+      <div class="row">
+
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'ProfileManagment.FirstName'" [(ngModel)]="MyCurrentRepresentative.FirstName" #FirstName="ngModel" name="FirstName" autocomplete="" aria-label="FirstName"
+                           [isRequiredLabel]="true" [required]="isPopUpOpened" (change)="SetFullName()"
+                           [ngClass]="{ 'is-invalid required  validation': FirstName.touched&&FirstName.errors }">
+          </custom-text-box>
+          <div *ngIf="FirstName.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="FirstName.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'ProfileManagment.LastName'" [(ngModel)]="MyCurrentRepresentative.ThirdName" #ThirdName="ngModel" name="ThirdName" autocomplete="" aria-label="ThirdName"
+                           [isRequiredLabel]="true" [required]="isPopUpOpened" (change)="SetFullName()"
+                           [ngClass]="{ 'is-invalid required  validation': ThirdName.touched&&ThirdName.errors }">
+          </custom-text-box>
+          <div *ngIf="ThirdName.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="ThirdName.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'email'" [label]="'CRManagement.Email'" [(ngModel)]="MyCurrentRepresentative.Email"
+                           #RepresentativeEmail="ngModel" name="RepresentativeEmail" autocomplete="" aria-label="Email" [isRequiredLabel]="true" [pattern]="emailValidationPattern"
+                           [required]="isPopUpOpened" [ngClass]="{ 'is-invalid required  validation': RepresentativeEmail.touched&& RepresentativeEmail.errors || RepresentativeEmail.errors?.pattern}">
+          </custom-text-box>
+          <div *ngIf="RepresentativeEmail.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="RepresentativeEmail.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+            <div class="form-validation" *ngIf="RepresentativeEmail.errors.pattern">
+              {{'CRManagement.EmailValidation' | translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.IdentityNumberForIdAndIqama'"
+                           [(ngModel)]="MyCurrentRepresentative.IdentityNumber" #IdentityNumber="ngModel" name="IdentityNumber"
+                           autocomplete="" aria-label="IdentityNumber" [isRequiredLabel]="true" [required]="isPopUpOpened" [pattern]="IdentityNumberValidationPattern"
+                           [ngClass]="{ 'is-invalid required  validation': IdentityNumber.touched&&IdentityNumber.errors || IdentityNumber.errors?.pattern }">
+          </custom-text-box>
+          <div *ngIf="IdentityNumber.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="IdentityNumber.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+            <div class="form-validation" *ngIf="IdentityNumber.errors.pattern">
+              {{'Validations.Identitynumber_Validation' | translate}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4" *ngIf="false">
+          <custom-text-box [type]="'text'" [label]="'CRManagement.FullName'"
+                           [(ngModel)]="MyCurrentRepresentative.FullName" #FullName="ngModel" name="FullName">
+          </custom-text-box>
+        </div>
+      </div>
+
+    </ng-container>
+  </app-grid-emitter>
+
+  <!-- Contact-->
+
+  <h4 class="page-title">{{'CRManagement.CRContactDetails' | translate}}</h4>
+    <div class="col-12 p-md-0">
+      <div class="alert alert-light alert-dismissible fade show" role="alert">
+        <i class="icon-info"></i>{{'CRManagement.CRContactsDescription' | translate}}
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-12" *ngIf="ContactSuccessMsg">
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ContactSuccessMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="ContactErrorMsg">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ContactErrorMsg | translate}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-grid-emitter [modalFormTitle]="'CRManagement.NewContactDetails'" [addNewRecord]="'CRManagement.AddNewContactDetails'"
+                    [tableHeadTitle]="' '" [(data)]="ContactDetaillsList" [columns]="Contactsgridcols"
+                    [(model)]="ContactsgridModel" [canView]="false" [canAdd]="true" [canEdit]="false" [canDelete]="true" [templateForm]="gridForm"
+                    [(popUpOpened)]="isContactPopUpOpened" [template]="gridContent" (addedItem)="CreateContactDetails($event)"
+                    (deletedItem)="DeleteContactDetails($event)" [addItemFailed]="addItemFailed">
+    <ng-container #gridContent>
+
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" name="Name" #Name="ngModel" [(ngModel)]="ContactsgridModel.Name"
+                           [label]="'CRManagement.ContactName'" autocomplete="" aria-label="Name" [isRequiredLabel]="true"
+                           [required]="isContactPopUpOpened" [ngClass]="{ 'is-invalid required  validation': Name.touched && Name.errors}">
+          </custom-text-box>
+          <div *ngIf="Name.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="Name.errors.required">
+              {{'CRManagement.RequiredField' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'email'" name="Email" #Email="ngModel" [(ngModel)]="ContactsgridModel.Email"
+                           [label]="'CRManagement.ContactEmail'" autocomplete="" aria-label="Email" [isRequiredLabel]="true"
+                           [required]="isContactPopUpOpened" [pattern]="emailValidationPattern"
+                           [ngClass]="{ 'is-invalid required  validation': Email.touched&&Email.errors || Email.errors?.pattern }">
+          </custom-text-box>
+          <div *ngIf="Email.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="Email.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+            <div class="form-validation" *ngIf="Email.errors.pattern">
+              {{'Validations.EMAIL_FORMAT' | translate}}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" name="Mobile" #Mobile="ngModel" [(ngModel)]="ContactsgridModel.Mobile"
+                           [label]="'CRManagement.ContactMobile'" autocomplete="" aria-label="Mobil" [isRequiredLabel]="true"
+                           [required]="isContactPopUpOpened" [pattern]="MobilValidationPattern"
+                           [ngClass]="{ 'is-invalid required  validation':  Mobile.touched&&Mobile.errors || Mobile.errors?.pattern }">
+          </custom-text-box>
+          <div *ngIf="Mobile.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="Mobile.errors.required">
+              {{'Validations.Required' | translate}}
+            </div>
+            <div class="form-validation" *ngIf="Mobile.errors.pattern">
+              {{'Validations.NewMobileValidation'| translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-4">
+          <custom-text-box [type]="'text'" name="CommunicationRole" #CommunicationRole="ngModel"
+                           [(ngModel)]="ContactsgridModel.CommunicationRole" [label]="'CRManagement.CommuncationRole'" autocomplete=""
+                           aria-label="Communcation Role" [isRequiredLabel]="true" [required]="isContactPopUpOpened"
+                           [ngClass]="{ 'is-invalid required  validation':  CommunicationRole.touched&&CommunicationRole.errors }">
+          </custom-text-box>
+          <div *ngIf="CommunicationRole.errors" class="invalid-feedback">
+            <div class="form-validation" *ngIf="CommunicationRole.errors.required">
+              {{'CRManagement.RequiredField' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
+  </app-grid-emitter>
+
+</form>

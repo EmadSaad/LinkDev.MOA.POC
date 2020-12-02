@@ -1,0 +1,10 @@
+<app-breadcrumbroute *ngIf="CurrentComponent.ParentComponentName !== ''"
+    [CurrnetComponentName]="CurrentComponent.ParentComponentName" [IsLastOne]="false">
+</app-breadcrumbroute>
+
+<a *ngIf="IsLastOne === false && CurrentComponent.HasRoute === true && !CurrentComponent.Parameters" title="{{CurrentComponent.ItemTextKey | translate}}"
+    routerLink="/{{CurrentComponent.Route}}">{{CurrentComponent.ItemTextKey | translate}}</a>
+<a *ngIf="IsLastOne === false && CurrentComponent.HasRoute === true && CurrentComponent.Parameters" title="{{CurrentComponent.ItemTextKey | translate}}"
+   routerLink="/{{CurrentComponent.Route}}" [queryParams]="{id: CurrentComponent.Parameters}">{{CurrentComponent.ItemTextKey | translate}}</a>
+<span
+    *ngIf="IsLastOne === true || CurrentComponent.HasRoute === false">{{CurrentComponent.ItemTextKey | translate}}</span>

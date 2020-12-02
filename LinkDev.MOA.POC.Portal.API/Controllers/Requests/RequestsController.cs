@@ -54,6 +54,33 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
             return _requestsBll.CaseStatistics();
         }
 
+        [HttpGet]
+        [Route("GetPayment")]
+        public ApiGenericResponse<EServiceModel<CaseModel>> GetPayment(Guid Id)
+        {
+            return _requestsBll.GetPayment(Id.ToString());
+        }
+
+        [HttpPost]
+        [Route("PostPayment")]
+
+        public ApiGenericResponse<ApplicationPostModel> PostPayment(EServiceModel<CaseModel> eServiceModel)
+        {
+
+
+
+            var postModel = _requestsBll.PostPayment(eServiceModel);
+            if (!string.IsNullOrEmpty(postModel.RequestNumber))
+            {
+                return OkSuccessful(postModel,"تم إتمام الدفع بنجاح.");
+            }
+            else
+            {
+                return ErrorResponse<ApplicationPostModel>("لقد حدث خطأ ما من فضلك جرب مرة أخري.");
+            }
+        }
+
+
         #region Helper
         protected internal ApiGenericResponse<T> OkSuccessful<T>(T content, string friendlyResponseMessage = null)
         {

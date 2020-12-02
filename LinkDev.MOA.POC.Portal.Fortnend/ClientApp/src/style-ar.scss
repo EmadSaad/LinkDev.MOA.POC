@@ -1,0 +1,183 @@
+$dir: rtl;
+// @import url('~nodemodules/jodit/build/jodit.min.css');
+// @import url('~nodemodules/ngx-bar-rating/themes/br-default-theme.css');
+// @import url('~nodemodules/ng-pick-datetime/assets/style/picker.min.css');
+// @import url('~nodemodules/@angular/material/prebuilt-themes/deeppurple-amber.css');
+// // 1. Configuration and helpers
+@import "./assets/scss/abstracts/directional",
+"./assets/scss/abstracts/variables",
+"./assets/scss/abstracts/functions",
+"./assets/scss/abstracts/mixins",
+'./assets/scss/abstracts/media-queries';
+// // 2. Vendors
+@import "./assets/scss/vendors/bootstrap/scss/bootstrap";
+@import './assets/scss/vendors/normalize/normalize';
+@import './assets/scss/vendors/datetime-picker';
+@import './assets/scss/vendors/primeng/tree';
+
+// @import "../nodemodules/ngx-select-dropdown/dist/assets/style.css";
+
+// // 3. Base stuff
+@import "./assets/scss/base/base",
+"./assets/scss/base/fonts",
+"./assets/scss/base/common";
+@import './assets/scss/base/contrast';
+@import './assets/scss/base/readability';
+@import "./assets/scss/icons/style";
+
+// 4. Layout-related sections
+@import "./assets/scss/layout/header",
+"./assets/scss/layout/inner-layout",
+"./assets/scss/layout/footer",
+"./assets/scss/layout/left-nav",
+"./assets/scss/layout/home-layout",
+"./assets/scss/layout/main-menu",
+"./assets/scss/layout/simple-side-nav";
+
+
+// 5. Components
+@import "./assets/scss/components/button", 
+"./assets/scss/components/form-template", 
+"./assets/scss/components/select", 
+"./assets/scss/components/hamburger-button", 
+"./assets/scss/components/dropdown", 
+"./assets/scss/components/datepicker", 
+"./assets/scss/components/modal", 
+"./assets/scss/components/verify-code", 
+"./assets/scss/components/tabs", 
+"./assets/scss/components/Password-strenght", 
+"./assets/scss/components/messages", 
+"./assets/scss/components/loader", 
+"./assets/scss/components/otp-verifier", 
+"./assets/scss/components/intl-tel-input", 
+"./assets/scss/components/checkbox", 
+"./assets/scss/components/default-message", 
+"./assets/scss/components/counter", 
+"./assets/scss/components/radio-button", 
+"./assets/scss/components/toggle-btn", 
+"./assets/scss/components/grid", 
+"./assets/scss/components/pager", 
+"./assets/scss/components/timepicker", 
+"./assets/scss/components/uploader", 
+'./assets/scss/components/rating', 
+'./assets/scss/components/chat-history',
+'./assets/scss/components/breadcrumb',
+'./assets/scss/components/welcome',
+'./assets/scss/components/listing-grid',
+"./assets/scss/components/overview-items",
+"./assets/scss/components/service-card";
+
+
+// 6. Pages
+@import "./assets/scss/pages/auth",
+ "./assets/scss/pages/cards-listing",
+ "./assets/scss/pages/service-catalog",
+"./assets/scss/pages/why-register",
+"./assets/scss/pages/workspace",
+"./assets/scss/pages/service-details",
+"./assets/scss/pages/404-page";
+   
+html,  
+body {
+  direction: rtl !important;
+}
+// 7. Themes
+// .icon-arrow-left,
+// .next {
+//   &:before {
+//     content: "\e901" !important;
+//   }
+// }
+// .icon-arrow-right,
+// .prev {
+//   &:before {
+//     content: "\e900" !important;
+//   }
+// }
+.pagination {
+  .page-item {
+    .page-link[aria-label="Next"] {
+      span {
+        &::after {
+          content: "\e901" !important;
+        }
+      }
+    }
+  }
+}
+.pagination {
+  .page-item {
+    .page-link[aria-label="Previous"] {
+      span {
+        &::after {
+          content: "\e900" !important;
+        }
+      }
+    }
+  }
+}
+
+.breadcrumb-wrapper {
+  a {
+    &::after {
+      transform: rotate(180deg) !important;
+    }
+  }
+}
+.cards-wrappers {
+  .card-wrapper {
+    .read-more {
+      i {
+        transform: rotate(180deg) !important;
+      }
+    }
+  }
+}
+.mat-tab-header {
+  
+  direction: rtl !important;
+}
+.mat-tab-body-wrapper {
+  text-align: right;
+}
+
+.my-request-wrapper {
+  .item {
+    .details {
+      padding-left: 2.6rem;
+    }
+  }
+}
+@media (min-width: 992px) {
+  .header-wrapper {
+    .upper-header {
+      .navbar-nav {
+        .dropdown {
+          &.show {
+            .dropdown-menu {
+              left: -15px !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media (min-width: 1600px) {
+  .header-wrapper {
+    .upper-header {
+      .navbar-nav {
+        .dropdown {
+          &.show {
+            .dropdown-menu {
+              left: -12px !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

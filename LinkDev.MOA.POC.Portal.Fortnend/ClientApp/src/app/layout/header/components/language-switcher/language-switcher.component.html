@@ -1,0 +1,13 @@
+<ul class="navbar-nav lang-switcher d-inline-block">
+  <li class="nav-item dropdown">
+    <a title="مرحبا" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      <div class="d-inline-block position-relative">
+        {{mainText}}
+      </div>
+    </a>
+    <div class="dropdown-menu mt-1 p-0" aria-labelledby="navbarDropdownMenuLink">
+      <a class="dropdown-item p-2" title="{{switchToText}}" (click)="switchLanguage()">{{switchToText}}</a>
+    </div>
+  </li>
+</ul>

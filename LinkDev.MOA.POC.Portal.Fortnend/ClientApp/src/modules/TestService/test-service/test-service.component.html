@@ -1,0 +1,9 @@
+<form #myForm="ngForm"  class="form-wrapper">
+    <div *ngIf="!showAttachments">
+        <input type="text" name="name" [(ngModel)]="model.name">
+    </div>
+    <app-Uploaders-List *ngIf="showAttachments" [uploaders]="model.documents" [form]="myForm" [IsReadOnly]="false">
+    </app-Uploaders-List>
+</form>
+<button (click)="Show()">show</button>
+<button (click)="Submit()">Submit</button>

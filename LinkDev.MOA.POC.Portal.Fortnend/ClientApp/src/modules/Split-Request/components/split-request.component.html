@@ -1,0 +1,423 @@
+<app-breadcrumb [CurrnetComponentName]="'SplitContract'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+
+
+   <!--Form-Container-->
+   <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'SplitRequest.SplitRequest' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+
+    <!--Request Details-->
+    <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span
+          class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+
+      <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+      [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+      <!--First Stage-->
+      <div >
+        <form #FirstStage="ngForm" novalidate autocomplete="off">
+          <!--Old Contract-->
+          <div id="OldContract">
+            <h5 class="stage-title">{{'SplitRequest.OldContract' | translate}}</h5>
+            <!-- && Application?.IsSubmitted -->
+            <app-old-cr-and-contract [Application]="Application" 
+            [submit]="submit" 
+            [config]="config"
+            [Request]="Application.Request"
+            [form]="FirstStage"
+            [config]="config"
+            [CRIsReadonly]="Application?.Request?.Id != null && Application?.ApplicationHeader?.PortalStatusCode && Application?.ApplicationHeader?.PortalStatusCode != '1'"
+            [ContractIsReadonly]="Application?.Request?.Id != null && Application?.ApplicationHeader?.PortalStatusCode && Application?.ApplicationHeader?.PortalStatusCode != '1'"
+            (CRControl)="CRControlReady($event)"
+            (ContractControl)="ContractControlReady($event)"
+            (CRChangeEvent)="onCRChange($event)"
+            (ContractChangeEvent)="onOldContractChange($event)">
+            </app-old-cr-and-contract>
+
+            <!-- split reasons -->
+            <div class="row">
+              <div class="col-md-6 col-lg-8">
+                <label> {{'SplitRequest.SplitReasons' | translate}}<span class="required">*</span></label>
+                <textarea id="SplitReasons" name="SplitReasons" 
+                  [readOnly]="Application.IsReadOnly" #SplitReasons="ngModel" 
+                  [(ngModel)]="Application.Request.SplitReasons" required
+                  [ngClass]="{ 'is-invalid required  validation':  SplitReasons.errors && (SplitReasons.dirty || submit) }">
+                </textarea>
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="SplitReasons" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+
+            
+
+          </div>
+ 
+          <!--Split Contracts-->
+          <div id="SplitContracts" [hidden]="!Application.Request.ContractId" > 
+            <h5 class="stage-title">{{'SplitRequest.SplitContracts' | translate}}</h5>
+
+            <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert"><span
+              class="icon-info"></span>{{'SplitRequest.splitContractsValidation'|translate}}</div>
+
+            <form #splitContractGridForm="ngForm">
+
+            <app-grid-emitter [modalFormTitle]="'SplitRequest.AddSplitContract'" [addNewRecord]="'SplitRequest.AddNew'"
+            [(data)]="Application.Request.SplitContracts" [columns]="splitContractGridcols"
+            [(model)]="splitContractGridModel" 
+            (popUpOpenedChange)="popUpOpened($event)"
+            [canAdd]="Application.Request.ContractId && !Application.IsReadOnly && SplitContractLength() < 5" 
+            [canEdit]="Application.Request.ContractId && !Application.IsReadOnly"
+            [canDelete]="Application.Request.ContractId && !Application.IsReadOnly" 
+            [canView]="Application.IsReadOnly"
+            [templateForm]="splitContractGridForm"
+            [template]="splitContractGridContent" [LookupEntities]="lookupService.lookupEntities">
+            <ng-container #splitContractGridContent>
+                <div class="row">
+
+                  <div class="col-lg-4 col-md-6">
+                    <mutliselect id="MainProduct" name="MainProduct" #MainProduct="ngModel"
+                      [label]="'SplitRequest.ProductMainFamily'" [propertyToSelect]="'Value'"
+                      [options]="getProductMainFamily()"
+                      [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                      [(ngModel)]="splitContractGridModel.ProductMainFamilyId" 
+                      [required]="!Application.IsReadOnly"
+                      [isRequiredLabel]="true" (change)="onChangeMainProduct()"
+                      [ngClass]="{ 'is-invalid required  validation':  MainProduct.errors && MainProduct.dirty }">
+                    </mutliselect>
+                    <div class="form-validation" [hidden]="!MainProduct.errors || !MainProduct.dirty">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+                    <mutliselect id="SubProduct" name="SubProduct" #SubProduct="ngModel"
+                      [label]="'SplitRequest.ProductSubFamily'" [propertyToSelect]="'Value'"
+                      [options]="getProductSubFamily()"
+                      [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                      [(ngModel)]="splitContractGridModel.ProductSubFamilyId" 
+                      [required]="!Application.IsReadOnly && splitContractGridModel.ProductMainFamilyId"
+                      [isRequiredLabel]="true"
+                      [ngClass]="{ 'is-invalid required  validation':  SubProduct.errors && SubProduct.dirty }">
+                    </mutliselect>
+                    <div class="form-validation" [hidden]="!SubProduct.errors || !SubProduct.dirty">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div>
+
+                  <!-- hidden if sub product = اراضي صناعية -->
+                  <div class="col-lg-4 col-md-6" [hidden]="splitContractGridModel.ProductSubFamilyId === '3'">
+                    <mutliselect id="Product" name="Product" #Product="ngModel"
+                      [label]="'SplitRequest.Product'" [propertyToSelect]="'Value'"
+                      [options]="getProduct()"
+                      [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                      [(ngModel)]="splitContractGridModel.ProductId" 
+                      [required]="!Application.IsReadOnly && splitContractGridModel.ProductSubFamilyId && splitContractGridModel.ProductSubFamilyId !== '3'"
+                      [isRequiredLabel]="true"
+                      [ngClass]="{ 'is-invalid required  validation':  Product.errors && Product.dirty}">
+                    </mutliselect>
+                    <div class="form-validation" [hidden]="!Product.errors || !Product.dirty">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div>
+                </div> 
+
+     
+                 <!-- CR Version --> 
+                 
+                 <div class="row">
+                  <div class="col-lg-4 col-md-6">
+                    <app-cr-version #CRVersionComponent [Contract]="splitContractGridModel" 
+                    [CRVersionModel]="CRVersionModel"
+                    [IsReadOnly]="Application.IsReadOnly"
+                    [IsRequired]="!Application.IsReadOnly"
+                    [form]="splitContractGridForm"
+                    [Application]="Application"
+                    [config]="config"
+                    (CRChangeEvent)="onChangeCRVersion($event)"
+                    (CRVersionControl)="CRVersionControlReady($event)">
+                    </app-cr-version>
+                  </div>
+                 
+
+                  <div class="modal-info-btn" [class.clicked]="showCRVersionInfo" [hidden]="splitContractGridModel.CRId == null || splitContractGridModel.CRId == undefined
+                  || splitContractGridModel.CRId == 'Guid.EMPTY.toString()'" (click)="toggleCRVersionInfo()" title="{{'SplitRequest.showInfo'|translate }} {{'SplitRequest.CR' | translate}}"><span class="icon-view"></span></div> 
+
+                  <div class="infoInsidePopup col-12" *ngIf="showCRVersionInfo && splitContractGridModel.CRId != null && splitContractGridModel.CRId != undefined
+                  && splitContractGridModel.CRId != 'Guid.EMPTY.toString()'">
+
+                    <div class="main-title">{{'SplitRequest.CRInfo'|translate }}</div>
+                    <div class="row">
+                    
+                      <!-- CR Type -->
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="CRType" #CRType="ngModel"
+                          [(ngModel)]="CRVersionModel.CRType" [label]="'SplitRequest.CRType'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                  
+                      
+                  
+                      <!-- CR Name -->
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="CRName" #CRName="ngModel"
+                          [(ngModel)]="CRVersionModel.Name" [label]="'SplitRequest.CRName'" autocomplete=""
+                          [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                    
+                      <!-- CR Issue Date -->
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="CRIssueDate" #CRIssueDate="ngModel"
+                          [(ngModel)]="CRVersionModel.IssueDate" [label]="'SplitRequest.CRIssueDate'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                  
+                      <!-- CR Expiry Date -->
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="CRExpiryDate" #CRExpiryDate="ngModel"
+                          [(ngModel)]="CRVersionModel.ExpiryDate" [label]="'SplitRequest.CRExpiryDate'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                  
+                      <!-- Issuance City Name -->
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="IssuanceCityName" #IssuanceCityName="ngModel"
+                          [(ngModel)]="CRVersionModel.IssuanceCity" [label]="'SplitRequest.IssuanceCity'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                  
+                    
+                    </div> 
+                  
+                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Owners'" [canEdit]="false"
+                    [canDelete]="false" [(data)]="CRVersionModel.Owners" [columns]="OwnerGridcols">
+                    </app-grid>
+                  
+                    <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.CRActivity'" [canEdit]="false"
+                    [canDelete]="false" [(data)]="CRVersionModel.Activities" [columns]="ActivitiesGridcols">
+                    </app-grid>
+                  
+                  
+                  </div>
+                 </div>
+                
+                <div class="row">
+
+                  <div class="col-lg-4 col-md-6" [hidden]="!splitContractGridModel.CRId">
+                    <mutliselect id="Contacts" name="Contacts" #Contacts="ngModel"
+                      [label]="'SplitRequest.Contacts'" [propertyToSelect]="'Value'"
+                      [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+                      [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+                      [(ngModel)]="splitContractGridModel.ContactDetailsIds" 
+                      [required]="!Application.IsReadOnly && splitContractGridModel.CRId"
+                      [isRequiredLabel]="true"
+                      [ngClass]="{ 'is-invalid required  validation':  Contacts.errors && Contacts.dirty }">
+                    </mutliselect>
+                    <div class="form-validation" [hidden]="!Contacts.errors || !Contacts.dirty">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div>
+
+                  
+                  <div class="col-lg-4 col-md-6" [hidden]="splitContractGridModel?.ProductMainFamilyId !== '1'">
+                    <mutliselect id="HasIL" name="HasIL" #HasIL="ngModel"
+                      [label]="'SplitRequest.HasIL'" [propertyToSelect]="'Value'"
+                      [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                      [multiple]="false" [config]="config" [(ngModel)]="splitContractGridModel.hasIL"
+                      [required]="!Application.IsReadOnly && splitContractGridModel?.ProductMainFamilyId === '1'" 
+                      [isRequiredLabel]="true" 
+                      [ngClass]="{ 'is-invalid required  validation':  HasIL.errors && HasIL.dirty }">
+                    </mutliselect>
+                    <div class="form-validation" [hidden]="!HasIL.errors || !HasIL.dirty">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div>
+                 
+              
+                  <div class="col-lg-4 col-md-6" [hidden]="splitContractGridModel?.ProductMainFamilyId !== '1' || splitContractGridModel?.hasIL?.toString() !== 'false'" >
+                    <mutliselect id="Products" name="Products" [label]="'SplitRequest.Products'" [propertyToSelect]="'Value'"
+                      [options]="lookupService.lookupEntities['ldv_modonproduct_ModonProducts']"
+                      [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+                      [(ngModel)]="splitContractGridModel.ModonProducts" 
+                      [required]="!Application.IsReadOnly && splitContractGridModel?.hasIL?.toString() === 'false' && splitContractGridModel?.ProductMainFamilyId === '1'" 
+                      [isRequiredLabel]="true" #Products="ngModel"
+                      [ngClass]="{ 'is-invalid required  validation':  Products.errors && Products.dirty }">
+                    </mutliselect>
+                    <div class="form-validation" [hidden]="!Products.errors || !Products.dirty">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                   
+                  </div>
+
+                </div>
+
+                <!-- IL Version -->
+                <div class="row">
+                  <div class="col-lg-4 col-md-6">
+                  <app-il-version [Contract]="splitContractGridModel"
+                    [Application]="Application"
+                    [ILVersionModel]="ILVersionModel"
+                    [IsReadOnly]="Application.IsReadOnly"
+                    [form]="splitContractGridForm"
+                    [config]="config"
+                    [IsRequired]="splitContractGridModel?.hasIL?.toString() === 'true' && !Application?.IsReadOnly"
+                    [hidden]="splitContractGridModel?.hasIL?.toString() !== 'true' || !splitContractGridModel.CRId"
+                    (ILVersionControl)="ILVersionControlReady($event)">
+                  </app-il-version> 
+                   </div>
+
+            
+                <div class="modal-info-btn" [hidden]="splitContractGridModel.ILId == null || splitContractGridModel.ILId == undefined
+                || splitContractGridModel.ILId === 'Guid.EMPTY.toString()' || splitContractGridModel.ILId === '' 
+                || ILVersionModel == null || splitContractGridModel?.hasIL?.toString() !== 'true' || !splitContractGridModel.CRId" 
+                [class.clicked]="showILVersionInfo" (click)="toggleILVersionInfo()" title="{{'SplitRequest.showInfo'|translate }} {{'SplitRequest.IL' | translate}}"><span class="icon-view"></span></div> 
+
+
+                <div class="infoInsidePopup" *ngIf="showILVersionInfo && splitContractGridModel.ILId != null && splitContractGridModel.ILId != undefined
+                && splitContractGridModel.ILId !== 'Guid.EMPTY.toString()' && splitContractGridModel.ILId !== '' && splitContractGridModel?.hasIL?.toString() === 'true'">
+                  <!-- SplitRequest.ILInfo -->
+                  <div class="main-title">{{'SplitRequest.ILInfo'|translate }}</div>
+                    <div class="row">
+                    
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="ILNumber" #ILNumber="ngModel"
+                          [(ngModel)]="ILVersionModel.ILNumber" [label]="'SplitRequest.ILNumber'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="ILStatus" #ILStatus="ngModel"
+                          [(ngModel)]="ILVersionModel.ILStatus" [label]="'SplitRequest.ILStatus'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="ILType" #ILType="ngModel"
+                          [(ngModel)]="ILVersionModel.ILType" [label]="'SplitRequest.ILType'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="IssueDate" #IssueDate="ngModel"
+                          [(ngModel)]="ILVersionModel.IssueDate" [label]="'SplitRequest.IssueDate'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                       <!-- Expiry Date -->
+                       <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="ExpiryDate" #ExpiryDate="ngModel"
+                          [(ngModel)]="ILVersionModel.ExpiryDate" [label]="'SplitRequest.ExpiryDate'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="CityName" #CityName="ngModel"
+                          [(ngModel)]="ILVersionModel.CityName" [label]="'SplitRequest.CityName'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                      <div class="col-md-6 col-lg-4">
+                        <custom-text-box [type]="'text'" name="FactoryName" #FactoryName="ngModel"
+                          [(ngModel)]="ILVersionModel.FactoryName" [label]="'SplitRequest.FactoryName'" autocomplete=""
+                          aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                        </custom-text-box>
+                      </div>
+                
+                    </div> 
+                
+                    <div class="row">
+                      <div class="col-6">
+                        <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Products'"
+                        [canEdit]="false" [canDelete]="false" [data]="ILVersionModel.ILProductsList"
+                        [columns]="ILProductsgridcols">
+                        </app-grid>
+                      </div>
+                    
+                      <div class="col-6">
+                        <app-grid [canAdd]="false" [tableHeadTitle]="'SplitRequest.Activities'"
+                        [canEdit]="false" [canDelete]="false" [data]="ILVersionModel.ILActivities"
+                        [columns]="ILActivityGridcols">
+                        </app-grid>
+                    </div>
+                    </div>
+                    
+                </div>
+                </div>
+
+              
+            </ng-container>
+          </app-grid-emitter>
+
+          <div class="alerts-wrapper mt-2 d-none d-md-block" 
+          *ngIf="(Application?.Request?.SplitContracts?.length < 2 || Application?.Request?.SplitContracts?.length > 5 ) && submit">
+            <div class="message message-error p-3 align-left w-100">
+                <p class="mb-0 line-height">{{'SplitRequest.splitContractsValidation'|translate}}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8 col-md-6">
+              <app-Uploaders-List
+                [uploaders]="Application.Documents" [form]="FirstStage" [IsReadOnly]="Application.IsReadOnly"
+                [IsLiveChanges]="true" >
+                <!-- [SectionName]="'CompanyProfile'" -->
+              </app-Uploaders-List>
+            </div>
+          </div>
+
+          </form>
+          </div>
+
+         
+        </form>
+
+      </div>
+      
+     <!--Actions-->
+     <div *ngIf="!Application.IsReadOnly" class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+      <div>
+        <button [disabled]="!Application.Request.ContractId" type="button" class="main-btn-secondary" (click)="saveRequest()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+      </div>
+        <button [disabled]="!Application.Request.ContractId" type="button" class="main-btn" (click)="submitRequest()">{{ 'ServicesCommon.Submit' | translate}}</button>
+      
+     </div>
+   
+     
+    
+</div>
+
+<!-- Payment -->
+<div [hidden]="ActiveLevelOne !== 3 || !Application?.Request?.Id || Application?.ApplicationHeader?.PortalStatusCode !== '4'">
+  <app-request-quote [requestId]="Application?.ApplicationHeader?.Id"></app-request-quote>
+  </div>
+
+<!--Request Comments-->
+<app-request-comments [regardingID]="Application?.Request?.Id"
+[hidden]="ActiveLevelOne !== 2 || !Application?.Request?.Id || Application?.ApplicationHeader?.PortalStatusCode === '1'">
+</app-request-comments>
+</div>
+
+

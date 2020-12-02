@@ -1,0 +1,152 @@
+<div class="form-hierarchy customized-form-hierarchy">
+  <div class="form-hierarchy-collapse" (click)="openMenu = !openMenu" [class.opened]="openMenu">
+    <span *ngIf="!openMenu"> {{ "WORKSPACE.Home" | translate }}</span>
+    <span class="icon-dropdow-arrow" *ngIf="!openMenu"></span>
+    <span class="icon-cancel-music" *ngIf="openMenu"></span>
+  </div>
+  <div class="form-hierarchy-menu" [class.show]="openMenu">
+    <!-- {{crType}}    -->
+    <div class="parent-label" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a [routerLink]="['/', 'workspace']" class="text-decoration-none">
+        <div class="label" (click)="openChildMenu = false">
+          {{ "WORKSPACE.Home" | translate }}
+        </div>
+      </a>
+    </div>
+    <div class="parent-label" routerLinkActive="active">
+      <a [routerLink]="['/', 'workspace', 'my-tasks']" class="text-decoration-none">
+        <div class="label" (click)="openChildMenu = false">
+          {{ "WORKSPACE.MyTasks" | translate }}
+        </div>
+      </a>
+    </div>
+    <!-- <div class="parent-label" routerLinkActive="active" >
+      <a routerLink='my-test' class="text-decoration-none"><div class="label">
+        My Test
+      </div>
+    </a>
+    </div> -->
+    <div class="parent-label" routerLinkActive="active">
+      <a [routerLink]="['/', 'workspace', 'my-requests']" class="text-decoration-none">
+        <div class="label" (click)="openChildWrapper('requests')" [class.opened]="openChildMenu && tab == 'requests'">
+          {{ "WORKSPACE.MyRequests" | translate }}
+          <span class="icon-dropdow-arrow"></span>
+        </div>
+      </a>
+      <div class="child-container" [class.show]="openChildMenu && tab == 'requests'">
+        <span class="child-label pointer" (click)="SubmitDraftsRequests()">
+          {{ "WORKSPACE.DraftRequests" | translate }}
+          <span class="counter">{{ requestStatistics?.DraftNumber }}</span>
+        </span>
+        <span class="child-label pointer" (click)="SubmitSubmittedRequests()">
+          {{ "WORKSPACE.SubmittedRequests" | translate }}
+          <span class="counter">{{ requestStatistics?.SubmittedNumber }}</span>
+        </span>
+      </div>
+    </div>
+    <div class="parent-label" routerLinkActive="active">
+      <a [routerLink]="['/', 'workspace', 'my-contracts']" class="text-decoration-none">
+        <div class="label" (click)="openChildMenu = false">
+          {{ "WORKSPACE.Contracts" | translate }}
+        </div>
+      </a>
+    </div>
+    <!-- <div class="parent-label" routerLinkActive="active" [class.dimmed]="crType != 1">
+      <a [routerLink]="['/', 'workspace', 'my-licenses']" class="text-decoration-none">
+        <div class="label" (click)="openChildMenu = false">
+          {{ "WORKSPACE.Licenses" | translate }}
+        </div>
+      </a>
+    </div> -->
+    <!-- Start Licenses -->
+    <div class="parent-label" routerLinkActive="active" [class.dimmed]="crType != 1">
+
+      <a [routerLink]="['/', 'workspace', 'my-licenses']" class="text-decoration-none">
+
+        <div class="label" (click)="openChildWrapper('licenses')" [class.opened]="openChildMenu && tab === 'licenses'">
+          {{ "WORKSPACE.Licenses" | translate }}
+          <span class="icon-dropdow-arrow"></span>
+        </div>
+      </a>
+
+      <div class="child-container" [class.show]="openChildMenu && tab == 'licenses'">
+        <a [routerLink]="['/', 'workspace', 'my-licenses']" routerLinkActive="activeLink"
+           title="{{ 'WORKSPACE.BuildingLicenses' | translate }}" class="child-label pointer">
+          {{ "WORKSPACE.BuildingLicenses" | translate }}
+        </a>
+        <a [routerLink]="['/', 'workspace', 'my-operating-licenses']" routerLinkActive="activeLink"
+           title="{{ 'WORKSPACE.OperatingLicenses' | translate }}" class="child-label pointer">
+          {{ "WORKSPACE.OperatingLicenses" | translate }}
+        </a>
+      </div>
+
+    </div>
+
+    <!-- End Licenses -->
+    <!-- <div class="parent-label" routerLinkActive="active"  *ngIf="crType == 1 || crType == 7">
+      <div class="label" (click)="openChildMenu = false">
+        {{'WORKSPACE.Permits' |translate}}
+      </div>
+    </div>
+    <div class="parent-label" routerLinkActive="active" *ngIf="crType == 6 || crType == 7">
+      <div class="label" (click)="openChildMenu = false">
+        {{'WORKSPACE.Qualifications' |translate}}
+      </div>
+    </div> -->
+
+    <div class="parent-label" routerLinkActive="active" [class.dimmed]="crType != 6 && crType != 7">
+      <a [routerLink]="['/', 'workspace', 'my-won-bidding']" class="text-decoration-none">
+        <div class="label" (click)="openChildWrapper('biddings')" [class.opened]="openChildMenu && tab === 'biddings'">
+          {{ "WORKSPACE.Biddings" | translate }}
+          <span class="icon-dropdow-arrow"></span>
+        </div>
+      </a>
+
+      <div class="child-container" [class.show]="openChildMenu && tab == 'biddings'">
+        <a [routerLink]="['/', 'workspace', 'my-won-bidding']" routerLinkActive="activeLink"
+           title="{{ 'WORKSPACE.WonBiddings' | translate }}" class="child-label">
+          {{ "WORKSPACE.WonBiddings" | translate }}
+        </a>
+        <a [routerLink]="['/', 'workspace', 'my-available-bidding']" routerLinkActive="activeLink"
+           title="{{ 'WORKSPACE.AvailableBiddings' | translate }}" class="child-label">
+          {{ "WORKSPACE.AvailableBiddings" | translate }}
+        </a>
+      </div>
+      <div class="parent-label" routerLinkActive="active">
+        <a [routerLink]="[  '/', 'workspace','my-permits' ]" class="text-decoration-none">
+          <div class="label" (click)="openChildMenu = false">
+            {{'WORKSPACE.Permits' |translate}}
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="parent-label" routerLinkActive="active">
+      <a [routerLink]="['/', 'workspace', 'my-qualification']"
+         class="text-decoration-none">
+        <div class="label" (click)="openChildMenu = false">
+          {{ "WORKSPACE.MyQualification" | translate }}
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <div class="parent-label" routerLinkActive="active">
+    <a [routerLink]="['/', 'workspace', 'my-letters']"
+       class="text-decoration-none">
+      <div class="label" (click)="openChildMenu = false">
+        {{ "WORKSPACE.CoordinationLetters" | translate }}
+      </div>
+    </a>
+  </div>
+  <!--Ticketing..................................................................................-->
+  <div class="parent-label" routerLinkActive="active">
+    <a [routerLink]="[ '/', 'workspace', 'my-ticket']" class=" text-decoration-none">
+      <div class="label" (click)="openChildMenu = false">
+        {{'WORKSPACE.MyTicket' |translate}}
+      </div>
+    </a>
+  </div>
+  <!--.............................................................................................-->
+</div>

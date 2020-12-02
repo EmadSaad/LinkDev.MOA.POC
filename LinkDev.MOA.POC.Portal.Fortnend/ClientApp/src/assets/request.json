@@ -1,0 +1,20 @@
+//{
+//    "ApiResponseMessage": {
+//        "ResponseCode": 200,
+//        "FriendlyResponseMessage": null,
+//        "InternalMessage": null
+//    },
+//    "Content": {
+//        "Request": {
+//            "Id": "00000000-0000-0000-0000-000000000000",
+//            "FirstName": "Mina",
+//            "SecondName": "Kameel",
+//            "ThirdName": "Zekry",
+//            "FourthName": "Beskales",
+//            "Email": "mina.kameel@linkdev.com",
+//            "IdentityTypeId": 2,
+//            "IdentityNumber": 366,
+//            "PhoneNumber": "+966111111111"
+//        }
+//    }
+//}

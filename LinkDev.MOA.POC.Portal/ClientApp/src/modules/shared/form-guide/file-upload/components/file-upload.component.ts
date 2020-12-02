@@ -18,6 +18,7 @@ export class FileUploadComponent  implements OnInit, OnDestroy {
     @Input() folderName: string;
     @Input() IsReadOnly: boolean = false;
     public apiUrl: string = ConfigService.APIURL;
+    public documentURL: string="http://moa.westeurope.cloudapp.azure.com/api/documents/upload?folderName=";
     isLoaded:boolean = false;
 
     constructor(public translate: TranslateService, public api: APIService) {
@@ -74,7 +75,9 @@ console.log(currentFile);
           formData.append('file' + i, fileToUpload, fileToUpload.name);
 
         }
-        this.api.PostFile<ApiGenericResponse<FileInfoModel[]>>(`https://localhost:44387/api/documents/upload?folderName=${this.folderName}&documentSettingId=${this.documentSetting.Id}`,formData)
+        if(this.documentSetting.Description=="payment")
+        this.documentURL="http://moa.westeurope.cloudapp.azure.com/api/payment/upload?folderName=";
+        this.api.PostFile<ApiGenericResponse<FileInfoModel[]>>(`${this.documentURL}${this.folderName}&documentSettingId=${this.documentSetting.Id}`,formData)
             .subscribe(res =>{
                 if(res.ResponseCode == ResponseCode.Success)
                 {

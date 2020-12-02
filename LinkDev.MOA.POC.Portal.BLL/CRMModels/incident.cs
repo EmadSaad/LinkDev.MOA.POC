@@ -1,15 +1,11 @@
-﻿// *********************************************************************
+// *********************************************************************
 // Created by : Latebound Constants Generator 1.2020.2.1 for XrmToolBox
 // Author     : Jonas Rapp https://twitter.com/rappen
 // GitHub     : https://github.com/rappen/LCG-UDG
 // Source Org : https://presales.crm4.dynamics.com/
 // Filename   : C:\Users\Emad.Beshai\Desktop\incident.cs
-// Created    : 2020-11-29 20:28:35
+// Created    : 2020-12-01 12:32:48
 // *********************************************************************
-using LinkDev.MOA.POC.Portal.BLL.Helpers.Attributes;
-using LinkDev.MOA.POC.Portal.BLL.Helpers.Resources;
-using System.ComponentModel;
-
 namespace LinkDev.MOA.POC.CRMModel.Incident
 {
     /// <summary>DisplayName: Case, OwnershipType: UserOwned, IntroducedVersion: 5.0.0.0</summary>
@@ -320,11 +316,6 @@ namespace LinkDev.MOA.POC.CRMModel.Incident
         {
             ImportingPermissionRequest = 1
         }
-        public enum ldv_moacasetype_OptionSetAr
-        {
-            [LocalizedDescription("ImportingPermissionRequest", typeof(MOAEnums))]
-            ImportingPermissionRequest = 1
-        }
         public enum ldv_changeappointmenttype_OptionSet
         {
             Clinic = 1,
@@ -393,7 +384,7 @@ namespace LinkDev.MOA.POC.CRMModel.Incident
         public enum ldv_paymentstatus_OptionSet
         {
             PaymentDone = 1,
-            ExceededPaymentTime = 2
+            PaymentReject = 2
         }
         public enum prioritycode_OptionSet
         {
@@ -465,13 +456,15 @@ namespace LinkDev.MOA.POC.CRMModel.Incident
             OnHold = 2,
             WaitingforDetails = 3,
             Researching = 4,
-            Payment = 753240000,
+            WaitingPayment = 753240000,
+            WaitingPaymentApproval = 753240003,
             ProblemSolved = 5,
             InformationProvided = 1000,
             RequestCompleted = 753240001,
+            RequestRejected = 753240004,
             Cancelled = 6,
             Merged = 2000,
-            RequestRejected = 753240002
+           
         }
         public enum ldv_timeslotsstatus_OptionSet
         {

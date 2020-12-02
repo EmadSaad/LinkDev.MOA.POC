@@ -1,0 +1,839 @@
+<app-breadcrumb [CurrnetComponentName]="'ConsultingOfficeQualification'"></app-breadcrumb>
+<div class="form-wrapper mb-0">
+  <div class="row">
+    <div class="col-lg-3 mb-0">
+      <div class="h-100">
+        <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+          [structure]="formStructure" (onChange)="onSelect($event)">
+        </app-side-stages>
+      </div>
+    </div>
+
+    <div class="col-lg-9">
+      <h1 class="page-title">{{'ConsultingOfficeQualification.ConsultingOfficeQualification' | translate}}</h1>
+      <!--Request-Header-->
+      <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+      <!--Validation-Message-->
+      <!-- <div class="alert alert-light" role="alert"> <i class="icon-info"></i>
+        {{'FORM_VALIDATION_MESSAGE' | translate}}
+      </div> -->
+     
+
+      <!-- <div class="alert {{submissionAlertClass}}" role="alert" *ngIf="this.submissionInfo">
+        {{submissionInfo}}
+      </div> -->
+
+
+      
+
+
+      <!-- Default Time Schedule -->
+      <div [hidden]="ActiveLevelOne != 1">
+          
+          <div class="alert alert-light" role="alert"> <i class="icon-info"></i>
+            {{'FORM_VALIDATION_MESSAGE' | translate}}
+          </div>
+          <div class="alert alert-danger" role="alert" *ngIf="displayMessage && displayMessage != ''">
+            {{displayMessage}}
+          </div>
+          <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" 
+          [submissionInfo]="this.submissionInfo">
+        </app-request-submission-info>
+        
+        <h5 class="mt-4 stage-title">{{'ConsultingOfficeQualification.SubmitOfficeData' | translate}}</h5>
+
+        <form #stageOne="ngForm" novalidate autocomplete="off">
+          <div class="row">
+            <div class="col-xl-4 col-lg-6" [ngClass]="{'required': CRId.errors && (isSubmit || isSaveDraft)}">
+              <mutliselect id="CRId" name="CRId" [label]="'ContractSubmission.CRId'" [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['account_CRsByTypeOffice']"
+                [viewMode]="!IsDefaultStages && !IsNewApp" [multiple]="false" [config]="config" [isRequiredLabel]="true"
+                [(ngModel)]="Application.Request.CRNumberId" #CRId="ngModel" [required]="true"
+                (change)="CRChanged();CROrQualificationTypeChanged();" >
+              </mutliselect>
+              <!-- {{Application.Request.CRNumberId | json}}
+              {{lookupService.lookupEntities['account_CRsByTypeOffice'] | json}} -->
+              <!-- {{CRId.errors | json}} -->
+                  <!-- {{CRId.hasError() | json}} -->
+              <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                      [controlName]="CRId" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer> -->
+            </div>
+
+            <app-info-viewer [isLoading]="isCurrentCR" [modalFormTitleKey]="'ContractSubmission.Info'" name="CRInfo"
+                  *ngIf="Application.Request.CRNumberId">
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+                        [(ngModel)]="CurrentCR.CRType" [label]="'ContractSubmission.Type'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+                        [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <label>{{'ContractSubmission.CRIssuanceDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" name="IssueDate" [readonly]="true">
+                      </ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- {{CurrentCR.IssueDate | json}} -->
+                      <label>{{'ContractSubmission.CRExpiryDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentCR.ExpiryDate" name="ExpiryDate" [readonly]="true">
+                      </ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+                        [(ngModel)]="CurrentCR.CRName" [label]="'ContractSubmission.Name'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-8">
+                      <label>{{'ContractSubmission.Activity' | translate}}</label>
+                      <textarea id="CurrentCRActivity" name="CurrentCRActivity" [readOnly]="true"
+                        #CurrentCRActivity="ngModel" [(ngModel)]="CurrentCR.CRActivity"></textarea>
+                    </div>
+                  </div>
+                  <app-grid [canAdd]="false" [canDelete]="false" [canEdit]="false"
+                    [tableHeadTitle]="'ContractSubmission.Owners'" [(data)]="CurrentCR.CROwners"
+                    [columns]="CROwnerGridcols">
+                  </app-grid>
+                </app-info-viewer>
+
+          </div>
+          <div class="row">
+            <div class="col-xl-4 col-lg-6" [ngClass]="{'required': QualificationType.errors && (isSubmit || isSaveDraft)}">
+              <mutliselect id="QualificationType" name="QualificationType"
+                [label]="'ConsultingOfficeQualification.QualificationType'" [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['ldv_service_LookupWithId']"
+                [viewMode]="!IsDefaultStages && !IsNewApp" [multiple]="false" [config]="config"
+                [(ngModel)]="Application.Request.QualificationTypeId" [isRequiredLabel]="true"  [required]="true"
+                #QualificationType="ngModel" (change)="QualificationTypeChanged();CROrQualificationTypeChanged();">
+              </mutliselect>
+
+            </div>
+          </div>
+          <div class="row" *ngIf="RenewMainBranch || RenewSafety || ChangeQualificationClassification || RenewBranch">
+            <div class="col-xl-4 col-lg-6" [ngClass]="{'required': OldCertificate.errors && isSubmit}">
+              <mutliselect id="OldCertificate" name="OldCertificate"
+                [label]="'ConsultingOfficeQualification.OldCertificate'" [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['ldv_qualificationcertificate_LookupWithName']"
+                [viewMode]=" (!IsDefaultStages && !IsNewApp)" [multiple]="false" [config]="config"  [required]="true"
+                [(ngModel)]="Application.Request.OldQualificationCertificateId" #OldCertificate="ngModel"
+                [isRequiredLabel]="true" (change)="OldCertificateChanged()">
+              </mutliselect>
+            </div>
+            <!-- {{Application.Request.OldQualificationCertificateId}}
+            {{lookupService.lookupEntities['ldv_qualificationcertificate_LookupWithName'] | json}} -->
+          </div>
+
+          <div class="row">
+            <div class="col-xl-4 col-lg-6" [ngClass]="{'required': Sector.errors && isSubmit}">
+              <mutliselect id="Sector" name="Sector" [label]="'ConsultingOfficeQualification.Sector'"
+                [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_ksaregion_LookupWithName']"
+                [viewMode]="!lockOldCertificate || (!IsDefaultStages && !IsNewApp)" [multiple]="false" [config]="config"
+                [(ngModel)]="Application.Request.SectorId" #Sector="ngModel" [isRequiredLabel]="true"  [required]="true"
+                (change)="SectorChanged()">
+              </mutliselect>
+              <!-- {{Application.Request.SectorId}}
+              {{lookupService.lookupEntities['ldv_ksaregion_LookupWithName'] | json}} -->
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-xl-4 col-lg-6" [ngClass]="{'required': City.errors && isSubmit}">
+              <mutliselect id="City" name="City" [label]="'ConsultingOfficeQualification.City'"
+                [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_ksacity_KSACity']"
+                [viewMode]="!lockOldCertificate || (!IsDefaultStages && !IsNewApp)" [multiple]="false" [config]="config"
+                [(ngModel)]="Application.Request.CityId" #City="ngModel" [isRequiredLabel]="true"  [required]="true">
+              </mutliselect>
+              <!-- {{Application.Request.CityId}}
+              {{lookupService.lookupEntities['ldv_ksacity_KSACity'] | json}} -->
+
+            </div>
+
+          </div>
+
+
+          <div class="row">
+            <div class="col-4" [ngClass]="{'required': OfficeNameinEnglish.errors && isSubmit}">
+              <div class="form-row">
+                <!--[ngClass]="{'required':PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)}"> -->
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="OfficeNameinEnglish" #OfficeNameinEnglish="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeNameinEnglish'"
+                  [isReadOnly]="!IsDefaultStages && !IsNewApp" [(ngModel)]="Application.Request.OfficeNameinEnglish"
+                  [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+                <!-- <div *ngIf="PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)" 
+                      class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div> -->
+              </div>
+            </div>
+            <div class="col-4" [ngClass]="{'required': OfficeOwnerName.errors && isSubmit}">
+              <div class="form-row">
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="OfficeOwnerName" #OfficeOwnerName="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeOwnerName'" [isReadOnly]="!IsDefaultStages && !IsNewApp"
+                  [(ngModel)]="Application.Request.OfficeOwnerName" [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+
+              </div>
+            </div>
+            <div class="col-4" [ngClass]="{'required': OfficeOwnerNameinEnglish.errors && isSubmit}">
+              <div class="form-row">
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="OfficeOwnerNameinEnglish" #OfficeOwnerNameinEnglish="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeOwnerNameinEnglish'"
+                  [isReadOnly]="!IsDefaultStages && !IsNewApp"  [required]="true"
+                  [(ngModel)]="Application.Request.OfficeOwnerNameinEnglish" [isRequiredLabel]="true">
+                </custom-text-box>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-4" [ngClass]="{'required': ResponsibleName.errors && isSubmit}">
+              <div class="form-row">
+                <!--[ngClass]="{'required':PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)}"> -->
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="ResponsibleName" #ResponsibleName="ngModel"
+                  [label]="'ConsultingOfficeQualification.ResponsibleName'" [isReadOnly]="!IsDefaultStages && !IsNewApp"
+                  [(ngModel)]="Application.Request.ResponsibleName" [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+                <!-- <div *ngIf="PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)" 
+                        class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div> -->
+              </div>
+            </div>
+            <div class="col-4" [ngClass]="{'required': LicenseNumber.errors && isSubmit}">
+              <div class="form-row">
+                <!--TOOL-->
+                <custom-text-box [type]="'number'" name="LicenseNumber" #LicenseNumber="ngModel"
+                  [label]="'ConsultingOfficeQualification.LicenseNumber'" [isReadOnly]="!IsDefaultStages && !IsNewApp"
+                  [(ngModel)]="Application.Request.LicenseNumber" [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+
+              </div>
+            </div>
+            <div class="col-4" [ngClass]="{'required': LicenseExpiryDate.errors && isSubmit}">
+              <div class="form-row">
+                
+                <label>
+                  {{'ConsultingOfficeQualification.LicenseExpiryDate' | translate}}
+                  <span class="required"> *</span>
+                </label>
+                <ngbd-datepicker-popup [(ngModel)]="Application.Request.LicenseExpiryDate" #LicenseExpiryDate="ngModel"
+                  [readonly]="!IsDefaultStages && !IsNewApp" name="LicenseExpiryDate" 
+                  [placeholder]="'ConsultingOfficeQualification.PleaseFillinDate' | translate"  [required]="true">
+                </ngbd-datepicker-popup>
+                <!-- {{Application.Request.LicenseExpiryDate | json}} -->
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="col-4" [ngClass]="{'required': YearofConstruction.errors && isSubmit}">
+              <div class="form-row">
+                <!--[ngClass]="{'required':PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)}"> -->
+                <!--TOOL-->
+                <custom-text-box [type]="'number'" name="YearofConstruction" #YearofConstruction="ngModel"
+                  [label]="'ConsultingOfficeQualification.YearofConstruction'"
+                  [isReadOnly]="!IsDefaultStages && !IsNewApp" [(ngModel)]="Application.Request.YearofConstruction"
+                  [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+                <!-- <div *ngIf="PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)" 
+                          class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div> -->
+              </div>
+            </div>
+            <div class="col-4" [ngClass]="{'required': SubscriptionNumber.errors && isSubmit}">
+              <div class="form-row">
+                <!--TOOL-->
+                <custom-text-box [type]="'number'" name="SubscriptionNumber" #SubscriptionNumber="ngModel"
+                  [label]="'ConsultingOfficeQualification.SubscriptionNumber'"
+                  [isReadOnly]="!IsDefaultStages && !IsNewApp" [(ngModel)]="Application.Request.SubscriptionNumber"
+                  [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+
+              </div>
+            </div>
+            <div class="col-4" *ngIf="Application.Request.GOSIRegistrationIndicator && Application.Request.GOSIRegistrationIndicator != ''">
+              <div class="form-row">
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="GOSIRegistrationIndicator" #GOSIRegistrationIndicator="ngModel"
+                  [label]="'ConsultingOfficeQualification.GOSIRegistrationIndicator'"
+                  [isReadOnly]="true"  
+                  [(ngModel)]="Application.Request.GOSIRegistrationIndicator" >
+                </custom-text-box>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-4" [ngClass]="{'required': UsedDevicesDescription.errors && isSubmit}">
+              <div class="form-row">
+                <!--[ngClass]="{'required':PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)}"> -->
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="UsedDevicesDescription" #UsedDevicesDescription="ngModel"
+                  [label]="'ConsultingOfficeQualification.UsedDevicesDescription'"
+                  [isReadOnly]="!IsDefaultStages && !IsNewApp" [(ngModel)]="Application.Request.UsedDevicesDescription"
+                  [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+                <!-- <div *ngIf="PlannedPercentage.dirty&&!PlannedPercentage.valid && ( PlannedPercentage.value>100 || PlannedPercentage.value % 1 != 0)" 
+                            class="form-validation">{{'ConstructionStage.Between0and100' | translate}}</div> -->
+              </div>
+            </div>
+            <div class="col-4" *ngIf="AddBranch" [ngClass]="{'required': NewBranchName.errors && isSubmit}">
+              <div class="form-row">
+                <!--TOOL-->
+                <custom-text-box [type]="'text'" name="NewBranchName" #NewBranchName="ngModel"
+                  [label]="'ConsultingOfficeQualification.NewBranchName'" [isReadOnly]="!IsDefaultStages && !IsNewApp"
+                  [(ngModel)]="Application.Request.NewBranchName" [isRequiredLabel]="true"  [required]="true">
+                </custom-text-box>
+
+              </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-6" *ngIf="RenewBranch" [ngClass]="{'required': BranchRenewed.errors && isSubmit}">
+              <mutliselect id="BranchRenewed" name="BranchRenewed"
+                [label]="'ConsultingOfficeQualification.BranchRenewed'" [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['ldv_crbranch_LookupWithName']"
+                [viewMode]="(!IsDefaultStages && !IsNewApp)" [multiple]="false" [config]="config"
+                [(ngModel)]="Application.Request.BranchToBeRenewedId" #BranchRenewed="ngModel"
+                [isRequiredLabel]="true"  [required]="true">
+              </mutliselect>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-xl-4 col-lg-6" [ngClass]="{'required': Contacts.errors && isSubmit}">
+              <mutliselect id="Contacts" name="Contacts" [label]="'PlanApproval.Contacts'" [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+                [viewMode]="!IsDefaultStages && !IsNewApp" [multiple]="true" [config]="config"
+                [(ngModel)]="Application.Request.Contacts" [required]="true" [disabled]="false" [isRequiredLabel]="true"
+                #Contacts="ngModel" (change)="onContactChange($event)">
+              </mutliselect>
+              <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                    [controlName]="Contacts" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer> -->
+              <!-- {{lookupService.lookupEntities['ldv_contactdetails_ContactDetails']  | json}} -->
+              <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                      [controlName]="Contacts" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer> -->
+            </div>
+          </div>
+
+          <!-- contact Details grid -->
+          <app-grid [modalFormTitle]="'ConsultingOffice'" [tableHeadTitle]="'PlanApproval.ContactDetails'"
+            [(data)]="contactsList" [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false"
+            [canDelete]="false">
+          </app-grid>
+
+        </form>
+
+
+      </div>
+
+      <!-- Monthly Report -->
+      <div [hidden]="ActiveLevelOne != 2">
+        <h5 class="mt-4 stage-title">{{'ConsultingOfficeQualification.Attachments' | translate}}</h5>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Designsinexchange'" [form]="stageOne"
+          [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp" required>
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Supervision'" [form]="stageOne"
+          [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Officelicensefromthemunicipality'"
+          [form]="stageOne" [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Professionallicense'" [form]="stageOne"
+          [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Listofengineersonthejob'"
+          [form]="stageOne" [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents"
+          [SectionName]="'Listofregisteredengineerswithreservations'" [form]="stageOne" [IsLiveChanges]="true"
+          [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Licenseregistration'" [form]="stageOne"
+          [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+
+        <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'PlansAttachments'" [form]="stageOne"
+          [IsLiveChanges]="true" [IsReadOnly]="!IsDefaultStages && !IsNewApp">
+        </app-Uploaders-List>
+        <!-- {{Application.Documents | json}} -->
+
+
+
+
+
+      </div>
+
+
+       <!-- Payment Stage -->
+       <div [hidden]="ActiveLevelOne != 3" *ngIf="Application.Request.HasPayment">
+        <app-request-quote [requestId]="Application.ApplicationHeader.Id"></app-request-quote>
+        </div>
+
+      <!-- GeneratedCertificate -->
+      <div [hidden]="ActiveLevelOne != 4" *ngIf="Application.Request.GeneratedCertificate">
+
+        <h5 class="mt-4 stage-title">{{'QualificationCertificate.GeneratedCertificate' | translate}}</h5>
+
+        <div class="row">
+         
+          <!-- {{ GeneratedCertificate.CertificateRegarding}}
+          {{ GeneratedCertificate.CertificateRegardingString}}
+          {{lookupService.lookupEntities['ldv_qualificationcertificate_ldv_certificateregarding_OptionSet'][ GeneratedCertificate.CertificateRegarding - 1].Text | json}} -->
+          <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.CertifiedAccount">
+              <custom-text-box [type]="'text'" [label]="'QualificationCertificate.CertifiedAccount'"
+                 [(ngModel)]=" Application.Request.GeneratedCertificate.CertifiedAccount.Name"
+                 #CertifiedAccount="ngModel"  name="CertifiedAccount" 
+                 [isReadOnly]="true">
+              </custom-text-box>
+            </div>
+            <app-info-viewer [isLoading]="isCurrentCR" [modalFormTitleKey]="'ContractSubmission.Info'" name="CRInfo"
+                *ngIf="Application.Request.GeneratedCertificate.CertifiedAccountId">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+                      [(ngModel)]="CurrentCR.CRType" [label]="'ContractSubmission.Type'" autocomplete=""
+                      aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+                      [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+                      aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-xl-4 col-lg-6">
+                    <label>{{'ContractSubmission.CRIssuanceDate' | translate}}</label>
+                    <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" name="IssueDate" [readonly]="true">
+                    </ngbd-datepicker-popup>
+                  </div>
+                  <div class="col-xl-4 col-lg-6">
+                    <!-- {{CurrentCR.IssueDate | json}} -->
+                    <label>{{'ContractSubmission.CRExpiryDate' | translate}}</label>
+                    <ngbd-datepicker-popup [(ngModel)]="CurrentCR.ExpiryDate" name="ExpiryDate" [readonly]="true">
+                    </ngbd-datepicker-popup>
+                  </div>
+                  <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+                      [(ngModel)]="CurrentCR.CRName" [label]="'ContractSubmission.Name'" autocomplete=""
+                      aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-xl-8">
+                    <label>{{'ContractSubmission.Activity' | translate}}</label>
+                    <textarea id="CurrentCRActivity" name="CurrentCRActivity" [readOnly]="true"
+                      #CurrentCRActivity="ngModel" [(ngModel)]="CurrentCR.CRActivity"></textarea>
+                  </div>
+                </div>
+                <app-grid [canAdd]="false" [canDelete]="false" [canEdit]="false"
+                  [tableHeadTitle]="'ContractSubmission.Owners'" [(data)]="CurrentCR.CROwners"
+                  [columns]="CROwnerGridcols">
+                </app-grid>
+              </app-info-viewer>
+
+
+            </div>
+      <div class="row">
+
+              <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'text'" [label]="'QualificationCertificate.CertificateNumber'"
+                   [(ngModel)]=" Application.Request.GeneratedCertificate.CertificateNumber"
+                  #CertificateNumber="ngModel"  name="CertificateNumber" 
+                   [isReadOnly]="true">
+                </custom-text-box>
+              </div>
+    
+    
+              <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'" [label]="'QualificationCertificate.CertificateRegarding'"
+                   [(ngModel)]="lookupService.lookupEntities['ldv_qualificationcertificate_ldv_certificateregarding_OptionSet'][Application.Request.GeneratedCertificate.CertificateRegarding - 1].Text"
+                    #CertificateRegarding="ngModel"  name="CertificateRegarding" 
+                   [isReadOnly]="true">
+                  </custom-text-box>
+    
+    
+                </div>
+
+
+                <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'" [label]="'ContractorQualification.CertificateStatus'"
+                   [(ngModel)]="lookupService.lookupEntities['ldv_qualificationcertificate_ldv_certificationstatus_OptionSet'][Application.Request.GeneratedCertificate.CertificationStatus - 1].Text"
+                    #CertificateStatus="ngModel"  name="CertificateStatus" 
+                   [isReadOnly]="true">
+                  </custom-text-box>
+    
+    
+                </div>
+
+      </div>
+
+
+        <div class="row">
+            <div class="col-xl-4 col-lg-6" *ngIf="Application.Request.GeneratedCertificate.Sector">
+                <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.Sector'"
+                 [(ngModel)]="Application.Request.GeneratedCertificate.Sector.Name"
+                 #SectorC="ngModel"  name="SectorC" 
+                 [isReadOnly]="true">
+              </custom-text-box>
+            </div>
+
+            <div class="col-xl-4 col-lg-6" *ngIf="Application.Request.GeneratedCertificate.City">
+                <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.City'"
+                 [(ngModel)]="Application.Request.GeneratedCertificate.City.Name"
+                 #CityC="ngModel"  name="CityC" 
+                 [isReadOnly]="true">
+              </custom-text-box>
+            </div>
+
+          </div>
+
+
+
+
+        <div class="row" *ngIf="Application.Request.GeneratedCertificate.CertificateRegarding == 1 ">
+
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableGeneralPlan'"
+               [(ngModel)]="Application.Request.GeneratedCertificate.AvailableGeneralPlan"
+              #AvailableGeneralPlan="ngModel"  name="AvailableGeneralPlan"
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableGeneralBuildingLicenseProjects'"
+               [(ngModel)]="Application.Request.GeneratedCertificate.AvailableGeneralBuildingLicenseProjects"
+              #AvailableGeneralBuildingLicenseProjects="ngModel"  name="AvailableGeneralBuildingLicenseProjects" 
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="Application.Request.GeneratedCertificate.CertificateRegarding == 3 ">
+
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableSafetyPlan'"
+               [(ngModel)]="Application.Request.GeneratedCertificate.AvailableSafetyPlan"
+              #AvailableSafetyPlan="ngModel"  name="AvailableSafetyPlan"  [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" [label]="'QualificationCertificate.AvailableSafetyBuildingLicenseProjects'"
+               [(ngModel)]="Application.Request.GeneratedCertificate.AvailableSafetyBuildingLicenseProjects"
+              #AvailableSafetyBuildingLicenseProjects="ngModel"  name="AvailableSafetyBuildingLicenseProjects"
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+
+        </div>
+
+        <div class="row"  >
+
+          <div class="col-lg-4 col-md-6" >
+            <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.YearofConstruction'"
+               [(ngModel)]="Application.Request.GeneratedCertificate.YearofConstruction"
+              #YearofConstructionC="ngModel"  name="YearofConstructionC"  [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.SubscriptionNumber'"
+               [(ngModel)]="Application.Request.GeneratedCertificate.SubscriptionNumber"
+              #SubscriptionNumberC="ngModel"  name="SubscriptionNumberC"
+               [isReadOnly]="true">
+            </custom-text-box>
+          </div>
+
+          
+
+        </div>
+
+        <div class="row"  >
+
+            <div class="col-4" *ngIf="Application.Request.GeneratedCertificate.IssueDate">
+                <div class="form-row">
+                  
+                  <label>
+                    {{'QualificationCertificate.IssueDate' | translate}}
+                  </label>
+                  <ngbd-datepicker-popup [(ngModel)]="Application.Request.GeneratedCertificate.IssueDate"
+                    [readonly]="true" name="IssueDateC" [isRequiredLabel]="true">
+                  </ngbd-datepicker-popup>
+                  <!-- {{Application.Request.LicenseExpiryDate | json}} -->
+                </div>
+              </div>
+
+
+            <div class="col-4" *ngIf="Application.Request.GeneratedCertificate.ExpiryDate">
+                <div class="form-row">
+                  
+                  <label>
+                    {{'QualificationCertificate.ExpiryDate' | translate}}
+                  </label>
+                  <ngbd-datepicker-popup [(ngModel)]="Application.Request.GeneratedCertificate.ExpiryDate"
+                    [readonly]="true" name="ExpiryDateC" [isRequiredLabel]="true">
+                  </ngbd-datepicker-popup>
+                  <!-- {{Application.Request.LicenseExpiryDate | json}} -->
+                </div>
+              </div>
+
+
+              <div class="col-4" *ngIf="Application.Request.GeneratedCertificate.ChangeCategoryAbilityDate && Application.Request.GeneratedCertificate.CertificateRegarding == 1">
+                  <div class="form-row">
+                    
+                    <label>
+                      {{'QualificationCertificate.ChangeCategoryAbilityDate' | translate}}
+                    </label>
+                    <ngbd-datepicker-popup [(ngModel)]="Application.Request.GeneratedCertificate.ChangeCategoryAbilityDate"
+                      [readonly]="true" name="ChangeCategoryAbilityDateC" >
+                    </ngbd-datepicker-popup>
+                    <!-- {{Application.Request.LicenseExpiryDate | json}} -->
+                  </div>
+                </div>
+
+        </div>
+
+
+        <div class="row" >
+            <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'text'" [label]="'ConsultingOfficeQualification.UsedDevicesDescription'"
+                   [(ngModel)]="Application.Request.GeneratedCertificate.UsedDevicesDescription"
+                   #UsedDevicesDescriptionC="ngModel"  name="UsedDevicesDescriptionC"
+                   [isReadOnly]="true">
+                </custom-text-box>
+              </div>
+
+              <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.RatingCategory">
+                  <custom-text-box [type]="'text'" [label]="'QualificationCertificate.RatingCategory'"
+                     [(ngModel)]="Application.Request.GeneratedCertificate.RatingCategory.Name"
+                     #RatingCategory="ngModel"  name="RatingCategory"
+                     [isReadOnly]="true">
+                  </custom-text-box>
+                </div>
+
+                <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.EvaluationResult">
+                    <custom-text-box [type]="'text'" [label]="'QualificationCertificate.EvaluationResult'"
+                       [(ngModel)]="Application.Request.GeneratedCertificate.EvaluationResult"
+                       #EvaluationResult="ngModel"  name="EvaluationResult"
+                       [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+              <div class="form-row">
+                
+                <custom-text-box [type]="'text'" name="OfficeNameinEnglishc" #OfficeNameinEnglishc="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeNameinEnglish'"
+                  [isReadOnly]="true" [(ngModel)]="Application.Request.GeneratedCertificate.OfficeNameinEnglish"
+                  >
+                </custom-text-box>
+                
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-row">
+                
+                <custom-text-box [type]="'text'" name="OfficeOwnerNameC" #OfficeOwnerNameC="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeOwnerName'" [isReadOnly]="true"
+                  [(ngModel)]="Application.Request.GeneratedCertificate.OfficeOwnerName" >
+                </custom-text-box>
+
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-row">
+                
+                <custom-text-box [type]="'text'" name="OfficeOwnerNameinEnglishC" #OfficeOwnerNameinEnglishC="ngModel"
+                  [label]="'ConsultingOfficeQualification.OfficeOwnerNameinEnglish'"
+                  [isReadOnly]="true"
+                  [(ngModel)]="Application.Request.GeneratedCertificate.OfficeOwnerNameinEnglish" >
+                </custom-text-box>
+
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="row">
+              <div class="col-4">
+                <div class="form-row">
+                  
+                  <custom-text-box [type]="'text'" name="ResponsibleNameC" #ResponsibleNameC="ngModel"
+                    [label]="'ConsultingOfficeQualification.ResponsibleName'" [isReadOnly]="true"
+                    [(ngModel)]="Application.Request.GeneratedCertificate.ResponsibleName" >
+                  </custom-text-box>
+                 
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="form-row">
+                  <!--TOOL-->
+                  <custom-text-box [type]="'number'" name="LicenseNumberC" #LicenseNumberC="ngModel"
+                    [label]="'ConsultingOfficeQualification.LicenseNumber'" [isReadOnly]="true"
+                    [(ngModel)]="Application.Request.GeneratedCertificate.LicenseNumber">
+                  </custom-text-box>
+  
+                </div>
+              </div>
+              <div class="col-4" *ngIf="Application.Request.GeneratedCertificate.LicenseExpiryDate">
+                <div class="form-row" >
+                  
+                  <label>
+                    {{'ConsultingOfficeQualification.LicenseExpiryDate' | translate}}
+                  </label>
+                  <ngbd-datepicker-popup [(ngModel)]="Application.Request.GeneratedCertificate.LicenseExpiryDate"
+                    [readonly]="true" name="LicenseExpiryDateC" >
+                  </ngbd-datepicker-popup>
+                  <!-- {{Application.Request.LicenseExpiryDate | json}} -->
+                </div>
+              </div>
+
+
+
+            </div>
+
+
+
+
+            <div class="row" *ngIf="Application.Request.GeneratedCertificate.CertificateRegarding == 1 || Application.Request.GeneratedCertificate.CertificateRegarding == 2">
+                <div class="col-4">
+                  <div class="form-row">
+                    
+                    <custom-text-box [type]="'text'" name="CurrentGeneralPlanApprovalProjects" #CurrentGeneralPlanApprovalProjects="ngModel"
+                      [label]="'QualificationCertificate.CurrentGeneralPlanApprovalProjects'" [isReadOnly]="true"
+                      [(ngModel)]="Application.Request.GeneratedCertificate.CurrentGeneralPlanApprovalProjects" >
+                    </custom-text-box>
+                   
+                  </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="form-row">
+                      <!--TOOL-->
+                      <custom-text-box [type]="'text'" name="CurrentGeneralBuildingLicenseProjects" #CurrentGeneralBuildingLicenseProjects="ngModel"
+                        [label]="'QualificationCertificate.CurrentGeneralBuildingLicenseProjects'" [isReadOnly]="true"
+                        [(ngModel)]="Application.Request.GeneratedCertificate.CurrentGeneralBuildingLicenseProjects">
+                      </custom-text-box>
+      
+                    </div>
+                  </div>
+
+               
+                
+  
+  
+                
+              </div>
+
+              <div class="row"  *ngIf="Application.Request.GeneratedCertificate.CertificateRegarding == 3 || Application.Request.GeneratedCertificate.CertificateRegarding == 2">
+
+                  <div class="col-4">
+                      <div class="form-row">
+                        <!--TOOL-->
+                        <custom-text-box [type]="'text'" name="CurrentSafetyPlanApprovalProjects" #CurrentSafetyPlanApprovalProjects="ngModel"
+                          [label]="'QualificationCertificate.CurrentSafetyPlanApprovalProjects'" [isReadOnly]="true"
+                          [(ngModel)]="Application.Request.GeneratedCertificate.CurrentSafetyPlanApprovalProjects">
+                        </custom-text-box>
+        
+                      </div>
+                    </div>
+
+                  <div class="col-4">
+                      <div class="form-row">
+                        <!--TOOL-->
+                        <custom-text-box [type]="'text'" name="CurrentSafetyBuildingLicenseProjects" #CurrentSafetyBuildingLicenseProjects="ngModel"
+                          [label]="'QualificationCertificate.CurrentSafetyBuildingLicenseProjects'" [isReadOnly]="true"
+                          [(ngModel)]="Application.Request.GeneratedCertificate.CurrentSafetyBuildingLicenseProjects">
+                        </custom-text-box>
+        
+                      </div>
+                    </div>
+              </div>
+
+              <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'OfficeCertificateReport'" [form]="stageOne"
+              [IsLiveChanges]="true" [IsReadOnly]="true" >
+              </app-Uploaders-List>
+     
+
+
+              <!-- Main Office Branches grid -->
+          <!-- <app-grid [modalFormTitle]="'ConsultingOffice'" [tableHeadTitle]="'PlanApproval.ContactDetails'"
+          [(data)]="contactsList" [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false"
+          [canDelete]="false">
+          </app-grid> -->
+
+     
+          </div>
+
+
+
+
+       <!--Request Comments-->
+       <app-request-comments [regardingID]="Application.Request.Id"
+       [hidden]="ActiveLevelOne != 5 || !Application.Request.Id || Application.ApplicationHeader.PortalStatusCode === '1'">
+        </app-request-comments>
+
+       
+
+      <!-- Nav and Submit Bar -->
+
+
+
+      <!-- {{currentUser}}
+  *ngIf="((!IsDefaultStages&&ActiveLevelOne==1)||(IsMonthlyReport&&ActiveLevelOne==2)) && currentUser == 1" -->
+      <div class="col-12 d-flex form-footer justify-content-between" *ngIf="IsDefaultStages || !Application.Request.Id">
+
+        <button type="button" class="main-btn-secondary" (click)="SaveAsDraft()">
+            {{'ServicesCommon.SaveAsDraft' | translate}}
+          </button>
+          
+        <button type="button" class="main-btn" (click)="SubmitStages()">
+            {{'ServicesCommon.Submit' | translate}}
+          </button>
+        <!-- <div class="tab-nav-wrapper">
+              
+              
+              <a aria-label="Prev" title="{{'PREVIOUS' | translate}}" class="prev"  (click)="Previous()"  *ngIf="ActiveLevelOne != 1"> {{'PREVIOUS' | translate}}</a>
+              
+              <a aria-label="Next" title="{{'NEXT' | translate}}" class="next"  (click)="Next()" *ngIf="ActiveLevelOne != 3">{{'NEXT' | translate}}</a>
+
+            
+          </div> -->
+      </div>
+
+
+      <!-- <div class="col-12" *ngIf="displayMessage && displayMessage != ''">
+            <div class="alert alert-danger" role="alert">
+                {{displayMessage}}
+            </div>
+        </div> -->
+
+    </div>
+
+  </div>
+</div>

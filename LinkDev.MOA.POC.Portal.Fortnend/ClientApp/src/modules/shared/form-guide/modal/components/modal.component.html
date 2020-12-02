@@ -1,0 +1,71 @@
+<div class="modal fade" id="adahiPopup" role="dialog" aria-labelledby="adahiPopup" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adahiPopupTitle">{{title}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{body}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="main-btn-secondary  popup-btn " data-dismiss="modal">Close</button>
+                <button type="button" class="main-btn popup-btn ">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+            <form class="form-wrapper form-padding">
+                    <div class="col-12">
+                        <div class="form-row">
+                            <label>Text Box</label>
+                        </div>
+                    </div>
+                </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Save</button>
+    </div>
+    <!-- Modal -->
+    <!-- Button trigger modal -->
+    <!-- <button class="main-btn" data-toggle="modal" data-target="#exampleModal"> Launch demo
+        modal</button> -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div role="document" class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Modal title</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-wrapper form-padding">
+                        <div class="col-12">
+                            <div class="form-row">
+                                <label>Text Box</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<button class="main-btn" (click)="openModal(content)">Launch demo modal</button>

@@ -1,0 +1,111 @@
+.form-hierarchy.customized-form-hierarchy{
+    .parent-label{
+        white-space: normal;
+        .label{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.7rem 12px;
+            font-size: 1.125rem;
+            cursor: pointer;
+            color: $brand-color-secondary;
+            span.icon-dropdow-arrow{
+                font-size: 0.5rem;
+            }
+            &.opened{
+                span.icon-dropdow-arrow{
+                    transform: scaleY(-1);
+                }
+            }   
+        }
+        &.dimmed{
+            .label{
+                color:#afaeae;
+            }
+            .child-container.show{
+                height:0;
+                opacity: 0;
+            }
+            .label{
+                &.opened{
+                    span.icon-dropdow-arrow{
+                        transform: scaleY(1);
+                    }
+                }
+            }
+            pointer-events: none;
+        }
+        &.active {  
+            color: $brand-color-secondary;
+            white-space: normal;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            background-color: #fff;
+            .label{
+                position: relative;
+                font-weight: bold;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+               
+                &:before{
+                    content: "";
+                    position: absolute;
+                    width: 8px;
+                    height: 100%;
+                    background: $brand-color-secondary ;
+                    top: 0;
+                    #{$right}: -8px;
+                }
+            }
+           
+            
+        }
+        .child-container{
+            height: 0;
+            opacity: 0;
+            &.show{
+                height: auto;
+                opacity: 1;
+                a.child-label{
+                    color:#000;
+                    &.activeLink,&:hover{
+                        color:$brand-color;
+                        text-decoration: none;
+                    }  
+                }  
+                .child-label{
+                    padding-left: 12px;
+                    padding-right: 12px;
+                    padding-bottom: 1rem;
+                    
+                    &:not(:first-child){
+                        padding-top: 1rem;  
+                    }
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    .counter{
+                        background-color: $light-grey;
+                        border-radius: 10px;
+                        padding-left: 10px;
+                        padding-right: 10px;
+                    }
+                } 
+            }
+        }
+    }
+}
+@media(max-width:992px){
+    .form-hierarchy.customized-form-hierarchy {
+        .form-hierarchy-collapse.opened{
+            background-color: #fff;
+            justify-content: flex-end;
+        }
+        .parent-label.active{
+            box-shadow: none;
+            .label:before{
+                display: none;
+            }
+        }
+    }
+    
+}

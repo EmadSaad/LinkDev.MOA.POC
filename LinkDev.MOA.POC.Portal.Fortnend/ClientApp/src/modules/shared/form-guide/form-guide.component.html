@@ -1,0 +1,1862 @@
+<!-- <nav class="breadcrumb-wrapper" aria-label="breadcrumb">
+    <div class="container breadcrumb">
+        <span><a class="breadcrumbRootNode" href="/Pages/VariationRoot.aspx">Adahi</a></span><span> &gt; </span>
+        <span><a class="breadcrumbNode" href="linkdev.com">Link Dev</a></span><span> &gt; </span><span
+            class="breadcrumbCurrentNode">Form Template</span>
+    </div>
+</nav> -->
+
+
+<app-breadcrumb [CurrnetComponentName]="'formguide'"></app-breadcrumb>
+<!-- <div class="breadcrumb-wrapper position-relative mt-3">
+  <a routerLink="/" title="Home">Home</a>
+  <a routerlink="workspace" title="Directories">Directories</a>
+  <span title="Form Guide">Form Guide</span>
+</div> -->
+<main>
+  <div class="container">
+
+    <!-- Chat history component -->
+    <div class="page-title">ملاحظات</div>
+    <div class="no-gutters row chat-history-wrapper">
+      <!-- First comment -->
+      <div class="col-md-8">
+        <div class="row no-gutters">
+          <div class="col-6">
+            <div class="title bold">ملاحظات من مدن</div>
+          </div>
+          <div class="col-6">
+            <div class="text-end date">2/3/2020</div>
+          </div>
+          <div class="comment w-100">يرجي التأكد من إضافة البيانات الصحيحة, حيث يظهر في بيانات الطلب - إضافة جهات إتصال
+            بيانات غير مكتملة </div>
+        </div>
+      </div>
+      <!-- second comment -->
+      <div class="col-md-8">
+        <div class="row no-gutters">
+          <div class="col-6">
+            <div class="title bold">ملاحظات من مدن</div>
+          </div>
+          <div class="col-6">
+            <div class="date">2/3/2020</div>
+          </div>
+          <div class="comment w-100">يرجي التأكد من إضافة البيانات الصحيحة, حيث يظهر في بيانات الطلب - إضافة جهات إتصال
+            بيانات غير مكتملة </div>
+        </div>
+      </div>
+      <!-- third comment -->
+      <div class="col-md-8">
+        <div class="row no-gutters">
+          <div class="col-6">
+            <div class="title bold">ملاحظات من مدن</div>
+          </div>
+          <div class="col-6">
+            <div class="date">2/3/2020</div>
+          </div>
+          <div class="comment w-100">يرجي التأكد من إضافة البيانات الصحيحة, حيث يظهر في بيانات الطلب - إضافة جهات إتصال
+            بيانات غير مكتملة </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Chat history  -->
+    <hr />
+    <!-- Dynamic Grid -->
+    <form class="general-form" #gridContainer>
+      <div class="form-wrapper form-padding">
+        <form #gridForm="ngForm">
+          <app-grid-emitter [modalFormTitle]="'Form Title'" [addNewRecord]="'Add New Record'"
+            [tableHeadTitle]="'Table Title'" [(data)]="gridData" [columns]="gridcols" [(model)]="gridModel"
+            [canAdd]="true" [canEdit]="false" [canDelete]="true" [templateForm]="gridForm"
+            [(popUpOpened)]="isPopUpOpened" [template]="gridContent">
+            <ng-container #gridContent>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-row">
+                    <!--TOOL-->
+                    <custom-text-box [type]="'text'" name="Name" #Name="ngModel" [(ngModel)]="textBox"
+                      [label]="'ContactName'" autocomplete="" aria-label="Name" [isRequiredLabel]="true"
+                      [required]="isPopUpOpened">
+                    </custom-text-box>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </app-grid-emitter>
+        </form>
+      </div>
+    </form>
+    <hr />
+    <h2 class="main-title" #mainTitle>Section Title</h2>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="mainTitleHtml" [container]="mainTitle" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;main-title&quot;&gt;Section Title&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+    <span ngbTooltip="Tooltip Text Content" triggers="mouseenter:mouseleave click" [autoClose]="'outside'"
+      #tooltipContainer>Tooltip</span>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="tooltipHtml" [container]="tooltipContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;span ngbTooltip=&quot;Tooltip Text Content&quot; triggers=&quot;mouseenter:mouseleave click&quot; [autoClose]=&quot;'outside'&quot;&gt;Tooltip&lt;/span&gt;
+            </code>
+        </pre>
+    <hr />
+    <!-- <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row justify-content-center">
+          <div class="img-wrapper" #imgWrapperContainer>
+            <img src="../assets/images/default-gallery.png" />
+          </div>
+        </div>
+      </div>
+    </form> -->
+    <!-- <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="imgWrapperHtml" [container]="imgWrapperContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+    &lt;div class=&quot;row justify-content-center&quot;&gt;
+        &lt;div class=&quot;img-wrapper&quot;&gt;
+            &lt;img src='../assets/images/default-gallery.png'&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre> -->
+    <hr />
+    <h2 class="main-title">Form components</h2>
+    <!-- Currency field -->
+    <h3 class="main-title">Currency Inputs</h3>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-md-2" #CurrencyInputContainer>
+           <currency-input [label]="'Currency'" [required]="true"></currency-input>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+      <button class="copy-code" ngxClipboard [cbContent]="currencyInputHtml" [container]="CurrencyInputContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+      <span class="icon-clippy"></span>
+              </button>
+      <code>
+        &lt;div class=&quot;col-md-2&quot;&gt;
+        &lt;currency-input [label]=&quot;'Currency'&quot; [required]=&quot;true&quot;&gt;&lt;/currency-input&quot;&gt;
+        &lt;/div&gt;
+      </code>
+          </pre>
+    <hr />
+        <!-- Numeric field -->
+        <h3 class="main-title">Numeric Inputs</h3>
+        <form class="general-form">
+          <div class="form-wrapper form-padding">
+            <div class="row">
+              <div class="col-md-2" #NumericInputContainer>
+               <currency-input type="number" [label]="'Numeric Input'" [required]="true" [numeric]="true"></currency-input>
+              </div>
+            </div>
+          </div>
+        </form>
+        <pre class="code-preview">
+          <button class="copy-code" ngxClipboard [cbContent]="NumericInputHtml" [container]="NumericInputContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+          <span class="icon-clippy"></span>
+                  </button>
+          <code>
+            &lt;div class=&quot;col-md-2&quot;&gt;
+            &lt;currency-input [label]=&quot;'Numeric Input'&quot; [required]=&quot;true&quot;&gt;&lt; [numeric]=&quot;true&quot;&gt;&lt;/currency-input&quot;&gt;
+            &lt;/div&gt;
+          </code>
+              </pre>
+        <hr />
+    <h3 class="main-title">Inputs</h3>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #textboxContainer>
+            <custom-text-box [type]="'text'" [label]="'Text Box'"></custom-text-box>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="textboxHtml" [container]="textboxContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+      &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+      &lt;custom-text-box [type]=&quot;'text'&quot; [label]=&quot;'Text Box'&quot; &gt;&lt;/custom-text-box&gt;
+      &lt;/div&gt;
+    </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #requiredTextboxContainer>
+            <div class="form-row" [ngClass]="{ required: true }">
+              <custom-text-box [ngClass]="{ required: true }" [type]="'text'" [label]="'Required Input'"
+                [isRequiredLabel]="true"></custom-text-box>
+              <div class="form-validation">Please Enter a valid value</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="requiredTextboxHtml" [container]="requiredTextboxContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+      &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+      &lt;div class=&quot;form-row required&quot; [ngClass]=&quot;{{'{'}}'required': true{{'}'}}&quot;&gt;
+
+      &lt;custom-text-box class=&quot;required&quot; [type]=&quot;'text'&quot; [label]=&quot;'Required Input'&quot; [isRequiredLabel]=&quot;true&quot; &gt;&lt;/custom-text-box&gt;
+      &lt;div class=&quot;form-validation&quot;&gt;Please Enter a valid value&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;/div&gt;
+    </code>
+        </pre>
+    <hr />
+
+    <!-- <form class="general-form">
+    <div class="form-wrapper">
+      <div class="row">
+        <div class="col-12 col-md-4" #selectDropdownContainer>
+          <div class="form-row">
+            <label>Single Select DropDown</label>
+            <ngx-select-dropdown name="selectDropdown" [(ngModel)]="dataModel" [multiple]="false"
+                                 [config]="config" [options]="dropdownOptions">
+            </ngx-select-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form> -->
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #selectDropdownContainer>
+            <!-- <label>Single Select DropDown</label> -->
+            <mutliselect [label]="'Single Select DropDown'" id="selectDropdown" name="selectDropdown"
+              [propertyToSelect]="'Value'" [options]="dropdownOptions" [viewMode]="true" [multiple]="false"
+              [config]="config" [(ngModel)]="dataModel">
+            </mutliselect>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="selectDropdownHtml" [container]="selectDropdownContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+<!-- &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Single Select DropDown&lt;/label&gt;
+        &lt;ngx-select-dropdown name=&quot;selectDropdown&quot; [(ngModel)]=&quot;dataModel&quot; [multiple]=&quot;false&quot; [config]=&quot;config&quot; [options]=&quot;dropdownOptions&quot;&gt;
+        &lt;/ngx-select-dropdown&gt;
+    &lt;/div&gt;
+&lt;/div&gt; -->
+           &lt;form class=&quot;general-form&quot;&gt;
+            &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+              &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-12 col-md-4&quot; &gt;
+                  &lt;div class=&quot;form-row&quot;&gt;
+                    &lt;label&gt;Single Select DropDown&lt;/label&gt;
+                    &lt;mutliselect id=&quot;selectDropdown&quot; name=&quot;selectDropdown&quot;
+                                [label]=&quot;'Single Select DropDown'&quot;
+                                [propertyToSelect]=&quot;'Value'&quot;
+                                [options]=&quot;dropdownOptions&quot;
+                                [viewMode]=&quot;true&quot;
+                                [multiple]=&quot;false&quot;
+                                [config]=&quot;config&quot;
+                              &gt;
+                    &lt;/mutliselect&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <!-- <form class="general-form">
+    <div class="form-wrapper">
+      <div class="row">
+        <div class="col-12 col-md-4" #multiSelectContainer>
+          <div class="form-row">
+            <label>Multiple Select DropDown</label>
+            <ngx-select-dropdown name="selectDropdown" [(ngModel)]="objectsArray" [multiple]="true"
+                                 [config]="config" [options]="dropdownOptions">
+            </ngx-select-dropdown>
+            <div class="mt-4">selected options</div>
+            <div class="selected-options">
+              <span *ngFor="let user of objectsArray" class="selected-option">
+                {{user.name}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form> -->
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #multiSelectContainer>
+            <div class="form-row">
+              <mutliselect id="mutliselect" name="mutliselect" [label]="'New Multiple Select DropDown'"
+                [propertyToSelect]="'Value'" [options]="dropdownOptions" [viewMode]="false" [multiple]="true"
+                [config]="config" [(ngModel)]="SelectedValues" [specifySearchPlaceholder]="true" [searchlabel]="'Search label'">
+              </mutliselect>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="multiSelectHtml" [container]="multiSelectContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+        &lt;form class=&quot;general-form&quot;&gt;
+        &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;col-12 col-md-4&quot;
+              &lt;div class=&quot;form-row&quot;&gt;
+                &lt;mutliselect id=&quot;mutliselect&quot; name=&quot;mutliselect&quot;
+                             [propertyToSelect]=&quot;'Value'&quot;
+                             [label]=&quot;'New Multiple Select DropDown'&quot;
+                             [options]=&quot;dropdownOptions&quot;
+                             [viewMode]=&quot;false&quot;
+                             [multiple]=&quot;true&quot;
+                             [config]=&quot;config&quot;&gt;
+                             [specifySearchPlaceholder]=&quot;true&quot;&gt;
+                             [searchlabel]=&quot;'Search label'&quot;&gt;
+                &lt;/mutliselect&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+<!-- &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Multiple Select DropDown&lt;/label&gt; 
+        &lt;ngx-select-dropdown name=&quot;selectDropdown&quot; [(ngModel)]=&quot;objectsArray&quot; [multiple]=&quot;true&quot; [config]=&quot;config&quot; [options]=&quot;dropdownOptions&quot;&gt;
+        &lt;/ngx-select-dropdown&gt;
+        &lt;div class=&quot;mt-4&quot;&gt;selected options&lt;/div&gt;
+        &lt;div class=&quot;selected-options&quot;&gt;
+            &lt;span *ngFor=&quot;let user of objectsArray&quot;
+                class=&quot;selected-option&quot;&gt;
+                &lt;i class=&quot;icon-success&quot;&gt;&lt;/i&gt;{{'{'}}{{'{'}}user.name{{'}'}}{{'}'}}
+            &lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt; -->
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #passwordContainer>
+            <div class="form-row">
+              <password-textbox [label]="'Password Textbox'" [strength]="true"></password-textbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="passwordHtml" [container]="passwordContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;password-textbox [label]=&quot;'Password Textbox'&quot; [strength]='true'&gt;&lt;/password-textbox&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+    <h3 class="main-title">Date Picker</h3>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #datepickerContainer>
+            <div class="form-row">
+              <label>Date Picker</label>
+              <ngbd-datepicker-popup name="datePicker"></ngbd-datepicker-popup>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="datepickerHtml" [container]="datepickerContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+        </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+&lt;div class=&quot;form-row&quot;&gt;
+    &lt;label&gt;Date Picker&lt;/label&gt;
+    &lt;ngbd-datepicker-popup&gt;&lt;/ngbd-datepicker-popup&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+        </code>
+    </pre>
+    <hr>
+    <!-- <h3 class="main-title">Time Picker</h3>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #timepickerContainer>
+            <div class="form-row">
+              <label>Time Picker</label>
+              <ngbd-datepicker-popup name="timePicker" [(ngModel)]="test" [time]="true"></ngbd-datepicker-popup>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="timepickerHtml" [container]="timepickerContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+        </button>
+    <code>
+      &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+      &lt;div class=&quot;form-row&quot;&gt;
+      &lt;label&gt;Time Picker&lt;/label&gt;
+      &lt;ngbd-datepicker-popup [time]=&quot;true&quot; &gt;&lt;/ngbd-datepicker-popup&gt;
+      &lt;/div&gt;
+      &lt;/div&gt;
+    </code>
+    </pre> -->
+    <!-- <hr>
+    <h3 class="main-title">Datetime Picker</h3>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #datetimepickerContainer>
+            <div class="form-row">
+              <label>Datetime Picker</label>
+              <ngbd-datepicker-popup [(ngModel)]="test" [datetime]="true" name="datetimePicker"></ngbd-datepicker-popup>
+              <ngbd-datepicker-popup [(ngModel)]="test2" [datetime]="true" name="datetimePicker"></ngbd-datepicker-popup>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code"  ngxClipboard [cbContent]="datetimepickerHtml" [container]="datetimepickerContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+        </button>
+    <code>
+      &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+      &lt;div class=&quot;form-row&quot;&gt;
+      &lt;label&gt;Datetime Picker&lt;/label&gt;
+      &lt;ngbd-datepicker-popup [datetime]=&quot;true&quot; &gt;&lt;/ngbd-datepicker-popup&gt;
+      &lt;/div&gt;
+      &lt;/div&gt;
+    </code>
+    </pre>
+    <hr> -->
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #islamicDatepickerContainer>
+            <div class="form-row">
+              <label>Islamic Date Picker</label>
+              <ngbd-datepicker-islamiccivil></ngbd-datepicker-islamiccivil>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="islamicDatepickerHtml" [container]="islamicDatepickerContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Islamic Date Picker&lt;/label&gt;
+        &lt;ngbd-datepicker-islamiccivil&gt;&lt;/ngbd-datepicker-islamiccivil&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #textareaContainer>
+            <label>Textarea<span class="required"> *</span></label>
+            <textarea placeholder="Please enter a description"></textarea>
+            <!-- <app-textarea [label]="'Textarea'"></app-textarea> -->
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="textareaHtml" [container]="textareaContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+&lt;label&gt;Textarea&lt;span class=&quot;required&quot;&gt; *&lt;/span&gt;&lt;/label&gt;
+&lt;textarea placeholder=&quot;Please enter a description&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #checkboxContainer>
+            <div class="form-row">
+              <label>Checkbox</label>
+              <label class="check-box-container">
+                <p class="txt-wrapper">
+                  To verify
+                  <a class="item-link underline" href="#">
+                    Terms and conditions
+                  </a>
+                  kindly check this item
+                </p>
+                <input type="checkbox" [checked]="true" (change)="checked = !checked" />
+                <span class="checkmark"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="checkboxHtml" [container]="checkboxContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Checkbox&lt;/label&gt;
+        &lt;label class=&quot;check-box-container&quot;&gt;
+            &lt;p class=&quot;txt-wrapper&quot;&gt;To verify &lt;a class=&quot;item-link underline&quot; href=&quot;#&quot;&gt;Terms and conditions&lt;/a&gt; kindly check this item&lt;/p&gt;
+            &lt;input type=&quot;checkbox&quot; [checked]=true (change)=&quot;checked = !checked&quot;&gt;
+            &lt;span class=&quot;checkmark&quot;&gt;&lt;/span&gt;
+        &lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-2 col-md-4" #counterContainer>
+            <div class="form-row">
+              <label>Vertical Counter</label>
+              <counter></counter>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="counterHtml" [container]="counterContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-2 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Vertical Counter&lt;/label&gt;
+        &lt;counter&gt;&lt;/counter&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-2 col-md-4" #horizontalCounterContainer>
+            <div class="form-row">
+              <label>Horizontal Counter</label>
+              <counter class="horizontal"></counter>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="horizontalCounterHtml" [container]="horizontalCounterContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-2 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Horizontal Counter&lt;/label&gt;
+        &lt;counter class=&quot;horizontal&quot;&gt;&lt;/counter&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #radioContainer>
+            <div class="custom-radio">
+              <input type="radio" id="radio1" name="radio-group" [checked]="true" />
+              <label for="radio1">Radio Input</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="radioHtml" [container]="radioContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;custom-radio&quot;&gt;
+        &lt;input type=&quot;radio&quot; id=&quot;radio1&quot; name=&quot;radio-group&quot; [checked]=&quot;true&quot;&gt;
+        &lt;label for=&quot;radio1&quot;&gt;Radio Input&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-2 col-md-4" #disabledRadioContainer>
+            <div class="form-row">
+              <div class="custom-radio readonly">
+                <input type="radio" id="radio2" name="radio-group" />
+                <label for="radio2">Readonly Radio Input</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="disabledRadioHtml" [container]="disabledRadioContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-2 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;div class=&quot;custom-radio readonly&quot;&gt;
+            &lt;input type=&quot;radio&quot; id=&quot;radio2&quot; name=&quot;radio-group&quot;&gt;
+            &lt;label for=&quot;radio2&quot;&gt;Readonly Radio Input&lt;/label&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-2 col-md-4" #toggleContainer>
+            <div class="form-row">
+              <label>Toggle Button</label>
+              <btn-toggle (changed)="checked = $event" text="Toggle Button Label">
+              </btn-toggle>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="toggleHtml" [container]="toggleContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-2 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Toggle Button&lt;/label&gt;
+        &lt;btn-toggle (changed)=&quot;checked=$event&quot; [id]=&quot;toggleid || false&quot; text=&quot;Toggle Button Label&quot;&gt;&lt;/btn-toggle&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #modalContainer>
+            <div class="form-row">
+              <label>Modal Form</label>
+              <button class="main-btn">
+                Open Modal
+              </button>
+              <!-- <label>Modal</label> -->
+              <!-- <button class="main-btn" data-toggle="modal" data-target="#exampleModal"> Launch demo
+                    modal</button> -->
+              <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div role="document" class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-basic-title">Modal title</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-wrapper form-padding">
+                                    <div class="col-12">
+                                        <div class="form-row">
+                                            <label>Text Box</label>
+                                            <custom-text-box [type]="'text'"></custom-text-box>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+              <!-- <custom-modal [title]="modalTitle" [body]="modalBody"></custom-modal> -->
+              <!-- <custom-modal></custom-modal> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="modalHtml" [container]="modalContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+            &lt;div class=&quot;col-12 col-md-4&quot;&gt;
+            &lt;div class=&quot;form-row&quot;&gt;
+                &lt;label&gt;Modal Form&lt;/label&gt;
+                &lt;button class=&quot;main-btn&quot; (click)=&quot;openFormModal()&quot;&gt;Open Modal&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-4" #uploadContainer>
+            <div class="form-row">
+              <label>Upload Input</label>
+              <!-- <file-upload (fileChanged)='onFileChanged($event)' [allowedTypes]="'.png,.jpeg,.jpg'"></file-upload> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard  [container]="uploadContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12 col-md-4&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Upload Input&lt;/label&gt;
+        &lt;file-upload (fileChanged)='onFileChanged($event)' [allowedTypes]=&quot;'.png,.jpeg,.jpg'&quot;&gt;&lt;/file-upload&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12" #richContainer>
+            <div class="form-row">
+              <label>Rich HTML Component</label>
+              <!-- <rich-html></rich-html> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <button class="copy-code" ngxClipboard [cbContent]="richHtml" [container]="richContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+            </button>
+    <code>
+&lt;div class=&quot;col-12&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Rich HTML Component&lt;/label&gt;
+        &lt;rich-html&gt;&lt;/rich-html&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <h3 class="main-title">Buttons</h3>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12" #mainbtnContainer>
+            <div class="form-row">
+              <button type="button" class="main-btn">Main Button</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="mainbtnHtml" [container]="mainbtnContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;div class=&quot;col-12&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;main-btn&quot;&gt;Main Button&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12" #secbtnContainer>
+            <div class="form-row">
+              <button type="button" class="main-btn-secondary">
+                Secondary Button
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="secbtnHtml" [container]="secbtnContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;div class=&quot;col-12&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;main-btn-secondary&quot;&gt;Secondary Button&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12 col-md-6 align-self-md-end" #secbtnPinkContainer>
+            <button type="button" class="secondary-btn">
+              Retrieve Manager Data
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="secbtnPinkHtml" [container]="secbtnPinkContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                    </button>
+            &lt;div class=&quot;col-12 col-md-6 align-self-md-end&quot; &gt;
+                 &lt;button type=&quot;button&quot; class=&quot;secondary-btn&quot;&gt;Retrieve Manager Data&lt;/button&gt;
+            &lt;/div&gt;
+                </code>
+            </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row">
+          <div class="col-12" #disabledBtnsContainer>
+            <div class="form-row">
+              <button type="button" class="main-btn" disabled>
+                Disabled Main Button
+              </button>
+              <button type="button" class="main-btn-secondary" disabled>
+                Disabled Secondary Button
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="disabledBtnsHtml" [container]="disabledBtnsContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;div class=&quot;col-12&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;button type=&quot;button&quot; class=&quot;main-btn&quot; disabled&gt;
+            Disabled Main Button
+        &lt;/button&gt;
+        &lt;button type=&quot;button&quot; class=&quot;main-btn-secondary&quot; disabled&gt;
+            Disabled Secondary Button
+        &lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row justify-content-between no-gutters" #spaceBtwBtnsContainer>
+          <div class="form-row">
+            <label>Buttons With Space Between</label>
+          </div>
+          <button type="button" class="main-btn">Main button</button>
+          <button type="button" class="main-btn-secondary">
+            Secondary button
+          </button>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="spaceBtwBtnsHtml" [container]="spaceBtwBtnsContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;div class=&quot;row justify-content-between no-gutters&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;main-btn&quot;&gt;Main button&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;main-btn-secondary&quot;&gt;Secondary button&lt;/button&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <div class="row justify-content-center no-gutters" #centerBtnsContainer>
+          <div class="form-row">
+            <label>Buttons Centered</label>
+          </div>
+          <button type="button" class="main-btn">Main button</button>
+          <button type="button" class="main-btn-secondary">
+            Secondary button
+          </button>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="centerBtnsHtml" [container]="centerBtnsContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;div class=&quot;row justify-content-center no-gutters&quot;&gt;
+    &lt;div class=&quot;form-row&quot;&gt;
+        &lt;label&gt;Buttons Centered&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;button&quot; class=&quot;main-btn&quot;&gt;Main button&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;main-btn-secondary&quot;&gt;Secondary button&lt;/button&gt;
+&lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <h3 class="main-title">Tabs</h3>
+    <form class="general-form" #tabsContainer>
+      <div class="form-wrapper form-padding">
+        <div class="gea-tabs">
+          <!-- <mat-tab-group>
+            <mat-tab label="Tab Title1">
+                <p>Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.</p>
+            </mat-tab>
+            <mat-tab label="Second">
+                <p>Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.</p>
+            </mat-tab>
+            <mat-tab label="Third">
+                <p>Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.</p>
+            </mat-tab>
+        </mat-tab-group> -->
+          <ngb-tabset type="pills">
+            <ngb-tab>
+              <ng-template ngbTabTitle>Tab Title1</ng-template>
+              <ng-template ngbTabContent>
+                <p>
+                  Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                  Content1.
+                </p>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle>
+                <i class="icon-multiple-users-silhouette"></i>Tab Title2
+              </ng-template>
+              <ng-template ngbTabContent>
+                <p>
+                  Tab Content2 Tab Content2 Tab Content2 Tab Content2 Tab
+                  Content2.
+                </p>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Disabled" [disabled]="true">
+              <ng-template ngbTabContent>
+                <p>
+                  Tab Content3 Tab Content3 Tab Content3 Tab Content3 Tab
+                  Content3.
+                </p>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="tabsHtml" [container]="tabsContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;form class=&quot;general-form&quot;&gt;
+    &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+        &lt;div class=&quot;gea-tabs&quot;&gt;
+            &lt;ngb-tabset type=&quot;pills&quot;&gt;
+                &lt;ngb-tab&gt;
+                    &lt;ng-template ngbTabTitle&gt;Tab Title1&lt;/ng-template&gt;
+                    &lt;ng-template ngbTabContent&gt;
+                        &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                    &lt;/ng-template&gt;
+                &lt;/ngb-tab&gt;
+                &lt;ngb-tab&gt;
+                    &lt;ng-template ngbTabTitle&gt;
+                        &lt;i class=&quot;icon-multiple-users-silhouette&quot;&gt;&lt;/i&gt;Tab Title2&lt;/ng-template&gt;
+                    &lt;ng-template ngbTabContent&gt;
+                        &lt;p&gt;Tab Content2 Tab Content2 Tab Content2 Tab Content2 Tab Content2.&lt;/p&gt;
+                    &lt;/ng-template&gt;
+                &lt;/ngb-tab&gt;
+                &lt;ngb-tab title=&quot;Disabled&quot; [disabled]=&quot;true&quot;&gt;
+                    &lt;ng-template ngbTabContent&gt;
+                        &lt;p&gt;Tab Content3 Tab Content3 Tab Content3 Tab Content3 Tab Content3.&lt;/p&gt;
+                    &lt;/ng-template&gt;
+                &lt;/ngb-tab&gt;
+            &lt;/ngb-tabset&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+            </code>
+        </pre>
+    <hr />
+
+    <h3 class="main-title">Tabs with Scroll</h3>
+    <form class="general-form" #tabsScrollContainer>
+      <div class="form-wrapper form-padding">
+        <div class="gea-tabs">
+          <mat-tab-group>
+            <mat-tab label="Main Information">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Second" *ngIf="false">
+              <p>Carol 3aiza t3od fl bet.</p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+            <mat-tab label="Third">
+              <p>
+                Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab
+                Content1.
+              </p>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="tabsScrollHtml" [container]="tabsScrollContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+                &lt;form class=&quot;general-form&quot; &gt;
+                &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+                    &lt;div class=&quot;gea-tabs&quot;&gt;
+                        &lt;mat-tab-group&gt;
+                            &lt;mat-tab label=&quot;First&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Second&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                            &lt;mat-tab label=&quot;Third&quot;&gt;
+                                &lt;p&gt;Tab Content1 Tab Content1 Tab Content1 Tab Content1 Tab Content1.&lt;/p&gt;
+                            &lt;/mat-tab&gt;
+                        &lt;/mat-tab-group&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+            </code>
+        </pre>
+    <hr />
+    <h3 class="main-title">Tabs Actions and Navigation</h3>
+    <div class="layout-margin">
+      <div #tabsActionsContainer
+        class="col-12 form-footer position-relative p-0 d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+        <div>
+          <button type="button" class="main-btn">Submit</button>
+          <button type="button" class="main-btn-secondary">
+            Save as Draft
+          </button>
+          <button type="button" class="main-btn-secondary">Cancel</button>
+        </div>
+        <div class="tab-nav-wrapper">
+          <a aria-label="Next" title="Next" class="prev"></a>
+          <a aria-label="Prev" title="Previous" class="next"></a>
+        </div>
+      </div>
+    </div>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="tabsActionslHtml" [container]="tabsActionsContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+        </button>
+     &lt;div class=&quot;col-12 form-footer position-relative p-0 d-flex flex-column justify-content-center flex-md-row justify-content-md-between&quot;&gt;
+       &lt;div&gt;
+           &lt;button type=&quot;button&quot; class="main-btn"&gt;Submit&lt;/button&gt;
+           &lt;button type=&quot;button&quot; class="main-btn-secondary"&gt;Save as Draft&lt;/button&gt;
+           &lt;button type=&quot;button&quot; class="main-btn-secondary"&gt;Cancel&lt;/button&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;tab-nav-wrapper&quot;&gt;
+           &lt;a aria-label=&quot;Next&quot; title=&quot;Next&quot; class=&quot;prev&quot; (click)=&quot;NavigatePrevious()&quot;>&lt;/a&gt;
+           &lt;a aria-label=&quot;Prev&quot; title=&quot;Previous&quot; class=&quot;next&quot; (click)=&quot;NavigateNext()&quot;>&lt;/a&gt;
+       &lt;/div&gt;
+     &lt;/div&gt;
+      </code>
+  </pre>
+    <hr />
+    <h3 class="main-title">Filter</h3>
+    <form class="general-form" #filterContainer>
+      <div class="form-wrapper form-padding">
+        <div class="filter-wrapper grey-bg">
+          <form class="form-horizontal form-wrapper form-padding" role="form">
+            <label>Filter By</label>
+            <div class="row filter-container">
+              <div class="col-12 col-md-3">
+                <div class="form-row">
+                  <custom-text-box [label]="'Name'" [type]="'text'"></custom-text-box>
+                </div>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="form-row">
+                  <mutliselect id="mutliselect" name="mutliselect" [label]="'Venue Type'" [propertyToSelect]="'Value'"
+                    [options]="dropdownOptions" [viewMode]="false" [multiple]="true" [config]="config"
+                    [(ngModel)]="SelectedValues">
+                  </mutliselect>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-row align-items-center h-100">
+                  <button type="button" class="main-btn">
+                    Filter
+                  </button>
+                  <a href="#" title="" class="d-inline-block w-auto reset">
+                    Reset Filter
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="filterHtml" [container]="filterContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+                &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+                &lt;div class=&quot;filter-wrapper grey-bg&quot;&gt;
+                    &lt;form class=&quot;form-horizontal form-wrapper form-padding&quot; role=&quot;form&quot;&gt;
+                        &lt;label&gt;Filter By&lt;/label&gt;
+                        &lt;div class=&quot;row filter-container&quot;&gt;
+                            &lt;div class=&quot;col-12 col-md-3&quot;&gt;
+                                &lt;div class=&quot;form-row&quot;&gt;
+                                    &lt;custom-text-box [label]=&quot;'Name'&quot; [type]=&quot;'text'&quot;&gt;&lt;/custom-text-box&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;col-12 col-md-3&quot;&gt;
+                                &lt;div class=&quot;form-row&quot;&gt;
+                                    &lt;mutliselect id=&quot;selectDropdown&quot; name=&quot;selectDropdown&quot; 
+                                    [label]=&quot;'Venue Type'&quot;
+                                    [propertyToSelect]=&quot;'Value'&quot;
+                                        [options]=&quot;dropdownOptions&quot; [viewMode]=&quot;false&quot; [multiple]=&quot;false&quot;
+                                        [config]=&quot;config&quot;&gt;
+                                    &lt;/mutliselect&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;col-12&quot;&gt;
+                                &lt;div class=&quot;form-row align-items-center h-100&quot;&gt;
+                                    &lt;button type=&quot;button&quot; (click)=&quot;filterPermits()&quot; class=&quot;main-btn&quot;&gt;Filter&lt;/button&gt;
+                                    &lt;a href=&quot;#&quot; (click)=&quot;resetPermitfiltration()&quot; title=&quot;&quot;
+                                        class=&quot;d-inline-block w-auto reset&quot;&gt;Reset
+                                        Filter&lt;/a&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+    <h3 class="main-title">Image Gallery</h3>
+    <form class="general-form" #galleryContainer>
+      <div class="form-wrapper form-padding">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-8">
+            <ngb-carousel>
+              <ng-template ngbSlide>
+                <div class="picsum-img-wrapper">
+                  <img src="./assets/images/home-bg.png" alt="Random first slide" />
+                </div>
+              </ng-template>
+              <ng-template ngbSlide>
+                <div class="picsum-img-wrapper">
+                  <img src="./assets/images/default-gallery.png" alt="Random second slide" />
+                </div>
+              </ng-template>
+              <ng-template ngbSlide>
+                <div class="picsum-img-wrapper">
+                  <img src="./assets/images/home-bg.png" alt="Random third slide" />
+                </div>
+              </ng-template>
+            </ngb-carousel>
+          </div>
+        </div>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="galleryHtml" [container]="galleryContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+                &lt;form class=&quot;general-form&quot; #galleryContainer&gt;
+            &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+                &lt;div class=&quot;row justify-content-center&quot;&gt;
+                    &lt;div class=&quot;col-12 col-md-8&quot;&gt;
+                        &lt;ngb-carousel&gt;
+                            &lt;ng-template ngbSlide&gt;
+                                &lt;div class=&quot;picsum-img-wrapper&quot;&gt;
+                                    &lt;img src=&quot;./assets/images/home-bg.png&quot; alt=&quot;Random first slide&quot;&gt;
+                                &lt;/div&gt;
+                            &lt;/ng-template&gt;
+                            &lt;ng-template ngbSlide&gt;
+                                &lt;div class=&quot;picsum-img-wrapper&quot;&gt;
+                                    &lt;img src=&quot;./assets/images/default-gallery.png&quot; alt=&quot;Random second slide&quot;&gt;
+                                &lt;/div&gt;
+                            &lt;/ng-template&gt;
+                            &lt;ng-template ngbSlide&gt;
+                                &lt;div class=&quot;picsum-img-wrapper&quot;&gt;
+                                    &lt;img src=&quot;./assets/images/home-bg.png&quot; alt=&quot;Random third slide&quot;&gt;
+                                &lt;/div&gt;
+                            &lt;/ng-template&gt;
+                        &lt;/ngb-carousel&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/form&gt;
+            </code>
+        </pre>
+    <hr />
+    <h3 class="main-title">Tables/Grids</h3>
+    <form class="general-form" #detailsGridContainer>
+      <div class="form-wrapper form-padding">
+        <section class="order-grid">
+          <h4 class="card-title">Details Table</h4>
+          <table class="table-strip space-between">
+            <tr>
+              <td>Order1</td>
+              <td>2650 SAR</td>
+            </tr>
+            <tr>
+              <td>Order2</td>
+              <td>2650 SAR</td>
+            </tr>
+            <tr>
+              <td>Order3</td>
+              <td>2650 SAR</td>
+            </tr>
+          </table>
+        </section>
+      </div>
+    </form>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="detailsGridHtml" [container]="detailsGridContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;form class=&quot;general-form&quot;&gt;
+    &lt;div class=&quot;form-wrapper form-padding&quot;&gt;
+        &lt;section class=&quot;order-grid&quot;&gt;
+            &lt;h4 class=&quot;card-title&quot;&gt;Details Table&lt;/h4&gt;
+            &lt;table class=&quot;table-strip space-between&quot;&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Order1&lt;/td&gt;
+                    &lt;td&gt;2650 SAR&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Order2&lt;/td&gt;
+                    &lt;td&gt;2650 SAR&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;Order3&lt;/td&gt;
+                    &lt;td&gt;2650 SAR&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+            </code>
+        </pre>
+    <hr />
+    <!-- Dynamic Grid -->
+    <form class="general-form" #gridContainer>
+      <div class="form-wrapper form-padding">
+        <form #gridForm="ngForm">
+          <app-grid [modalFormTitle]="'Form Title'" [addNewRecord]="'Add New Record'" [tableHeadTitle]="'Table Title'"
+            [(data)]="gridData" [columns]="gridcols" [(model)]="gridModel" [canAdd]="true" [canEdit]="true"
+            [canDelete]="true" [templateForm]="gridForm" [(popUpOpened)]="isPopUpOpened" [template]="gridContent">
+            <ng-container #gridContent>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-row">
+                    <!--TOOL-->
+                    <custom-text-box [type]="'text'" [label]="'label'" [isRequiredLabel]="true">
+                    </custom-text-box>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </app-grid>
+        </form>
+      </div>
+    </form>
+    <!-- <form class="general-form" #gridContainer>
+      <div class="form-wrapper form-padding">
+        <div class="table-title position-relative">
+          <h3 class="d-inline-block">Table Title</h3>
+          <a href="#" class="add-record" title="Add New Record"><i class="icon-add1"></i>Add New Record</a>
+          <table class="table-template">
+            <thead>
+              <tr>
+                <th>Optimize</th>
+                <th>Optimize</th>
+                <th>Optimize</th>
+                <th>Optimize</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="accordion">
+                  <span>Steering Committee</span>
+                  <span class="icon hide-block-768"></span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <span> accountant</span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <span> accountant</span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Download : </span>
+                  <a href="#" alt="hh" title="hamada" class="svg-holder">
+                    <span> PM L&D Plan Template.docx</span>
+                  </a>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <div class="options">
+                    <a href="#" class="icon-edit"></a>
+                    <a href="#" class="icon-rubbish-bin"></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="accordion">
+                  <span>Steering Committee</span>
+                  <span class="icon hide-block-768"></span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <span> accountant</span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <span> accountant</span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Download : </span>
+                  <a href="#" alt="hh" title="hamada" class="svg-holder">
+                    <span> PM L&D Plan Template.docx</span>
+                  </a>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <div class="options">
+                    <a href="#" class="icon-edit"></a>
+                    <a href="#" class="icon-rubbish-bin"></a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class="accordion">
+                  <span>Steering Committee</span>
+                  <span class="icon hide-block-768"></span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <span> accountant</span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <span> accountant</span>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Download : </span>
+                  <a href="#" alt="hh" title="hamada" class="svg-holder">
+                    <span> PM L&D Plan Template.docx</span>
+                  </a>
+                </td>
+                <td class="panel">
+                  <span class="hide-block-768">Process Group : </span>
+                  <div class="options">
+                    <a href="#" class="icon-edit"></a>
+                    <a href="#" class="icon-rubbish-bin"></a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form> -->
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="gridHtml" [container]="gridContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+                &lt;form #gridForm=&quot;ngForm&quot;&gt;
+                  &lt;app-grid [modalFormTitle]=&quot;'Form Title'&quot;
+                              [addNewRecord]=&quot;'Add New Record'&quot;
+                              [tableHeadTitle]=&quot;'Table Title'&quot;
+                              [(data)]=&quot;gridData&quot;
+                              [columns]=&quot;gridcols&quot;
+                              [(model)]=&quot;gridModel&quot;
+                              [canAdd]=&quot;true&quot;
+                              [canEdit]=&quot;true&quot;
+                              [canDelete]=&quot;true&quot;
+                              [templateForm]=&quot;gridForm&quot;
+                              [(popUpOpened)]=&quot;isPopUpOpened&quot;
+                              [template]=&quot;gridContent&quot;&gt;
+                      &lt;ng-container #gridContent&gt;
+                      &lt;div class=&quot;row&quot;&gt;
+                          &lt;div class=&quot;col-12&quot;&gt;
+                          &lt;div class=&quot;form-row&quot;&gt;
+                              &lt;!--TOOL--&gt;
+                              &lt;custom-text-box [type]=&quot;'text'&quot; [label]=&quot;'label'&quot; [isRequiredLabel]=&quot;true&quot;&gt;
+                              &lt;/custom-text-box&gt;
+                          &lt;/div&gt;
+                          &lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;/ng-container&gt;
+                  &lt;/app-grid&gt;
+              &lt;/form&gt;
+            </code>
+        </pre>
+    <hr />
+    <div #paginationContainer>
+      <ngb-pagination [collectionSize]="70" [(page)]="page" [maxSize]="5" aria-label="Default pagination"
+        [pageSize]="5">
+      </ngb-pagination>
+    </div>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="paginationHtml" [container]="paginationContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+&lt;ngb-pagination [collectionSize]=&quot;70&quot; [(page)]=&quot;page&quot; [maxSize]=&quot;5&quot; aria-label=&quot;Default pagination&quot; [pageSize]=&quot;5&quot;  &gt;&lt;/ngb-pagination&gt;
+            </code>
+        </pre>
+    <hr />
+    <h3 class="main-title">Alert Component</h3>
+    <div #MsgContainer>
+      <div class="col-12 mb-3">
+        <button class="main-btn" (click)="SubmitSuccess()">SubmitSuccess</button>
+      </div>
+      <div class="col-12 mb-3">
+        <button class="main-btn" (click)="SubmitError()">SubmitError</button>
+      </div>
+      <div class="col-12 mb-3">
+        <button class="main-btn" (click)="SubmitWarning()">SubmitWarning</button>
+      </div>
+      <!-- <div class="col-12 mb-3">
+        <button class="main-btn" (click)="SubmitInfo()">SubmitInfo</button>
+      </div> -->
+    </div>
+    <!-- <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="alertsHtml" [container]="MsgContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+                
+
+            </code>
+        </pre> -->
+    <hr />
+    <h3 class="main-title">Inline Notifications</h3>
+    <div #alertsContainer>
+      <div class="col-12">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+          This is a primary alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+          This is a secondary alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          This is a success alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          This is a danger alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          This is a warning alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          This is a info alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="alert alert-dark alert-dismissible fade show" role="alert">
+          This is a dark alert—check it out!
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="alert alert-light alert-dismissible fade show" role="alert">
+        <i class="icon-info"></i>This is a light alert—check it out!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <pre class="code-preview">
+    <code>
+    <button class="copy-code" ngxClipboard [cbContent]="alertsHtml" [container]="alertsContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+    <span class="icon-clippy"></span>
+                </button>
+                &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-primary alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a primary alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-secondary alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a secondary alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-success alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a success alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-danger alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a danger alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-warning alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a warning alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-info alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a info alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;col-12&quot;&gt;
+                &lt;div class=&quot;alert alert-dark alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+                    This is a dark alert—check it out!
+                    &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;col-12&quot;&gt;
+            &lt;div class=&quot;alert alert-light alert-dismissible fade show&quot; role=&quot;alert&quot;&gt;
+            &lt;i class=&quot;icon-info&quot;&gt;&lt;/i&gt;This is a light alert—check it out!
+            &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot; aria-label=&quot;Close&quot;&gt;
+                    &lt;span aria-hidden=&quot;true&quot;&gt;&times;&lt;/span&gt;
+                    &lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+            </code>
+        </pre>
+    <hr />
+    <h3 class="main-title">Messages</h3>
+    <div #sucMsgContainer class="alerts-wrapper">
+      <message [mode]="success">
+        <p class="success-select">
+          Success Message
+        </p>
+      </message>
+    </div>
+    <!-- <pre class="code-preview">
+      <code>
+      <button class="copy-code" ngxClipboard [cbContent]="sucMsgHtml" [container]="sucMsgContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+      <span class="icon-clippy"></span>
+                  </button>
+  &lt;message [mode]=&quot;success&quot;&gt;
+      &lt;p class=&quot;success-select&quot;&gt;
+          Success Message
+      &lt;/p&gt;
+  &lt;/message&gt;
+              </code>
+          </pre> -->
+    <hr />
+
+    <div #errMsgContainer class="alerts-wrapper">
+      <message [mode]="error">
+        <p class="error-select">
+          Error Message
+        </p>
+      </message>
+    </div>
+    <!-- <pre class="code-preview">
+      <code>
+      <button class="copy-code" ngxClipboard [cbContent]="errMsgHtml" [container]="errMsgContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+      <span class="icon-clippy"></span>
+                  </button>
+  &lt;message [mode]=&quot;error&quot;&gt;
+      &lt;p class=&quot;error-select&quot;&gt;
+          Error Message
+      &lt;/p&gt;
+  &lt;/message&gt;
+              </code>
+          </pre> -->
+    <hr />
+
+    <div #warMsgContainer class="alerts-wrapper">
+      <message [mode]="warning">
+        <p class="warning-select">
+          Warning Message
+        </p>
+      </message>
+    </div>
+    <!-- <pre class="code-preview">
+      <code>
+      <button class="copy-code" ngxClipboard [cbContent]="warMsgHtml" [container]="warMsgContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+      <span class="icon-clippy"></span>
+                  </button>
+  &lt;message [mode]=&quot;warning&quot;&gt;
+      &lt;p class=&quot;warning-select&quot;&gt;
+          Warning Message
+      &lt;/p&gt;
+  &lt;/message&gt;
+              </code>
+          </pre> -->
+    <hr />
+
+    <div #empMsgContainer class="alerts-wrapper">
+      <message [mode]="empty">
+        <p class="empty-select">
+          Empty Message
+        </p>
+      </message>
+    </div>
+    <!-- <pre class="code-preview">
+      <code>
+      <button class="copy-code" ngxClipboard [cbContent]="empMsgHtml" [container]="empMsgContainer" ngbTooltip="Copy" triggers="mouseenter:mouseleave click" [autoClose]="'outside'">
+      <span class="icon-clippy"></span>
+                  </button>
+  &lt;message [mode]=&quot;empty&quot;&gt;
+      &lt;p class=&quot;empty-select&quot;&gt;
+          Empty Message
+      &lt;/p&gt;
+  &lt;/message&gt;
+              </code>
+          </pre> -->
+    <hr />
+    <div class="form-row">
+      <div class="col-md-4">
+        <app-side-stages [activeFirstLevel]="activeFirstLevel" [activeSecondLevel]="activeSecondLevel"
+          [structure]="formStructure" (onChange)="onSelect($event)">
+        </app-side-stages>
+      </div>
+      <div class="col-md-8 d-flex flex-column justify-content-around">
+        <div *ngIf="selectedNode">
+          <div>the user want to navigate to the node of index {{selectedNode?.index}} and label of
+            {{selectedNode?.label}}
+          </div>
+          <div>if you want to change the current stage change active first and second level properties with this index
+            and
+            its parent index</div>
+        </div>
+        <div>you set the active first level to {{activeFirstLevel}}</div>
+        <div>you set the active second level to {{activeSecondLevel}}</div>
+
+      </div>
+    </div>
+    <form class="general-form">
+      <div class="form-wrapper form-padding">
+        <adahi-verify-box ngModel required minlength="6" name="code" #code="ngModel"></adahi-verify-box>
+        <!-- <adahi-intl-tel-input [maxLength]="15" [selected]="selectedCountryCode"
+          [onlyCountries]="allCountriesCodes" [disableDropdown]="false" [enablePlaceholder]="true"
+          name="mobile" [(ngModel)]="cancelWorkspaceFilter.mobile" #mobile="ngModel">
+      </adahi-intl-tel-input> -->
+        <adahi-time-picker></adahi-time-picker>
+
+        <!-- <adahi-attachment></adahi-attachment> -->
+        <!-- <ngbd-progressbar-showvalue></ngbd-progressbar-showvalue> -->
+        <ngb-progressbar showValue="true" type="success" [value]="25"></ngb-progressbar>
+      </div>
+    </form>
+  </div>
+</main>

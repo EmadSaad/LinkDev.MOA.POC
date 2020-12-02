@@ -1,0 +1,128 @@
+.calender-wrapper {
+
+    .form-control{
+        z-index: 1;
+        background-color: transparent;
+    }
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    height: 2.5625rem;
+    &:after{
+        content: $icon-date;
+        font-size: 1.2rem;
+        color: $fuchsia;
+        position: absolute;
+        font-family: "icomoon";
+        #{$left}: 15px;
+        #{$right}: auto;
+        top: 9px;
+        z-index: 0;
+    }
+    .form-control {
+        position: absolute;
+        top: 0;
+        #{$left}: 0;
+        width: 100%;
+    }
+
+    .input-group-append {
+        z-index: 1;
+
+        &.clear {
+            button {
+                border-top-#{$right}-radius: 0;
+                border-bottom-#{$right}-radius: 0;
+                border-bottom-#{$left}-radius: 0;
+                border-top-#{$left}-radius: 0;
+                border: 1px solid $darker-grey;
+            }
+        }
+    }
+
+    .icon-calendar {
+        width: 4.4375rem;
+        border-color: #878C90;
+        border-top-#{$left}-radius: 0;
+        border-bottom-#{$left}-radius: 0;
+        border-bottom-#{$right}-radius: 0.25rem;
+        border-top-#{$right}-radius: 0.25rem;
+        z-index: 5;
+    }
+
+    .datepicker {
+        padding: 0 1rem;
+        position: relative;
+        text-align: #{$right};
+        // padding-#{$right}: 4.4375rem;
+        // padding-#{$left}: .2rem;
+        //&:hover{
+              
+           // }
+    }
+
+    input[type=date]{
+        &::-webkit-clear-button{
+            position:relative;
+            @if $dir == rtl{
+                right: 91%;
+            }
+            @else{
+                right: 7%;
+            }
+        }
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            display: none;
+        }
+
+        &::-webkit-calendar-picker-indicator {
+            -webkit-appearance: none;
+            display: none;
+        }
+    }
+    .ngb-dp-month {
+        width: 100%;
+    }
+
+    .ngb-dp-week {
+        justify-content: space-between;
+    }
+
+    .ngb-dp-navigation-select {
+        flex: 1 1 15rem;
+    }
+
+    ngb-datepicker.dropdown-menu.show {
+        width: 100%;
+        min-width: 235px;
+    }
+
+    select.custom-select {
+        background: image('dropdown-arrow.png') if-rtl(5px,95%)50% no-repeat #fff;
+        background-size: 10px !important;
+
+        &:first-of-type {
+            margin-#{$right}: 1rem;
+        }
+    }
+
+    @if $dir == rtl {
+        .right .ngb-dp-navigation-chevron {
+            -webkit-transform: rotate(225deg);
+            transform: rotate(225deg);
+        }
+
+        .ngb-dp-navigation-chevron {
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    }
+}
+
+// Extra large devices (large desktops, 1500px and up)
+@media (min-width: 1500px) {
+    .calender-wrapper {
+        height: 2.5625rem;
+    }
+}

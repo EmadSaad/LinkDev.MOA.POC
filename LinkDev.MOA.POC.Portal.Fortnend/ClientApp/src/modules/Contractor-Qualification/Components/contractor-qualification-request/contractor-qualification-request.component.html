@@ -1,0 +1,566 @@
+<app-breadcrumb [CurrnetComponentName]="'ContractorQualification'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+  
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'ContractorQualification.ContractorQualification' | translate}}</h4>
+    <!-- <div class="form-validation mb-4" *ngIf="!IsRequestValid">{{requestValidMsg}}</div> -->
+    <div class="alert alert-light" role="alert"> <i class="icon-info"></i>
+      {{'FORM_VALIDATION_MESSAGE' | translate}}
+    </div>
+    <div class="alert {{submissionAlertClass}}" role="alert" *ngIf="this.submissionInfo">{{submissionInfo}}</div>
+    <div class="alert alert-danger" role="alert" *ngIf="!IsRequestValid && requestValidMsg && requestValidMsg != ''">{{requestValidMsg}}</div>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+    <div [hidden]="ActiveLevelOne != 1" >
+      
+    <form #stageOne="ngForm" novalidate autocomplete="off">
+    <div class="row">
+
+      <div class="col-lg-4 col-md-6">
+        
+        <mutliselect id="CRId" name="CRId" [label]="'ContractorQualification.CR'"
+        [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['account_CRsByTypeContractor']"
+        [viewMode]="Application.IsReadOnly || Application.ApplicationHeader != null" [multiple]="false" [config]="config" [(ngModel)]="Application.Request.CRId"
+        #CRId="ngModel"  [isRequiredLabel]="true"           [ngClass]="{'required': CRId.errors && (isSubmit || isSaveDraft)}"
+        [required]="true" (change)="cRChanged($event);CROrQualificationTypeChanged();" >
+        </mutliselect>
+        <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="CRId"
+        [form]="stageOne" [submit]="isSubmit"></app-validation-viewer> -->
+      </div>
+      <app-info-viewer 
+      [isLoading]="isCurrentCR" 
+      [modalFormTitleKey]="'BuildingLicenseRequest.CRInfo'" 
+      name="CRInfo"
+      *ngIf="Application.Request.CRId">
+
+      <div class="row">
+
+        <div class="col-lg-4 col-md-6">
+
+          <custom-text-box 
+            [type]="'text'" 
+            name="CurrentCRType" 
+            #CurrentCRType="ngModel"
+            [(ngModel)]="CurrentCR.CRType" 
+            [label]="'ContractSubmission.Type'" 
+            autocomplete=""
+            aria-label="Name" 
+            [isReadOnly]="true"> 
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <custom-text-box 
+            [type]="'text'" 
+            name="CurrentCRNumber" 
+            #CurrentCRNumber="ngModel"
+            [(ngModel)]="CurrentCR.CRNumber" 
+            [label]="'ContractSubmission.CRNumber'" 
+            autocomplete=""
+            aria-label="Name" 
+            [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <label>
+            {{'ContractSubmission.CRIssuanceDate' | translate}}
+          </label>
+
+          <ngbd-datepicker-popup 
+            [(ngModel)]="CurrentCR.IssueDate" 
+            name="IssueDate" 
+            [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <label>
+            {{'ContractSubmission.CRExpiryDate' | translate}}
+          </label>
+
+          <ngbd-datepicker-popup 
+            [(ngModel)]="CurrentCR.ExpiryDate" 
+            name="ExpiryDate"
+            [ngModelOptions]="{standalone: true}"
+            [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <custom-text-box 
+            [type]="'text'" 
+            name="CurrentCRName" 
+            #CurrentCRName="ngModel"
+            [(ngModel)]="CurrentCR.CRName" 
+            [label]="'ContractSubmission.Name'" 
+            autocomplete=""
+            aria-label="Name" 
+            [isReadOnly]="true"> 
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-8 col-md-6">
+
+          <label>
+            {{'ContractSubmission.Activity' | translate}}
+          </label>
+
+          <textarea 
+            id="CurrentCRActivity" 
+            name="CurrentCRActivity" 
+            [readOnly]="true"
+            #CurrentCRActivity="ngModel" 
+            [(ngModel)]="CurrentCR.CRActivity" 
+            disabled>
+          </textarea>
+
+        </div>
+
+      </div>
+
+    </app-info-viewer>
+      <div class="col-lg-4 col-md-6">
+
+        <mutliselect 
+          id="RequestType"
+          name="RequestType"
+          [label]="'ContractorQualification.RequestType'"
+          [propertyToSelect]="'Value'"
+          [options]="lookupService.lookupEntities['ldv_service_ContractorRequestTypes']"
+          [viewMode]="Application.IsReadOnly || Application.ApplicationHeader != null"
+          [multiple]="false"
+          [config]="config"
+          [(ngModel)]="Application.Request.RequestTypeId"
+          [required]="true"
+          [isRequiredLabel]="true"
+          (change)="OnChangeRequestType($event);CROrQualificationTypeChanged();"
+          [ngClass]="{'required': RequestTypeId.errors && (isSubmit || isSaveDraft)}"
+          #RequestTypeId="ngModel">
+        </mutliselect>
+      </div>
+      <div class="col-lg-4 col-md-6" [hidden] = "!showOldCertificateLookup">
+        <mutliselect 
+        id="OldCerttificate"
+        name="OldCerttificate"
+        [label]="'ContractorQualification.OldCertificate'"
+        [propertyToSelect]="'Value'"
+        [options]="lookupService.lookupEntities['ldv_contractorcertificate_ContractorOldCertificate']"
+        [viewMode]="Application.IsReadOnly"
+        [multiple]="false"
+        [config]="config"
+        (change)="OnChangeOldCertificate($event);CROrQualificationTypeChanged();"
+        [isRequiredLabel]="true"
+        [required]="true"
+        [(ngModel)]="Application.Request.OldQualificationCertificateId"
+        #OldCerttificateId="ngModel"
+        [ngClass]="{'required': OldCerttificateId.errors && (isSubmit || isSaveDraft)}"
+
+      >
+      </mutliselect>
+      </div>
+      <div class="col-lg-4 col-md-6" *ngIf = " requestTypeCode == ChangeClassification ">
+        <mutliselect 
+        id="OldRatingCategory"
+        name="OldRatingCategory"
+        [label]="'ContractorQualification.OldRatingCategory'"
+        [propertyToSelect]="'Value'"
+        [options]="lookupService.lookupEntities['ldv_contractorratingcategory_ContractorOldRatingCategory']"
+        [viewMode]="true"
+        [multiple]="false"
+        [config]="config"
+        [(ngModel)]="Application.Request.OldRatingCategoryId"
+        #OldRatingCategoryId="ngModel"
+
+      >
+      </mutliselect>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="ContractorEnglishName" 
+           [label]="'ContractorQualification.ContractorEnglishName'" autocomplete=""
+          aria-label="Name" #ContractorEnglishNameId="ngModel"    (change)="ClearValidationMsg()"       [ngClass]="{'required': ContractorEnglishNameId.errors && isSubmit}"
+          [isRequiredLabel]="true"   [required]="true" [(ngModel)]="Application.Request.ContractorEnglishName" [isReadOnly]="Application.IsReadOnly" >
+        </custom-text-box>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="ContractorArabicName"  [label]="'ContractorQualification.ContractorArabicName'" autocomplete=""
+          aria-label="Name" #ContractorArabicNameId="ngModel"    (change)="ClearValidationMsg()"       [ngClass]="{'required': ContractorArabicNameId.errors && isSubmit}"
+          [isRequiredLabel]="true"   [required]="true" [isReadOnly]="Application.IsReadOnly" [(ngModel)]="Application.Request.ContractorArabicName" >
+        </custom-text-box>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+      <mutliselect 
+          id="City"
+          name="City"
+          [label]="'ContractorQualification.City'"
+          [propertyToSelect]="'Value'"
+          [options]="lookupService.lookupEntities['ldv_ksacity_KSACity']"
+          [viewMode]="Application.IsReadOnly"
+          [multiple]="false"
+          [config]="config"
+          [(ngModel)]="Application.Request.CityId"
+          [isRequiredLabel]="true"   [required]="true"
+          [ngClass]="{'required': CityId.errors && isSubmit}"
+          (change)="ClearValidationMsg()"
+          #CityId="ngModel">
+        </mutliselect>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="MainBranch"  [label]="'ContractorQualification.MainBranchAddress'" autocomplete=""
+          aria-label="Name" [isReadOnly]="Application.IsReadOnly" [(ngModel)]="Application.Request.MainBranchAddress">
+        </custom-text-box>
+      </div>
+     
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <mutliselect id="Contacts" name="Contacts" [label]="'ContractorQualification.ContactDetails'"
+        [propertyToSelect]="'Value'"
+        [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+        [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+        [(ngModel)]="Application.Request.Contacts"  #Contacts="ngModel" (change)="onContactChange($event)">
+      </mutliselect>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="Note"  [label]="'ContractorQualification.NoteFromLastCertificate'" autocomplete=""
+        aria-label="Name" [isReadOnly]="Application.IsReadOnly" [(ngModel)]="Application.Request.NoteFromLastCertificate" [hidden]="!Application.Request.NoteFromLastCertificate">
+      </custom-text-box>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-lg-8"> -->
+          <!-- contact Details grid -->
+          <!-- *ngIf="Application.Request.Contacts && Application.Request.Contacts.length>0 && lookupService.lookupEntities['ldv_contactdetails_ContactDetails']" -->
+
+          <app-grid 
+           
+          [tableHeadTitle]="'ContractorQualification.ContactDetails'"
+          [(data)]="contactsList" 
+          [columns]="gridcols" 
+          [(model)]="gridModel" 
+          [canAdd]="false" 
+          [canEdit]="false"
+          [canDelete]="false">
+        </app-grid>
+      <!-- </div>
+    </div> -->
+    <!-- <div class="row">
+      <div class="col-lg-8"> -->
+        <br>
+        <form #productGridForm="ngForm">
+        <app-grid [modalFormTitle]="'ContractorQualification.Projects'"
+        [tableHeadTitle]="'ContractorQualification.Projects'"
+        [addNewRecord]="'ContractSubmission.AddNew'"
+        [tableHeadTitle]="'ContractorQualification.Projects'"
+        [(data)]="Application.Request.ProjectsGrid" [columns]="pr_gridcols"
+        [(model)]="projectModel" [canAdd]="!Application.IsReadOnly" [canEdit]="!Application.IsReadOnly" [canDelete]="!Application.IsReadOnly"
+       
+         [template]="productGridContent"
+         [templateForm]="productGridForm">
+        <ng-container #productGridContent>
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <custom-text-box [type]="'text'" name="ProductFinalProduct"
+                        #ProductFinalProduct="ngModel"
+                        [(ngModel)]="projectModel.ProjectName"
+                        [label]="'ContractorQualification.Name'" autocomplete=""
+                        aria-label="Name" [isRequiredLabel]="true" [required]="true"
+                        [ngClass]="{ 'is-invalid required  validation':  ProductFinalProduct.errors }">
+                    </custom-text-box>
+                </div>
+                <div class="col-12 col-md-6">
+                    <custom-text-box [type]="'text'" name="ProductProductionVolume"
+                        #ProductProductionVolume="ngModel"
+                        [(ngModel)]="projectModel.InvestorName"
+                        [label]="'ContractorQualification.Investor'" autocomplete=""
+                        aria-label="Investor" [isRequiredLabel]="true" [required]="true"
+                        [ngClass]="{ 'is-invalid required  validation':  ProductProductionVolume.errors}">
+                    </custom-text-box>
+                   
+                </div>
+                <div class="col-12 col-md-6">
+                  <ngbd-datepicker-popup 
+                  name="ProductSymbol"
+                  #ProductSymbol="ngModel"
+                  [label]="'ContractorQualification.Date'" autocomplete=""
+                        aria-label="Date" [isRequiredLabel]="true" [required]="true"
+                        [ngClass]="{ 'is-invalid required  validation':  ProductSymbol.errors}"
+                  [(ngModel)]="projectModel.ProjectDate" 
+                  name="Date" 
+                  [readonly]="false">
+                </ngbd-datepicker-popup>
+                   
+                </div>
+
+            </div>
+        </ng-container>
+        </app-grid>
+        </form>
+
+      <!-- </div>
+    </div> -->
+    <div class="row">
+      <div class="col-lg-8">
+        <app-Uploaders-List 
+              [uploaders]="Application.Documents"
+              [IsLiveChanges]="true"
+              [IsReadOnly]="Application.IsReadOnly">
+            </app-Uploaders-List>
+      </div>
+    </div>
+    <div class="col form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+      <button type="button" class="main-btn"(click)="Submit()"  [disabled]="!IsRequestValid || Application.IsReadOnly ">
+        {{'Save' | translate}}
+      </button>
+      <button type="button" class="main-btn-secondary" (click)="SaveAsDraft()" [disabled]="!IsRequestValid || Application.IsReadOnly ">
+        {{'ServicesCommon.SaveAsDraft' | translate}}
+      </button>
+    </div>
+    </form>
+    </div>
+    <div [hidden]="ActiveLevelOne != 2" *ngIf="Application.ApplicationHeader != null" >
+      <app-request-quote [requestId]="Application.ApplicationHeader.Id"  [hidden]="ActiveLevelOne != 2 || !Application.ApplicationHeader.Id ">
+      </app-request-quote>
+       </div>
+    <div [hidden]="ActiveLevelOne != 3" *ngIf="Application.Request.GeneratedCertificate">
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.QualificationtNumber" >
+         
+            <custom-text-box [type]="'text'" name="CertificateNumber"  [label]="'ContractorQualification.CertificateNumber'" autocomplete=""
+              aria-label="Name" [isReadOnly]="true" #CertificateNumber = "ngModel"  [(ngModel)]="Application.Request.GeneratedCertificate.QualificationtNumber">
+            </custom-text-box>
+        </div>
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.CR">
+          <custom-text-box [type]="'text'" name="CR"  [label]="'ContractorQualification.CR'" autocomplete=""
+          aria-label="Name" [isReadOnly]="true" #CertificateNumber = "ngModel"  [(ngModel)]="Application.Request.GeneratedCertificate.CR.Name">
+        </custom-text-box>
+        </div>
+        <app-info-viewer 
+      [isLoading]="isCurrentCR" 
+      [modalFormTitleKey]="'BuildingLicenseRequest.CRInfo'" 
+      name="CRInfo"
+      *ngIf="Application.Request.CRId">
+
+      <div class="row">
+
+        <div class="col-lg-4 col-md-6">
+
+          <custom-text-box 
+            [type]="'text'" 
+            name="CurrentCRType" 
+            #CurrentCRType="ngModel"
+            [(ngModel)]="CurrentCR.CRType" 
+            [label]="'ContractSubmission.Type'" 
+            autocomplete=""
+            aria-label="Name" 
+            [isReadOnly]="true"> 
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <custom-text-box 
+            [type]="'text'" 
+            name="CurrentCRNumber" 
+            #CurrentCRNumber="ngModel"
+            [(ngModel)]="CurrentCR.CRNumber" 
+            [label]="'ContractSubmission.CRNumber'" 
+            autocomplete=""
+            aria-label="Name" 
+            [isReadOnly]="true">
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <label>
+            {{'ContractSubmission.CRIssuanceDate' | translate}}
+          </label>
+
+          <ngbd-datepicker-popup 
+            [(ngModel)]="CurrentCR.IssueDate" 
+            name="IssueDate" 
+            [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <label>
+            {{'ContractSubmission.CRExpiryDate' | translate}}
+          </label>
+
+          <ngbd-datepicker-popup 
+            [(ngModel)]="CurrentCR.ExpiryDate" 
+            name="ExpiryDate"
+            [ngModelOptions]="{standalone: true}"
+            [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+
+          <custom-text-box 
+            [type]="'text'" 
+            name="CurrentCRName" 
+            #CurrentCRName="ngModel"
+            [(ngModel)]="CurrentCR.CRName" 
+            [label]="'ContractSubmission.Name'" 
+            autocomplete=""
+            aria-label="Name" 
+            [isReadOnly]="true"> 
+          </custom-text-box>
+
+        </div>
+
+        <div class="col-lg-8 col-md-6">
+
+          <label>
+            {{'ContractSubmission.Activity' | translate}}
+          </label>
+
+          <textarea 
+            id="CurrentCRActivity" 
+            name="CurrentCRActivity" 
+            [readOnly]="true"
+            #CurrentCRActivity="ngModel" 
+            [(ngModel)]="CurrentCR.CRActivity" 
+            disabled>
+          </textarea>
+
+        </div>
+
+      </div>
+
+    </app-info-viewer>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngIf="CertificateStatus">
+          <custom-text-box [type]="'text'" name="CertificateStatus" 
+             [label]="'ContractorQualification.CertificateStatus'" autocomplete=""
+            aria-label="Name" [(ngModel)]="CertificateStatus" [isReadOnly]="true" >
+          </custom-text-box>
+        </div>
+        <div class="col-lg-4 col-md-6" *ngIf="CertificateType">
+          <custom-text-box [type]="'text'" name="CertificateType"  [label]="'ContractorQualification.CertificateType'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [(ngModel)]="CertificateType" >
+          </custom-text-box>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.ContractorEnglishName">
+          <custom-text-box [type]="'text'" name="ContractorEnglishName" 
+             [label]="'ContractorQualification.ContractorEnglishName'" autocomplete=""
+            aria-label="Name" [(ngModel)]="Application.Request.GeneratedCertificate.ContractorEnglishName" [isReadOnly]="true" >
+          </custom-text-box>
+        </div>
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.ContractorArabicName">
+          <custom-text-box [type]="'text'" name="ContractorArabicName"  [label]="'ContractorQualification.ContractorArabicName'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [(ngModel)]="Application.Request.GeneratedCertificate.ContractorArabicName" >
+          </custom-text-box>
+        </div>
+      </div>
+      <div class="row">
+    
+          <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.City">
+            <custom-text-box [type]="'text'" name="City"  [label]="'ContractorQualification.City'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" #City = "ngModel"  [(ngModel)]="Application.Request.GeneratedCertificate.City.Name">
+          </custom-text-box>
+          </div>
+          <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.ContractorRating">
+            <custom-text-box [type]="'text'" name="ContractorRating"  [label]="'ContractorQualification.ContractorRating'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" #ContractorRating = "ngModel"  [(ngModel)]="Application.Request.GeneratedCertificate.ContractorRating.Name">
+          </custom-text-box>
+          </div>
+       
+       
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.Note">
+          <custom-text-box [type]="'text'" name="Note"  [label]="'ContractorQualification.Note'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [(ngModel)]="Application.Request.GeneratedCertificate.Note">
+          </custom-text-box>
+        </div>
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.MainBranchAddress">
+          <custom-text-box [type]="'text'" name="MainBranch"  [label]="'ContractorQualification.MainBranchAddress'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true" [(ngModel)]="Application.Request.GeneratedCertificate.MainBranchAddress">
+          </custom-text-box>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.IssuedDate">
+
+          <label>
+            {{'ContractorQualification.IssuedDate' | translate}}
+          </label>
+
+          <ngbd-datepicker-popup 
+            [(ngModel)]="Application.Request.GeneratedCertificate.IssuedDate" 
+            name="IssueDate" 
+            [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+        <div class="col-lg-4 col-md-6" *ngIf="Application.Request.GeneratedCertificate.ExpiryDate">
+
+          <label>
+            {{'ContractorQualification.ExpiryDate' | translate}}
+          </label>
+
+          <ngbd-datepicker-popup 
+            [(ngModel)]="Application.Request.GeneratedCertificate.ExpiryDate" 
+            name="IssueDate" 
+            [readonly]="true">
+          </ngbd-datepicker-popup>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8" *ngIf="Application.Documents">
+          <app-Uploaders-List 
+                [uploaders]="Application.Documents"
+                [IsLiveChanges]="true"
+                [SectionName]="'CertificateReport'"
+                [IsReadOnly]="true">
+              </app-Uploaders-List>
+        </div>
+      </div>
+    </div>
+     <div [hidden]="ActiveLevelOne != 4"  *ngIf="Application.Request != null">
+     
+     <app-request-comments [regardingID]="Application.Request.Id"
+     [hidden]="ActiveLevelOne != 4 || !Application.Request.Id || Application.ApplicationHeader.PortalStatusCode === '1'">
+   </app-request-comments>
+     </div>
+  
+  </div>
+  
+</div>
+

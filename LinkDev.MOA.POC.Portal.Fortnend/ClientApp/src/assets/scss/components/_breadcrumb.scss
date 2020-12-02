@@ -1,0 +1,106 @@
+.breadcrumb-wrapper {
+    &:before {
+        content: none;
+    }
+
+    &:after {
+        content: none;
+    }
+    a {
+        color: $brand-color !important;
+    }
+}
+
+.breadcrumb-wrapper {
+    border-bottom: 2px solid #E9E9E9;
+    padding: 19px 0;
+    a, span{
+        font-size: 1rem;//0.875rem
+    }
+    a {
+        position: relative;
+        margin-#{$left}: 30px;
+        margin-#{$right}: auto;
+        display: inline-block;
+
+        &:after {
+            content: $icon-double-arrow;
+            font-size: 0.55rem;
+            font-family: "icomoon";
+            color: black;
+            position: absolute;
+            #{$left}: -18px;
+            #{$right}: auto;
+            display: inline-block;
+            top: 5px;
+        }
+        // &:last-child {
+        //   &:after {
+        //     content: none;
+        //   }
+        // }
+    }
+
+    span {
+        color: #727272;
+    }
+}
+// medium devices (medium devices,768px and up)
+@media (min-width: 768px) {
+    .breadcrumb-wrapper {
+        .breadcrumb {
+            span[id$="_PlaceHolderBreadCrumb_breadcrumb"] {
+                width: 90%;
+            }
+        }
+    }
+}
+@media (max-width: 768px) {
+    .breadcrumb-wrapper {
+        &:after {
+            width: 5%;
+            height: 24px;
+
+            @if $dir == ltr {
+                left: 10px;
+            } @else {
+                right: 22px;
+            }
+        }
+    }
+}
+@media (min-width: 1200px) {
+    .breadcrumb-wrapper {
+        margin-top: get-vh(100px);
+        a {
+            &:after {
+                top: 6px;
+            }
+        }
+        a , span{
+            font-size: 1.125rem;
+        }
+    }
+}
+@media (min-width: 1200px) and (max-width: 1600px) {
+    .breadcrumb-wrapper {
+        &:before {
+            width: 80%;
+        }
+        &:after {
+            #{$left}: 18%;
+        }
+    }
+}
+@media (min-width: 1500px) {
+    .breadcrumb-wrapper {
+        .breadcrumb {
+            a,
+            .breadcrumbCurrentNode,
+            span:nth-last-of-type(even) {
+                // font-size:1rem;
+                line-height: 33px;
+            }
+        }
+    }
+}

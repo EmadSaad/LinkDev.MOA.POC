@@ -1,0 +1,699 @@
+<div class="form-wrapper mb-0">
+  <div class="row">
+    <div class="col-lg-3 mb-0">
+      <div class="h-100">
+        <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+          [structure]="formStructure" (onChange)="onSelect($event)">
+        </app-side-stages>
+      </div>
+    </div>
+    <div class="col-md-9 col-12">
+      <!--Request-Header-->
+      <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+      <!-- Plan Approval Level -->
+      <div [hidden]="ActiveLevelOne != 1" >
+        <h1 class="page-title">{{'PlanApproval.planApproval' | translate}}</h1>
+        <!--Validation-Message-->
+        <div class="alert alert-light" role="alert"> <i class="icon-info"></i>
+          {{'FORM_VALIDATION_MESSAGE' | translate}}
+        </div>
+        <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+        <!-- RequestMainInfoSection -->
+        <div [hidden]="ActiveLevelTwo != 1">
+          <h5 class="stage-title">{{'PlanApproval.RequestMainInfoStage' | translate}}</h5>
+          <div id="RequestMainInfoSection">
+            <form #stageOne="ngForm" novalidate autocomplete="off">
+              <!-- <div class="row">
+                <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'" [label]="'PlanApproval.PlanApprovalName'"              
+                    [(ngModel)]="Application.Request.PlanApprovalNumber"  #PlanNumber="ngModel"  name="PlanNumber"
+                    [isRequiredLabel]="false" [isReadOnly]="true">
+                  </custom-text-box>
+                </div>
+              </div> -->
+
+              <div class="row">
+                <div class="col-xl-4 col-lg-6" [ngClass]="{'required':!IsRequestValid}">
+                  <mutliselect id="CRId" name="CRId" [label]="'PlanApproval.CR'" [propertyToSelect]="'Value'"
+                    [options]="lookupService.lookupEntities['account_CRsByTypeInvestor']"
+                    [viewMode]="Application.Request.Id" [multiple]="false" [config]="config" searchPlaceholder="'PlanApproval.CR'"
+                    [(ngModel)]="Application.Request.CRId" [required]="true" [disabled]="false" [isRequiredLabel]="true"
+                    (change)="cRChanged()" #CRId="ngModel">
+                  </mutliselect>
+                  <!-- {{lookupService.lookupEntities['account_ContractSubmissionCRs'] | json}} -->
+                  <!-- {{Application.Request.CRId | json}} -->
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="CRId"
+                    [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>
+                </div>
+                <app-info-viewer [isLoading]="isCurrentCR" [modalFormTitleKey]="'ContractSubmission.Info'" name="CRInfo"
+                  *ngIf="Application.Request.CRId">
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+                        [(ngModel)]="CurrentCR.CRType" [label]="'ContractSubmission.Type'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+                        [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <label>{{'ContractSubmission.CRIssuanceDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" name="IssueDate" [readonly]="true">
+                      </ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- {{CurrentCR.IssueDate | json}} -->
+                      <label>{{'ContractSubmission.CRExpiryDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentCR.ExpiryDate" name="ExpiryDate" [readonly]="true">
+                      </ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+                        [(ngModel)]="CurrentCR.CRName" [label]="'ContractSubmission.Name'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-8">
+                      <label>{{'ContractSubmission.Activity' | translate}}</label>
+                      <textarea id="CurrentCRActivity" name="CurrentCRActivity" [readOnly]="true"
+                        #CurrentCRActivity="ngModel" [(ngModel)]="CurrentCR.CRActivity"></textarea>
+                    </div>
+                  </div>
+                  <app-grid [canAdd]="false" [canDelete]="false" [canEdit]="false"
+                    [tableHeadTitle]="'ContractSubmission.Owners'" [(data)]="CurrentCR.CROwners"
+                    [columns]="CROwnerGridcols">
+                  </app-grid>
+                </app-info-viewer>
+                <!-- <div class="col-xl-4 col-lg-6">
+                          <custom-text-box [type]="'text'"  
+                                [label]="'PlanApproval.CurrentSpace'" 
+                                [(ngModel)]="Application.Request.CurrentSpace"
+                                [isReadOnly]="isDraftSatgeReadOnly"
+                                #currentSpace="ngModel" name="currentSpace">
+                            </custom-text-box>
+                        </div> -->
+              </div>
+              <div class="form-validation mb-4" *ngIf="!IsCRContractsBalanceValid">
+                {{crContractBalanceValidMsg}}
+              </div> 
+              <div class="row">
+                <div class="col-xl-4 col-lg-6" [ngClass]="{'required':!IsRequestValid}">
+                  <mutliselect id="ContractNumber" name="ContractNumber" [label]="'PlanApproval.ContractNumber'"
+                    [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_contract_LookupWithId']"
+                    [multiple]="false" [config]="config" [viewMode]="isContractNumberReadOnly"
+                    [(ngModel)]="Application.Request.ContractNumberId" [required]="true" [disabled]="false"
+                    [isRequiredLabel]="true" #ContractNumber="ngModel" (change)="OnContractChange()">
+                  </mutliselect>
+                  <!-- {{lookupService.lookupEntities['ldv_contract_LookupWithId'] |json}}
+                            {{Application.Request.ContractNumberId | json}}
+                            {{ContractNumber.value | json}} -->
+                  <!-- {{Application.Request.ContractNumberId | json}} -->
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                    [controlName]="ContractNumber" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>
+                </div>
+                <app-info-viewer [isLoading]="isCurrentContract" [modalFormTitleKey]="'ContractSubmission.Info'"
+                  name="ContactInfo" *ngIf="Application.Request.ContractNumberId&&CurrentContract">
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.CR">
+                      <custom-text-box [type]="'text'" name="CRContract" #CRContract="ngModel"
+                        [(ngModel)]="CurrentContract.CR.Name" [label]="'ContractSubmission.CRId'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.Industrialcity">
+                      <custom-text-box [type]="'text'" name="ContractIndustrialCity" #ContractIndustrialCity="ngModel"
+                        [(ngModel)]="CurrentContract.Industrialcity.Name" [label]="'ContractSubmission.IndustrialCity'"
+                        autocomplete="" aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.ProductMainfamily">
+                      <custom-text-box [type]="'text'" name="ContractProductMainFamily"
+                        #ContractProductMainFamily="ngModel" [(ngModel)]="CurrentContract.ProductMainfamily.Name"
+                        [label]="'ContractSubmission.ProductMainFamily'" autocomplete="" aria-label="Name"
+                        [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.ProductSubFamily">
+                      <custom-text-box [type]="'text'" name="ContractProductSubFamily"
+                        #ContractProductMainFamily="ngModel" [(ngModel)]="CurrentContract.ProductSubFamily.Name"
+                        [label]="'ContractSubmission.ProductSubFamily'" autocomplete="" aria-label="Name"
+                        [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6" *ngIf="CurrentContract.Product">
+                      <custom-text-box [type]="'text'" name="ContractProduct" #ContractProduct="ngModel"
+                        [(ngModel)]="CurrentContract.Product.Name" [label]="'ContractSubmission.Product'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractConstructionAmountValue"
+                        #ContractConstructionAmountValue="ngModel"
+                        [(ngModel)]="CurrentContract.ConstructionContractStatus"
+                        [label]="'ContractSubmission.ConstructionAmountValue'" autocomplete="" aria-label="Name"
+                        [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractLegalStatus" #ContractLegalStatus="ngModel"
+                        [(ngModel)]="CurrentContract.LegalStatus" [label]="'PlanApproval.LegalStatus'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractPricingdate" #ContractPricingdate="ngModel"
+                        [(ngModel)]="CurrentContract.Pricingdate" [label]="'PlanApproval.Pricingdate'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <custom-text-box [type]="'text'" name="ContractFileNumber" #ContractFileNumber="ngModel"
+                        [(ngModel)]="CurrentContract.FileNumber" [label]="'PlanApproval.FileNumber'" autocomplete=""
+                        aria-label="Name" [isReadOnly]="true">
+                      </custom-text-box>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- <custom-text-box [type]="'text'" name="LandNumber" #ContractPricingdate="ngModel"
+                    [(ngModel)]="CurrentContract.LandNumber" [label]="'PlanApproval.LandNumber'"
+                    autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box> -->
+                      <label>{{'PlanApproval.ContractStartingDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentContract.ContractStartingDate" [readonly]="true"
+                        name="ContractStartingDate"></ngbd-datepicker-popup>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                      <!-- {{CurrentContract.ContractStartingDate | json}} -->
+                      <label>{{'PlanApproval.ContractExpiryDate' | translate}}</label>
+                      <ngbd-datepicker-popup [(ngModel)]="CurrentContract.ContractExpiryDate" [readonly]="true"
+                        name="ContractExpiryDate"></ngbd-datepicker-popup>
+
+                    </div>
+
+                  </div>
+                  <app-grid *ngIf="contactDetailsfromContract && contactDetailsfromContract.length > 0" [canAdd]="false"
+                    [canDelete]="false" [canEdit]="false" [modalFormTitle]="'ContractContactsDetails'"
+                    [tableHeadTitle]="'PlanApproval.ContactDetails'" [(data)]="contactDetailsfromContract"
+                    [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false" [canDelete]="false">
+                  </app-grid>
+
+                </app-info-viewer>
+              </div>
+              <!-- Naglaa -->
+              <div class="form-validation mb-4" *ngIf="!IsContractMeternNmberHasValue">{{contractMeternNmberValidMsg}}</div>
+
+              <div class="row">
+                <div class="col-xl-4 col-lg-6" [ngClass]="{'required':!IsRequestValid}">
+                  <mutliselect id="PlanType" name="PlanType" #PlanType="ngModel" [label]="'PlanApproval.PlanType'"
+                    [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_plantype_LookupWithId']"
+                    [multiple]="false" [config]="config" [(ngModel)]="Application.Request.PlanTypeId" [required]="true"
+                    [disabled]="false" [viewMode]="isPlanTypeReadOnly" (change)="PlanTyepChanged()"
+                    [isRequiredLabel]="true">
+                  </mutliselect>
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                    [controlName]="PlanType" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>
+                  <!--[viewInitialized]="viewInitialized"-->
+                </div>
+              </div>
+              <!-- Toqa -->
+              <div class="form-validation mb-4" *ngIf="!IsRequestValid">{{requestValidMsg}}</div>
+              <div class="row">
+                <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'"   [label]="'PlanApproval.Contractmeternumber'"              
+                    [(ngModel)]="Application.Request.Contractmeternumber"    #Contractmeternumber="ngModel"
+                     name="Contractmeternumber" [isReadOnly]="true"
+                    [ngClass]="{ 'is-invalid required  validation':  Contractmeternumber.errors}"             
+                    [isRequiredLabel]="true"  >
+                  </custom-text-box>
+                  <!--Toqa-->
+                  <div *ngIf="Contractmeternumber.errors" class="invalid-feedback">
+                    <div class="form-validation" *ngIf="Contractmeternumber.errors.required">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div>
+                  <!-- {{Application.Request.Contractmeternumber}} -->
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                    [controlName]="Contractmeternumber" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>
+                </div>
+                <div class="col-xl-4 col-lg-6" >
+                  <mutliselect id="PlanElements" name="PlanElements" [label]="'PlanApproval.PlanElements'"
+                    [propertyToSelect]="'Value'"
+                    [options]="lookupService.lookupEntities['ldv_planapproval_ldv_planelements_OptionSet']"
+                    [viewMode]="isDraftSatgeReadOnly" [multiple]="true" [config]="config"
+                    [(ngModel)]="Application.Request.PlanElements" [required]="true" [disabled]="false"
+                    [isRequiredLabel]="true" #PlanElements="ngModel" >
+                  </mutliselect>
+                  <!-- {{Application.Request.PlanElementsString | json}}  -->
+                  <!--Toqa-->
+                  <!-- <div *ngIf="PlanElements.errors" class="invalid-feedback">
+                    <div class="form-validation" *ngIf="PlanElements.errors.required">
+                      {{'Validations.Required' | translate}}
+                    </div>
+                  </div> -->
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="PlanElements" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-4 col-lg-6">
+                  <mutliselect id="Contacts" name="Contacts" [label]="'PlanApproval.Contacts'"
+                    [propertyToSelect]="'Value'"
+                    [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+                    [viewMode]="isDraftSatgeReadOnly" [multiple]="true" [config]="config"
+                    [(ngModel)]="Application.Request.Contacts" [required]="true" [disabled]="false"
+                    [isRequiredLabel]="true" #Contacts="ngModel" (change)="onContactChange($event)">
+                  </mutliselect>
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                  [controlName]="Contacts" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>
+                  <!-- {{lookupService.lookupEntities['ldv_contactdetails_ContactDetails']  | json}} -->
+                  <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                    [controlName]="Contacts" [form]="stageOne" [submit]="isSubmit"></app-validation-viewer> -->
+                </div>
+              </div>
+              <!-- contact Details grid -->
+              <app-grid [modalFormTitle]="'Biddings'" [tableHeadTitle]="'PlanApproval.ContactDetails'"
+                [(data)]="contactsList" [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" [canEdit]="false"
+                [canDelete]="false">
+              </app-grid>
+              <!-- {{contactsList | json}} -->
+              <div class="row">
+                <!-- Toqa -->
+                <!-- <div class="col-xl-8" *ngIf="Application.Request.ScopeOfWork">
+                  <app-textarea app-textarea [label]="'PlanApproval.ScopeOfWork'"
+                   [(ngModel)]="Application.Request.ScopeOfWork"
+                   [disabled]="true"
+                   #ScopeOfWork="ngModel"  name="ScopeOfWork">
+                  </app-textarea>
+                   <custom-text-box [type]="'text'"   [label]="'PlanApproval.ScopeOfWork'"              
+                    [(ngModel)]="Application.Request.ScopeOfWork"   #ScopeOfWork="ngModel"  name="ScopeOfWork"
+                    [isRequiredLabel]="false"  [isReadOnly]="true">
+                  </custom-text-box> 
+                </div> -->
+                <div class="col-xl-8" *ngIf="Application.Request.ScopeOfWork">
+                  <label>{{'PlanApproval.ScopeOfWork' | translate}}</label>
+                  <textarea id="ScopeOfWork" name="ScopeOfWork"  
+                  [readOnly]="true" 
+                  [(ngModel)]="Application.Request.ScopeOfWork"
+                  #ScopeOfWork="ngModel" 
+                  [(ngModel)]="Application.Request.ScopeOfWork"></textarea>
+                </div>
+              </div>
+
+              <!-- End contact Details grid -->
+              <div class="row">
+                <!-- <div class="col-xl-8">
+                  <custom-text-box [type]="'text'"  
+              [label]="'PlanApproval.AnotherComment'" 
+              [(ngModel)]="Application.Request.AnotherComment" 
+              [isReadOnly]="isDraftSatgeReadOnly"
+              #AnotherComment="ngModel" name="AnotherComment">
+            </custom-text-box> 
+                  <app-textarea [label]="'PlanApproval.AnotherComment'" 
+                  [(ngModel)]="Application.Request.AnotherComment"
+                    [disabled]="isDraftSatgeReadOnly"
+                     #AnotherComment="ngModel" name="AnotherComment">
+                  </app-textarea>
+                </div> -->
+
+                <div class="col-xl-4 col-lg-6">
+                  <label>{{'PlanApproval.AnotherComment' | translate}}</label>
+                  <textarea id="AnotherComment" name="'PlanApproval.AnotherComment'"  
+                  [readOnly]="isDraftSatgeReadOnly" 
+                  [(ngModel)]="Application.Request.AnotherComment"
+                  #AnotherComment="ngModel" 
+                  [(ngModel)]="Application.Request.AnotherComment"></textarea>
+                </div>
+              </div>
+              <div class="row" *ngIf="ShowSapceRow">
+                <div class="col-xl-4 col-lg-6">
+                  <!-- [ngClass]="{'required':currentSpace.dirty && currentSpace.errors && currentSpace.errors.pattern && currentSpace.errors.pattern.actualValue < 0}"> -->
+                  <custom-text-box [type]="'number'"  [label]="'PlanApproval.CurrentSpace'"  
+                                [(ngModel)]="Application.Request.CurrentSpace" [isReadOnly]="isDraftSatgeReadOnly"
+                                #currentSpace="ngModel"  name="currentSpace">
+                  </custom-text-box>
+                  <!-- {{currentSpace.errors | json}} -->
+                  <!-- {{currentSpace.hasError() | json}}
+                  {{currentSpace.errors | json}} -->
+
+                  <!-- <div class="form-validation"
+                    *ngIf="(currentSpace.dirty && currentSpace.errors && currentSpace.errors.pattern && currentSpace.errors.pattern.actualValue < 0 )">
+                    {{ 'PlanApproval.currentSpaceValidation' | translate}}
+                  </div> -->
+                </div>
+                <div class="col-xl-4 col-lg-6">
+                  <!-- [ngClass]="{'required':FutureSpaceAfterModification.dirty && FutureSpaceAfterModification.errors && FutureSpaceAfterModification.errors.pattern && FutureSpaceAfterModification.errors.pattern.actualValue < 0}"> -->
+                  <custom-text-box [type]="'number'" 
+                    [label]="'PlanApproval.FutureSpaceAfterModification'"              
+                    [(ngModel)]="Application.Request.FutureSpaceAfterModification"   
+                      #FutureSpaceAfterModification="ngModel"  name="FutureSpaceAfterModification"             
+                    [isRequiredLabel]="false"  [isReadOnly]="isDraftSatgeReadOnly">
+                  </custom-text-box>
+                  <!-- <div class="form-validation"
+                    *ngIf="(FutureSpaceAfterModification.dirty && FutureSpaceAfterModification.errors && FutureSpaceAfterModification.errors.pattern && FutureSpaceAfterModification.errors.pattern.actualValue < 0 )">
+                    {{ 'PlanApproval.FutureSpaceAfterModificationValidation' | translate}}
+                  </div> -->
+                </div>
+              </div>
+              <!-- Comment -->
+              <div class="row" *ngIf="Application.Request.Investor">
+                <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'" [label]="'PlanApproval.Investor'"              
+                    [(ngModel)]="Application.Request.Investor.Name"  #Investor="ngModel" name="Investor"
+                    [isRequiredLabel]="false" [isReadOnly]="true">
+                  </custom-text-box>
+                </div>
+              </div>
+
+              <div *ngIf="Application.Request">
+                <!-- <label>{{'PlanApproval.Cadastral' | translate}}</label> -->
+                <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'Cadastral'" [form]="stageOne"
+                  [IsLiveChanges]="true" [IsReadOnly]="isCadastralPlanDocReadOnly">
+                </app-Uploaders-List>
+              </div>
+              <!-- <div *ngIf="isNeedPreviousPlan"> -->
+                <!-- <label>{{'PlanApproval.PreviousPlan' | translate}}</label> -->
+                <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'PreviousPlan'" [form]="stageOne"
+                  [IsLiveChanges]="true" [IsReadOnly]="true"> 
+                </app-Uploaders-List>
+              <!-- </div> -->
+
+              <div *ngIf="isNeedSafetyPlan">
+                <!-- <label>{{'PlanApproval.PreviousPlan' | translate}}</label> -->
+                <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'PreviousSafetyPlan'" [form]="stageOne"
+                  [IsLiveChanges]="true" [IsReadOnly]="true"> 
+                </app-Uploaders-List>
+              </div>
+             
+              <div class="row mt-5" *ngIf="this.PlanApprovalId == undefined">
+                <div class="col-lg-6">
+                  <label class="check-box-container  d-inline-block">
+                    <input type="checkbox" [checked]="checked" 
+                    (input)="checked = !checked" required="true" 
+                    name="termsAndConditions"
+                    [(ngModel)]="checked"
+                    #termsAndConditions = "ngModel">
+                    <span class="checkmark"></span>
+                  </label>
+                  <p class="txt-wrapper d-inline-block">{{'ToVerify' | translate}} <span class="item-link underline" (click)="openPopup()"> {{'termsAndConditions' | translate}} </span> {{'termsandConditionsLabel' | translate}}</p>   
+                  <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" 
+                  [controlName]="termsAndConditions"
+                    [form]="stageOne" [submit]="isSubmit"></app-validation-viewer>  
+                </div>
+              </div>  
+              
+              <!-- Terms and Conditions pop up -->
+              <ng-template #popup let-modal>
+                <div class="modal-content border-0"> 
+                    <!--MODAL-HEADER-->
+                    <div class="modal-header">
+                      <h4 class="modal-title flex-grow-1 text-center">{{'termsAndConditions' | translate}}</h4>
+                      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <!--MODAL_BODY-->
+                    <div class="modal-body">        
+                      <p>{{'termsAndConditionsContent.planApproval.p1' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p2' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p3' | translate}}</p>
+                      <ul>
+                        <li>{{'termsAndConditionsContent.planApproval.r1' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.planApproval.r2' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.planApproval.r3' | translate}}</li>
+                        <li>{{'termsAndConditionsContent.planApproval.r4' | translate}}</li>
+                      </ul>
+                      <p>{{'termsAndConditionsContent.planApproval.p4' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p5' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p6' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p7' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p8' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p9' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p10' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p11' | translate}}</p>
+                      <p>{{'termsAndConditionsContent.planApproval.p12' | translate}}</p>
+                    </div>
+                </div>
+              </ng-template>
+              <!-- <div *ngIf="isNeedSafetyPlan">
+                        <label>{{'PlanApproval.SafetyPlan' | translate}}</label>
+                        <app-Uploaders-List  [uploaders]="Application.Documents"  
+                        [SectionName]="'SafetyPlan'"
+                        [form]="stageOne" [IsLiveChanges]="true" [IsReadOnly]="isDraftSatgeReadOnly">
+                        </app-Uploaders-List>
+                    </div> -->
+              <div class="col-12 form-footer" *ngIf="!isDraftSatgeReadOnly">
+                <button class="main-btn"
+                  [disabled]="!Application.Request.CRId||!Application.Request.ContractNumberId||
+                  !IsCRContractsBalanceValid ||
+                  !Application.Request.PlanTypeId||!IsRequestValid || !checked"
+                  (click)="SaveAsDraft()">{{'ServicesCommon.SaveAsDraft' | translate}}</button>
+                <!-- <button class="main-btn" (click)="saveApplication()">{{'SaveAsDraft' | translate}}</button> -->
+                <!-- <button class="main-btn" [disabled]="!stageOne.valid||isSubmit"
+                    (click)="Next()">{{'Next' | translate}}</button> -->
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ChooseOfficeOrBiddingSection -->
+        <div [hidden]="ActiveLevelTwo != 2">
+          <div id="ChooseOfficeOrBiddingSection">
+            <h5 class="stage-title">{{'PlanApproval.SecondStage' | translate}}</h5>
+            <app-Bidding [RequestNumber]="Application.Request.Id"
+              [IsSpecific]="Application.Request.OfficeOrBidding == BiddingOrOfficeEnum.Office"
+              [QualifyAccountId]="Application.Request.ConsultingOfficeId"
+              [CurrentUser]="currentUser"
+              [IsReadOnly]="isBiddingComReadOnly" [BiddingId]="Application.Request.ActiveBidding"
+              [IsSubmitted]="isSubmit || isDraftSatgeReadOnly" [ServiceType]="serviceType"
+              [RequestType]="requestType"
+              [IndustrialCity]="Application.Request.IndustrialCityId"
+              (BiddingModel)="OnSubmitBidding($event)">
+            </app-Bidding>
+          </div>
+        </div>
+       
+        <!-- PriceOfferSection -->
+        <div [hidden]="ActiveLevelTwo != 3">
+          <!-- <h5>{{'PlanApproval.PriceOfferStage' | translate}}</h5> -->
+          <div id="GeneralAttachmentsSection" *ngIf="currentUser==testUserEnum.Bidder">
+            <h5 class="stage-title">{{'PlanApproval.GeneralAttachments' | translate}}</h5>
+            <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'GeneralAttachments'" [form]="stageOne"
+              [IsLiveChanges]="true" [IsReadOnly]="isPriceOfferComReadOnly">
+            </app-Uploaders-List>
+          </div>
+
+    
+          <div class="row" *ngIf="currentUser == 1">
+            <div class="col-lg-4 col-md-6" [ngClass]="{'required':!IsRequestValid}">
+              <mutliselect *ngIf="Application.Request.OfficeOrBidding != BiddingOrOfficeEnum.Office"
+                id="BiddingConsultingOffice" 
+                name="BiddingConsultingOffice"
+                [label]="'PlanApproval.ConsultingOffice'" 
+                [propertyToSelect]="'Value'"
+                [options]="lookupService.lookupEntities['account_CRsByTypeOffice']"
+                [viewMode]="isPriceOfferComReadOnly" 
+                [multiple]="false" 
+                [config]="config" 
+                [(ngModel)]="BidderId"
+                [required]="true" 
+                [disabled]="false" 
+                [isRequiredLabel]="true" 
+                #BiddingConsultingOffice="ngModel"
+                [specifySearchPlaceholder]="true"
+                [searchlabel]="'Bidding.SearchInOffices'">
+              </mutliselect>
+              <!-- <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="CRId"
+                [form]="stageOne" [submit]=""> </app-validation-viewer> -->
+            </div>
+          </div>
+
+          <!-- *ngIf="(currentUser == 0 && showPriceOfferCom) || (currentUser == 1 && BidderId)" -->
+          <div id="PriceOfferSection">
+            <h5 class="stage-title">{{'PriceOffer.PriceOffer' | translate}}</h5>
+            <app-Price-Offer 
+            [hidden]="!((currentUser == 0) || (currentUser == 1 && BidderId))"
+            [currentUser]="currentUser" 
+            [BidderId]="BidderId"
+              [IsSpecific]="Application.Request.OfficeOrBidding == BiddingOrOfficeEnum.Office"
+              [SpacificConsultingOfficeId]="Application.Request.ConsultingOfficeId" 
+              [IsReadOnly]="isPriceOfferComReadOnly"
+              [BiddingId]="Application.Request.ActiveBidding" 
+              [RequestId]="PlanApprovalId"
+              [SpacificPriceOffer]="spacificPriceOffer" 
+              [ServiceType]="serviceType"
+              [RequestType]="requestType"
+              [IndustrialCity]="Application.Request.IndustrialCityId"
+              [CRType]="6"
+              (ChoosePriceOfferEmiter)="OnSubmitPriceOffer($event)">
+            </app-Price-Offer>
+          </div>
+        </div>
+       
+        <!-- GeneralPlanSection -->
+        <div *ngIf="ActiveLevelTwo == 4">
+          <div id="PublicInfoSection" *ngIf="isGeneralInfoSatgeReadOnly">
+            <form #PriceOfferStage="ngForm" novalidate autocomplete="off">
+              <h5 class="stage-title">{{'PlanApproval.PublicInfo' | translate}}</h5>
+              <div class="row">
+                <!-- <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'" [label]="'PlanApproval.OfficeComment'"              
+                    [(ngModel)]="Application.Request.OfficeComment" #OfficeComment="ngModel"  name="OfficeComment"
+                    [isRequiredLabel]="false" [isReadOnly]="true">
+                  </custom-text-box>
+                </div> -->
+
+                <div class="col-xl-4 col-lg-6">
+                  <label>{{'PlanApproval.OfficeComment' | translate}}</label>
+                  <textarea id="OfficeComment" name="OfficeComment"  
+                  [readOnly]="true" 
+                  #OfficeComment="ngModel" 
+                  [(ngModel)]="Application.Request.OfficeComment"></textarea>
+                </div>
+                <!-- <div class="col-xl-4 col-lg-6">
+                          <custom-text-box [type]="'text'"  
+                                [label]="'PlanApproval.ConsultingOffice'" 
+                                [(ngModel)]="Application.Request.ConsultingOffice.Name"  
+                                #ConsultingOffice="ngModel" name="ConsultingOffice"
+                                [isRequiredLabel]="false" [isReadOnly]="true">
+                            </custom-text-box>
+                            
+                        </div> -->
+              </div>
+            </form>
+          </div>
+          <div id="GeneralPlanSection">
+
+            <div class="row">
+              <div class="col-xl-4 col-lg-6">
+                <label>{{'PlanApproval.OfficeCommentOnGeneralPlan' | translate}}</label>
+                <textarea id="OfficeCommentOnGeneralPlan" name="'PlanApproval.OfficeCommentOnGeneralPlan'"  
+                [readOnly]="isGeneralDocReadOnly" 
+                [(ngModel)]="Application.Request.OfficeCommentOnGeneralPlan"
+                #OfficeCommentOnGeneralPlan="ngModel" 
+                [(ngModel)]="Application.Request.OfficeCommentOnGeneralPlan"></textarea>
+              </div>
+            </div>
+
+            <div *ngIf="!isNeedSafetyPlan">
+              <form #GeneralPlanStage="ngForm" novalidate autocomplete="off">
+                <h5 class="stage-title">{{'PlanApproval.GeneralPlanStage' | translate}}</h5>
+                <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'GeneralPlans'"
+                  [form]="GeneralPlanStage" [IsLiveChanges]="true" 
+                  [IsReadOnly]="isGeneralDocReadOnly || currentUser == 0">
+                </app-Uploaders-List>
+                <div class="col-12 form-footer" *ngIf="!isGeneralDocReadOnly && currentUser == 1">
+                  <button class="main-btn" (click)="SubmitDocuments()">{{'ServicesCommon.Submit' | translate}}</button>
+                </div>
+              </form>
+            </div>
+            <div *ngIf="isNeedSafetyPlan">
+              <form #SafetyPlanStage="ngForm" novalidate autocomplete="off">
+                <h5 class="stage-title">{{'PlanApproval.SafetyPlan' | translate}}</h5>
+                <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'SafetyPlan'"
+                  [form]="SafetyPlanStage" [IsLiveChanges]="true" 
+                  [IsReadOnly]="isGeneralDocReadOnly || currentUser == 0">
+                </app-Uploaders-List>
+                <div class="col-12 form-footer" *ngIf="!isGeneralDocReadOnly && currentUser == 1">
+                  <button class="main-btn" (click)="SubmitDocuments()">{{'ServicesCommon.Submit' | translate}}</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- DetailedPlanSection -->
+        <div *ngIf="ActiveLevelTwo == 5">
+          <div id="DetailedPlanSection">
+            <form #DetailedPlanStage="ngForm" novalidate autocomplete="off">
+              <h5 class="stage-title">{{'PlanApproval.DetailedPlanStage' | translate}}</h5>
+              <!-- <label>{{'PlanApproval.UploadDetailedPlan' | translate}}</label> -->
+              <div class="row">
+                <!-- <div class="col-xl-4 col-lg-6">
+                  <custom-text-box [type]="'text'" [label]="'PlanApproval.AdminCommentOnDetailedPlan'"              
+                    [(ngModel)]="Application.Request.IndustrialcityAdminCommentOnDetailedPlan"   
+                    #AdminCommentOnDetailedPlan="ngModel"  name="AdminCommentOnDetailedPlan"             
+                    [isRequiredLabel]="false"  [isReadOnly]="true">
+                  </custom-text-box>
+                </div> -->
+
+                <div class="col-xl-4 col-lg-6">
+                  <label>{{'PlanApproval.AdminCommentOnDetailedPlan' | translate}}</label>
+                  <textarea id="AdminCommentOnDetailedPlan" name="'PlanApproval.AdminCommentOnDetailedPlan'"
+                  [readOnly]="true" 
+                  #AdminCommentOnDetailedPlan="ngModel" 
+                  [(ngModel)]="Application.Request.IndustrialcityAdminCommentOnDetailedPlan"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-4 col-lg-6">
+                <label>{{'PlanApproval.OfficeCommentOnDetailedPlan' | translate}}</label>
+                  <textarea id="OfficeCommentOnDetailedPlan" name="'PlanApproval.OfficeCommentOnDetailedPlan'"  
+                  [readOnly]="isDetiledDocReadOnly" 
+                  [(ngModel)]="Application.Request.OfficeCommentOnDetailedPlan"
+                  #OfficeCommentOnDetailedPlan="ngModel" 
+                  [(ngModel)]="Application.Request.OfficeCommentOnDetailedPlan"></textarea>
+                </div>
+              </div>
+
+              <div *ngIf="!isNeedSafetyPlan">
+                <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'DetailedPlan'"
+                  [IsLiveChanges]="true" [form]="DetailedPlanStage" 
+                  [IsReadOnly]="isDetiledDocReadOnly || currentUser == 0">
+                </app-Uploaders-List>
+              </div>
+              <div *ngIf="isNeedSafetyPlan">
+                  <h5 class="stage-title">{{'PlanApproval.DetailedPlanStage' | translate}}</h5>
+                  <app-Uploaders-List [uploaders]="Application.Documents" [SectionName]="'DetailedSafetyPlan'"
+                    [form]="DetailedPlanStage" [IsLiveChanges]="true" 
+                    [IsReadOnly]="isDetiledDocReadOnly || currentUser == 0">
+                  </app-Uploaders-List>
+                
+              </div>
+              <div class="col-12 form-footer" *ngIf="!isDetiledDocReadOnly && currentUser == 1">
+                <button class="main-btn" (click)="SubmitDocuments()">{{'ServicesCommon.Submit' | translate}}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- PaymentSection -->
+        <div *ngIf="ActiveLevelTwo == 6 && currentUser == 0">
+
+          <app-request-quote [requestId]="Application.ApplicationHeader.Id"></app-request-quote>
+
+          <!-- <div id="PaymentSection">
+            <div *ngIf="isDetiledDocReadOnly">
+              <form #PaymentStage="ngForm" novalidate autocomplete="off">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" [label]="'PlanApproval.Contractmeternumber'"              
+                      [(ngModel)]="Application.Request.Contractmeternumber"  #Contractmeternumber="ngModel"
+                       name="Contractmeternumber" [isReadOnly]="true" [isRequiredLabel]="true"  >
+                    </custom-text-box>
+                  </div>
+                  <div class="col-xl-4 col-lg-6">
+                    <custom-text-box [type]="'text'" [label]="'PlanApproval.PriceValue'"              
+                      [(ngModel)]="Application.Request.PriceValue"  #Price="ngModel"  name="Price" [isReadOnly]="true"
+                      [isRequiredLabel]="true"  >
+                    </custom-text-box>
+                  </div>
+                   هنا يرقد الدفع :D 
+                </div> 
+              </form>
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+       <!--Request Comments-->
+       <app-request-comments [regardingID]="Application.Request.Id"
+       [hidden]="ActiveLevelOne != 2 || !Application.Request.Id || Application.ApplicationHeader.PortalStatusCode === '1'">
+     </app-request-comments>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<ng-template [ngIf]='mode === enumMode.Success'>
+  <!-- Success message -->
+  <div [ngClass]="{'small-msg':!showH4,'success-msg':true}" class="border-0">
+    <i class="icon-success" *ngIf='showH4'></i>
+    <h4 class="msg-title" *ngIf='showH4'></h4>
+    <ng-content select=".success-select"></ng-content>
+  </div>
+</ng-template>
+<ng-template [ngIf]='mode === enumMode.Warning'>
+  <!-- Warning message -->
+  <div class="warning-msg border-0" [ngClass]="{'small-msg':!showH4}">
+    <i class="icon-warning" *ngIf='showH4'></i>
+    <h4 class="msg-title" *ngIf='showH4'></h4>
+    <ng-content select=".warning-select"></ng-content>
+  </div>
+</ng-template>
+<ng-template [ngIf]='mode === enumMode.Error'>
+  <!-- Error message -->
+  <div class="error-msg border-0" [ngClass]="{'small-msg':!showH4}">
+    <i class="icon-cancel-music" *ngIf='showH4'></i>
+    <h4 class="msg-title" *ngIf='showH4'></h4>
+    <ng-content select=".error-select"></ng-content>
+  </div>
+</ng-template>
+<ng-template [ngIf]='mode === enumMode.Empty'>
+  <!-- Warning message -->
+  <div class="message message-empty" role="alert">
+    <!--width="407.062" height="422.991" viewBox="0 0 407.062 422.991">-->
+    <!-- <svg class="tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%"
+      height="100%" viewBox="0 0 407.062 422.991">
+      <defs>
+        <clipPath id="clip-path">
+          <rect id="Rectangle_228" data-name="Rectangle 228" width="407.062" height="422.991" fill="none" />
+        </clipPath>
+      </defs>
+      <g id="Group_323" data-name="Group 323" transform="translate(-621.14 -209.94)">
+        <g id="Group_321" data-name="Group 321" transform="translate(621.14 209.94)">
+          <g id="Group_320" data-name="Group 320" clip-path="url(#clip-path)">
+            <path id="Path_841" data-name="Path 841"
+              d="M709.7,326.263c-23.061.349-51.735,13.407-58.087,49.464,27.136-24.588,71.817-26.572,112.145,0,32.873-26.947,81.281-25.332,112.15,0-6.347-36.057-35.032-49.115-58.082-49.464,17.616-16.221,52.412-13.76,73.8,3.414-14.735-38.39-54.1-54.463-92.289-36.093,5.911-18.651,43.66-37.462,71.238-25.767-23.3-21-59.866-29.454-92.386-4.937-.841-19.631-4.035-36.247-14.432-52.94-10.392,16.693-13.586,33.309-14.427,52.94-32.515-24.517-69.084-16.062-92.391,4.937,27.582-11.694,65.336,7.116,71.243,25.767-38.19-18.37-77.554-2.3-92.283,36.093,21.384-17.175,56.18-19.636,73.8-3.414"
+              transform="translate(-560.228 -209.94)" fill="#929497" />
+            <path id="Path_842" data-name="Path 842"
+              d="M1027.915,360.99a131.4,131.4,0,0,0-25.347-10.956,150.932,150.932,0,0,0-69.72-5.1,168.663,168.663,0,0,0-30.172,7.783c-1.005.359-1.995.687-3.015,1.061a166.868,166.868,0,0,0-15.985,7.106q-6.821,3.476-13.627,7.557A326.227,326.227,0,0,0,839.662,389.3v-.005L835.95,392.1V272.516c0-12.079,16.755-27.1,29.931-29.9-15.442-1.354-33.561,9.121-41.215,21.574-8.285-12.535-25.06-22.994-41.2-21.574,13.171,2.809,29.936,17.831,29.936,29.91V392.11L809.68,389.3c-19.374-14.806-39.779-27.875-60-35.514-2.5-.933-4.958-1.779-7.383-2.568a158.653,158.653,0,0,0-56.682-8.059,146.616,146.616,0,0,0-58.5,14.791c-2.271,1.138-4.194,2.184-5.691,3.045a.57.57,0,0,0,.492,1.02c1.748-.559,3.471-1.036,5.2-1.523a161.977,161.977,0,0,1,58.5-5.742A174.493,174.493,0,0,1,742.3,370c24.773,11.156,47.219,27.07,67.465,43.911-28.588,24.917-52.776,49.172-67.465,57.672-.743.415-1.466.83-2.153,1.195a15.785,15.785,0,0,0-28.136,5.557c-1.174,5.158.164,10.715,3.076,13.612,7.813,7.8,16.847,8.316,27.213,3.963,19.79-8.316,44.435-34.509,74.688-62.178,2.517-2.312,5.07-4.64,7.685-6.952,2.6,2.3,5.137,4.609,7.639,6.911,13.715,12.535,26.265,24.768,37.739,35.18,4.727,4.281,9.264,8.254,13.627,11.817a119.857,119.857,0,0,0,19,13.171c11.576,6.1,21.584,6.865,30.172-.661a18.718,18.718,0,0,0,1.394-1.251c1.979-1.969,4.266-8.454,3.086-13.612a15.367,15.367,0,0,0-4.481-7.726,15.637,15.637,0,0,0-7.352-3.968,15.8,15.8,0,0,0-16.3,6.137,57.832,57.832,0,0,1-6.521-3.979,223.054,223.054,0,0,1-19-15.324c-4.276-3.748-8.829-7.854-13.627-12.207-9.331-8.47-19.574-17.862-30.474-27.357a377.36,377.36,0,0,1,30.474-23.035q6.683-4.5,13.627-8.67,9.244-5.5,19-10.172a193.887,193.887,0,0,1,30.172-11.546,159.229,159.229,0,0,1,69.72-4.317,174.834,174.834,0,0,1,24.844,5.839.571.571,0,0,0,.5-1.02"
+              transform="translate(-621.14 -75.645)" fill="#929497" />
+          </g>
+        </g>
+      </g>
+    </svg> -->
+    <ng-content select=".error-empty"></ng-content>
+  </div>
+</ng-template>
+
+  <!-- <ng-template [ngIf]='mode === enumMode.Success'>
+  <div [ngClass]="{'small-msg':!showH4,'message message-success success-msg':true}">
+    <i class="icon-success" *ngIf='showH4'></i>
+    <h4 class="msg-title" *ngIf='showH4'></h4>
+    <ng-content select=".success-select"></ng-content>
+  </div>
+  </ng-template>
+
+  <ng-template [ngIf]='mode === enumMode.Warning'>
+    <div class="message message-warning warning-msg" [ngClass]="{'small-msg':!showH4}">
+      <i class="icon-warning" *ngIf='showH4'></i>
+      <h4 class="msg-title" *ngIf='showH4'></h4>
+      <ng-content select=".warning-select"></ng-content>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]='mode === enumMode.Error'>
+    <div class="message message-error error-msg" [ngClass]="{'small-msg':!showH4}">
+      <i class="icon-cancel-music" *ngIf='showH4'></i>
+      <h4 class="msg-title" *ngIf='showH4'></h4>
+      <ng-content select=".error-select"></ng-content>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]='mode === enumMode.Empty'>
+    <div class="message message-empty" role="alert">
+      <ng-content select=".empty-select"></ng-content>
+    </div>
+  </ng-template> -->

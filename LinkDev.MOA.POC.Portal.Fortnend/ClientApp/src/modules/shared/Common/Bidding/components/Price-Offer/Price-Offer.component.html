@@ -1,0 +1,300 @@
+<div
+  *ngIf="(BidderId&&IsSpecific&&SpacificConsultingOfficeId.toLowerCase()==BidderId.toLowerCase())||(!IsSpecific && (currentUser==testUserEnum.Bidder || currentUser==testUserEnum.Contractor))||(IsSpecific && currentUser==testUserEnum.Investor)">
+  <!-- <h1>{{'PriceOffer.PriceOffer' | translate}}</h1> -->
+  <div class="row" *ngIf="IsSpecific&&!IsReadOnly&&SpacificConsultingOfficeId&&BidderId&&
+  (SpacificConsultingOfficeId.toLowerCase()==BidderId.toLowerCase())">
+    <div class="col">
+      <div class="custom-radio">
+        <input type="radio" id="ApproveRadio" name="radio-group" [(ngModel)]="approveRejectSpacific"
+          #ApproveRadio="ngModel" [value]="true" [checked]="approveRejectSpacific==true" [disabled]=isSubmited>
+        <!--(click)="choose($event['target']['value'])">-->
+        <label for="ApproveRadio">{{'PriceOffer.Approve' | translate}}</label>
+      </div>
+      <div class="custom-radio">
+        <input type="radio" id="RejectRadio" name="radio-group" [(ngModel)]="approveRejectSpacific"
+          #RejectRadio="ngModel" [value]="false" [checked]="approveRejectSpacific==false" [disabled]=isSubmited>
+        <!--(click)="choose($event['target']['value'])">-->
+        <label for="RejectRadio">{{'PriceOffer.Reject' | translate}}</label>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+
+    <div class="col-xl-4 col-lg-6" 
+         [ngClass]="{'required': PriceOfferValue.dirty&&PriceOfferValue.value==null&&approveRejectSpacific}">
+     
+         <!-- <custom-text-box  
+            [type]="'number'" 
+            [label]="'PriceOffer.PriceOfferValue'"
+            [(ngModel)]="CurrentPriceOffer.PriceOfferValue" 
+            #PriceOfferValue="ngModel" 
+            name="PriceOfferValue"
+            [isReadOnly]="(!approveRejectSpacific && IsSpecific) || IsReadOnly||alreadyHasPriceoffer||isSubmited">
+          </custom-text-box> -->
+
+          <currency-input  
+                  type="number" 
+                  [label]="'PriceOffer.PriceOfferValue'"
+                  [required]="true" 
+                  [numeric]="false" 
+                  name="PriceOfferValue"
+                  #PriceOfferValue="ngModel" 
+                  [(ngModel)]="CurrentPriceOffer.PriceOfferValue" 
+                  [disabled]="(!approveRejectSpacific && IsSpecific) || IsReadOnly||alreadyHasPriceoffer||isSubmited"
+                  [maxLength]="28">
+                </currency-input>
+
+      <div 
+        *ngIf="PriceOfferValue.dirty&&PriceOfferValue.value==null&&approveRejectSpacific" 
+        class="form-validation">
+        <label>{{'PriceOffer.EnterValidValue' | translate}}</label>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="row">
+    <!-- <div class="col-xl-4 col-lg-6">
+      <custom-text-box 
+        [type]="'text'" 
+        [label]="'PriceOffer.Comment'" 
+        [(ngModel)]="CurrentPriceOffer.Comment"
+        #Comment="ngModel" 
+        name="Comment" 
+        [isReadOnly]="IsReadOnly||alreadyHasPriceoffer||isSubmited">
+      </custom-text-box>
+      <app-textarea 
+        [label]="'PriceOffer.Comment'"
+        [(ngModel)]="CurrentPriceOffer.Comment"
+        #Comment="ngModel"
+        name="Comment"
+        [disabled]="IsReadOnly||alreadyHasPriceoffer||isSubmited">
+    </app-textarea>
+       <div *ngIf="Comment.dirty&&Comment.value==null" class="form-validation">Please Enter a valid value</div> 
+    </div> -->
+
+    <div class="col-xl-4 col-lg-6">
+      <label>{{'PriceOffer.Comment' | translate}}</label>
+      <textarea id="Comment" name="'PriceOffer.Comment'"
+      [readOnly]="IsReadOnly||alreadyHasPriceoffer||isSubmited"
+      [(ngModel)]="CurrentPriceOffer.Comment"
+      #Comment="ngModel" 
+      [(ngModel)]="CurrentPriceOffer.Comment"></textarea>
+    </div>
+
+  </div>
+
+  <div class="col-12 form-footer" *ngIf="!IsReadOnly&&!alreadyHasPriceoffer">
+    <button class="main-btn"
+      [disabled]="(((PriceOfferValue && PriceOfferValue.value==null&&approveRejectSpacific==true)||(approveRejectSpacific==null&&IsSpecific)||(isSubmited)))||(!IsSpecific&&PriceOfferValue.value==null)"
+      (click)="onSubmitPriceOffer()">{{'PriceOffer.Submit' | translate}}</button>
+  </div>
+  <!-- <div class="col-2 col-md-2">
+                      <div class="form-row">
+                          <button class="main-btn" [disabled]="(approveRejectSpacific||isSubmittedFlag)||(PriceOfferValue.value==null)" (click)="approveRejectSpacific=true;onSubmitPriceOffer();">{{'PriceOffer.Approve' | translate}}</button>
+                      </div>
+                   </div>
+
+                   <div class="col-2 col-md-2">
+                      <div class="form-row">
+                          <button class="main-btn-secondary" [disabled]="(approveRejectSpacific||isSubmittedFlag)" (click)="approveRejectSpacific=false;onSubmitPriceOffer();">{{'PriceOffer.Reject' | translate}}</button>
+                      </div>
+                   </div> -->
+</div>
+<!-- <h1>{{'PriceOffer.PriceOffer' | translate}}</h1> -->
+
+<!-- {{"ChoosenPriceOffer.BidderNameId => " + ChoosenPriceOffer.BidderNameId}} -->
+<!-- {{ BiddingPriceOfferList | json}}
+
+{{"Naglaa => " + SpacificConsultingOfficeId}} -->
+<!-- {{"ChoosenPriceOffer.BidderNameId => " + ChoosenPriceOffer.BidderNameId}} -->
+
+<div *ngIf="currentUser==testUserEnum.Investor && !IsSpecific">
+  <div class="row">
+    <div class="col-xl-4 col-lg-6">
+      <mutliselect id="selectDropdown" name="selectDropdown" [label]="'PriceOffer.BidderName'"
+        [propertyToSelect]="'BidderNameId'" [options]="BiddingPriceOfferList" [viewMode]="IsReadOnly" [multiple]="false"
+        [config]="config" [(ngModel)]="ChoosenPriceOffer.BidderNameId" #selectDropdown="ngModel">
+      </mutliselect>
+      <!-- {{BiddingPriceOfferList | json}}
+                            {{ChoosenPriceOffer.BidderNameId}} -->
+    </div>
+  </div>
+  
+  <app-grid [modalFormTitle]="'PriceOffer.PriceOffer'" [tableHeadTitle]="''" [(data)]="BiddingPriceOfferList"
+    [columns]="gridcols" [(model)]="gridModel" [canAdd]="false" 
+    [canEdit]="false" [canView]="true"
+    [template]="gridContent" 
+    (modelChange)="GridChanged($event)"
+    [canDelete]="false">
+    
+    <ng-container #gridContent *ngIf="gridModel && CurrentCR" >
+
+      <h5 class="stage-title">{{'PriceOffer.PriceOfferInfo' | translate}}</h5>
+      <div class="row" >
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'"  [label]="'PriceOffer.BiddingNumber'"              
+            [(ngModel)]="gridModel.BiddingNumber.Name" 
+             #BiddingNumber="ngModel" name="BiddingNumber"
+            [isRequiredLabel]="false" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+
+        <div class="col-xl-4 col-lg-6">
+          <label>{{'PriceOffer.Comment' | translate}}</label>
+          <textarea id="Comment" name="'PriceOffer.Comment'"
+          [readOnly]="true" 
+          #Comment="ngModel" 
+          [(ngModel)]="gridModel.Comment"></textarea>
+        </div>     
+      </div>
+
+      <h5 *ngIf=" CRType && CRType==6" class="stage-title">{{'PriceOffer.OfficeInfo' | translate}}</h5>
+      <h5 *ngIf="CRType&&CRType == 7" class="stage-title">{{'PriceOffer.ContractorInfo' | translate}}</h5>
+
+      <div class="row">
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+            [(ngModel)]="CurrentCR.CRType" [label]="'ContractSubmission.Type'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+            [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+          <label>{{'ContractSubmission.CRIssuanceDate' | translate}}</label>
+          <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" name="IssueDate" [readonly]="true">
+          </ngbd-datepicker-popup>
+        </div> 
+        <div class="col-xl-4 col-lg-6">
+          <label>{{'ContractSubmission.CRExpiryDate' | translate}}</label>
+          <ngbd-datepicker-popup [(ngModel)]="CurrentCR.ExpiryDate" name="ExpiryDate" [readonly]="true">
+          </ngbd-datepicker-popup>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+            [(ngModel)]="CurrentCR.CRName" [label]="'ContractSubmission.Name'" autocomplete=""
+            aria-label="Name" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+        <div class="col-xl-8">
+          <label>{{'ContractSubmission.Activity' | translate}}</label>
+          <textarea id="CurrentCRActivity" name="CurrentCRActivity" [readOnly]="true"
+            #CurrentCRActivity="ngModel" [(ngModel)]="CurrentCR.CRActivity"></textarea>
+        </div>
+      </div>
+      <app-grid [canAdd]="false" [canDelete]="false" [canEdit]="false"
+        [tableHeadTitle]="'ContractSubmission.Owners'" [(data)]="CurrentCR.CROwners"
+        [columns]="CROwnerGridcols">
+      </app-grid>
+
+      <!-- <div class="row" >
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" [label]="'PriceOffer.BidderCRName'"              
+            [(ngModel)]="gridModel.BidderCRName" 
+             #BidderCRName="ngModel" name="BidderCRName"
+            [isRequiredLabel]="false" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" [label]="'PriceOffer.BidderEmail'"              
+            [(ngModel)]="gridModel.BidderEmail" 
+             #BidderEmail="ngModel" name="BidderEmail"
+            [isRequiredLabel]="false" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+      </div>
+
+      <div class="row" >
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" [label]="'PriceOffer.BidderTelephone'"              
+            [(ngModel)]="gridModel.BidderTelephone" 
+             #BidderTelephone="ngModel" name="BidderTelephone"
+            [isRequiredLabel]="false" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+
+        <div class="col-xl-4 col-lg-6">
+          <custom-text-box [type]="'text'" [label]="'PriceOffer.BidderWebSiteURL'"              
+            [(ngModel)]="gridModel.BidderWebSiteURL" 
+             #BidderWebSiteURL="ngModel" name="BidderWebSiteURL"
+            [isRequiredLabel]="false" [isReadOnly]="true">
+          </custom-text-box>
+        </div>
+      </div>-->
+  </ng-container>
+  
+  </app-grid>
+  <div class="col-12 form-footer">
+    <button class="main-btn" [disabled]="(selectDropdown.value==null)||IsReadOnly||isSubmited"
+      (click)="onChoosePriceOffer();">{{'PriceOffer.ChoosePriceOffer' | translate}}</button>
+    <button class="main-btn-secondary" [disabled]="IsReadOnly||isSubmited"
+      (click)="onSubmitRejectAll();">{{'PriceOffer.RejectAll' | translate}}</button>
+  </div>
+</div>
+<!-- <p>
+  Price-Offer works!
+</p> -->
+<!-- <form class="general-form" novalidate autocomplete="off" #PriceOfferForm="ngForm" > -->
+<!-- <div class="form-wrapper form-padding"> -->
+<!-- <h1></h1> -->
+<!-- <div class="filter-wrapper"> -->
+
+<!-- <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-row">
+              <label>Bidding Number</label>
+            <custom-text-box [type]="'text'" [label]="'Bidding Number'"  [(ngModel)]="currentPriceOffer.BiddingNumber.Name" #BiddingNumber="ngModel" name="BiddingNumber" [isReadOnly]="true"></custom-text-box>
+            </div>
+          </div>
+
+
+
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-row required">
+              <label>Bidder Name</label>
+            <custom-text-box [type]="'text'" [label]="'Bidder Name'"  [(ngModel)]="currentPriceOffer.BidderName.Name" #BidderName="ngModel" name="BidderName" [isReadOnly]="true" ></custom-text-box>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-row" [ngClass]="{'required': PriceOfferValue.dirty&&PriceOfferValue.value==null}">
+
+            <custom-text-box [type]="'number'" [label]="'Price Offer Value'"  [(ngModel)]="currentPriceOffer.PriceOfferValue" #PriceOfferValue="ngModel" name="PriceOfferValue" [isRequiredLabel]="true" ></custom-text-box>
+            <div *ngIf="PriceOfferValue.dirty&&PriceOfferValue.value==null" class="form-validation">Please Enter a valid value</div>
+            </div>
+          </div>
+
+
+          <div class="col-xl-4 col-lg-6">
+            <div class="form-row" [ngClass]="{'required': Comment.dirty&&Comment.value==null}">
+
+            <custom-text-box [type]="'text'" [label]="'Comment'"  [(ngModel)]="currentPriceOffer.Comment" #Comment="ngModel" name="Comment" [isRequiredLabel]="true" ></custom-text-box>
+            <div *ngIf="Comment.dirty&&Comment.value==null" class="form-validation">Please Enter a valid value</div>
+            </div>
+          </div>
+
+        </div>
+ -->
+<!-- <div class="row">
+        <div class="col-12 col-md-4">
+          <label></label>
+          <div class="form-row">
+              <button class="main-btn" (click)="onSubmitPriceOffer()">Submit</button>
+          </div>
+          </div>
+        </div> -->
+
+<!-- </div>
+</div> -->
+<!-- </form> -->

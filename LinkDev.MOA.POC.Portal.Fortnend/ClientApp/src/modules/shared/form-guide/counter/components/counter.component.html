@@ -1,0 +1,6 @@
+<div class="counter-wrapper">
+        <span (click)='increase()'>+</span>
+        <input [(ngModel)]="value" (keyup)="onKeyup($event)" (keydown)="onKeydown($event)" [min]="min" [max]="max"
+                [disabled]='disabled' [OnlyNumber]='true' [maxlength]='maxLength' type='text' (blur)="onBlurFn()">
+        <span (click)='decrease()'>-</span>
+</div>

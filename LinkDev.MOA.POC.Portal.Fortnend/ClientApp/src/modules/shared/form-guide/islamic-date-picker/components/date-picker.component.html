@@ -1,0 +1,9 @@
+<label *ngIf="label">{{label | translate }}<span *ngIf="isRequiredLabel" class="required"> *</span></label>
+<div class="calender-wrapper">
+  <input type='date' (click)="d2.toggle()" class="form-control rtl datepicker" placeholder="yyyy-mm-dd"
+    [disabled]="readonly" name="d2" #c2="ngModel" (dateSelect)="changed($event)" [(ngModel)]="Value" ngbDatepicker
+    #d2="ngbDatepicker">
+  <!-- <span (click)="Value = null" *ngIf="Value" class="icon-cancel-music"></span> -->
+  <!-- <ngb-datepicker class="rtl" #dp [(ngModel)]="model" [firstDayOfWeek]="7">
+  </ngb-datepicker> -->
+</div>

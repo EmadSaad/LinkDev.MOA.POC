@@ -20,18 +20,18 @@ namespace LinkDev.MOA.POC.Portal.BLL.CustomModels
 		[CrmFieldLogicalNameAttribute(incident.createdon)]
 		public DateTime SubmissionDate { get; set; }
 		public string SubmissionDateString { get { return SubmissionDate != DateTime.MinValue ? SubmissionDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) : null; } }
-		[CrmFieldLogicalNameAttribute(incident.ldv_casetype)]
+		[CrmFormattedValueAtrribute(incident.ldv_casetype)]
 		public string ServiceCode { get; set; }
 		public string ServiceNameEn { get; set; }
 		public string ServiceNameAr { get; set; }
 		public string ServiceName => ServiceNameAr;
-		[CrmFieldLogicalNameAttribute(incident.statuscode)]
+		[CrmFormattedValueAtrribute(incident.statuscode)]
 		public string CRMStatusCode { get; set; }
-		[CrmFieldLogicalNameAttribute(incident.statuscode)]
+		[CrmFormattedValueAtrribute(incident.statuscode)]
 		public string PortalStatusCode { get; set; }
 		public string PortalStatusNameEn { get; set; }
 		public string PortalStatusNameAr { get; set; }
-		public string PortalStatusName => PortalStatusNameAr;
+		public string PortalStatusName => PortalStatusCode;
 		
 		public EntityReferenceItem Contact { get; set; }
 		public Guid ContactId

@@ -1,0 +1,188 @@
+<div class="layout-padding cards-listing">
+  <!--Breadcrumb-->
+  <div class="card-deck cards-wrapper">
+    <div class="card">
+      <a class="card-body card-bg" title="{{'CRManagement.AddNewCR' | translate}}" (click)="open(content)">
+        <div class="card-details justify-content-center d-flex flex-column  h-100 addNew">
+          <i class="icon-plus"></i>
+          <h4 class="title">{{'CRManagement.AddNewCR' | translate}} </h4>
+        </div>
+      </a>
+    </div>
+    <div class="card" *ngFor="let CR of CRs">
+      <a class="card-body" [href]="'/CR-Managment/CrDetails?CrId=' + CR.Id" title="{{ CR.CRName }}">
+        <div class="card-content">
+          <div class="title">{{'CRManagement.Name' | translate}}</div>
+          <div class="crName">{{ CR.CRName }}</div>
+          <!--<a [href]="'/CR-Managment/CrDetails?CrId=' + CR.Id">{{ CR.CRName }}</a>-->
+          <div class="title">{{'CRManagement.Number' | translate}}</div>
+          <div>{{ CR.CrNumber }}</div>
+          <div><i class="icon-email"></i><span>{{ CR.CrEmail }}</span></div>
+          <div><i class="icon-phone-call"></i><span>{{ CR.CrPhone }}</span></div>
+          <div class="card-arrow"><i class="icon-arrow"></i></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+<form class="general-form" novalidate autocomplete="off" #CRDetails="ngForm">
+  <ng-template #content let-modal>
+    <div class="modal-content border-0">
+      <main>
+        <!--MODAL-HEADER-->
+        <div class="modal-header">
+          <h4 class="modal-title flex-grow-1 text-center">{{'CRManagement.NewCR' | translate}}</h4>
+          <button type="button" class="close" aria-label="Close" data-dismiss="modal"
+                  (click)="closeModal(modal , CRDetails)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--MODAL_BODY-->
+        <div class="modal-body">
+          <div class="form-wrapper mt-3">
+            <div class="col-12" *ngIf="isShown">
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{Msg |translate}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-4">
+
+                <mutliselect id="ContactCrmutliselect" name="ContactCrmutliselect" [propertyToSelect]="'Text'"
+                             [label]="'CRManagement.CRNumber'" [options]="ContactCrs" [viewMode]="false" [multiple]="false"
+                             [config]="config" [isRequiredLabel]="true" [(ngModel)]="MyCurrentCR.CRTypeName"
+                             #ContactCrmutliselect="ngModel" [required]="true" (change)="getCrInfo($event)"
+                             [ngClass]="{ 'is-invalid required  validation':  ContactCrmutliselect.errors&&ContactCrmutliselect.touched  }">
+                </mutliselect>
+                <div *ngIf="ContactCrmutliselect.errors" class="invalid-feedback">
+                  <div class="form-validation" *ngIf="ContactCrmutliselect.errors.required">
+                    {{'Validations.Required' | translate}}
+                  </div>
+                </div>
+                <!--[required]="true"-->
+              </div>
+            </div>
+            <div class="row">
+              <!--number-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CRNumber'" [(ngModel)]="MyCurrentCR.CrNumber"
+                                 #CrNumber="ngModel" name="CrNumber" autocomplete="" aria-label="CRNumber" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+
+              <!--Name-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CRName'" [(ngModel)]="MyCurrentCR.CRName"
+                                 #CRName="ngModel" name="CRName" autocomplete="" aria-label="CRName" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+
+              <!--City-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CrCity_'" [(ngModel)]="MyCurrentCR.CrCity"
+                                 #CrCity="ngModel" name="CrCity" autocomplete="" aria-label="CRName" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <!--issue date-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CRIssueDate'"
+                                 [(ngModel)]="MyCurrentCR.Issuedatehijri" #CRIssuedate="ngModel" name="CRIssuedate" autocomplete=""
+                                 aria-label="IssueDate" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+
+              <!--Expiry Date-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CRExpiryDate'"
+                                 [(ngModel)]="MyCurrentCR.Expirydatehijri" #CrAddress="ngModel" name="CRExpirydate" autocomplete=""
+                                 aria-label="ExpiryDate" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+
+              <!--Phone-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CrPhone'" [(ngModel)]="MyCurrentCR.CrPhone"
+                                 #CrPhone="ngModel" name="CrPhone" autocomplete="" aria-label="CrPhone" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+
+            </div>
+            <!--Legal Type-->
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CrLegalType'" [(ngModel)]="MyCurrentCR.LegalType"
+                                 #LegalType="ngModel" name="LegalType" [disabled]="'disabled'">
+                </custom-text-box>
+              </div>
+            </div>
+            <div class="row">
+
+              <!--Address-->
+              <div class="col-12 col-md-4">
+                <label>{{'CRManagement.CRAddress' | translate}}</label>
+                <textarea [(ngModel)]="MyCurrentCR.CrAddress" #CrAddress="ngModel" name="CrAddress" [readOnly]="true" disabled></textarea>
+              </div>
+
+
+            </div>
+            <div class="row">
+              <!--type-->
+              <div class="col-12 col-md-4">
+
+                <mutliselect id="CRTypemutliselect" name="CRTypemutliselect" [propertyToSelect]="'Value'"
+                             [label]="'CRManagement.CRType'" [options]="getCRTypeOptionSet()" [viewMode]="false" [multiple]="false"
+                             [config]="config" [isRequiredLabel]="true" [(ngModel)]="MyCurrentCR.CRTypeValue"
+                             #CRTypemutliselect="ngModel" [required]="true" (change)="GetSelectedValue($event)"
+                             [ngClass]="{ 'is-invalid required  validation':  CRTypemutliselect.errors&&CRTypemutliselect.touched  }">
+                </mutliselect>
+                <div class="field-info"> {{CRTypeDescription | translate}} </div>
+                <div *ngIf="CRTypemutliselect.errors" class="invalid-feedback">
+                  <div class="form-validation" *ngIf="CRTypemutliselect.errors.required">
+                    {{'Validations.Required' | translate}}
+                  </div>
+                </div>
+              </div>
+
+              <!--WebSite-->
+              <div class="col-12 col-md-4">
+                <custom-text-box [type]="'text'" [label]="'CRManagement.CrWebsite'" [(ngModel)]="MyCurrentCR.CrWebsite"
+                                 #CrWebsite="ngModel" name="CrWebsite" autocomplete="" aria-label="CrEmail">
+                </custom-text-box>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-md-12">
+                <app-grid-emitter [modalFormTitle]="''" [addNewRecord]="''" [tableHeadTitle]="'CRManagement.CRISICActivities'"
+                                  [(data)]="CRActivity" [columns]="ISICActivitygridcols" [(model)]="ISICActivitygridModel" [canAdd]="false"
+                                  [canEdit]="false" [canDelete]="false" [(popUpOpened)]="isPopUpOpened">
+                </app-grid-emitter>
+
+              </div>
+            </div>
+            <custom-text-box [type]="'text'" name="ContactId" #ContactId="ngModel" [(ngModel)]="MyCurrentCR.ContactId"
+                             autocomplete="" style="display:none">
+            </custom-text-box>
+
+          </div>
+        </div>
+        <!--MODAL_FOOTER-->
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="main-btn" (click)="PostCRdata()" [disabled]="!CRDetails.valid">
+            {{"Save" | translate}}
+          </button>
+        </div>
+      </main>
+    </div>
+  </ng-template>
+</form>

@@ -1,0 +1,98 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+
+/**
+ * Set up a decent box model on the root element
+ */
+html {
+  box-sizing: border-box;
+  direction: $dir;
+}
+body {
+  text-align: $right; color: #000;
+  font-family: "TheSans" !important;
+  font-weight: normal;
+}
+/**
+ * Make all elements from the DOM inherit from the parent box-sizing
+ * Since `*` has a specificity of 0, it does not override the `html` value
+ * making all elements inheriting from the root box-sizing value
+ * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/**
+ * Basic styles for links
+ */
+a {
+  color: $brand-color-secondary;
+  text-decoration: none;
+
+  @include on-event(false) {
+    /*color: $text-color;*/
+    color: $brand-color;
+    text-decoration: underline;
+  }
+
+  // &:visited {
+  //   color: $brand-color;
+  // }
+
+  &:hover,
+  &:active {
+    color: $fuchsia;
+  }
+}
+
+/**
+ * Basic styles for headers
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $text-color;
+}
+h1 {
+  font-size: 2.125rem !important;
+}
+
+/**
+ * Basic styles for pre formatted text
+ */
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-family: $code-font-stack;
+}
+
+/**
+ * Basic styles for code
+ */
+code {
+  display: block;
+}
+
+html {
+  &[font-size='l'] {
+    font-size: 19px !important;
+  }
+
+  &[font-size='m'] {
+    font-size: 16px !important;
+  }
+
+  &[font-size='s'] {
+    font-size: 12px !important;
+  }
+}
+
+
+

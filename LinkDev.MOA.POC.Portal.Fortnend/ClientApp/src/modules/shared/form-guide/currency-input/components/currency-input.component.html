@@ -1,0 +1,13 @@
+<label>{{label | translate}} <span *ngIf="required" class="required"> *</span></label>
+<div class="input-group">
+  <input type="text" [maxlength]="maxLength" [required]="required"  [disabled]="disabled" class="placeholderColor" [class.currencyInput]="!numeric" pattern="^(\d{1,3},?(\d{3},?)*\d{3}(\.\d{1,3})?|\d{1,3}(\.\d{2})?)$" [placeholder]="placeholder" (input)="onChangeFn()" (blur)="onBlurFn($event)" [(ngModel)]="value"  name="currency" #currency="ngModel" />
+  <span class="currency-icon" *ngIf="!numeric"></span>
+</div>
+<div *ngIf="currency.invalid && (currency.dirty || currency.touched || submit)" class="form-validation">
+  <div *ngIf="currency.errors.required">
+    {{'Validations.Required' | translate}}
+  </div>
+  <div *ngIf="currency.errors.pattern">
+    {{'Validations.NotValidInput' | translate}}
+  </div>
+</div>

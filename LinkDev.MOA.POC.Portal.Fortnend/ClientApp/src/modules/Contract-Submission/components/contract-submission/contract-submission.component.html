@@ -1,0 +1,2109 @@
+<app-breadcrumb [CurrnetComponentName]="'contractsubmission'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+                       [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    </div>
+  </div>
+
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'ContractSubmission.ContractSubmission' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+    <!--Request Details-->
+    <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light" *ngIf="!Application.IsReadOnly" role="alert">
+        <span class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }}
+      </div>
+
+      <app-request-submission-info [submissionAlertClass]="this.submissionAlertClass"
+                                   [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+      <!--First Stage-->
+      <div [hidden]="ActiveLevelTwo !== 1">
+        <form #FirstStage="ngForm" novalidate autocomplete="off">
+          <!--Request Main Info-->
+          <div id="RequestMainInfoSection">
+            <h5 class="stage-title">{{'ContractSubmission.RequestMainInfo' | translate}}</h5>
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <mutliselect id="ProductMainFamily" name="ProductMainFamily" #ProductMainFamily="ngModel"
+                             [label]="'ContractSubmission.ProductMainFamily'" [propertyToSelect]="'Value'"
+                             [options]="getProductMainFamily()"
+                             [viewMode]="Application.IsReadOnly || !isProductsEnabled || !isMainProductEnabled" [multiple]="false"
+                             [config]="config" [(ngModel)]="Application.Request.ProductMainFamilyId" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly" (change)="resetSubFamily()"
+                             [ngClass]="{ 'is-invalid required  validation':  ProductMainFamily.errors && (ProductMainFamily.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ProductMainFamily" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="ProductSubFamily" name="ProductSubFamily"
+                             [label]="'ContractSubmission.ProductSubFamily'" [propertyToSelect]="'Value'"
+                             [options]="getProductSubFamily()" [viewMode]="Application.IsReadOnly || !isProductsEnabled"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.ProductSubFamilyId"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly" #ProductSubFamily="ngModel"
+                             (change)="resetProduct()"
+                             [ngClass]="{ 'is-invalid required  validation':  ProductSubFamily.errors && (ProductSubFamily.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ProductSubFamily" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   [hidden]="!Application.Request.ProductSubFamilyId || Application.Request.ProductSubFamilyId === '3'">
+                <mutliselect id="Product" name="Product" [label]="'ContractSubmission.Product'"
+                             [propertyToSelect]="'Value'" [options]="getProduct()"
+                             [viewMode]="Application.IsReadOnly || !isProductsEnabled" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.ProductId"
+                             [required]="Application.Request.ProductSubFamilyId && Application.Request.ProductSubFamilyId !== '3'"
+                             [isRequiredLabel]="!Application.IsReadOnly" #Product="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  Product.errors && (Product.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="Product" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6"
+                   [hidden]="!Application.Request.ProductSubFamilyId || Application.Request.ProductMainFamilyId !== '1' || (Application.Request.ProductMainFamilyId === '1' && Application.Request.ProductSubFamilyId === '2')">
+                <mutliselect id="RequestReason" name="RequestReason" [label]="'ContractSubmission.RequestReason'"
+                             [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_requestreason_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.RequestReason" (change)="requestReasonChange()"
+                             [required]="Application.Request.ProductMainFamilyId === '1' && Application.Request.ProductSubFamilyId !== '2'"
+                             [isRequiredLabel]="!Application.IsReadOnly" #RequestReason="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  RequestReason.errors && (RequestReason.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="RequestReason" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6" [class.col-11]="Application.Request.CRId">
+                <mutliselect id="CRId" name="CRId" [label]="'ContractSubmission.CRId'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['account_CRsByTypeInvestor']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.CRId" [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             #CRId="ngModel" (change)="getChangesByCR()"
+                             [ngClass]="{ 'is-invalid required  validation':  CRId.errors && (CRId.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="CRId"
+                                       [form]="FirstStage" [submit]="submit"></app-validation-viewer>
+              </div>
+              <app-info-viewer [isLoading]="getContact" [modalFormTitleKey]="'ContractSubmission.CRInfo'"
+                               *ngIf="Application.Request.CRId">
+                <div class="row">
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentCRType" #CurrentCRType="ngModel"
+                                     [(ngModel)]="CurrentCR.CRType" [label]="'ContractSubmission.CRType'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentCRNumber" #CurrentCRNumber="ngModel"
+                                     [(ngModel)]="CurrentCR.CRNumber" [label]="'ContractSubmission.CRNumber'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentCRName" #CurrentCRName="ngModel"
+                                     [(ngModel)]="CurrentCR.CRName" [label]="'ContractSubmission.CRName'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                    </custom-text-box>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentCRCity" #CurrentCRName="ngModel"
+                                     [(ngModel)]="CurrentCR.IssuanceCity" [label]="'ContractSubmission.CRCity'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentCRIssuanceDate" #CurrentCRIssuanceDate="ngModel"
+                                     [(ngModel)]="CurrentCR.ReadOnlyIssueDate" [label]="'ContractSubmission.CRIssuanceDate'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                    </custom-text-box>
+
+                    <!--<label>{{'ContractSubmission.CRIssuanceDate' | translate}}</label>
+                    <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" [ngModelOptions]="{standalone: true}"
+                                           [readonly]="true">
+                    </ngbd-datepicker-popup>-->
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentCRExpiryDate" #CurrentCRExpiryDate="ngModel"
+                                     [(ngModel)]="CurrentCR.ReadOnlyExpiryDate" [label]="'ContractSubmission.CRExpiryDate'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true" [ngModelOptions]="{standalone: true}">
+                    </custom-text-box>
+
+                    <!--<label>{{'ContractSubmission.CRExpiryDate' | translate}}</label>
+                    <ngbd-datepicker-popup [(ngModel)]="CurrentCR.IssueDate" [ngModelOptions]="{standalone: true}"
+                                           [readonly]="true">
+                    </ngbd-datepicker-popup>-->
+                  </div>
+                </div>
+                <app-grid [canAdd]="false" [tableHeadTitle]="'ContractSubmission.Activity'" [canEdit]="false"
+                          [canDelete]="false" [(data)]="CurrentCR.ISICActivities" [columns]="ActivityGridcols">
+                </app-grid>
+                <app-grid [canAdd]="false" [tableHeadTitle]="'ContractSubmission.Owners'" [canEdit]="false"
+                          [canDelete]="false" [(data)]="CurrentCR.CROwners" [columns]="CROwnerGridcols">
+                </app-grid>
+
+              </app-info-viewer>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6"
+                   [hidden]="!pendingOnCREnabled || !Application.Request.CRId || Application.Request.RequestReason?.toString() !== '2'">
+                <mutliselect id="OldContractId" name="OldContractId" [label]="'ContractSubmission.OldContract'"
+                             [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_contract_LookupWithId']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.OldContractId"
+                             [required]="Application.Request.RequestReason?.toString() === '2'"
+                             [isRequiredLabel]="!Application.IsReadOnly" #OldContractId="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  OldContractId.errors && (OldContractId.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="OldContractId" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6" [hidden]="!pendingOnCREnabled">
+                <mutliselect id="Contacts" name="Contacts" [label]="'ContractSubmission.Contacts'"
+                             [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contactdetails_ContactDetails']"
+                             [hidden]="!pendingOnCREnabled" [viewMode]="Application.IsReadOnly || !pendingOnCREnabled"
+                             [multiple]="true" [config]="config" [(ngModel)]="Application.Request.Contacts" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly" #Contacts="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  Contacts.errors && (Contacts.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="Contacts" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6" [hidden]="!pendingOnCREnabled || Application.Request?.ProductMainFamilyId?.toString() !== '1'">
+                <mutliselect id="HasIl" name="HasIl" [label]="'ContractSubmission.HasIl'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']"
+                             [viewMode]="Application.IsReadOnly || !pendingOnCREnabled" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.HasIl" [required]="Application.Request?.ProductMainFamilyId?.toString() === '1'" [isRequiredLabel]="!Application.IsReadOnly"
+                             #HasIl="ngModel" (change)="ILQuestion()"
+                             [ngClass]="{ 'is-invalid required  validation':  HasIl.errors && (HasIl.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="HasIl"
+                                       [form]="FirstStage" [submit]="submit"></app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6" [hidden]="!pendingOnCREnabled || Application.Request?.ProductMainFamilyId?.toString() !== '1' || Application.Request?.HasIl?.toString() === 'true'" [class.col-11]="Application.Request.ILId">
+                <mutliselect id="ModonProducts" name="ModonProducts" [label]="'ContractSubmission.ModonProducts'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_modonproduct_ModonProducts']"
+                             [viewMode]="Application.IsReadOnly || !pendingOnCREnabled" [multiple]="true" [config]="config"
+                             [(ngModel)]="Application.Request.ModonProducts" [required]="Application.Request?.ProductMainFamilyId?.toString() === '1' && Application.Request?.HasIl?.toString() !== 'true'" [isRequiredLabel]="!Application.IsReadOnly"
+                             #ModonProducts="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  ModonProducts.errors && (ModonProducts.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="ModonProducts"
+                                       [form]="FirstStage" [submit]="submit"></app-validation-viewer>
+
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6" [hidden]="!pendingOnCREnabled || Application.Request?.ProductMainFamilyId?.toString() !== '1' || Application.Request?.HasIl?.toString() !== 'true'" [class.col-11]="Application.Request.ILId">
+                <mutliselect id="IL" name="IL" [label]="'ContractSubmission.IL'" [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_industriallicense_LookupWithId']"
+                  [viewMode]="Application.IsReadOnly || !pendingOnCREnabled" [multiple]="false" [config]="config"
+                  [(ngModel)]="Application.Request.ILId" [required]="Application.Request?.ProductMainFamilyId?.toString() === '1' && Application.Request?.HasIl?.toString() === 'true'" [isRequiredLabel]="!Application.IsReadOnly"
+                  #IL="ngModel" (change)="getChangesByIL()"
+                  [ngClass]="{ 'is-invalid required  validation':  IL.errors && (IL.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="IL"
+                                       [form]="FirstStage" [submit]="submit"></app-validation-viewer>
+
+              </div>
+              <!--[class.col-11]="Application.Request.ILId"-->
+              <app-info-viewer [hidden]="!pendingOnCREnabled || Application.Request?.ProductMainFamilyId?.toString() !== '1'" [isLoading]="getIL"
+                               [modalFormTitleKey]="'ContractSubmission.ILInfo'" *ngIf="Application.Request.ILId">
+                <div class="row">
+                  <div class="col-lg-4 col-md-6">
+                    <custom-text-box [type]="'text'" name="CurrentILStatus" #CurrentILStatus="ngModel"
+                                     [(ngModel)]="CurrentIL.Status" [label]="'ContractSubmission.CurrentILStatus'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <custom-text-box [type]="'text'" name="CurrentILType" #CurrentILType="ngModel"
+                                     [(ngModel)]="CurrentIL.ILType" [label]="'ContractSubmission.CurrentILType'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+                    <custom-text-box [type]="'text'" name="CurrentILCity" #CurrentILCity="ngModel"
+                                     [(ngModel)]="CurrentIL.City" [label]="'ContractSubmission.City'" autocomplete="" aria-label="Name"
+                                     [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-6">
+                    <custom-text-box [type]="'text'" name="CurrentILIssuanceDate" #CurrentILIssuanceDate="ngModel"
+                                     [(ngModel)]="CurrentIL.IssueDate" [label]="'ContractSubmission.ILIssuanceDate'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-lg-4 col-md-8">
+                    <custom-text-box [type]="'text'" name="CurrentILExpiryDate" #CurrentILExpiryDate="ngModel"
+                                     [(ngModel)]="CurrentIL.ExpiryDate" [label]="'ContractSubmission.ILExpiryDate'" autocomplete=""
+                                     aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-8 col-md-8">
+                    <custom-text-box [type]="'text'" name="CurrentILFactoryName" #CurrentILFactoryName="ngModel"
+                                     [(ngModel)]="CurrentIL.FactoryNameinILFactory" [label]="'ContractSubmission.FactoryName'"
+                                     autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                </div>
+                <!--<div class="col-lg-8 col-md-6">
+                  <label>{{'ContractSubmission.Activity' | translate}}</label>
+                  <textarea id="CurrentILProducts" name="CurrentILProducts" [readOnly]="true"
+                            #CurrentILProducts="ngModel" [(ngModel)]="CurrentIL.ILProducts" disabled></textarea>
+                </div>-->
+
+                <app-grid [canAdd]="false" [tableHeadTitle]="'ContractSubmission.ModonProducts'"
+                          [canEdit]="false" [canDelete]="false" [data]="CurrentIL._IlProducts"
+                          [columns]="ILProductsgridcols">
+                </app-grid>
+                <app-grid [canAdd]="false" [tableHeadTitle]="'ContractSubmission.ILIndustrialActivityList'"
+                          [canEdit]="false" [canDelete]="false" [data]="CurrentIL.ISICActivityModelList"
+                          [columns]="ActivityGridcols">
+                </app-grid>
+              </app-info-viewer>
+            </div>
+            <div class="row">
+              <div class="col-lg-4  col-md-6" [hidden]="!pendingOnILEnabled">
+                <mutliselect id="IndustrialCityCode" name="IndustrialCityCode"
+                             [label]="'ContractSubmission.IndustrialCity'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_industrialcity_LookupWithId']"
+                             [viewMode]="Application.IsReadOnly || !pendingOnILEnabled" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.IndustrialCityCode" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly" #IndustrialCityCode="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  IndustrialCityCode.errors && (IndustrialCityCode.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IndustrialCityCode" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-12  col-md-6">
+                <div class="alert alert-light" *ngIf="!Application.IsReadOnly && pendingOnILEnabled" role="alert">
+                  <span class="icon-info"></span>{{'ContractSubmission.CRMsg'|translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row align-items-center">
+              <div class="col-lg-4 col-md-6" [class.col-11]="getSAGIA && Application.Request.SAGIANumber">
+                <custom-text-box [type]="'text'" name="SAGIANumber" #SAGIANumber="ngModel"
+                                 [(ngModel)]="Application.Request.SAGIANumber" [label]="'ContractSubmission.SAGIANumber'"
+                                 autocomplete="" aria-label="Name" [isRequiredLabel]="false" [required]="false"
+                                 [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  ((SAGIANumber.errors && (SAGIANumber.dirty || submit)) || SAGIAError) }">
+                </custom-text-box>
+                <div class="form-validation" *ngIf="SAGIAError">
+                  {{SAGIAError}}
+                </div>
+              </div>
+              <app-info-viewer [isLoading]="getSAGIA" [modalFormTitleKey]="'ContractSubmission.Info'"
+                               *ngIf="getSAGIA && Application.Request.SAGIANumber" class="mx-3 mx-md-0">
+                <div class="row">
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentSAGIAName" #CurrentSAGIAName="ngModel"
+                                     [(ngModel)]="CurrentSAGIADetails.CompanyName" [label]="'ContractSubmission.CompanyName'"
+                                     autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <!-- <custom-text-box [type]="'text'" name="CurrentSAGIAActivities" #CurrentSAGIAActivities="ngModel"
+                                                    [(ngModel)]="CurrentSAGIADetails.CompanyActivity" [label]="'ContractSubmission.CompanyActivities'"
+                                                    autocomplete="" aria-label="Name" [isReadOnly]="true">
+                                                  </custom-text-box> -->
+
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentSAGIAIssuanceDate" #CurrentSAGIAIssuanceDate="ngModel"
+                                     [(ngModel)]="CurrentSAGIADetails.IssueDate" [label]="'ContractSubmission.IssueDate'"
+                                     autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentSAGIAExpiryDate" #CurrentSAGIAExpiryDate="ngModel"
+                                     [(ngModel)]="CurrentSAGIADetails.EndDate" [label]="'ContractSubmission.ExpiryDate'"
+                                     autocomplete="" aria-label="Name" [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                  <div class="col-md-6 col-lg-4">
+                    <custom-text-box [type]="'text'" name="CurrentSAGIAInvestmentVolume"
+                                     #CurrentSAGIAInvestmentVolume="ngModel" [(ngModel)]="CurrentSAGIADetails.InvestmentSize"
+                                     [label]="'ContractSubmission.InvestmentAmountValue'" autocomplete="" aria-label="Name"
+                                     [isReadOnly]="true">
+                    </custom-text-box>
+                  </div>
+                </div>
+                <app-grid [canAdd]="false" [tableHeadTitle]="'ContractSubmission.PartnersDetails'" [canEdit]="false"
+                          [canDelete]="false" [data]="CurrentSAGIADetails.PartnersList" [columns]="PartnersGridcols">
+                </app-grid>
+              </app-info-viewer>
+              <button class="main-btn-secondary mt-3 mx-4" (click)="getSAGIADetails(false)"
+                      [disabled]="!Application.Request.SAGIANumber"
+                      *ngIf="!Application.IsReadOnly">
+                {{'ContractSubmission.GetLicenseDetails' | translate}}
+              </button>
+
+            </div>
+          </div>
+          <!--Authorized Signatory-->
+          <div id="AuthorizedSignatorySection">
+            <h5 class="stage-title">{{'ContractSubmission.AuthorizedSignatorySection' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsAuthorizedSignatory" name="IsAuthorizedSignatory"
+                             [label]="'ContractSubmission.IsAuthorizedSignatory'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsAuthorizedSignatory"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly" #IsAuthorizedSignatory="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  IsAuthorizedSignatory.errors && (IsAuthorizedSignatory.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsAuthorizedSignatory" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   [hidden]="!(Application.Request.IsAuthorizedSignatory?.toString() === 'true')">
+                <mutliselect id="DelegatorId" name="DelegatorId" [label]="'ContractSubmission.AuthorizedSignatoryName'"
+                             [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['contact_ContractSubmissionContacts']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.DelegatorId"
+                             [required]="Application.Request.IsAuthorizedSignatory?.toString() === 'true'"
+                             [isRequiredLabel]="!Application.IsReadOnly" #DelegatorId="ngModel"
+                             [ngClass]="{ 'is-invalid required  validation':  DelegatorId.errors && (DelegatorId.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="DelegatorId" [form]="FirstStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+      <!--Second Stage-->
+      <div [hidden]="!(ActiveLevelTwo === 2 && Application.Request?.ProductMainFamilyId?.toString() === '1')">
+        <form #SecondStage="ngForm" novalidate autocomplete="off">
+          <!--Indusrty Goal-->
+          <div id="IndustryGoalSection" class="mb-4">
+            <h5 class="stage-title">{{'ContractSubmission.IndustryGoal' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IndustryType" name="IndustryType" #IndustryType="ngModel"
+                             [label]="'ContractSubmission.IndustryType'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_industrytype_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.IndustryType" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IndustryType.errors && (IndustryType.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IndustryType" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IndustryMethodology" name="IndustryMethodology" #IndustryMethodology="ngModel"
+                             [label]="'ContractSubmission.IndustryMethodology'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_industrymethodology_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.IndustryMethodology" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IndustryMethodology.errors && (IndustryMethodology.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IndustryMethodology" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'text'" name="ManufacturingDescription" #ManufacturingDescription="ngModel"
+                                 [(ngModel)]="Application.Request.ManufacturingDescription"
+                                 [label]="'ContractSubmission.ManufacturingDescription'" autocomplete="" aria-label="Name"
+                                 [isRequiredLabel]="!Application.IsReadOnly" [required]="true" [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  ManufacturingDescription.errors && (ManufacturingDescription.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ManufacturingDescription" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+
+          </div>
+          <!-- Products -->
+          <div id="ProductsSection">
+            <h5 class="stage-title">{{'ContractSubmission.ProductsDetails' | translate}}</h5>
+            <div class="row">
+              <div class="col-12">
+                <form #productGridForm="ngForm">
+                  <app-grid [modalFormTitle]="'ContractSubmission.Product'" [addNewRecord]="'ContractSubmission.AddNew'"
+                            [(data)]="Application.Request.ProductsDetails" [columns]="productsGridcols"
+                            [(model)]="productGridModel" [canAdd]="!Application.IsReadOnly" [canEdit]="!Application.IsReadOnly"
+                            [canDelete]="!Application.IsReadOnly" [templateForm]="productGridForm"
+                            [template]="productGridContent" [LookupEntities]="lookupService.lookupEntities">
+                    <ng-container #productGridContent>
+                      <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                          <custom-text-box [type]="'text'" name="ProductFinalProduct" #ProductFinalProduct="ngModel"
+                                           [(ngModel)]="productGridModel.FinalProduct" [isReadOnly]="Application.IsReadOnly"
+                                           [label]="'ContractSubmission.FinalProduct'" autocomplete="" aria-label="Name"
+                                           [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  ProductFinalProduct.errors && (ProductFinalProduct.dirty || submit) }">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="ProductFinalProduct" [form]="productGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <!-- <custom-text-box [type]="'text'" name="ProductProductionVolume"
+                            #ProductProductionVolume="ngModel" [(ngModel)]="productGridModel.ProductionVolume"
+                            [isReadOnly]="Application.IsReadOnly" [label]="'ContractSubmission.ProductionVolume'"
+                            autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                            [required]="true" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                            [ngClass]="{ 'is-invalid required  validation':  ProductProductionVolume.errors && (ProductProductionVolume.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="Required_WholeNumberValidations"
+                            [controlName]="ProductProductionVolume" [form]="productGridForm" [submit]="submit">
+                          </app-validation-viewer> -->
+                          <currency-input [submit]="submit" type="number" [label]="'ContractSubmission.ProductionVolume'"
+                                          [required]="true" [numeric]="true" name="ProductProductionVolume"
+                                          #ProductProductionVolume="ngModel" [(ngModel)]="productGridModel.ProductionVolume"
+                                          [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                          [ngClass]="{ 'is-invalid required  validation':  productGridForm.controls['ProductProductionVolume'] && productGridForm.controls['ProductProductionVolume'].errors && (productGridForm.controls['ProductProductionVolume'].dirty || submit)}">
+                          </currency-input>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <mutliselect id="ProductUnit" name="ProductUnit" #ProductUnit="ngModel"
+                                       [label]="'ContractSubmission.Unit'" [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_contractsubmissionproduct_ldv_productionunit_OptionSet']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="productGridModel.Unit" [required]="true"
+                                       [isRequiredLabel]="!Application.IsReadOnly"
+                                       [ngClass]="{ 'is-invalid required  validation':  ProductUnit.errors && (ProductUnit.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="ProductFinalProduct" [form]="productGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <custom-text-box [type]="'text'" name="ProductSymbol" #ProductSymbol="ngModel"
+                                           [(ngModel)]="productGridModel.Symbol" [isReadOnly]="Application.IsReadOnly"
+                                           [label]="'ContractSubmission.Symbol'" autocomplete="" aria-label="Email"
+                                           [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  ProductSymbol.errors && (ProductSymbol.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="ProductSymbol" [form]="productGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+
+                      </div>
+                    </ng-container>
+                  </app-grid>
+                  <div class="form-validation" *ngIf="ProductsLength() < 1 && submit">
+                    {{'ContractSubmission.ProductsNumberValidation'|translate}}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Raw Materials -->
+          <div id="RawMaterialsSection">
+            <h5 class="stage-title">{{'ContractSubmission.RawMaterialsDetails' | translate}}</h5>
+            <div class="row">
+              <div class="col-12">
+                <form #rawwMaterialGridForm="ngForm">
+                  <app-grid [modalFormTitle]="'ContractSubmission.RawMaterial'"
+                            [addNewRecord]="'ContractSubmission.AddNew'" [(data)]="Application.Request.RawMaterialsDetails"
+                            [columns]="rawMaterialGridcols" [(model)]="rawMaterialGridModel" [canAdd]="!Application.IsReadOnly"
+                            [canEdit]="!Application.IsReadOnly" [canDelete]="!Application.IsReadOnly"
+                            [templateForm]="rawwMaterialGridForm" [template]="rawMaterialGridContent"
+                            [LookupEntities]="lookupService.lookupEntities">
+                    <ng-container #rawMaterialGridContent>
+                      <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                          <mutliselect id="rawMaterialSource" name="rawMaterialSource" #rawMaterialSource="ngModel"
+                                       [label]="'ContractSubmission.Source'" [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_exporttingcountries_OptionSet']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="rawMaterialGridModel.Source" [required]="true"
+                                       [isRequiredLabel]="!Application.IsReadOnly"
+                                       [ngClass]="{ 'is-invalid required  validation':  rawMaterialSource.errors && (rawMaterialSource.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="rawMaterialSource" [form]="rawwMaterialGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <custom-text-box [type]="'text'" name="rawMaterialType" #rawMaterialType="ngModel"
+                                           [(ngModel)]="rawMaterialGridModel.Type" [label]="'ContractSubmission.Type'" autocomplete=""
+                                           [isReadOnly]="Application.IsReadOnly" aria-label="Email"
+                                           [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  rawMaterialType.errors && (rawMaterialType.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="rawMaterialType" [form]="rawwMaterialGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <!-- <custom-text-box [type]="'text'" name="rawMaterialQuantity" #rawMaterialQuantity="ngModel"
+                            [(ngModel)]="rawMaterialGridModel.Quantity" [isReadOnly]="Application.IsReadOnly"
+                            [label]="'ContractSubmission.Quantity'" autocomplete="" aria-label="Email" [maxLength]="8"
+                            [isRequiredLabel]="!Application.IsReadOnly" [required]="true" [pattern]="'^[0-9]+$'"
+                            [ngClass]="{ 'is-invalid required  validation':  rawMaterialQuantity.errors && (rawMaterialQuantity.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="Required_WholeNumberValidations"
+                            [controlName]="rawMaterialQuantity" [form]="rawwMaterialGridForm" [submit]="submit">
+                          </app-validation-viewer> -->
+                          <currency-input [submit]="submit" type="number" [label]="'ContractSubmission.Quantity'"
+                                          [required]="true" [numeric]="true" name="rawMaterialQuantity"
+                                          #rawMaterialQuantity="ngModel" [(ngModel)]="rawMaterialGridModel.Quantity"
+                                          [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                          [ngClass]="{ 'is-invalid required  validation':  rawMaterialQuantity.errors && (rawMaterialQuantity.dirty || submit)}">
+                          </currency-input>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <mutliselect id="rawMaterialUnit" name="rawMaterialUnit" #rawMaterialUnit="ngModel"
+                                       [label]="'ContractSubmission.MeasuringUnit'" [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_rawmaterial_ldv_measuringunit_OptionSet']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="rawMaterialGridModel.Unit" [required]="true"
+                                       [isRequiredLabel]="!Application.IsReadOnly"
+                                       [ngClass]="{ 'is-invalid required  validation':  rawMaterialUnit.errors && (rawMaterialUnit.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="rawMaterialUnit" [form]="rawwMaterialGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+
+                      </div>
+                    </ng-container>
+                  </app-grid>
+                  <div class="form-validation" *ngIf="RawMaterialsLength() < 1 && submit">
+                    {{'ContractSubmission.RawMaterialsNumberValidation'|translate}}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- Equipment -->
+          <div id="EquipmentSection">
+            <h5 class="stage-title">{{'ContractSubmission.EquipmentDetails' | translate}}</h5>
+            <div class="row">
+              <div class="col-12">
+                <form #equipmentGridForm="ngForm">
+                  <app-grid [modalFormTitle]="'ContractSubmission.Equipment'"
+                            [addNewRecord]="'ContractSubmission.AddNew'" [(data)]="Application.Request.EquipmentDetails"
+                            [columns]="equipmentGridcols" [(model)]="equipmentGridModel" [canAdd]="!Application.IsReadOnly"
+                            [canEdit]="!Application.IsReadOnly" [canDelete]="!Application.IsReadOnly"
+                            [templateForm]="equipmentGridForm" [template]="equipmentGridContent"
+                            [LookupEntities]="lookupService.lookupEntities">
+                    <ng-container #equipmentGridContent>
+                      <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                          <custom-text-box [type]="'text'" name="EquipmentName" #EquipmentName="ngModel"
+                                           [(ngModel)]="equipmentGridModel.Name" [label]="'ContractSubmission.EquipementName'"
+                                           autocomplete="" [isReadOnly]="Application.IsReadOnly" aria-label="Email"
+                                           [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  EquipmentName.errors && (EquipmentName.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="EquipmentName" [form]="equipmentGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <!-- <custom-text-box [type]="'text'" name="EquipmentProductionLinesNumber"
+                            #EquipmentProductionLinesNumber="ngModel"
+                            [(ngModel)]="equipmentGridModel.ProductionLinesNumber"
+                            [label]="'ContractSubmission.ProductionLinesNumber'" autocomplete="" aria-label="Email"
+                            [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                            [isReadOnly]="Application.IsReadOnly" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                            [ngClass]="{ 'is-invalid required  validation':  EquipmentProductionLinesNumber.errors && (EquipmentProductionLinesNumber.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="Required_WholeNumberValidations"
+                            [controlName]="EquipmentProductionLinesNumber" [form]="equipmentGridForm" [submit]="submit">
+                          </app-validation-viewer> -->
+                          <currency-input [submit]="submit" type="number" [label]="'ContractSubmission.ProductionLinesNumber'"
+                                          [required]="true" [numeric]="true" name="EquipmentProductionLinesNumber"
+                                          #EquipmentProductionLinesNumber="ngModel" [(ngModel)]="equipmentGridModel.ProductionLinesNumber"
+                                          [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                          [ngClass]="{ 'is-invalid required  validation':  EquipmentProductionLinesNumber.errors && (EquipmentProductionLinesNumber.dirty || submit)}">
+                          </currency-input>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <mutliselect id="EquipmentSource" name="EquipmentSource" #EquipmentSource="ngModel"
+                                       [label]="'ContractSubmission.Source'" [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_exporttingcountries_OptionSet']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="equipmentGridModel.Source" [required]="true"
+                                       [isRequiredLabel]="!Application.IsReadOnly"
+                                       [ngClass]="{ 'is-invalid required  validation':  EquipmentSource.errors && (EquipmentSource.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="EquipmentSource" [form]="equipmentGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+
+                      </div>
+                    </ng-container>
+                  </app-grid>
+                  <div class="form-validation" *ngIf="EquipmentLength() < 1 && submit">
+                    {{'ContractSubmission.EquipmentNumberValidation'|translate}}
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="ManufacturingTechnology" name="ManufacturingTechnology"
+                             #ManufacturingTechnology="ngModel" [label]="'ContractSubmission.ManufacturingTechnology'"
+                             [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_manufacturingtechnology_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+                             [(ngModel)]="Application.Request.ManufacturingTechnology" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  ManufacturingTechnology.errors && (ManufacturingTechnology.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ManufacturingTechnology" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+          <!-- Consumers Agreement -->
+          <div id="ConsumersAgreementSection">
+            <h5 class="stage-title">{{'ContractSubmission.ConsumersAgreementInfo' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsConsumersAgreement" name="IsConsumersAgreement" #IsConsumersAgreement="ngModel"
+                             [label]="'ContractSubmission.IsConsumersAgreement'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsConsumersAgreement"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsConsumersAgreement.errors && (IsConsumersAgreement.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsConsumersAgreement" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List *ngIf="Application.Request.IsConsumersAgreement?.toString() === 'true'"
+                                    [uploaders]="Application.Documents" [form]="SecondStage" [IsReadOnly]="Application.IsReadOnly"
+                                    [IsLiveChanges]="true" [SectionName]="'ConsumersAgreement'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="Application.Request.IsConsumersAgreement?.toString() === 'true'">
+              <div class="col-lg-4 col-md-6">
+                <label>
+                  {{'ContractSubmission.ConsumersAgreementInfo' | translate}}<span class="required"
+                                                                                   *ngIf="!Application.IsReadOnly"> *</span>
+                </label>
+                <textarea [required]="true" id="ConsumersAgreementInfo" name="ConsumersAgreementInfo"
+                          #ConsumersAgreementInfo="ngModel" [(ngModel)]="Application.Request.ConsumersAgreementInfo"
+                          [readOnly]="Application.IsReadOnly"
+                          [ngClass]="{ 'is-invalid required  validation':  ConsumersAgreementInfo.errors && (ConsumersAgreementInfo.dirty || submit) }"></textarea>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ConsumersAgreementInfo" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+          <!-- Tech Partner nfo -->
+          <div id="TechPartnerInfoSection">
+            <h5 class="stage-title">{{'ContractSubmission.TechPartnerInfo' | translate}}</h5>
+            <!-- <div class="alert alert-light" role="alert"><span
+                class="icon-info"></span>{{'ContractSubmission.TechPartnerInfoNote'|translate }} </div> -->
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="HasTechPartnership" name="HasTechPartnership" #HasTechPartnership="ngModel"
+                             [label]="'ContractSubmission.HasTechPartnership'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.HasTechPartnership"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  HasTechPartnership.errors && (HasTechPartnership.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="HasTechPartnership" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List *ngIf="Application.Request.HasTechPartnership?.toString() === 'true'"
+                                    [uploaders]="Application.Documents" [form]="SecondStage" [IsReadOnly]="Application.IsReadOnly"
+                                    [IsLiveChanges]="true" [SectionName]="'PartnershipDocument'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="Application.Request.HasTechPartnership?.toString() === 'true'">
+              <div class="col-lg-4 col-md-6">
+                <label>
+                  {{'ContractSubmission.TechPartnerInfo' | translate}}<span class="required">
+                    *
+                  </span>
+                </label>
+                <textarea [required]="true" id="TechPartnerInfo" name="TechPartnerInfo" #TechPartnerInfo="ngModel"
+                          [(ngModel)]="Application.Request.TechPartnerInfo" [readOnly]="Application.IsReadOnly"
+                          [ngClass]="{ 'is-invalid required  validation':  TechPartnerInfo.errors && (TechPartnerInfo.dirty || submit) }"></textarea>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="TechPartnerInfo" [form]="SecondStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Third Stage-->
+      <div [hidden]="!(ActiveLevelTwo === 3 && Application.Request?.ProductMainFamilyId?.toString() === '1')">
+        <form #ThirdStage="ngForm" novalidate autocomplete="off">
+          <!--Internal Production-->
+          <div id="InternalProductionSection">
+            <h5 class="stage-title">{{'ContractSubmission.InternalProduction' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="InternalProduction" name="InternalProduction" #InternalProduction="ngModel"
+                             [label]="'ContractSubmission.IsInternalProduction'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsInternalproduction"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  InternalProduction.errors && (InternalProduction.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="InternalProduction" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   [hidden]="!(Application.Request.IsInternalproduction?.toString() === 'true')">
+                <mutliselect id="Areas" name="Areas" #Areas="ngModel" [label]="'ContractSubmission.Areas'"
+                             [propertyToSelect]="'Value'" [options]="lookupService.lookupEntities['ldv_ksacity_KSACity']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.ProductionCityId" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  Areas.errors && (Areas.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}" [controlName]="Areas"
+                                       [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   [hidden]="!(Application.Request.IsInternalproduction?.toString() === 'true')">
+                <label>
+                  {{'ContractSubmission.Distributors' | translate}}<span class="required">
+                    *
+                  </span>
+                </label>
+                <textarea [required]="true" id="Distributors" name="Distributors" [readOnly]="Application.IsReadOnly"
+                          #Distributors="ngModel" [(ngModel)]="Application.Request.InternalDistributors"
+                          [ngClass]="{ 'is-invalid required  validation':  Distributors.errors && (Distributors.dirty || submit) }"></textarea>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="Distributors" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+
+          </div>
+          <!-- Exporting -->
+          <div id="ExportingSection">
+            <h5 class="stage-title">{{'ContractSubmission.Exporting' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsExporting" name="IsExporting" #IsExporting="ngModel"
+                             [label]="'ContractSubmission.IsExporting'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsExporting" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsExporting.errors && (IsExporting.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsExporting" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6" [hidden]="Application.Request.IsExporting?.toString() !== 'true'">
+                <mutliselect id="ExportingCountries" name="ExportingCountries" #ExportingCountries="ngModel"
+                             [label]="'ContractSubmission.ExportingCountries'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_exporttingcountries_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+                             [(ngModel)]="Application.Request.ExportingCountries"
+                             [required]="!Application.IsReadOnly && Application.Request.IsExporting?.toString() === 'true'"
+                             [isRequiredLabel]="!Application.IsReadOnly && Application.Request.IsExporting?.toString() === 'true'"
+                             [ngClass]="{ 'is-invalid required  validation':  ExportingCountries.errors && (ExportingCountries.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ExportingCountries" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6" *ngIf="Application.Request.IsExporting?.toString() === 'true'">
+                <custom-text-box [type]="'text'" name="ExportingPercentage" #ExportingPercentage="ngModel"
+                                 [(ngModel)]="Application.Request.ExportingPercentage"
+                                 [label]="'ContractSubmission.ExportingPercentage'" autocomplete=""
+                                 [isReadOnly]="Application.IsReadOnly" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                 [required]="true" [pattern]="'^([0-9]|[1-9][0-9]|100)$'" [maxLength]="8"
+                                 [ngClass]="{ 'is-invalid required  validation':  ExportingPercentage.errors && (ExportingPercentage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="ExportingPercentageValidations"
+                                       [controlName]="ExportingPercentage" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+          <!-- Industry Type -->
+          <div id="IndustryTypeSection">
+            <h5 class="stage-title">{{'ContractSubmission.IndustryType' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsRelatedToIndustry" name="IsRelatedToIndustry" #IsRelatedToIndustry="ngModel"
+                             [label]="'ContractSubmission.IsRelatedToIndustry'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsRelatedToIndustry"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsRelatedToIndustry.errors && (IsRelatedToIndustry.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsRelatedToIndustry" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List *ngIf="ActiveLevelTwo === 3 && Application.Request?.ProductMainFamilyId?.toString() === '1' && Application.Request.IsRelatedToIndustry?.toString() === 'true'"
+                                    [uploaders]="Application.Documents" [form]="ThirdStage" [IsReadOnly]="Application.IsReadOnly"
+                                    [IsLiveChanges]="true" [SectionName]="'RelationDocument'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+            <div class="row" *ngIf="Application.Request.IsRelatedToIndustry?.toString() === 'true'">
+              <div class="col-lg-4 col-md-6">
+                <label>
+                  {{'ContractSubmission.RelatedIndustriesInfo' | translate}}<span class="required">
+                    *
+                  </span>
+                </label>
+                <textarea [required]="true" id="RelatedIndustriesInfo" name="RelatedIndustriesInfo"
+                          [readOnly]="Application.IsReadOnly" #RelatedIndustriesInfo="ngModel"
+                          [(ngModel)]="Application.Request.RelatedIndustriesInfo"
+                          [ngClass]="{ 'is-invalid required  validation':  RelatedIndustriesInfo.errors && (RelatedIndustriesInfo.dirty || submit) }"></textarea>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="RelatedIndustriesInfo" [form]="ThirdStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <!--Fourth Stage-->
+      <div [hidden]="!(ActiveLevelTwo === 4 && Application.Request?.ProductMainFamilyId?.toString() === '1')">
+        <form #FourthStage="ngForm" novalidate autocomplete="off">
+          <div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="InvestmentAmountValue" #InvestmentAmountValue="ngModel"
+                  [(ngModel)]="Application.Request.InvestmentAmountValue" [maxLength]="28"
+                  [label]="'ContractSubmission.InvestmentAmountValue'" autocomplete="" [pattern]="'^[0-9]+$'"
+                  aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                  [required]="ActiveLevelTwo === 4 && Application.Request?.ProductMainFamilyId?.toString() === '1'"
+                  [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  fourthStage.controls['InvestmentAmountValue'] && fourthStage.controls['InvestmentAmountValue'].errors && (fourthStage.controls['InvestmentAmountValue'].dirty || submit)}">
+                </custom-text-box>
+                <div class="form-validation"
+                  *ngIf="fourthStage.controls['InvestmentAmountValue'] && fourthStage.controls['InvestmentAmountValue'].errors && fourthStage.controls['InvestmentAmountValue'].errors['required'] && (fourthStage.controls['InvestmentAmountValue'].dirty || submit)">
+                  {{'Validations.Required' | translate}}
+                </div>
+                <div class="form-validation"
+                  *ngIf="fourthStage.controls['InvestmentAmountValue'] && fourthStage.controls['InvestmentAmountValue'].errors && fourthStage.controls['InvestmentAmountValue'].errors['pattern'] && (fourthStage.controls['InvestmentAmountValue'].dirty || submit)">
+                  {{'Validations.WholeNumber' | translate}}
+                </div> -->
+                <currency-input [submit]="submit" type="number" [label]="'ContractSubmission.InvestmentAmountValue'"
+                                [required]="ActiveLevelTwo === 4 && Application.Request?.ProductMainFamilyId?.toString() === '1'" [numeric]="false" name="InvestmentAmountValue"
+                                #InvestmentAmountValue="ngModel" [(ngModel)]="Application.Request.InvestmentAmountValue"
+                                [disabled]="Application.IsReadOnly" [maxLength]="28"
+                                [ngClass]="{ 'is-invalid required  validation':  fourthStage.controls['InvestmentAmountValue'] && fourthStage.controls['InvestmentAmountValue'].errors && (fourthStage.controls['InvestmentAmountValue'].dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="ConstructionAmountValue" #ConstructionAmountValue="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.ConstructionAmountValue" [maxLength]="28"
+                  [label]="'ContractSubmission.ConstructionAmountValue'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  ConstructionAmountValue.errors && (ConstructionAmountValue.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="ConstructionAmountValue" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" type="number" [label]="'ContractSubmission.ConstructionAmountValue'"
+                                [required]="false" [numeric]="false" name="ConstructionAmountValue"
+                                #ConstructionAmountValue="ngModel" [(ngModel)]="Application.Request.ConstructionAmountValue"
+                                [disabled]="Application.IsReadOnly" [maxLength]="28"
+                                [ngClass]="{ 'is-invalid required  validation':  ConstructionAmountValue.errors && (ConstructionAmountValue.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <!-- <div class="col-lg-4 col-md-6"> -->
+                <!-- <custom-text-box [type]="'text'" name="EquipmentAmountValue" #EquipmentAmountValue="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.EquipmentAmountValue" [maxLength]="28"
+                  [label]="'ContractSubmission.EquipmentAmountValue'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  EquipmentAmountValue.errors && (EquipmentAmountValue.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="EquipmentAmountValue" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <!-- <currency-input [submit]="submit" type="number" [label]="'ContractSubmission.ProductionVolume'"
+                                [required]="true" [numeric]="true" name="ProductProductionVolume"
+                                #ProductProductionVolume="ngModel" [(ngModel)]="productGridModel.ProductionVolume"
+                                [disabled]="Application.IsReadOnly" [maxLength]="28"
+                                [ngClass]="{ 'is-invalid required  validation':  ProductProductionVolume.errors && (ProductProductionVolume.dirty || submit)}">
+                </currency-input> -->
+              <!-- </div> -->
+              <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'number'" name="TotalInvestmentAmount" #TotalInvestmentAmount="ngModel"
+                                 [ngModel]="getTotalInvestmentAmount()" [label]="'ContractSubmission.TotalInvestmentAmount'"
+                                 autocomplete="" aria-label="Email" [isRequiredLabel]="false" [required]="false" [isReadOnly]="true"
+                                 [ngClass]="{ 'is-invalid required  validation':  TotalInvestmentAmount.errors && (TotalInvestmentAmount.dirty || submit)}"
+                                 [isReadOnly]="true">
+                </custom-text-box>
+              </div>
+            </div>
+
+          </div>
+          <div id="FundingInfoSection">
+            <h5 class="stage-title">{{'ContractSubmission.FundingInfo' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="FundingSources" name="FundingSources" [label]="'ContractSubmission.FundingSource'"
+                             [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_fundingsources_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+                             [(ngModel)]="Application.Request.FundingSources" [required]="false" [isRequiredLabel]="false">
+                </mutliselect>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('5') !== -1">
+                <custom-text-box [type]="'text'" name="SelfFundingPercentage" #SelfFundingPercentage="ngModel"
+                                 [pattern]="'^[1-9][0-9]?$|^100$'" [(ngModel)]="Application.Request.SelfFundingPercentage"
+                                 [label]="'ContractSubmission.SelfFundingPercentage'" autocomplete="" aria-label="Email"
+                                 [maxLength]="8" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                 [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  SelfFundingPercentage.errors && (SelfFundingPercentage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="Required_1_100Validations"
+                                       [controlName]="SelfFundingPercentage" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('1') !== -1">
+                <custom-text-box [type]="'text'" name="SDBPercentage" #SDBPercentage="ngModel"
+                                 [(ngModel)]="Application.Request.SDBPercentage" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                                 [label]="'ContractSubmission.SDBPercentage'" autocomplete="" aria-label="Email"
+                                 [isRequiredLabel]="!Application.IsReadOnly" [required]="true" [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  SDBPercentage.errors && (SDBPercentage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="Required_1_75Validations" [controlName]="SDBPercentage"
+                                       [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+                <div class="form-validation"
+                     *ngIf="!SDBPercentageValid() && !SDBPercentage.errors && (SDBPercentage.dirty || submit)">
+                  {{'Validations.ValidPercentage1-75' | translate}}
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('3') !== -1">
+                <custom-text-box [type]="'text'" name="LendingBankPercentage" #LendingBankPercentage="ngModel"
+                                 [pattern]="'^([0-9]|[1-9][0-9]|100)$'" [(ngModel)]="Application.Request.LendingBankPercentage"
+                                 [label]="'ContractSubmission.LendingBankPercentage'" autocomplete="" aria-label="Email"
+                                 [maxLength]="8" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                 [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  LendingBankPercentage.errors && (LendingBankPercentage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="ExportingPercentageValidations"
+                                       [controlName]="LendingBankPercentage" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('2') !== -1">
+                <custom-text-box [type]="'text'" name="BanksPercentage" #BanksPercentage="ngModel" [maxLength]="8"
+                                 [(ngModel)]="Application.Request.BanksPercentage" [pattern]="'^([0-9]|[1-9][0-9]|100)$'"
+                                 [label]="'ContractSubmission.BanksPercentage'" autocomplete="" aria-label="Email"
+                                 [isRequiredLabel]="!Application.IsReadOnly" [required]="true" [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  BanksPercentage.errors && (BanksPercentage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="ExportingPercentageValidations"
+                                       [controlName]="BanksPercentage" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('4') !== -1">
+                <custom-text-box [type]="'text'" name="OtherFundingPercentage" #OtherFundingPercentage="ngModel"
+                                 [pattern]="'^([0-9]|[1-9][0-9]|100)$'" [(ngModel)]="Application.Request.OtherFundingPercentage"
+                                 [label]="'ContractSubmission.OtherFundingPercentage'" autocomplete="" aria-label="Email"
+                                 [maxLength]="8" [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                                 [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  OtherFundingPercentage.errors && (OtherFundingPercentage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="ExportingPercentageValidations"
+                                       [controlName]="OtherFundingPercentage" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('4') !== -1">
+                <custom-text-box [type]="'text'" name="OtherSources" #OtherSources="ngModel"
+                                 [(ngModel)]="Application.Request.OtherSources"
+                                 [label]="'ContractSubmission.OtherSourcesClarification'" autocomplete="" aria-label="Email"
+                                 [isRequiredLabel]="!Application.IsReadOnly" [required]="true" [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  OtherSources.errors && (OtherSources.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="OtherSources" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6"
+                   *ngIf="Application.Request.FundingSources && convertToStringList(Application.Request.FundingSources)?.indexOf('4') !== -1">
+                <mutliselect id="IsExtraFunding" name="IsExtraFunding" #IsExtraFunding="ngModel"
+                             [label]="'ContractSubmission.IsExtraFunding'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsExtraFunding"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsExtraFunding.errors && (IsExtraFunding.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsExtraFunding" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="col-12 form-validation" *ngIf="TotalPercentage() > 100">
+              {{'Validations.PercentageExceed100' | translate}}
+            </div>
+          </div>
+          <div id="TotalProjectManPowerSection">
+            <h5 class="stage-title">{{'ContractSubmission.TotalProjectManPower' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="TechnicianNumber" #TechnicianNumber="ngModel"
+                  [(ngModel)]="Application.Request.TechnicianNumber" [label]="'ContractSubmission.TechnicianNumber'"
+                  autocomplete="" aria-label="Email" [isRequiredLabel]="false" [required]="false"
+                  [isReadOnly]="Application.IsReadOnly" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [ngClass]="{ 'is-invalid required  validation':  TechnicianNumber.errors && (TechnicianNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="TechnicianNumber" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.TechnicianNumber'"
+                                [required]="false" [numeric]="true" name="TechnicianNumber"
+                                #TechnicianNumber="ngModel" [(ngModel)]="Application.Request.TechnicianNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  TechnicianNumber.errors && (TechnicianNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="AdministratorsNumber" #AdministratorsNumber="ngModel"
+                  [(ngModel)]="Application.Request.AdministratorsNumber" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.AdministratorsNumber'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  AdministratorsNumber.errors && (AdministratorsNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="AdministratorsNumber" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.AdministratorsNumber'"
+                                [required]="false" [numeric]="true" name="AdministratorsNumber"
+                                #AdministratorsNumber="ngModel" [(ngModel)]="Application.Request.AdministratorsNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  AdministratorsNumber.errors && (AdministratorsNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="EngineersNumbers" #EngineersNumbers="ngModel"
+                  [(ngModel)]="Application.Request.EngineersNumbers" [label]="'ContractSubmission.EngineersNumbers'"
+                  autocomplete="" aria-label="Email" [isRequiredLabel]="false" [required]="false"
+                  [isReadOnly]="Application.IsReadOnly" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [ngClass]="{ 'is-invalid required  validation':  EngineersNumbers.errors && (EngineersNumbers.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="EngineersNumbers" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.EngineersNumbers'"
+                                [required]="false" [numeric]="true" name="EngineersNumbers"
+                                #EngineersNumbers="ngModel" [(ngModel)]="Application.Request.EngineersNumbers"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  EngineersNumbers.errors && (EngineersNumbers.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="OperatorsNumber" #OperatorsNumber="ngModel"
+                  [(ngModel)]="Application.Request.OperatorsNumber" [label]="'ContractSubmission.OperatorsNumber'"
+                  autocomplete="" aria-label="Email" [isRequiredLabel]="false" [required]="false"
+                  [isReadOnly]="Application.IsReadOnly" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [ngClass]="{ 'is-invalid required  validation':  OperatorsNumber.errors && (OperatorsNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="OperatorsNumber" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.OperatorsNumber'"
+                                [required]="false" [numeric]="true" name="OperatorsNumber"
+                                #OperatorsNumber="ngModel" [(ngModel)]="Application.Request.OperatorsNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  OperatorsNumber.errors && (OperatorsNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'number'" name="TotalManPower" #TotalManPower="ngModel"
+                                 [ngModel]="getTotalManPower()" [label]="'ContractSubmission.Total'" autocomplete="" aria-label="Email"
+                                 [isRequiredLabel]="false" [required]="false" [isReadOnly]="true"
+                                 [ngClass]="{ 'is-invalid required  validation':  TotalManPower.errors && (TotalManPower.dirty || submit)}">
+                </custom-text-box>
+              </div>
+
+            </div>
+          </div>
+          <div id="SaudiTotalProjectManPowerSection">
+            <h5 class="stage-title">{{'ContractSubmission.SaudiTotalProjectManPower' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="SaudiTechnicianNumber" #SaudiTechnicianNumber="ngModel"
+                  [(ngModel)]="Application.Request.SaudiTechnicianNumber" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.SaudiTechnicianNumber'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  SaudiTechnicianNumber.errors && (SaudiTechnicianNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="SaudiTechnicianNumber" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.SaudiTechnicianNumber'"
+                                [required]="false" [numeric]="true" name="SaudiTechnicianNumber"
+                                #SaudiTechnicianNumber="ngModel" [(ngModel)]="Application.Request.SaudiTechnicianNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  SaudiTechnicianNumber.errors && (SaudiTechnicianNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="SaudiAdministratorsNumber" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  #SaudiAdministratorsNumber="ngModel" [(ngModel)]="Application.Request.SaudiAdministratorsNumber"
+                  [label]="'ContractSubmission.SaudiAdministratorsNumber'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  SaudiAdministratorsNumber.errors && (SaudiAdministratorsNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="SaudiAdministratorsNumber" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.SaudiAdministratorsNumber'"
+                                [required]="false" [numeric]="true" name="SaudiAdministratorsNumber"
+                                #SaudiAdministratorsNumber="ngModel" [(ngModel)]="Application.Request.SaudiAdministratorsNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  SaudiAdministratorsNumber.errors && (SaudiAdministratorsNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="SaudiEngineersNumbers" #SaudiEngineersNumbers="ngModel"
+                  [(ngModel)]="Application.Request.SaudiEngineersNumbers" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.SaudiEngineersNumbers'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  SaudiEngineersNumbers.errors && (SaudiEngineersNumbers.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="SaudiEngineersNumbers" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.SaudiEngineersNumbers'"
+                                [required]="false" [numeric]="true" name="SaudiEngineersNumbers"
+                                #SaudiEngineersNumbers="ngModel" [(ngModel)]="Application.Request.SaudiEngineersNumbers"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  SaudiEngineersNumbers.errors && (SaudiEngineersNumbers.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="SaudiOperatorsNumber" #SaudiOperatorsNumber="ngModel"
+                  [(ngModel)]="Application.Request.SaudiOperatorsNumber" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.SaudiOperatorsNumber'" autocomplete="" aria-label="Email"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  SaudiOperatorsNumber.errors && (SaudiOperatorsNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="SaudiOperatorsNumber" [form]="FourthStage" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.SaudiOperatorsNumber'"
+                                [required]="false" [numeric]="true" name="SaudiOperatorsNumber"
+                                #SaudiOperatorsNumber="ngModel" [(ngModel)]="Application.Request.SaudiOperatorsNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  SaudiOperatorsNumber.errors && (SaudiOperatorsNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'number'" name="SaudiTotalManPower" #SaudiTotalManPower="ngModel"
+                                 [ngModel]="getSaudiTotalManPower()" [label]="'ContractSubmission.Total'" autocomplete=""
+                                 aria-label="Email" [isRequiredLabel]="false" [required]="false" [isReadOnly]="true"
+                                 [ngClass]="{ 'is-invalid required  validation':  SaudiTotalManPower.errors && (SaudiTotalManPower.dirty || submit)}"
+                                 [isReadOnly]="true">
+                </custom-text-box>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Fifth Stage-->
+      <div [hidden]="!(ActiveLevelTwo === 5 && Application.Request?.ProductMainFamilyId?.toString() === '1')">
+        <form #FifthStage="ngForm" novalidate autocomplete="off">
+          <div id="PreviousFactoriesSection">
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="HaveOtherFactories" name="HaveOtherFactories" #HaveOtherFactories="ngModel"
+                             [label]="'ContractSubmission.HaveOtherFactories'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.HaveOtherFactories"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  HaveOtherFactories.errors && (HaveOtherFactories.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="HaveOtherFactories" [form]="FifthStage" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row" *ngIf="Application.Request.HaveOtherFactories?.toString() === 'true'">
+              <div class="col-12">
+                <form #factoryGridForm="ngForm">
+                  <app-grid [modalFormTitle]="'ContractSubmission.Factory'" [addNewRecord]="'ContractSubmission.AddNew'"
+                            [tableHeadTitle]="'ContractSubmission.Factories'" [(data)]="Application.Request.Factories"
+                            [columns]="factoryGridcols" [(model)]="factoryGridModel" [canAdd]="!Application.IsReadOnly"
+                            [canEdit]="!Application.IsReadOnly" [canDelete]="!Application.IsReadOnly"
+                            [templateForm]="factoryGridForm" [template]="factoryGridContent"
+                            [LookupEntities]="lookupService.lookupEntities">
+                    <ng-container #factoryGridContent>
+                      <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                          <mutliselect id="FactoryLocation" name="FactoryLocation" #FactoryLocation="ngModel"
+                                       [label]="'ContractSubmission.FactoryLocation'" [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_previousfactory_ldv_location_OptionSet']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="factoryGridModel.Location" [required]="true"
+                                       [isRequiredLabel]="!Application.IsReadOnly" (change)="resetFactory()"
+                                       [ngClass]="{ 'is-invalid required  validation':  FactoryLocation.errors && (FactoryLocation.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryLocation" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <custom-text-box [type]="'text'" name="FactoryCode" #FactoryCode="ngModel"
+                                           [(ngModel)]="factoryGridModel.FactoryCode" [label]="'ContractSubmission.FactoryCode'"
+                                           autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                           [required]="true" [isReadOnly]="Application.IsReadOnly"
+                                           [ngClass]="{ 'is-invalid required  validation':  (FactoryCode.errors && (FactoryCode.dirty || submit) || FactoryError)}">
+                          </custom-text-box>
+                          <div class="form-validation" *ngIf="FactoryError">
+                            {{FactoryError}}
+                          </div>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryCode" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <label class="v-hidden">button</label>
+                          <button class="main-btn-secondary" (click)="getFactoryDetails()"
+                                  [disabled]="!factoryGridModel.FactoryCode">
+                            {{'ContractSubmission.GetFactoryDetails' | translate}}
+                          </button>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <custom-text-box [type]="'text'" name="FactoryArabicName" #FactoryArabicName="ngModel"
+                                           [(ngModel)]="factoryGridModel.ArabicName" [label]="'ContractSubmission.ArabicName'"
+                                           autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                           [required]="true" [isReadOnly]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  FactoryArabicName.errors && (FactoryArabicName.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryArabicName" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <custom-text-box [type]="'text'" name="FactoryEnglishName" #FactoryEnglishName="ngModel"
+                                           [(ngModel)]="factoryGridModel.EnglishName" [label]="'ContractSubmission.EnglishName'"
+                                           autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                           [required]="true" [isReadOnly]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  FactoryEnglishName.errors && (FactoryEnglishName.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryEnglishName" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <custom-text-box [type]="'text'" name="FactoryAddress" #FactoryAddress="ngModel"
+                                           [(ngModel)]="factoryGridModel.Address" [label]="'ContractSubmission.Address'"
+                                           autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                           [required]="true" [isReadOnly]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  FactoryAddress.errors && (FactoryAddress.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryAddress" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <custom-text-box [type]="'text'" name="FactoryMainActivity" #FactoryMainActivity="ngModel"
+                                           [(ngModel)]="factoryGridModel.MainActivity" [label]="'ContractSubmission.MainActivity'"
+                                           autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                           [required]="true" [isReadOnly]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  FactoryMainActivity.errors && (FactoryMainActivity.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryMainActivity" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '2'">
+                          <custom-text-box [type]="'text'" name="FactoryStatus" #FactoryStatus="ngModel"
+                                           [(ngModel)]="factoryGridModel.FactoryStatus" [label]="'ContractSubmission.FactoryStatus'"
+                                           autocomplete="" aria-label="Email" [isRequiredLabel]="!Application.IsReadOnly"
+                                           [required]="true" [isReadOnly]="true"
+                                           [ngClass]="{ 'is-invalid required  validation':  FactoryStatus.errors && (FactoryStatus.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryStatus" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <!-- commented due to validations -->
+                        <!-- <div class="col-lg-4 col-md-6" *ngIf="factoryGridModel.Location?.toString() === '1' && showDetails"> -->
+                        <div class="col-lg-4 col-md-6" [hidden]="factoryGridModel.Location?.toString() !== '1'">
+                          <mutliselect id="FactoryContractNumberId" name="FactoryContractNumberId"
+                                       #FactoryContractNumberId="ngModel" [label]="'ContractSubmission.ContractNumberId'"
+                                       [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_contract_LookupWithId']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="factoryGridModel.ContractNumberId"
+                                       [required]="factoryGridModel.Location?.toString() === '1'"
+                                       [isRequiredLabel]="!Application.IsReadOnly"
+                                       [ngClass]="{ 'is-invalid required  validation':  FactoryContractNumberId.errors && (FactoryContractNumberId.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="FactoryContractNumberId" [form]="factoryGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </app-grid>
+                  <div class="form-validation"
+                       *ngIf="Application.Request.HaveOtherFactories?.toString() === 'true' && FactoriesLength() < 1 && submit">
+                    {{'ContractSubmission.FactoriesNumberValidation'|translate}}
+                  </div>
+                  <div class="form-validation" *ngIf="isFactoriesDuplication()">
+                    {{'ContractSubmission.isFactoriesDuplication' | translate}}
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <label>{{'ContractSubmission.CompanyBio' | translate}}</label>
+                <textarea id="CompanyBio" name="CompanyBio" [readOnly]="Application.IsReadOnly" #CompanyBio="ngModel"
+                          [(ngModel)]="Application.Request.CompanyBio"
+                          [ngClass]="{ 'is-invalid required  validation':  CompanyBio.errors && (CompanyBio.dirty || submit) }"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List [uploaders]="Application.Documents" [form]="SecondStage"
+                                    [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true"
+                                    [SectionName]="'FifthStageGeneralAttachments'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List *ngIf="Application.Request?.ProductSubFamilyId === '2'"
+                                    [uploaders]="Application.Documents" [form]="SecondStage" [IsReadOnly]="Application.IsReadOnly"
+                                    [IsLiveChanges]="true" [SectionName]="'CompanyProfile'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Sixth Stage Industrial-->
+      <div [hidden]="!(ActiveLevelTwo === 6 && Application.Request?.ProductMainFamilyId === '1' && Application.Request?.ProductSubFamilyId !== '2')">
+        <form #SixthStageIndustrial="ngForm" novalidate autocomplete="off">
+          <!-- RequestedDimensionsWithoutSetbacks -->
+          <div id="RequestedDimensionsWithoutSetbacks">
+            <h5 class="stage-title">{{'ContractSubmission.RequestedDimensionsWithoutSetbacks' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="RequestedAreaWithoutSetbacks"
+                  #RequestedAreaWithoutSetbacks="ngModel" [pattern]="'^[0-9]+$'" [isReadOnly]="Application.IsReadOnly"
+                  [(ngModel)]="Application.Request.RequestedAreaWithoutSetbacks" [maxLength]="8"
+                  [label]="'ContractSubmission.RequestedAreaWithoutSetbacks'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="false"
+                  [ngClass]="{ 'is-invalid required  validation':  RequestedAreaWithoutSetbacks.errors && (RequestedAreaWithoutSetbacks.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="RequestedAreaWithoutSetbacks" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.RequestedAreaWithoutSetbacks'"
+                                [required]="false" [numeric]="true" name="RequestedAreaWithoutSetbacks"
+                                #RequestedAreaWithoutSetbacks="ngModel" [(ngModel)]="Application.Request.RequestedAreaWithoutSetbacks"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  RequestedAreaWithoutSetbacks.errors && (RequestedAreaWithoutSetbacks.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="RequestedAreaWithSetbacks" #RequestedAreaWithSetbacks="ngModel"
+                  [pattern]="'^[0-9]+$'" [isReadOnly]="Application.IsReadOnly"
+                  [(ngModel)]="Application.Request.RequestedAreaWithSetbacks" [maxLength]="8"
+                  [label]="'ContractSubmission.RequestedAreaWithSetbacks'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false"
+                  [ngClass]="{ 'is-invalid required  validation':  RequestedAreaWithSetbacks.errors && (RequestedAreaWithSetbacks.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="RequestedAreaWithSetbacks" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.RequestedAreaWithSetbacks'"
+                                [required]="false" [numeric]="true" name="RequestedAreaWithSetbacks"
+                                #RequestedAreaWithSetbacks="ngModel" [(ngModel)]="Application.Request.RequestedAreaWithSetbacks"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  RequestedAreaWithSetbacks.errors && (RequestedAreaWithSetbacks.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="RequestedSetbacksArea" #RequestedSetbacksArea="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.RequestedSetbacksArea" [maxLength]="8"
+                  [label]="'ContractSubmission.RequestedSetbacksArea'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  RequestedSetbacksArea.errors && (RequestedSetbacksArea.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="RequestedSetbacksArea" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.RequestedSetbacksArea'"
+                                [required]="false" [numeric]="true" name="RequestedSetbacksArea"
+                                #RequestedSetbacksArea="ngModel" [(ngModel)]="Application.Request.RequestedSetbacksArea"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  RequestedSetbacksArea.errors && (RequestedSetbacksArea.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+          </div>
+          <!-- RequestedAreas -->
+          <div id="RequestedAreas">
+            <h5 class="stage-title">{{'ContractSubmission.Areas' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="RawMaterialWarehouseArea" #RawMaterialWarehouseArea="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.RawMaterialWarehouseArea" [maxLength]="8"
+                  [label]="'ContractSubmission.RawMaterialWarehouseArea'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  RawMaterialWarehouseArea.errors && (RawMaterialWarehouseArea.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="RawMaterialWarehouseArea" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.RawMaterialWarehouseArea'"
+                                [required]="false" [numeric]="true" name="RawMaterialWarehouseArea"
+                                #RawMaterialWarehouseArea="ngModel" [(ngModel)]="Application.Request.RawMaterialWarehouseArea"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  RawMaterialWarehouseArea.errors && (RawMaterialWarehouseArea.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="FinalProductWarehouseArea" #FinalProductWarehouseArea="ngModel"
+                  [pattern]="'^[0-9]+$'" [maxLength]="8" [(ngModel)]="Application.Request.FinalProductWarehouseArea"
+                  [label]="'ContractSubmission.FinalProductWarehouseArea'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  FinalProductWarehouseArea.errors && (FinalProductWarehouseArea.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="FinalProductWarehouseArea" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.FinalProductWarehouseArea'"
+                                [required]="false" [numeric]="true" name="FinalProductWarehouseArea"
+                                #FinalProductWarehouseArea="ngModel" [(ngModel)]="Application.Request.FinalProductWarehouseArea"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  FinalProductWarehouseArea.errors && (FinalProductWarehouseArea.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="ProductionArea" #ProductionArea="ngModel"
+                  [(ngModel)]="Application.Request.ProductionArea" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.ProductionArea'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  ProductionArea.errors && (ProductionArea.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="ProductionArea" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.ProductionArea'"
+                                [required]="false" [numeric]="true" name="ProductionArea"
+                                #ProductionArea="ngModel" [(ngModel)]="Application.Request.ProductionArea"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  ProductionArea.errors && (ProductionArea.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="ServicesArea" #ServicesArea="ngModel"
+                  [(ngModel)]="Application.Request.ServicesArea" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.ServicesArea'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  ServicesArea.errors && (ServicesArea.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="ServicesArea" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.ServicesArea'"
+                                [required]="false" [numeric]="true" name="ServicesArea"
+                                #ServicesArea="ngModel" [(ngModel)]="Application.Request.ServicesArea"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  ServicesArea.errors && (ServicesArea.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <custom-text-box [type]="'text'" name="TotalRequestedArea" #TotalRequestedArea="ngModel"
+                                 [ngModel]="getTotalRequestedArea()" [label]="'ContractSubmission.TotalRequestedArea'" autocomplete=""
+                                 aria-label="Name" [isRequiredLabel]="false" [required]="false" [isReadOnly]="true"
+                                 [ngClass]="{ 'is-invalid required  validation':  TotalRequestedArea.errors && (TotalRequestedArea.dirty || submit)}">
+                </custom-text-box>
+                <div class="form-validation"
+                     *ngIf="getTotalRequestedArea() < 3000 && (TotalRequestedArea.dirty || submit)">
+                  {{'ContractSubmission.TotalRequestedAreaValidation' | translate}}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List [uploaders]="Application.Documents" [form]="SecondStage"
+                                    [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true" [SectionName]="'FactoryOutline'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+          </div>
+          <!-- Power and Water -->
+          <div id="PowerAndWater">
+            <h5 class="stage-title">{{'ContractSubmission.PowerAndWater' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="ElectricalLoadsWatt" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  #ElectricalLoadsWatt="ngModel" [(ngModel)]="Application.Request.ElectricalLoadsWatt"
+                  [label]="'ContractSubmission.ElectricalLoadsWatt'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  ElectricalLoadsWatt.errors && (ElectricalLoadsWatt.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="ElectricalLoadsWatt" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.ElectricalLoadsWatt'"
+                                [required]="false" [numeric]="true" name="ElectricalLoadsWatt"
+                                #ElectricalLoadsWatt="ngModel" [(ngModel)]="Application.Request.ElectricalLoadsWatt"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  ElectricalLoadsWatt.errors && (ElectricalLoadsWatt.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededIndustrialWater" #NeededIndustrialWater="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.NeededIndustrialWater" [maxLength]="8"
+                  [label]="'ContractSubmission.NeededIndustrialWater'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededIndustrialWater.errors && (NeededIndustrialWater.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededIndustrialWater" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededIndustrialWater'"
+                                [required]="false" [numeric]="true" name="NeededIndustrialWater"
+                                #NeededIndustrialWater="ngModel" [(ngModel)]="Application.Request.NeededIndustrialWater"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededIndustrialWater.errors && (NeededIndustrialWater.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededPureWater" #NeededPureWater="ngModel"
+                  [(ngModel)]="Application.Request.NeededPureWater" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.NeededPureWater'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededPureWater.errors && (NeededPureWater.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededPureWater" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededPureWater'"
+                                [required]="false" [numeric]="true" name="NeededPureWater"
+                                #NeededPureWater="ngModel" [(ngModel)]="Application.Request.NeededPureWater"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededPureWater.errors && (NeededPureWater.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededSewage" #NeededSewage="ngModel"
+                  [(ngModel)]="Application.Request.NeededSewage" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.NeededSewage'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededSewage.errors && (NeededSewage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededSewage" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededSewage'"
+                                [required]="false" [numeric]="true" name="NeededSewage"
+                                #NeededSewage="ngModel" [(ngModel)]="Application.Request.NeededSewage"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededSewage.errors && (NeededSewage.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededGas" #NeededGas="ngModel" [pattern]="'^[0-9]+$'"
+                  [maxLength]="8" [(ngModel)]="Application.Request.NeededGas" [label]="'ContractSubmission.NeededGas'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" [required]="false"
+                  [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededGas.errors && (NeededGas.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededGas" [form]="SixthStageIndustrial" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededGas'"
+                                [required]="false" [numeric]="true" name="NeededGas"
+                                #NeededGas="ngModel" [(ngModel)]="Application.Request.NeededGas"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededGas.errors && (NeededGas.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row" *ngIf="ActiveLevelTwo === 6 && Application.Request?.ProductMainFamilyId === '1' && Application.Request?.ProductSubFamilyId !== '2'">
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List [uploaders]="Application.Documents" [form]="SecondStage"
+                                    [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true" [SectionName]="'ImplementationTimeline'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Sixth Stage Ready Units-->
+      <div [hidden]="!(ActiveLevelTwo === 6 && Application.Request?.ProductMainFamilyId === '1' && Application.Request?.ProductSubFamilyId === '2')">
+        <form #SixthStageReadyUnits="ngForm" novalidate autocomplete="off">
+          <!-- SiteNeeds -->
+          <div id="SiteNeeds">
+            <h5 class="stage-title">{{'ContractSubmission.SiteNeeds' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="NumberOfUnits" name="NumberOfUnits" [label]="'ContractSubmission.NumberOfUnits'"
+                             [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_ldv_numberofunits_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                             [(ngModel)]="Application.Request.NumberOfUnits" [required]="false" [isRequiredLabel]="false">
+                </mutliselect>
+              </div>
+              <!-- <div class="col-lg-4 col-md-6">
+                <mutliselect id="RequestedArea" name="RequestedArea" [label]="'ContractSubmission.RequestedArea'"
+                  [propertyToSelect]="'Value'"
+                  [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_requestedarea_OptionSet']"
+                  [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                  [(ngModel)]="Application.Request.RequestedArea" [required]="false" [isRequiredLabel]="false">
+                </mutliselect>
+              </div> -->
+            </div>
+          </div>
+          <!-- Power and Water -->
+          <div id="PowerAndWater">
+            <h5 class="stage-title">{{'ContractSubmission.PowerAndWater' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="ElectricalLoadsWatt" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  #ElectricalLoadsWatt="ngModel" [(ngModel)]="Application.Request.ElectricalLoadsWatt"
+                  [label]="'ContractSubmission.ElectricalLoadsWatt'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  ElectricalLoadsWatt.errors && (ElectricalLoadsWatt.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="ElectricalLoadsWatt" [form]="SixthStageReadyUnits" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.ElectricalLoadsWatt'"
+                                [required]="false" [numeric]="true" name="ElectricalLoadsWatt"
+                                #ElectricalLoadsWatt="ngModel" [(ngModel)]="Application.Request.ElectricalLoadsWatt"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  ElectricalLoadsWatt.errors && (ElectricalLoadsWatt.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededIndustrialWater" #NeededIndustrialWater="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.NeededIndustrialWater" [maxLength]="8"
+                  [label]="'ContractSubmission.NeededIndustrialWater'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededIndustrialWater.errors && (NeededIndustrialWater.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededIndustrialWater" [form]="SixthStageReadyUnits" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededIndustrialWater'"
+                                [required]="false" [numeric]="true" name="NeededIndustrialWater"
+                                #NeededIndustrialWater="ngModel" [(ngModel)]="Application.Request.NeededIndustrialWater"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededIndustrialWater.errors && (NeededIndustrialWater.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededPureWater" #NeededPureWater="ngModel"
+                  [(ngModel)]="Application.Request.NeededPureWater" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.NeededPureWater'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededPureWater.errors && (NeededPureWater.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededPureWater" [form]="SixthStageReadyUnits" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededPureWater'"
+                                [required]="false" [numeric]="true" name="NeededPureWater"
+                                #NeededPureWater="ngModel" [(ngModel)]="Application.Request.NeededPureWater"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededPureWater.errors && (NeededPureWater.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NeededSewage" #NeededSewage="ngModel"
+                  [(ngModel)]="Application.Request.NeededSewage" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [label]="'ContractSubmission.NeededSewage'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NeededSewage.errors && (NeededSewage.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NeededSewage" [form]="SixthStageReadyUnits" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NeededSewage'"
+                                [required]="false" [numeric]="true" name="NeededSewage"
+                                #NeededSewage="ngModel" [(ngModel)]="Application.Request.NeededSewage"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NeededSewage.errors && (NeededSewage.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Second Stage Services & Logistics-->
+      <div [hidden]="!(ActiveLevelTwo === 2 && (Application.Request?.ProductMainFamilyId === '7' || Application.Request?.ProductMainFamilyId === '36'))">
+        <form #SecondStageServicesAndLogistics="ngForm" novalidate autocomplete="off">
+          <div id="FundingInfo">
+            <h5 class="stage-title">{{'ContractSubmission.FundingInfo' | translate}}</h5>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="InvestmentAmountValue" #InvestmentAmountValue="ngModel"
+                  [(ngModel)]="Application.Request.InvestmentAmountValue" [pattern]="'^[0-9]+$'" [maxLength]="28"
+                  [label]="'ContractSubmission.InvestmentAmountValue'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="!Application.IsReadOnly"
+                  [required]="ActiveLevelTwo === 2 && (Application.Request?.ProductMainFamilyId === '7' || Application.Request?.ProductMainFamilyId === '36')"
+                  [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  InvestmentAmountValue.errors && (InvestmentAmountValue.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="Required_WholeNumberValidations"
+                  [controlName]="InvestmentAmountValue" [form]="SecondStageServicesAndLogistics" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.InvestmentAmountValue'"
+                                [required]="ActiveLevelTwo === 2 && (Application.Request?.ProductMainFamilyId === '7' || Application.Request?.ProductMainFamilyId === '36')" [numeric]="false" name="InvestmentAmountValue"
+                                #InvestmentAmountValue="ngModel" [(ngModel)]="Application.Request.InvestmentAmountValue"
+                                [disabled]="Application.IsReadOnly" [maxLength]="28"
+                                [ngClass]="{ 'is-invalid required  validation':  InvestmentAmountValue.errors && (InvestmentAmountValue.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsSelfFunding" name="IsSelfFunding" #IsSelfFunding="ngModel"
+                             [label]="'ContractSubmission.IsSelfFunding'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsSelfFunding" [required]="true"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsSelfFunding.errors && (IsSelfFunding.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsSelfFunding" [form]="SecondStageServicesAndLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsExtraFunding" name="IsExtraFunding" #IsExtraFunding="ngModel"
+                             [label]="'ContractSubmission.IsExtraFunding'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsExtraFunding"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsExtraFunding.errors && (IsExtraFunding.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsExtraFunding" [form]="SecondStageServicesAndLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="HavePrevProjects" name="HavePrevProjects" #HavePrevProjects="ngModel"
+                             [label]="'ContractSubmission.HavePrevProjects'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.HavePrevProjects"
+                             [required]="false" [isRequiredLabel]="false">
+                </mutliselect>
+              </div>
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List *ngIf="Application.Request.HavePrevProjects?.toString() === 'true'"
+                                    [uploaders]="Application.Documents" [form]="SecondStage" [IsReadOnly]="Application.IsReadOnly"
+                                    [IsLiveChanges]="true" [SectionName]="'PreviousProjectsCopy'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8 col-md-6">
+                <app-Uploaders-List [uploaders]="Application.Documents" [form]="SecondStage"
+                                    [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true" [SectionName]="'CompanyProfile'">
+                </app-Uploaders-List>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="RequestedAreaNumber" #RequestedAreaNumber="ngModel"
+                  [(ngModel)]="Application.Request.RequestedAreaNumber" [label]="'ContractSubmission.RequestedArea'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="!Application.IsReadOnly"
+                  [required]="ActiveLevelTwo === 2 && (Application.Request?.ProductMainFamilyId === '7' || Application.Request?.ProductMainFamilyId === '36')"
+                  [isReadOnly]="Application.IsReadOnly" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  [ngClass]="{ 'is-invalid required  validation':  RequestedAreaNumber.errors && (RequestedAreaNumber.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="Required_WholeNumberValidations"
+                  [controlName]="RequestedAreaNumber" [form]="SecondStageServicesAndLogistics" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.RequestedArea'"
+                                [required]="ActiveLevelTwo === 2 && (Application.Request?.ProductMainFamilyId === '7' || Application.Request?.ProductMainFamilyId === '36')" [numeric]="true" name="RequestedAreaNumber"
+                                #RequestedAreaNumber="ngModel" [(ngModel)]="Application.Request.RequestedAreaNumber"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  RequestedAreaNumber.errors && (RequestedAreaNumber.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsForeignInvestor" name="IsForeignInvestor" #IsForeignInvestor="ngModel"
+                             [label]="'ContractSubmission.IsForeignInvestor'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsForeignInvestor"
+                             [required]="true" [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsForeignInvestor.errors && (IsForeignInvestor.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsForeignInvestor" [form]="SecondStageServicesAndLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form #SecondStageLogistics="ngForm" novalidate autocomplete="off"
+              [hidden]="!(Application.Request?.ProductMainFamilyId === '36' && Application.Request?.ProductId !== '43')">
+          <div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="NumberOfDailyShipments" #NumberOfDailyShipments="ngModel"
+                  [pattern]="'^[0-9]+$'" [(ngModel)]="Application.Request.NumberOfDailyShipments" [maxLength]="8"
+                  [label]="'ContractSubmission.NumberOfDailyShipments'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  NumberOfDailyShipments.errors && (NumberOfDailyShipments.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="NumberOfDailyShipments" [form]="SecondStageLogistics" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.NumberOfDailyShipments'"
+                                [required]="false" [numeric]="true" name="NumberOfDailyShipments"
+                                #NumberOfDailyShipments="ngModel" [(ngModel)]="Application.Request.NumberOfDailyShipments"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  NumberOfDailyShipments.errors && (NumberOfDailyShipments.dirty || submit)}">
+                </currency-input>
+              </div>
+              <div class="col-lg-4 col-md-6">
+                <!-- <custom-text-box [type]="'text'" name="YearlyStoringAmount" [pattern]="'^[0-9]+$'" [maxLength]="8"
+                  #YearlyStoringAmount="ngModel" [(ngModel)]="Application.Request.YearlyStoringAmount"
+                  [label]="'ContractSubmission.YearlyStoringAmount'" autocomplete="" aria-label="Name"
+                  [isRequiredLabel]="false" [required]="false" [isReadOnly]="Application.IsReadOnly"
+                  [ngClass]="{ 'is-invalid required  validation':  YearlyStoringAmount.errors && (YearlyStoringAmount.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="{'pattern':'Validations.WholeNumber'}"
+                  [controlName]="YearlyStoringAmount" [form]="SecondStageLogistics" [submit]="submit">
+                </app-validation-viewer> -->
+                <currency-input [submit]="submit" [label]="'ContractSubmission.YearlyStoringAmount'"
+                                [required]="false" [numeric]="true" name="YearlyStoringAmount"
+                                #YearlyStoringAmount="ngModel" [(ngModel)]="Application.Request.YearlyStoringAmount"
+                                [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                [ngClass]="{ 'is-invalid required  validation':  YearlyStoringAmount.errors && (YearlyStoringAmount.dirty || submit)}">
+                </currency-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsImporting" name="IsImporting" #IsImporting="ngModel"
+                             [label]="'ContractSubmission.IsImporting'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsImporting"
+                             [required]="!(Application.Request?.ProductMainFamilyId === '36' && Application.Request?.ProductId !== '43')"
+                             [isRequiredLabel]="!Application.IsReadOnly"
+                             [ngClass]="{ 'is-invalid required  validation':  IsImporting.errors && (IsImporting.dirty || submit) }">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsImporting" [form]="SecondStageLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row" *ngIf="Application.Request.IsImporting?.toString() === 'true'">
+              <div class="col-12">
+                <form #importingDetailsGridForm="ngForm">
+                  <app-grid [modalFormTitle]="'ContractSubmission.ImportingDetails'"
+                            [addNewRecord]="'ContractSubmission.AddNew'"
+                            [tableHeadTitle]="'ContractSubmission.ImportingDetails'"
+                            [(data)]="Application.Request.ImportingDetails" [columns]="importingDetailsGridcols"
+                            [(model)]="importingDetailsGridModel" [canAdd]="!Application.IsReadOnly"
+                            [canEdit]="!Application.IsReadOnly" [canDelete]="!Application.IsReadOnly"
+                            [templateForm]="importingDetailsGridForm" [template]="importingDetailsGridContent"
+                            [LookupEntities]="lookupService.lookupEntities">
+                    <ng-container #importingDetailsGridContent>
+                      <div class="row">
+                        <div class="col-lg-4 col-md-6">
+                          <mutliselect id="importingDetailsSource" name="importingDetailsSource"
+                                       #importingDetailsSource="ngModel" [label]="'ContractSubmission.Source'"
+                                       [propertyToSelect]="'Value'"
+                                       [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_exporttingcountries_OptionSet']"
+                                       [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+                                       [(ngModel)]="importingDetailsGridModel.Source" [required]="true"
+                                       [isRequiredLabel]="!Application.IsReadOnly"
+                                       [ngClass]="{ 'is-invalid required  validation':  importingDetailsSource.errors && (importingDetailsSource.dirty || submit) }">
+                          </mutliselect>
+                          <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                                 [controlName]="importingDetailsSource" [form]="importingDetailsGridForm" [submit]="submit">
+                          </app-validation-viewer>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                          <!-- <custom-text-box [type]="'text'" name="importingDetailsVolume"
+                            #importingDetailsVolume="ngModel" [pattern]="'^[0-9]+$'"
+                            [(ngModel)]="importingDetailsGridModel.YearlyGoodVolume"
+                            [label]="'ContractSubmission.YearlyGoodVolume'" autocomplete="" aria-label="Email"
+                            [isRequiredLabel]="!Application.IsReadOnly" [required]="true"
+                            [isReadOnly]="Application.IsReadOnly"
+                            [ngClass]="{ 'is-invalid required  validation':  importingDetailsVolume.errors && (importingDetailsVolume.dirty || submit)}">
+                          </custom-text-box>
+                          <app-validation-viewer [requiredValidations]="Required_WholeNumberValidations"
+                            [controlName]="importingDetailsVolume" [form]="importingDetailsGridForm" [submit]="submit">
+                          </app-validation-viewer> -->
+                          <currency-input [submit]="submit" [label]="'ContractSubmission.YearlyGoodVolume'"
+                                          [required]="true" [numeric]="true" name="importingDetailsVolume"
+                                          #importingDetailsVolume="ngModel" [(ngModel)]="importingDetailsGridModel.YearlyGoodVolume"
+                                          [disabled]="Application.IsReadOnly" [maxLength]="8"
+                                          [ngClass]="{ 'is-invalid required  validation':  importingDetailsVolume.errors && (importingDetailsVolume.dirty || submit)}">
+                          </currency-input>
+                        </div>
+
+                      </div>
+                    </ng-container>
+                  </app-grid>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="IsExporting" name="IsExporting" #IsExporting="ngModel"
+                             [label]="'ContractSubmission.IsExporting'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['YesNo']" [viewMode]="Application.IsReadOnly"
+                             [multiple]="false" [config]="config" [(ngModel)]="Application.Request.IsExporting"
+                             [required]="!(Application.Request?.ProductMainFamilyId === '36' && Application.Request?.ProductId !== '43')"
+                             [isRequiredLabel]="!Application.IsReadOnly">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="IsExporting" [form]="SecondStageLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+            <div class="row" [hidden]="Application.Request.IsExporting?.toString() !== 'true'">
+              <div class="col-lg-4 col-md-6">
+                <mutliselect id="ExportingCountries" name="ExportingCountries" #ExportingCountries="ngModel"
+                             [label]="'ContractSubmission.ExportingCountries'" [propertyToSelect]="'Value'"
+                             [options]="lookupService.lookupEntities['ldv_contractsubmission_ldv_exporttingcountries_OptionSet']"
+                             [viewMode]="Application.IsReadOnly" [multiple]="true" [config]="config"
+                             [(ngModel)]="Application.Request.ExportingCountries"
+                             [required]="!Application.IsReadOnly && Application.Request.IsExporting?.toString() === 'true'"
+                             [isRequiredLabel]="!Application.IsReadOnly">
+                </mutliselect>
+                <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                                       [controlName]="ExportingCountries" [form]="SecondStageLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+              <div class="col-lg-4 col-md-6" *ngIf="Application.Request.IsExporting?.toString() === 'true'">
+                <custom-text-box [type]="'text'" name="ExportingAmount" [pattern]="'^[1-9]+[0-9]*$'" [maxLength]="8"
+                                 #ExportingAmount="ngModel" [(ngModel)]="Application.Request.ExportingAmount"
+                                 [label]="'ContractSubmission.YearlyStoringAmount'" autocomplete="" aria-label="Name"
+                                 [isRequiredLabel]="!Application.IsReadOnly"
+                                 [required]="!Application.IsReadOnly && Application.Request.IsExporting?.toString() === 'true'"
+                                 [isReadOnly]="Application.IsReadOnly"
+                                 [ngClass]="{ 'is-invalid required  validation':  YearlyStoringAmount.errors && (YearlyStoringAmount.dirty || submit)}">
+                </custom-text-box>
+                <app-validation-viewer [requiredValidations]="Required_GreaterThanZeroValidations"
+                                       [controlName]="ExportingAmount" [form]="SecondStageLogistics" [submit]="submit">
+                </app-validation-viewer>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!--Navigation-And-Actions-->
+      <div class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+        <div *ngIf="!Application.IsReadOnly">
+          <button type="button" class="main-btn-secondary" (click)="saveForm()"
+                  [disabled]="!Application.Request.CRId">
+            {{'ServicesCommon.SaveAsDraft' | translate}}
+          </button>
+        </div>
+        <div class="tab-nav-wrapper mb-3">
+          <a *ngIf="enablePrevious" aria-label="Prev" title="{{'PREVIOUS' | translate}}" class="prev"
+             (click)="Previous()">{{'PREVIOUS' | translate}}</a>
+          <a aria-label="Next" title="{{'NEXT' | translate}}" class="next" (click)="Next()"
+             *ngIf="!enableSubmit">{{'NEXT' | translate}}</a>
+        </div>
+        <button type="button" class="main-btn" (click)="Next()"
+                *ngIf="!Application.IsReadOnly && enableSubmit">
+          {{'ServicesCommon.Submit' | translate}}
+        </button>
+      </div>
+    </div>
+    <!-- Interview-->
+    <app-interview [requestId]="Application.Request.Id" [config]="config"
+                   [hidden]="ActiveLevelOne !== 2 || Application.ApplicationHeader.PortalStatusCode !== '49'"></app-interview>
+
+    <!--Price Offer-->
+    <app-price-offer [requestId]="Application.Request.Id"
+                     [hidden]="ActiveLevelOne !== 3 || Application.ApplicationHeader.PortalStatusCode !== '4'"
+                     [IndustrialCities]="lookupService.lookupEntities['ldv_industrialcity_LookupWithId']"
+                     [SelectedCity]="Application.Request.IndustrialCityCode"></app-price-offer>
+
+    <!--Request Comments-->
+    <app-request-comments [regardingID]="Application.Request.Id"
+                          [hidden]="ActiveLevelOne !== 4 || !Application.Request.Id || Application.ApplicationHeader.PortalStatusCode === '1'">
+    </app-request-comments>
+  </div>
+</div>

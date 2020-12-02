@@ -1,0 +1,35 @@
+<img src="./assets/images/user.png" alt="User" class="d-lg-inline-block d-none">
+<ul class="navbar-nav d-inline-flex">
+  <li class="nav-item dropdown logout-section" *ngIf="isAuthorized == false">
+    <div title="User" class="nav-link pt-0" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      <div class="font-size-extra-sm">{{'Welcome'|translate}}</div>
+      <div class="d-inline-block position-relative font-bold">
+        <a [routerLink]="['/auth/login']" title="{{'Login'|translate}}">
+          {{'Login'|translate}}
+        </a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item dropdown welcome-dropdown" *ngIf="isAuthorized">
+    <a title="Welcome {{FullName}}" class="nav-link dropdown-toggle pt-0" href="#" id="navbarDropdownMenuLink"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <div class="font-size-extra-sm">{{'Welcome'|translate}}</div>
+      <div class="d-inline-block position-relative font-bold">
+        {{FullName}}
+      </div>
+    </a>
+    <div class="dropdown-menu mt-1" aria-labelledby="navbarDropdownMenuLink">
+      <a class="dropdown-item p-2" [routerLink]="['/Profile-Managment/MyProfile']"
+        title="{{'ProfileManagment.MyProfile'|translate}}"><span class="icon-man-user"></span>
+        {{'ProfileManagment.MyProfile'|translate}}</a>
+
+      <a class="dropdown-item p-2" href="#" (click)="logout($event)" title="{{'Logout'|translate}}"><span
+          class="icon-login"></span> {{'Logout'|translate}}</a>
+
+
+    </div>
+  </li>
+
+</ul>

@@ -14,7 +14,7 @@ import { CaseStatistics } from '../Models/case-statistics';
 })
 export class MOAService {
 
-  private MOACasesUrl = 'https://localhost:44387/api/Requests/GetRequests';
+  private MOACasesUrl = 'http://moa.westeurope.cloudapp.azure.com/api/Requests/GetRequests';
   constructor(private api: APIService) { }
 
 
@@ -24,6 +24,6 @@ export class MOAService {
 }
 
 getCaseStatistics():Observable<CaseStatistics>{
-  return this.api.Get<CaseStatistics>("https://localhost:44387/api/Requests/CaseStatistics").pipe();
+  return this.api.Get<CaseStatistics>("http://moa.westeurope.cloudapp.azure.com/api/Requests/CaseStatistics").pipe();
 }
 }

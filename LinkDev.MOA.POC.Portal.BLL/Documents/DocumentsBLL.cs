@@ -1,6 +1,8 @@
-﻿using LinkDev.MOA.POC.Portal.BLL.CustomModels;
+﻿using LinkDev.MOA.POC.CRMModel.Incident;
+using LinkDev.MOA.POC.Portal.BLL.CustomModels;
 using LinkDev.MOA.POC.Portal.BLL.Helpers.CRMConnector;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,15 @@ namespace LinkDev.MOA.POC.Portal.BLL.Documents
 			var savingResult = SaveDocumentFiles(files);
 
 			
+
+			return savingResult;
+		}
+
+		public SaveDocumentFilesResult UploadPayment(List<FileInfoModel> files,Guid CaseId)
+		{
+			var savingResult = SavePaymentFiles(files,CaseId);
+
+
 
 			return savingResult;
 		}
@@ -51,7 +62,36 @@ namespace LinkDev.MOA.POC.Portal.BLL.Documents
 
 			return new SaveDocumentFilesResult() { Error = validationError, Result = false };
 		}
+		public SaveDocumentFilesResult SavePaymentFiles(List<FileInfoModel> files,Guid CaseId)
+		{
+			string validationError;
 
+			if (IsValidFiles(files, out validationError))
+			{
+				List<FileInfoModel> Files = new List<FileInfoModel>();
+				foreach (var file in files)
+				{
+					var DoucmentId = AttachFilesToPayment(file.Content, file.FileName, CaseId);
+					Files.Add(new FileInfoModel
+					{
+						Content = file.Content,
+						ContentType = file.ContentType,
+						FileExtension = file.FileExtension,
+						FileName = file.FileName,
+						FileId = DoucmentId,
+						IsDeleted = false,
+						IsNewlyCreated = true
+					});
+				}
+				return new SaveDocumentFilesResult()
+				{
+					Result = true,
+					Files = Files
+				};
+			}
+
+			return new SaveDocumentFilesResult() { Error = validationError, Result = false };
+		}
 		public bool IsValidFiles(List<FileInfoModel> files, out string error)
 		{
 			//extension
@@ -89,6 +129,29 @@ namespace LinkDev.MOA.POC.Portal.BLL.Documents
 			var FileId = CRMConnector.CRMAccess.Create(AnnotationEntityObject);
 
 			return DocumentId.ToString();
+		}
+
+		public string AttachFilesToPayment(byte[] filebytes, string FileName,Guid CaseId)
+		{
+			//Entity Payment = new Entity("ldv_payment");
+			//Payment["subject"] = FileName;
+			Entity Case = CRMConnector.CRMAccess.Retrieve(incident.EntityName, CaseId, new ColumnSet("ldv_payment"));
+			//Guid PaymentId = CRMConnector.CRMAccess.Create(Payment);
+			Guid PaymentId = ((EntityReference)Case["ldv_payment"]).Id;
+			string mimeType = MimeMapping.GetMimeMapping(FileName);
+			string encodedData = System.Convert.ToBase64String(filebytes);
+			Entity AnnotationEntityObject = new Entity("annotation");
+			AnnotationEntityObject.Attributes["objectid"] = new EntityReference("ldv_payment", PaymentId);
+			AnnotationEntityObject.Attributes["subject"] = FileName;
+			AnnotationEntityObject.Attributes["documentbody"] = encodedData;
+			// Set the type of attachment
+			AnnotationEntityObject.Attributes["mimetype"] = mimeType;
+			// Set the File Name
+			AnnotationEntityObject.Attributes["filename"] = FileName;
+
+			var FileId = CRMConnector.CRMAccess.Create(AnnotationEntityObject);
+
+			return PaymentId.ToString();
 		}
 	}
 }

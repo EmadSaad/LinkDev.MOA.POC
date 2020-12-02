@@ -1,0 +1,141 @@
+﻿.form-row {
+  .visa-month {
+    .ngx-dropdown-container {
+      .ngx-dropdown-list-container {
+        padding-left: 5px !important;
+        padding-right: 5px !important;
+        ul {
+          li {
+            padding: 3px !important;
+          }
+        }
+      }
+    }
+  }
+}
+.ngx-dropdown-container {
+  hr {
+    margin: 0.5rem 0 !important;
+  }
+
+  &:focus {
+    outline-color: transparent;
+    box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+  }
+
+  .ngx-dropdown-button {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 19px !important;
+    border: 1px solid $border-color !important;
+    min-height: 40px;
+    border-radius: 2px !important;
+    overflow-y: hidden;
+    &.disabled{
+      .nsdicon-angle-down{
+        color:grey;
+      }
+    }
+
+    span {
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &:focus {
+      outline-color: transparent;
+      box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+    }
+
+    .nsdicon-angle-down {
+      color:$fuchsia;
+      vertical-align: top;
+      display: inline-flex;
+      @extend .icon-dropdow-arrow;
+      font-family: "icomoon" !important;
+      &.disabled{
+
+      }
+      &:before {
+        content: $icon-dropdow-arrow;
+        font-size: 0.5rem;
+      }
+    }
+  }
+
+  .ngx-dropdown-list-container {
+    &:focus {
+      outline-color: transparent;
+      box-shadow: 0 0 0 0.2rem rgba(24, 120, 69, 0.25);
+    }
+
+    .search-container {
+      label {
+        font-size: 1rem !important;
+
+        @if $dir == rtl {
+          right: 0;
+          left: auto !important;
+        }
+
+        font-weight: normal;
+      }
+
+      .nsdicon-search {
+        font-family: "icomoon" !important;
+        @extend .icon-search;
+      }
+    }
+
+    ul {
+      padding: 0 !important;
+
+      li {
+        padding: 10px;
+
+        &:hover {
+          color: $white !important;
+          background-color: $brand-color;
+        }
+      }
+    }
+
+    ul.selected-items {
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+
+      li {
+        .nsdicon-close {
+          font-size: 0.6rem !important;
+          @extend .icon-cancel-music;
+          font-family: "icomoon" !important;
+        }
+
+        background-color: $brand-color !important;
+        padding: 5px 10px !important;
+        font-size: 0.8rem !important;
+      }
+    }
+  }
+}
+/*@media (min-width: 768px) {
+    .form-row {
+        .ngx-dropdown-container[_ngcontent-c0] {
+            .ngx-dropdown-button[_ngcontent-c0] {
+                min-height: 40px;
+            }
+        }
+    }
+}*/
+// Extra large devices (large desktops, 1500px and up)
+@media (min-width: 1500px) {
+  .form-row {
+    .ngx-dropdown-container[_ngcontent-c0] {
+      .ngx-dropdown-button[_ngcontent-c0] {
+        min-height: 45px;
+      }
+    }
+  }
+}

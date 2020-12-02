@@ -1,0 +1,161 @@
+<app-breadcrumb [CurrnetComponentName]="'completeprofile'"></app-breadcrumb>
+<div class="layout-margin">
+  <h1 class="page-title">{{'ProfileManagment.CompleteProfileHeader'|translate }}</h1>
+  <div class="alert alert-light" role="alert"><span class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+  <form class="form-wrapper" #completeProfileForm="ngForm" novalidate autocomplete="off">
+    <!--Full Name-->
+    <div class="col-12" *ngIf="showEmailErrorMsg">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{emailErrorMsg}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="FullName" autocomplete="" aria-label="'ProfileManagment.FullName'"
+                         [(ngModel)]="Application.FullName" [required]="isSubmitted" #FullName="ngModel" [isRequiredLabel]="true"
+                         [label]="'ProfileManagment.FullName'" [ngClass]="{ 'is-invalid required  validation': isSubmitted && FullName.errors }"
+                         [disabled]="FullNmaeDisabled">
+        </custom-text-box>
+
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                               [controlName]="FullName" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+      </div>
+      <!--Identity-Number-->
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="identityNumber" autocomplete="off" aria-label="'ProfileManagment.IdentityNumber'"
+                         [pattern]="numberValidationPattern" [(ngModel)]="Application.IdentityNumber" [required]="isSubmitted"
+                         #identityNumber="ngModel" [isRequiredLabel]="true" [label]="'CRManagement.IdentityNumberForIdAndIqama'"
+                         [ngClass]="{ 'is-invalid required  validation': isSubmitted && identityNumber.errors || identityNumber.errors?.pattern }"
+                         [disabled]="true">
+        </custom-text-box>
+        <app-validation-viewer [requiredValidations]="NumberValidation"
+                               [controlName]="identityNumber" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6" *ngIf="IsIdentityExpiryDateHijriRequired">
+        <label>
+          {{'ProfileManagment.IdentityExpiryDateHijri' | translate}}<span class="required"> *</span>
+        </label>
+        <ngbd-datepicker-islamiccivil [(ngModel)]="Application.IdentityExpiryDateinhijri"
+                                      #IdentityExpiryDateinhijri="ngModel" name="IdentityExpiryDateinhijri" [required]="IsIdentityExpiryDateHijriRequired" (change)="setIslamicDate()"
+                                      [ngClass]="{ 'is-invalid required  validation':  isSubmitted && IdentityExpiryDateinhijri.errors}"
+                                      [readonly]="IdentityIssueDateDisabled">
+        </ngbd-datepicker-islamiccivil>
+
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                               [controlName]="IdentityExpiryDateinhijri" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+      </div>
+    </div>
+
+    <!--Email-->
+    <div class="row">
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <custom-text-box [type]="'email'" name="email" autocomplete="" aria-label="'ProfileManagment.Email'" [isRequiredLabel]="true"
+                         [label]="'ProfileManagment.Email'" [pattern]="emailValidationPattern" [(ngModel)]="Application.Email" [required]="isSubmitted"
+                         #email="ngModel"
+                         [ngClass]="{ 'is-invalid required  validation': isSubmitted && email.errors || email.errors?.pattern }"
+                         [disabled]="EmailDisabled">
+        </custom-text-box>
+        <app-validation-viewer [requiredValidations]="EmailValidation"
+                               [controlName]="email" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+      </div>
+    </div>
+    <!-- Start-Password -->
+    <div class="row">
+      <!--Password -->
+      <div class="col-xl-3 col-lg-4 col-md-6" [ngClass]="{ 'required': isSubmitted && password.errors?.required  || password.errors?.pattern }">
+        <password-textbox [label]="'LOGIN_PASSWORD'|translate" [isRequiredLabel]="true" name="password" autocomplete="new-password"
+                          placeholder="" [strength]='true' [pattern]="passwordValidationPattern" [required]="isSubmitted"
+                          aria-label="'ProfileManagment.Password'" #password="ngModel" [(ngModel)]="Application.Password"
+                          [ngClass]="{ 'is-invalid required  validation': isSubmitted && password.errors?.required  || password.errors?.pattern }">
+        </password-textbox>
+        <app-validation-viewer [requiredValidations]="PasswordValidation"
+                               [controlName]="password" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+
+      </div>
+     
+      <div class="col-xl-3 col-lg-4 col-md-6" [ngClass]="{ 'required': isSubmitted && confirmPassword.errors }">
+
+        <custom-text-box [label]="'ProfileManagment.ConfirmPassword'" [isRequiredLabel]="true" name="confirmPassword"
+                         autocomplete="new-password" [type]="'password'" aria-label="'ProfileManagment.ConfirmPassword'" #confirmPassword="ngModel"
+                         [(ngModel)]="confirmationPassword"
+                         [ngClass]="{ 'is-invalid required  validation': isSubmitted && confirmPassword.errors  && (Application.Password === confirmationPassword) }">
+        </custom-text-box>
+
+        <div class="form-validation" *ngIf="confirmPassword.errors?.required">
+          {{'Validations.Required'|translate}}
+
+        </div>
+        <div class="form-validation" *ngIf="confirmPassword.errors?.incorrect">
+          {{'Validations.ConfirmedPassword'|translate}}
+        </div>
+
+      </div>
+    </div>
+
+    <!--Start Phone and Mobile-->
+    <div class="row">
+      <!--Phone--> 
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="PhoneNumber" autocomplete="" aria-label="'ProfileManagment.PhoneNumber'"
+                         [label]="'ProfileManagment.PhoneNumber'" [(ngModel)]="Application.PhoneNumber"
+                         #PhoneNumber="ngModel" [pattern]="PhoneValidationPattern"
+                         [ngClass]="{ 'is-invalid validation': isSubmitted && PhoneNumber.errors || PhoneNumber.errors?.pattern }">
+        </custom-text-box>
+        <app-validation-viewer [requiredValidations]="{'pattern': 'Validations.NewPhoneValidation'}"
+                               [controlName]="PhoneNumber" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+      </div>
+      <!--Mobile--> <!--[disabled]="MobileDisabled"-->
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <custom-text-box [type]="'text'" name="mobile" autocomplete="" aria-label="'ProfileManagment.MobileNumber'"
+                         [(ngModel)]="Application.MobileNumber" [pattern]="mobileValidationPattern"
+                         [label]="'ProfileManagment.MobileNumber'" #mobile="ngModel"
+                         [ngClass]="{ 'is-invalid  validation': isSubmitted && mobile.errors || mobile.errors?.pattern }">
+        </custom-text-box>
+        <app-validation-viewer [requiredValidations]="{'pattern': 'Validations.NewMobileValidation'}"
+                               [controlName]="mobile" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+      </div>
+    </div>
+    <!--Recaptch-->
+    <div class="row">
+      <div class="col-12 ml-">
+        <div class="responsive-captcha">
+          <re-captcha name="captchaControl" required [(ngModel)]="Application.captchaValue" #captchaControl="ngModel"
+                      [ngClass]="{ 'is-invalid required  validation': isSubmitted && captchaControl.errors}">
+
+          </re-captcha>
+        </div>
+        <app-validation-viewer [requiredValidations]="{'required':'Validations.Required'}"
+                               [controlName]="captchaControl" [form]="completeProfileForm" [submit]="isSubmitted">
+        </app-validation-viewer>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <label> {{'ProfileManagment.PrivacyMsg'|translate }} </label>
+        <label class="check-box-container">
+          <p class="txt-wrapper">{{'ProfileManagment.policyTermsMsg'|translate }}</p>
+          <input type="checkbox" [checked]=false (change)="checked = !checked">
+          <span class="checkmark mt-2"></span>
+        </label>
+      </div>
+
+    </div>
+
+    <div class="col-12 form-footer">
+      <button type="button" class="main-btn" (click)="submitForm()" [disabled]="checked">{{'ServicesCommon.Submit'| translate}} </button>
+    </div>
+  </form>
+</div>
