@@ -1,7 +1,6 @@
-﻿using LinkDev.MOA.POC.Portal.API.Attributes;
-using LinkDev.MOA.POC.Portal.BLL.CustomModels;
-using LinkDev.MOA.POC.Portal.BLL.CustomModels.Lookups;
-using LinkDev.MOA.POC.Portal.BLL.LookupsBLL;
+﻿using LinkDev.ECZA.POC.BLL.CustomModels;
+using LinkDev.ECZA.POC.BLL.CustomModels.Lookups;
+using LinkDev.ECZA.POC.BLL.LookupsBLL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,45 +21,18 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.LookupsController
 
         }
 
+       
         [HttpGet]
-        [Route("CompaniesLookups")]
-        public List<LookupModel> CompaniesLookups()
+        [Route("DesignConsultantLookups")]
+        public List<LookupModel> DesignConsultantLookups()
         {
             var result =
-                _lookupsBll.GetRelatedCompanies();
+                _lookupsBll.GetDesignConsultant();
 
             return result;
         }
 
-        [HttpGet]
-        [Route("CountriesLookups")]
-        public List<CountriesLookupModel> CountriesLookups()
-        {
-            var result =
-                _lookupsBll.GetCountries();
-
-            return result;
-        }
-
-        [HttpGet]
-        [Route("ArrivingPortsLookups")]
-        public List<ArrivingPortsLookupsModel> ArrivingPortsLookups()
-        {
-            var result =
-                _lookupsBll.GetArrivingPorts();
-
-            return result;
-        }
-
-        [HttpGet]
-        [Route("ProductsLookups")]
-        public List<ProductsLookupModel> ProductsLookups()
-        {
-            var result =
-                _lookupsBll.GetProducts();
-
-            return result;
-        }
+        
     
 }
 }

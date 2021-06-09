@@ -18,7 +18,7 @@ export class PriceOfferComponent implements OnInit {
   @Input() requestId: string;
   @Input() IndustrialCities: any[];
   @Input() SelectedCity: string;
-  MODONText: string = 'Modon'
+  MODONText: string = 'ECZA'
   priceOfferDate: "";
   public apiUrl: string = ConfigService.APIURL;
 

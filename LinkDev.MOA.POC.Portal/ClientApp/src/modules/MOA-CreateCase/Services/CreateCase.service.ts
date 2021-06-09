@@ -12,9 +12,9 @@ import { APIHelperService } from './ApiHelper-service';
   providedIn: 'root'
 })
 export class CreateCaseService {
-  private baseUrl: string = "http://moa.westeurope.cloudapp.azure.com/api/";
-  private getUrl: string = "http://moa.westeurope.cloudapp.azure.com/api/Lookups/CompaniesLookups";
-  private postUrl: string = "http://moa.westeurope.cloudapp.azure.com/api/Requests/PostCase";
+  private baseUrl: string = "https://localhost:44387/api/";
+  private getUrl: string = "https://localhost:44387/api/Lookups/CompaniesLookups";
+  private postUrl: string = "https://localhost:44387/api/Requests/PostCase";
 constructor(protected api: APIService) { }
 public get(params: string): Observable<EServiceModel<CaseModel>> {
   return this.api.Get<EServiceModel<CaseModel>>(`${this.getUrl}${params}`);

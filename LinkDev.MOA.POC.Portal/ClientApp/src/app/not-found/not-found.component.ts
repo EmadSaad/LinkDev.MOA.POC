@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 export class NotFoundComponent implements OnInit {
   
   constructor(private translate: TranslateService,private titleService:Title) {
-    this.titleService.setTitle("Modon | Not found");
+    this.titleService.setTitle("ECZA | Not found");
   }
   ngOnInit() {
     document.querySelector(".inner-layout .container").classList.remove("container");

@@ -59,7 +59,7 @@ export class SplitRequestComponent extends EServicesBase<SplitRequestModel> impl
 
     protected router: Router) {
     super(SplitRequestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-      this.titleService.setTitle("Modon | Split Request");
+      this.titleService.setTitle("ECZA | Split Request");
 
       this.mainProdutOldContract = this.subProdutOldContract = this.ProdutOldContract ="";
       this.submit = false;

@@ -1,0 +1,331 @@
+<app-breadcrumb [CurrnetComponentName]="'moaCreateCase'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    
+    </div>
+  </div>
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'ECZAInfrastructurePermit.InfrastructurePermitIssuance' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+    <!--Request Details-->
+    <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light mt-4" *ngIf="!Application.IsReadOnly" role="alert"><span
+          class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+<app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+    <!--First Stage-->
+    <div>
+      <form #FirstStage="ngForm" novalidate autocomplete="off" *ngIf="ActiveLevelTwo !== 2">
+        <!--Main Info-->
+        <div id="GeneralInfo">
+          <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.GeneralInfo' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="DesignConsultant" name="DesignConsultant" [label]="'ECZAInfrastructurePermit.DesignConsultant'"
+              [propertyToSelect]="'Value'" [options]="DesignConsultantLookups" [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+              [isRequiredLabel]="true" [required]="true" [(ngModel)]="Application.Request.DesignConsultantId" #DesignConsultant="ngModel"
+              [ngClass]="{ 'is-invalid required  validation': DesignConsultant.errors && (DesignConsultant.dirty ||  submit)  }">
+            </mutliselect>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <mutliselect id="DesignReviewConsultant" name="DesignReviewConsultant" [label]="'ECZAInfrastructurePermit.DesignReviewConsultant'"
+              [propertyToSelect]="'Value'" [options]="DesignConsultantLookups" [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+              [isRequiredLabel]="true" [required]="true" [(ngModel)]="Application.Request.DesignReviewConsultantId" #DesignReviewConsultant="ngModel"
+              [ngClass]="{ 'is-invalid required  validation': DesignReviewConsultant.errors && (DesignReviewConsultant.dirty ||  submit)  }">
+            </mutliselect>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ClientAccountECAID" name="ClientAccountECAID" [label]="'ECZAInfrastructurePermit.ClientAccountECAID'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ClientAccountECAID="ngModel"
+              [(ngModel)]="Application.Request.ClientAccountECAID">
+            </custom-text-box>
+          </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="PrequalifiedConsultantAccountECAID" name="PrequalifiedConsultantAccountECAID" [label]="'ECZAInfrastructurePermit.PrequalifiedConsultantAccountECAID'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #PrequalifiedConsultantAccountECAID="ngModel"
+              [(ngModel)]="Application.Request.PrequalifiedConsultantAccountECAID">
+            </custom-text-box>
+            </div>
+            </div>
+         
+   
+        </div>
+         <!--Product Info-->
+         <div id="GISInfo">
+          <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.GISInfo' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="PRN" name="PRN" [label]="'PRN'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #PRN="ngModel"
+              [(ngModel)]="Application.Request.PRN">
+            </custom-text-box>
+          </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="PIN" name="PIN" [label]="'PIN'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+              [(ngModel)]="Application.Request.PIN">
+            </custom-text-box>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="LandArea" name="LandArea" [label]="'ECZAInfrastructurePermit.LandArea'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #LandArea="ngModel"
+              [(ngModel)]="Application.Request.LandArea">
+            </custom-text-box>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="City" name="City" [label]="'ECZAInfrastructurePermit.City'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #City="ngModel"
+                [(ngModel)]="Application.Request.City">
+              </custom-text-box>
+            </div>
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="District" name="District" [label]="'ECZAInfrastructurePermit.District'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+                [(ngModel)]="Application.Request.District">
+              </custom-text-box>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="Neighborhood" name="Neighborhood" [label]="'ECZAInfrastructurePermit.Neighborhood'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+                [(ngModel)]="Application.Request.Neighborhood">
+              </custom-text-box>
+              </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="Floor" name="Floor" [label]="'ECZAInfrastructurePermit.Floor'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Floor="ngModel"
+                  [(ngModel)]="Application.Request.Floor">
+                </custom-text-box>
+              </div>
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="Unit" name="Unit" [label]="'ECZAInfrastructurePermit.Unit'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+                  [(ngModel)]="Application.Request.Unit">
+                </custom-text-box>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="Street" name="Street" [label]="'ECZAInfrastructurePermit.Street'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+                  [(ngModel)]="Application.Request.Street">
+                </custom-text-box>
+                </div>
+                </div>
+              
+        </div>
+        <div id="PropertyInfo">
+          <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.PropertyInfo' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="TotalUnits" name="TotalUnits" [label]="'ECZAInfrastructurePermit.TotalUnits'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #TotalUnits="ngModel"
+              [(ngModel)]="Application.Request.TotalUnits">
+            </custom-text-box>
+          </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ProposedUsage" name="ProposedUsage" [label]="'ECZAInfrastructurePermit.ProposedUsage'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ProposedUsage="ngModel"
+              [(ngModel)]="Application.Request.ProposedUsage">
+            </custom-text-box>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ExistingUSage" name="ExistingUSage" [label]="'ECZAInfrastructurePermit.ExistingUSage'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ExistingUSage="ngModel"
+              [(ngModel)]="Application.Request.ExistingUSage">
+            </custom-text-box>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="BuildingArea" name="BuildingArea" [label]="'ECZAInfrastructurePermit.BuildingArea'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #BuildingArea="ngModel"
+                [(ngModel)]="Application.Request.BuildingArea">
+              </custom-text-box>
+            </div>
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="UsedArea" name="UsedArea" [label]="'ECZAInfrastructurePermit.UsedArea'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #UsedArea="ngModel"
+                [(ngModel)]="Application.Request.UsedArea">
+              </custom-text-box>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="BasementArea" name="BasementArea" [label]="'ECZAInfrastructurePermit.BasementArea'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #BasementArea="ngModel"
+                [(ngModel)]="Application.Request.BasementArea">
+              </custom-text-box>
+              </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="RoofArea" name="RoofArea" [label]="'ECZAInfrastructurePermit.RoofArea'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #RoofArea="ngModel"
+                  [(ngModel)]="Application.Request.RoofArea">
+                </custom-text-box>
+              </div>
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="ParkingArea" name="ParkingArea" [label]="'ECZAInfrastructurePermit.ParkingArea'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ParkingArea="ngModel"
+                  [(ngModel)]="Application.Request.ParkingArea">
+                </custom-text-box>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="OtherArea" name="OtherArea" [label]="'ECZAInfrastructurePermit.OtherArea'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #OtherArea="ngModel"
+                  [(ngModel)]="Application.Request.OtherArea">
+                </custom-text-box>
+                </div>
+                </div>
+        </div>
+        <div id="ProjectInfo">
+          <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.ProjectInfo' | translate}}</h5>
+
+          <div class="row">
+           
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ProjectTitle" name="ProjectTitle" [label]="'ECZAInfrastructurePermit.ProjectTitle'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ProjectTitle="ngModel"
+              [(ngModel)]="Application.Request.ProjectTitle">
+            </custom-text-box>
+            </div>
+            
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="Description" name="Description" [label]="'ECZAInfrastructurePermit.Description'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Description="ngModel"
+                [(ngModel)]="Application.Request.Description">
+              </custom-text-box>
+            </div>
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="Location" name="Location" [label]="'ECZAInfrastructurePermit.Location'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Location="ngModel"
+                [(ngModel)]="Application.Request.Location">
+              </custom-text-box>
+              </div>
+             
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="SiteArea" name="SiteArea" [label]="'ECZAInfrastructurePermit.SiteArea'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #SiteArea="ngModel"
+                  [(ngModel)]="Application.Request.SiteArea">
+                </custom-text-box>
+              </div>
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="BuildingHeight" name="BuildingHeight" [label]="'ECZAInfrastructurePermit.BuildingHeight'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #BuildingHeight="ngModel"
+                  [(ngModel)]="Application.Request.BuildingHeight">
+                </custom-text-box>
+                </div>
+                 <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="ProjectType" name="ProjectType" [label]="'ECZAInfrastructurePermit.ProjectType'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ProjectType="ngModel"
+                [(ngModel)]="Application.Request.ProjectType">
+              </custom-text-box>
+              </div>
+                </div>
+                 <div class="row">
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="ProjectCostUSD" name="ProjectCostUSD" [label]="'ECZAInfrastructurePermit.ProjectCostUSD'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ProjectCostUSD="ngModel"
+                  [(ngModel)]="Application.Request.ProjectCostUSD">
+                </custom-text-box>
+              </div>
+                <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="ProjectCostSAR" name="ProjectCostSAR" [label]="'ECZAInfrastructurePermit.ProjectCostSAR'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ProjectCostSAR="ngModel"
+                  [(ngModel)]="Application.Request.ProjectCostSAR">
+                </custom-text-box>
+                </div>
+                
+                </div>
+        </div>
+        <div id="Fees">
+          <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.Fees' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ExemptionType" name="ExemptionType" [label]="'ECZAInfrastructurePermit.ExemptionType'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ExemptionType="ngModel"
+              [(ngModel)]="Application.Request.ExemptionType">
+            </custom-text-box>
+          </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ExemptionAmount" name="ExemptionAmount" [label]="'ECZAInfrastructurePermit.ExemptionAmount'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ExemptionAmount="ngModel"
+              [(ngModel)]="Application.Request.ExemptionAmount">
+            </custom-text-box>
+            </div>
+            
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="TotalFees" name="TotalFees" [label]="'ECZAInfrastructurePermit.TotalFees'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Exporter="ngModel"
+                [(ngModel)]="Application.Request.TotalFees">
+              </custom-text-box>
+            </div>
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="FinalFees" name="FinalFees" [label]="'ECZAInfrastructurePermit.FinalFees'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #FinalFees="ngModel"
+                [(ngModel)]="Application.Request.FinalFees">
+              </custom-text-box>
+              </div>
+              
+              </div>
+        </div>
+       
+      </form>
+      <form #SecondStage="ngForm" novalidate autocomplete="off">
+      <div id="Documents" *ngIf="ActiveLevelTwo !== 1">
+        <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.GeneralProjectDocuments' | translate}}</h5>
+        <div class="row">
+        <div class="col-lg-8 col-md-6">
+            <app-Uploaders-List [uploaders]="Application.Documents" [form]="SecondStage"[hidden]="ActiveLevelTwo === 1"
+              [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true"[SectionName]="'GeneralDocuments'">
+            </app-Uploaders-List>
+
+          </div>
+        </div>
+      </div>
+      <div id="DesignConsultantattachments" *ngIf="ActiveLevelTwo !== 1">
+        <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.DesignConsultantattachments' | translate}}</h5>
+        <div class="row">
+        <div class="col-lg-8 col-md-6">
+            <app-Uploaders-List [uploaders]="Application.Documents" [form]="SecondStage"[hidden]="ActiveLevelTwo === 1"
+              [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true"[SectionName]="'DesignConsultantattachments'">
+            </app-Uploaders-List>
+
+          </div>
+        </div>
+      </div>
+    </form>
+      <!--Actions-->
+
+      <div *ngIf="!Application.IsReadOnly"
+        class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+        <h1></h1>
+        <button type="button" class="main-btn" (click)="submitRequest()"
+        [disabled]="ActiveLevelTwo !== 3">{{ 'ServicesCommon.Submit' | translate}}</button>
+  
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>

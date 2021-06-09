@@ -23,11 +23,17 @@ export class ServiceCatalogComponent implements OnInit {
     //slidesOffsetBefore: 0,
   };
   categories: ServiceCatogoriesModel[] = [];
-  constructor(private portalServices: PortalServicesService) { }
+  constructor(private portalServices: PortalServicesService) { 
+    this.categories= this.Setcategories;
+  }
+  get Setcategories():ServiceCatogoriesModel[]{
 
+    let categories:ServiceCatogoriesModel[]=[{Code:"1",Description:"Service That provices customer to extract ECZA Licenses",IconName:"licenses.png",Name:"Permits"}]
+   return categories;
+  }
   ngOnInit() {
     debugger;
-    SharedHelper.showLoader();
+   /* SharedHelper.showLoader();
     this.portalServices.getServiceCategories().subscribe(savedCategories => {
       if (savedCategories.length > 0) {
         this.categories = savedCategories;
@@ -35,7 +41,7 @@ export class ServiceCatalogComponent implements OnInit {
       }
       else
         SharedHelper.hideLoader();
-    })
+    })*/
   }
 
 }

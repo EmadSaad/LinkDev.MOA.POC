@@ -46,7 +46,7 @@ export class ContractSubmissionComponent extends EServicesBase<ContractSubmissio
     private titleService:Title,
     protected router: Router) {
     super(contractSubmissionService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-      this.titleService.setTitle("Modon | Contract submission");
+      this.titleService.setTitle("ECZA | Contract submission");
   }
   ActiveLevelOne: number = 1;
   ActiveLevelTwo: number = 1;

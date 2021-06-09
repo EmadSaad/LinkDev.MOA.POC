@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { InfrastructurePermitModel } from 'src/modules/Infrastructure-Permit/Models/InfrastructurePermitModel';
 import { CaseModel } from 'src/modules/MOA-CreateCase/Models/CaseModel';
 import { ApiGenericResponse } from 'src/modules/shared/Models/api-generic-response';
 import { ApplicationPostModel } from 'src/modules/shared/Models/application-post-model';
@@ -12,13 +13,13 @@ import { IRequestService } from 'src/modules/shared/services/IRequestService.ser
 })
 export class MoaPaymentService implements IRequestService<CaseModel> {
 
-  private getUrl: string = "http://moa.westeurope.cloudapp.azure.com/api/Requests/GetPayment?";
-  private postUrl: string = "http://moa.westeurope.cloudapp.azure.com/api/Requests/PostPayment";
+  private getUrl: string = "https://localhost:44387/api/Requests/GetPayment?";
+  private postUrl: string = "https://localhost:44387/api/Requests/PostPayment";
 
   constructor(protected api: APIService) { }
 
-  get(params: string): Observable<ApiGenericResponse<EServiceModel<CaseModel>>> {
-    return this.api.Get<ApiGenericResponse<EServiceModel<CaseModel>>>(`${this.getUrl}${params}`);
+  get(params: string): Observable<ApiGenericResponse<EServiceModel<InfrastructurePermitModel>>> {
+    return this.api.Get<ApiGenericResponse<EServiceModel<InfrastructurePermitModel>>>(`${this.getUrl}${params}`);
   }
 
   public post(application: EServiceModel<CaseModel>): Observable<ApiGenericResponse<ApplicationPostModel>>{

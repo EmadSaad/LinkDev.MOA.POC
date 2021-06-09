@@ -233,7 +233,7 @@ export class BuildingLicenseRequestComponent extends EServicesBase<BuildingLicen
     protected router: Router,
     private titleService: Title) {
     super(requestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-    this.titleService.setTitle("Modon | Building license reqeust");
+    this.titleService.setTitle("ECZA | Building license reqeust");
   }
 
 

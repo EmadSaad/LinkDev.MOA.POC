@@ -15,7 +15,7 @@ export class RequestQuoteComponent implements OnInit {
 
   @Input() requestId: string;
   
-  MODONText: string = 'Modon'
+  MODONText: string = 'ECZA'
   priceOfferDate: "";
 
   Items: QuoteWithRelatedQuoteLines={};

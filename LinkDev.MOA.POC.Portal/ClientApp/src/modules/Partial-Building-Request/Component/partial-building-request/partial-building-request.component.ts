@@ -136,7 +136,7 @@ export class PartialBuildingRequestComponent extends EServicesBase<PartialBuildi
     protected router: Router,
     private titleService: Title) {
     super(requestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-    this.titleService.setTitle("Modon | Partial Building Request");
+    this.titleService.setTitle("ECZA | Partial Building Request");
   }
 
   ngOnInit() {

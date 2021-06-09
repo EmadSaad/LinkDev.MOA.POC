@@ -38,7 +38,7 @@ export class FactoryInsideFactoryComponent extends EServicesBase<FactoryInsideFa
     private titleService: Title,
     protected router: Router) {
     super(FactoryInsideFactoryService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-    this.titleService.setTitle("Modon | Contract submission");
+    this.titleService.setTitle("ECZA | Contract submission");
   }
 
   ngOnInit() {

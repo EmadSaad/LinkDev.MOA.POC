@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   public userData?: IUserData;
   isAuthorized: boolean;
   constructor(private translate: TranslateService, private tokenService: TokenService, private titleService:Title) {
-    this.titleService.setTitle("Modon | Home");
+    this.titleService.setTitle("ECZA | Home");
     tokenService.isAuthenticated()
     .subscribe(
       data => {

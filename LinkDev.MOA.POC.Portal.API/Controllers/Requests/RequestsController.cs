@@ -1,5 +1,6 @@
-﻿using LinkDev.MOA.POC.Portal.BLL.CustomModels;
-using LinkDev.MOA.POC.Portal.BLL.Requests;
+﻿
+using LinkDev.ECZA.POC.BLL.CustomModels;
+using LinkDev.ECZA.POC.BLL.RequestsBLL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Http.Cors;
 
 namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
 {
+    
     [RoutePrefix("api/Requests")]
   
     public class RequestsController : ApiController
@@ -19,7 +21,7 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
             _requestsBll = new RequestsBLL();
 
         }
-        [HttpPost]
+     /*   [HttpPost]
         [Route("PostCase")]
        
         public ApiGenericResponse<ApplicationPostModel> PostCase(EServiceModel<CaseModel> eServiceModel)
@@ -52,11 +54,11 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
         public CaseStatisticsModel CaseStatistics()
         {
             return _requestsBll.CaseStatistics();
-        }
+        }*/
 
         [HttpGet]
         [Route("GetPayment")]
-        public ApiGenericResponse<EServiceModel<CaseModel>> GetPayment(Guid Id)
+        public ApiGenericResponse<EServiceModel<InfrastructurePermitModel>> GetPayment(Guid Id)
         {
             return _requestsBll.GetPayment(Id.ToString());
         }
@@ -64,7 +66,7 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
         [HttpPost]
         [Route("PostPayment")]
 
-        public ApiGenericResponse<ApplicationPostModel> PostPayment(EServiceModel<CaseModel> eServiceModel)
+        public ApiGenericResponse<ApplicationPostModel> PostPayment(EServiceModel<InfrastructurePermitModel> eServiceModel)
         {
 
 
@@ -79,7 +81,7 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
                 return ErrorResponse<ApplicationPostModel>("لقد حدث خطأ ما من فضلك جرب مرة أخري.");
             }
         }
-
+       
 
         #region Helper
         protected internal ApiGenericResponse<T> OkSuccessful<T>(T content, string friendlyResponseMessage = null)
@@ -93,4 +95,5 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Requests
 
         #endregion
     }
+
 }

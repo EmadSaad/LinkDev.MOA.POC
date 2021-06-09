@@ -41,7 +41,7 @@ export class ConsultingOfficeQualificationComponent extends EServicesBase<Consul
     private titleService: Title) {
     super(requestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
     this.configureMutliSelectConfiguration();
-    this.titleService.setTitle("Modon | Consulting Office Qualification");
+    this.titleService.setTitle("ECZA | Consulting Office Qualification");
   }
 
   /////////////////////////////// Variables ////////////////////////////////////////////////

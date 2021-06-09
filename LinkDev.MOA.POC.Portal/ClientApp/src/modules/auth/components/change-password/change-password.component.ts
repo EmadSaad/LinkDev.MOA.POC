@@ -42,7 +42,7 @@ export class ChangePasswordComponent implements OnInit {
     protected translateService: TranslateService,
     protected tokenService: TokenService,
     private titleService: Title) {
-    this.titleService.setTitle("Modon | Change password");
+    this.titleService.setTitle("ECZA | Change password");
     this.passwordValidationPattern = ConfigService.PasswordValidationPattern;
   }
 

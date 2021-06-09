@@ -38,7 +38,7 @@ export class ForgetPasswordComponent implements OnInit {
     protected router: Router,
     private titleService: Title) {
     this.emailValidationPattern = ConfigService.EmailValidationPattern;
-    this.titleService.setTitle("Modon | Forget password");
+    this.titleService.setTitle("ECZA | Forget password");
   }
 
   ngOnInit() {

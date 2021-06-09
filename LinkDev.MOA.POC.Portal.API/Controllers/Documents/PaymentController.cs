@@ -1,5 +1,5 @@
-﻿using LinkDev.MOA.POC.Portal.BLL.CustomModels;
-using LinkDev.MOA.POC.Portal.BLL.Documents;
+﻿using LinkDev.ECZA.POC.BLL.CustomModels;
+using LinkDev.ECZA.POC.BLL.Documents;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace LinkDev.MOA.POC.Portal.API.Controllers.Documents
 {
+	
 	[RoutePrefix("api/payment")]
 	public class PaymentController : ApiController
 	{
@@ -77,4 +78,5 @@ namespace LinkDev.MOA.POC.Portal.API.Controllers.Documents
 		}
 		#endregion
 	}
+
 }

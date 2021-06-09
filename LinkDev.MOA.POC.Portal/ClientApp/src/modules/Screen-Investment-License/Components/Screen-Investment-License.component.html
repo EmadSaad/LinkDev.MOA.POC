@@ -1,0 +1,163 @@
+<app-breadcrumb [CurrnetComponentName]="'moaCreateCase'"></app-breadcrumb>
+<div class="row form-wrapper mb-0">
+  <div class="col-lg-3 mb-0">
+    <div class="h-100">
+      <app-side-stages [activeFirstLevel]="ActiveLevelOne" [activeSecondLevel]="ActiveLevelTwo"
+        [structure]="formStructure" (onChange)="onSelect($event)">
+      </app-side-stages>
+    
+    </div>
+  </div>
+  <!--Form-Container-->
+  <div class="col-lg-9">
+    <!--Page-Title-->
+    <h4 class="page-title">{{'ECZAScreenInvestmentLicense.InvestmentLicenseRequest' | translate}}</h4>
+    <!--Request-Header-->
+    <app-app-header [appHeader]="Application.ApplicationHeader"></app-app-header>
+    <!--Request Details-->
+    <div [hidden]="ActiveLevelOne !== 1">
+      <!--Validation-Message-->
+      <div class="alert alert-light mt-4" *ngIf="!Application.IsReadOnly" role="alert"><span
+          class="icon-info"></span>{{'ProfileManagment.CompleteProfileSubHeader'|translate }} </div>
+<app-request-submission-info [submissionAlertClass]="this.submissionAlertClass" [submissionInfo]="this.submissionInfo"></app-request-submission-info>
+
+    <!--First Stage-->
+    <div>
+      <form #FirstStage="ngForm" novalidate autocomplete="off" *ngIf="ActiveLevelTwo === 1||ActiveLevelTwo === 4">
+        <!--Main Info-->
+        <div id="ReservedTradeName">
+          <h5 class="stage-title mt-4">{{'ECZAScreenInvestmentLicense.ReservedTradeName' | translate}}</h5>
+
+          
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="ArabicName" name="ArabicName" [label]="'ECZAScreenInvestmentLicense.ArabicName'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #ArabicName="ngModel"
+              [(ngModel)]="Application.Request.ClientAccountECAID">
+            </custom-text-box>
+          </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="EnglishName" name="EnglishName" [label]="'ECZAScreenInvestmentLicense.EnglishName'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #EnglishName="ngModel"
+              [(ngModel)]="Application.Request.PrequalifiedConsultantAccountECAID">
+            </custom-text-box>
+            </div>
+            </div>
+         
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <ngbd-datepicker-popup [(ngModel)]="getModel.FromDate" name="StartDate" [label]="'ECZAScreenInvestmentLicense.StartDate'" #StartDate="ngModel" [required]="true"
+            [ngClass]="{ 'is-invalid required  validation':  StartDate.errors && (StartDate.dirty || submit) }">
+          </ngbd-datepicker-popup>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <ngbd-datepicker-popup [(ngModel)]="getModel.ToDate" name="ToDate" #ToDate="ngModel"[label]="'ECZAScreenInvestmentLicense.EndDate'" [required]="true"
+          [ngClass]="{ 'is-invalid required  validation':  ToDate.errors && (ToDate.dirty || submit) }">
+        </ngbd-datepicker-popup>
+          </div>
+              </div>
+        </div>
+         <!--Product Info-->
+         <div id="BasicInformation">
+          <h5 class="stage-title mt-4">{{'ECZAScreenInvestmentLicense.BasicInformation' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="EntityCategory" name="EntityCategory" [label]="'ECZAScreenInvestmentLicense.EntityCategory'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #EntityCategory="ngModel"
+              [(ngModel)]="Application.Request.PrequalifiedConsultantAccountECAID">
+            </custom-text-box>
+             
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="TargetedCity" name="TargetedCity" [label]="'ECZAScreenInvestmentLicense.TargetedCity'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #TargetedCity="ngModel"
+              [(ngModel)]="Application.Request.PrequalifiedConsultantAccountECAID">
+            </custom-text-box>
+             
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-lg-4">
+                <custom-text-box [type]="'text'" id="SubCity" name="SubCity" [label]="'ECZAScreenInvestmentLicense.SubCity'"
+                autocomplete="" aria-label="Name" [isRequiredLabel]="false" #SubCity="ngModel"
+                [(ngModel)]="Application.Request.PrequalifiedConsultantAccountECAID">
+              </custom-text-box>
+                
+              </div>
+              <div class="col-md-6 col-lg-4">
+                  <custom-text-box [type]="'text'" id="InvestmentType" name="InvestmentType" [label]="'ECZAScreenInvestmentLicense.InvestmentType'"
+                  autocomplete="" aria-label="Name" [isRequiredLabel]="false" #InvestmentType="ngModel"
+                  [(ngModel)]="Application.Request.PrequalifiedConsultantAccountECAID">
+                </custom-text-box>
+                
+              </div>
+              </div>
+          
+        </div>
+        <div id="PropertyInfo">
+          <h5 class="stage-title mt-4">{{'ECZAScreenInvestmentLicense.PublicInformation' | translate}}</h5>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="Tickersymbol " name="Tickersymbol" [label]="'ECZAScreenInvestmentLicense.Tickersymbol'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #Tickersymbol="ngModel"
+              [(ngModel)]="Application.Request.TotalUnits">
+            </custom-text-box>
+          </div>
+            <div class="col-md-6 col-lg-4">
+              <custom-text-box [type]="'text'" id="EntityName" name="EntityName" [label]="'ECZAScreenInvestmentLicense.EntityName'"
+              autocomplete="" aria-label="Name" [isRequiredLabel]="false" #EntityName="ngModel"
+              [(ngModel)]="Application.Request.ProposedUsage">
+            </custom-text-box>
+            </div>
+          
+            </div>
+      
+        
+        </div>
+      </form >
+      <form #SecondStage="ngForm" novalidate autocomplete="off" *ngIf="ActiveLevelTwo === 2||ActiveLevelTwo === 4">
+        <div id="Questionair" *ngIf="ActiveLevelTwo === 2||ActiveLevelTwo === 4">
+          <h5 class="stage-title mt-4">{{'ECZAScreenInvestmentLicense.Questionair' | translate}}</h5>
+          <div id="QuestionsList" *ngFor="let question of this.Application.Request.QuestionairAnswers; let ind=index;">
+            <mutliselect id="question_" name="question_" #question_="ngModel" [label]="question.QuestionBody"
+            [propertyToSelect]="'Value'" [options]="YesNoOptions"
+            [viewMode]="Application.IsReadOnly" [multiple]="false" [config]="config"
+            [(ngModel)]="this.Application.Request.QuestionairAnswers[ind].Answer" [required]="true"
+            [isRequiredLabel]="true" [ngClass]="{ 'is-invalid required  validation': question_.errors && (question_.dirty ||  submit)  }">
+          </mutliselect>
+          </div>
+        </div>
+    
+      </form>
+      <form #ThirdStage="ngForm" novalidate autocomplete="off"  *ngIf="ActiveLevelTwo === 3||ActiveLevelTwo === 4" >
+      <div id="Documents" *ngIf="ActiveLevelTwo === 3||ActiveLevelTwo === 4">
+        <h5 class="stage-title mt-4">{{'ECZAInfrastructurePermit.GeneralProjectDocuments' | translate}}</h5>
+        <div class="row">
+        <div class="col-lg-8 col-md-6">
+            <app-Uploaders-List [uploaders]="Application.Documents" [form]="ThirdStage"[hidden]="ActiveLevelTwo === 1||ActiveLevelTwo === 2"
+              [IsReadOnly]="Application.IsReadOnly" [IsLiveChanges]="true"[SectionName]="'GeneralDocuments'">
+            </app-Uploaders-List>
+
+          </div>
+        </div>
+      </div>
+      
+    </form>
+      <!--Actions-->
+
+      <div *ngIf="!Application.IsReadOnly"
+        class="col-12 form-footer position-relative d-flex flex-column justify-content-center flex-md-row justify-content-md-between">
+        <h1></h1>
+        <button type="button" class="main-btn" (click)="submitRequest()"
+        [disabled]="ActiveLevelTwo !== 4">{{ 'ServicesCommon.Submit' | translate}}</button>
+  
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>

@@ -18,7 +18,7 @@ export class PortalServicesComponent implements OnInit {
                 this.currentUrl = location.path();
             }
         });
-        this.titleService.setTitle("Modon | Services");
+        this.titleService.setTitle("ECZA | Services");
     }
 
     ngOnInit() {

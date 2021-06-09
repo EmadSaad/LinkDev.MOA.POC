@@ -58,7 +58,7 @@ export class MoaPaymentComponent extends EServicesBase<CaseModel> implements OnI
         TotalPrice:null,
         UnitPrice:null
       };
-      this.titleService.setTitle("MOA | Payment");
+      this.titleService.setTitle("ECZA | Payment");
       this.serviceParams = this.getQueryStringNames();
       debugger;
       let x=this.getQueryStringNames();
@@ -104,14 +104,7 @@ submitRequest(){  this.submit = true;
   let isDocumentsValid = this.validateDocuments();
   if(isDocumentsValid)
     this.submitForm();};
-get totalPrice():number{
-  this.Application.Request.TotalPrice=this.Application.Request.UnitPrice*this.Application.Request.Qunatity;
-  if (!Number.isNaN(this.Application.Request.TotalPrice))
-  return this.Application.Request.TotalPrice;
 
-  else
-  return 0;
-}
 
 public submitForm(): void {
   debugger;

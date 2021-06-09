@@ -80,7 +80,7 @@ export class CompleteProfileComponent implements OnInit {
     this.PhoneValidationPattern = ConfigService.NewPhoneValidationPattern;
     this.numberValidationPattern = ConfigService.NumberValidationPattern;
     this.passwordValidationPattern = ConfigService.PasswordValidationPattern;
-    this.titleService.setTitle("Modon | Profile");
+    this.titleService.setTitle("ECZA | Profile");
   }
 
   ngOnInit() {

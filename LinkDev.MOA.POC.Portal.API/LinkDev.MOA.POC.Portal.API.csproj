@@ -227,12 +227,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\OriginActionFilter.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Documents\DocumentsController.cs" />
     <Compile Include="Controllers\Documents\PaymentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LookupsController\LookupsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
+    <Compile Include="Controllers\Requests\InfrastructurePermitRequestController.cs" />
     <Compile Include="Controllers\Requests\RequestsController.cs" />
+    <Compile Include="Controllers\Requests\ScreenInvestmentLicenseController.cs" />
     <Compile Include="CorsHandler\CorsHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -255,6 +259,13 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\eczademoapi - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\eczademoapi - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\eczademoapi - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\eczademoapi - ReadOnly - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\eczademoapi - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\eczademoapi - Web Deploy1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -320,9 +331,13 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LinkDev.MOA.POC.Portal.BLL\LinkDev.MOA.POC.Portal.BLL.csproj">
-      <Project>{37cbe57b-dbb2-493c-b805-dcae560ab6f9}</Project>
-      <Name>LinkDev.MOA.POC.Portal.BLL</Name>
+    <ProjectReference Include="..\LinkDev.ECZA.POC.BLL\LinkDev.ECZA.POC.BLL.csproj">
+      <Project>{197cd520-fbb5-4bf1-ab7a-fda4eec22892}</Project>
+      <Name>LinkDev.ECZA.POC.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LinkDev.ECZA.POC.Models\LinkDev.ECZA.POC.Models.csproj">
+      <Project>{c8c0c907-90a9-4ebe-9c85-29d702a3afb8}</Project>
+      <Name>LinkDev.ECZA.POC.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

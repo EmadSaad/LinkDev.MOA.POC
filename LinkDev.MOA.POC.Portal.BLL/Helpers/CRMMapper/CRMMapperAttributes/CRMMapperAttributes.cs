@@ -48,7 +48,8 @@ namespace LinkDev.MOA.POC.Portal.BLL.Helpers.CRMMapper.CRMMapperAttributes
 		public string LogicalName { get; private set; }
 		public CrmFormattedValueAtrribute(string fieldLogicalName)
 		{
-			LogicalName = fieldLogicalName;
+			
+			   LogicalName = fieldLogicalName;
 		}
 	}
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]

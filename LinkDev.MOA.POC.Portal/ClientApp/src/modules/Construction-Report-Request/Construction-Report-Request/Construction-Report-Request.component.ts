@@ -39,7 +39,7 @@ export class ConstructionReportRequestComponent extends EServicesBase<Constructi
     private titleService:Title) {
     super(requestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
     this.configureMutliSelectConfiguration();
-    this.titleService.setTitle("Modon | Construction report request");
+    this.titleService.setTitle("ECZA | Construction report request");
   }
 
 

@@ -165,7 +165,7 @@ export class OperatingLicenseRequestComponent extends EServicesBase<OperatingLic
     protected router: Router,
     private titleService: Title) {
     super(requestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-    this.titleService.setTitle("Modon | Operating License Request");
+    this.titleService.setTitle("ECZA | Operating License Request");
   }
 
   ngOnInit() {

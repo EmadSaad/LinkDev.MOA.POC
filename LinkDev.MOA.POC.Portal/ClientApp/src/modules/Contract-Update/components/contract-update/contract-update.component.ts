@@ -77,7 +77,7 @@ export class ContractUpdateComponent extends EServicesBase<ContractUpdateModel> 
     private titleService: Title,
     protected router: Router) {
     super(ContractUpdateService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-    this.titleService.setTitle("Modon | Update Contract");
+    this.titleService.setTitle("ECZA | Update Contract");
     this.submit = false;
     this.IsAreaUpdated = false;
 

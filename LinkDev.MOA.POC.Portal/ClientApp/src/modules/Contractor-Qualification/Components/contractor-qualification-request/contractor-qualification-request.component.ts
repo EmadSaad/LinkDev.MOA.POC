@@ -90,7 +90,7 @@ isDraftSatgeReadOnly:boolean = false;
     public ConsultingQualification: ConsultingOfficeQualificationService) {
     super(RequestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
     this.configureMutliSelectConfiguration(); 
-    this.titleService.setTitle("Modon | Contractor Qualification");
+    this.titleService.setTitle("ECZA | Contractor Qualification");
     
   }
   //EServicesBase inherited Methods

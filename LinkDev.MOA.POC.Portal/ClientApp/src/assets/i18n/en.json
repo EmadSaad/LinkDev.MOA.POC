@@ -75,8 +75,8 @@
 
 
   "Homepage": {
-    "WelcomeToModon": "Welcome To MALR Portal",
-    "WelcomeMsg": "The E-Services system was built in response to the national plan for electronic transactions, and based on the vision of “MALR” to provide integrated services that meet the needs of its investing partners, and puts the partner in the center of attention",
+    "WelcomeToModon": "Welcome To ECZA Portal",
+    "WelcomeMsg": "The E-Services system was built in response to the national plan for electronic transactions, and based on the vision of “ECZA” to provide integrated services that meet the needs of its investing partners, and puts the partner in the center of attention",
     "WhyReg": "Why should I register in the portal?",
     "EasyCommuication": "Ease of Communication with us",
     "EasyCommuicationDetails": "Communicate with the MODON and technical areas in an easy and effective way",
@@ -358,7 +358,7 @@
     "Fax": "Fax",
     "POBox": "PO Box",
     "ZIPCode": "ZIP Code",
-    "MODON": "MODON",
+    "ECZA": "ECZA",
     "Clause": "Clause",
     "Value": "Value (SR)",
     "TotalBeforeVat": "Total Before Vat",
@@ -1441,6 +1441,81 @@
     "PaymentBillUploading":"Payment Bill Uploading",
     "Payment":"Payment",
     "ConfirmPayment": "Confirm Payment"
-  }
+  },
+  
+  "ECZAInfrastructurePermit":{
+    
+    "InfrastructurePermitIssuance":"Infrastructure Permit Issuance",
+    "GeneralInfo":"General Info",
+    "GISInfo":"GIS Info",
+    "PropertyInfo":"Property Info",
+    "ProjectInfo":"Project Info",
+    "Fees":"Fees",
+    "GeneralProjectDocuments":"General Documents",
+    "DesignConsultantattachments":"Design Consultant Attachments",
+    "FirstStage":"First Stage",
+    "SecondStage":"Second Stage",
+    "RequestDetails":"Request Details",
+    "ThirdStage":"Third Stage",
+    "ReviewRequest":"Request Review",
+    "DesignReviewConsultant":"Design Review Consultant",
+    "DesignConsultant":"Design Consultant",
+    "ClientAccountECAID":"Client Account ECA ID",
+    "PrequalifiedConsultantAccountECAID":"Prequalified Consultant Account ECA ID",
+    "LandArea":"Land Area",
+    "City":"City",
+    "District":"District",
+    "Neighborhood":"Neighborhood",
+    "Floor":"Floor",
+    "Unit":"Unit",
+    "Street":"Street",
+    "TotalUnits":"Total Units",
+    "ProposedUsage":"Proposed Usage",
+    "ExistingUSage":"Existing USage",
+    "BuildingArea":"Building Area",
+    "UsedArea":"Used Area",
+    "BasementArea":"Basement Area",
+    "RoofArea":"Roof Area",
+    "ParkingArea":"Parking Area",
+    "OtherArea":"Other Area",
+    "ExemptionType":"Exemption Type",
+    "ExemptionAmount":"ExemptionAmount",
+    "TotalFees":"Total Fees",
+    "FinalFees":"Final Fees (Discounted)",
+    "ProjectTitle":"Project Title",
+    "Description":"Description",
+    "Location":"Location",
+    "SiteArea":"Site Area",
+    "BuildingHeight":"Building Height",
+    "ProjectCostUSD":"Project Cost (USD)",
+    "ProjectType":"Project Type",
+    "ProjectCostSAR":"Project Cost (SAR)",
+    "FourthStage":"Fourth Stage"
 
+  },
+  "ECZAScreenInvestmentLicense":{
+    "InvestmentLicenseRequest":"Screen Investment License Request",
+    "ReservedTradeName":"Reserved Trade Name",
+    "ArabicName":"Arabic Name",
+    "EnglishName":"English Name",
+    "StartDate":"Start Date",
+    "EndDate":"End Date",
+    "BasicInformation":"Basic Information",
+    "EntityCategory":"Entity Category",
+    "TargetedCity":"Targeted City",
+    "SubCity":"SubCity",
+    "InvestmentType":"Investment Type",
+    "MultinationalInformation":"Multinational Information",
+    "MultinationalEntityFlag":"MultinationalEntityFlag",
+    "PublicInformation":"PublicInformation",
+    "Country":"Country",
+    "EntityName":"Entity Name",
+    "Tickersymbol":"Ticker symbol ",
+    "Questionair":"Questionair"
+  }
+  ,
+  "ECZADocuments":{
+    "EnvironmentalPermitBuilding":"Environmental Permit Building",
+    "ExcavationandGradingPermit": "Excavation and Grading Permit"
+  }
 }

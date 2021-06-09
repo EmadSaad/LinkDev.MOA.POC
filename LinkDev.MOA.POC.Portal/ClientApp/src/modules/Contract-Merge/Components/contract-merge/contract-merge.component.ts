@@ -70,7 +70,7 @@ export class ContractMergeComponent extends EServicesBase<MergeRequestModel> imp
     private titleService:Title,
 
     protected router: Router) {super(MergeRequestService, lookupService, activatedRoute, alertService, translateService, modalService, router);
-      this.titleService.setTitle("Modon | Merge Request");
+      this.titleService.setTitle("ECZA | Merge Request");
       this.oldContract = { ContactDetails: [],
         CRDetailsModel: {CROwners: [], CRActivities: [], CRType: 'crtype'},
         ILDetailsModel: {ILSource: '', ILStatus: '', ILType: '', ILProducts: '', FactoryName: '', CityName: ''}};

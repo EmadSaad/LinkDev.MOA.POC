@@ -1,8 +1,8 @@
 {
   "apiBaseUrl": "https://emodonqcapir2.linkdev.com/",
   "APIURL": "https://emodonqcapir2.linkdev.com/",
-  "MOAAPIURL":"http://moa.westeurope.cloudapp.azure.com/",
-  "CRMAPI": "http://moa.westeurope.cloudapp.azure.com/",
+  "MOAAPIURL":"https://localhost:44387/",
+  "CRMAPI": "https://localhost:44387/",
   "OldModonURL":"",
   "recaptchaSiteKey": "6LcCbgAVAAAAANO04BMGfgow_d7HTWmjF8ODUQrG",
   "googleMapsToken": "AIzaSyC_SR_vI_jtfPzY__8UPKPvvUWCezerzS8",

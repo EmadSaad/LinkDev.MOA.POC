@@ -13,7 +13,7 @@ export class WorkspaceComponent implements OnInit {
   constructor(private translateService: TranslateService,
     private titleService: Title,
     protected WorkspaceService: WorkspaceService, public lookupService: LookupService, private router: Router) {
-    this.titleService.setTitle("Modon | Workspace");
+    this.titleService.setTitle("ECZA | Workspace");
     // this.WorkspaceService.getWorkspaceCRs().subscribe(
     //   res=>{
     //     this.lookupService.handleRetrievedLookup(res.Content);

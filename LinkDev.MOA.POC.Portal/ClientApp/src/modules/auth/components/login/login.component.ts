@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
     private ratingService: RatingService, private modalService: NgbModal, protected WorkspaceService: WorkspaceService) {
     this.emailValidationPattern = ConfigService.EmailValidationPattern;
     this.passwordValidationPattern = ConfigService.PasswordValidationPattern;
-    this.titleService.setTitle("Modon | Login");
+    this.titleService.setTitle("ECZA | Login");
   }
 
 
